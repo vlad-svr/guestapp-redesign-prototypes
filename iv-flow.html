@@ -74,10 +74,11 @@
   .rc-group { display: flex; flex-direction: column; gap: 10px; }
 
   /* ---------- Camera screens ---------- */
+  /* Light page shell (matches current PageLayout) — the dark gradient
+     lives ONLY inside the camera viewport, as in CaptureFrame today. */
   .cam-screen {
     flex: 1;
     display: flex; flex-direction: column;
-    background: var(--gradient-doc-cam);
     position: relative;
   }
   .cam-topbar {
@@ -87,28 +88,25 @@
   }
   .cam-topbar .back-btn {
     width: 36px; height: 36px; border-radius: 10px;
-    background: var(--glass-dark-bg);
-    border: 1px solid var(--glass-dark-border);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    display: grid; place-items: center; color: #fff;
+    background: var(--n-50);
+    display: grid; place-items: center; color: var(--navy);
   }
-  .cam-topbar .tb-title { font-size: 15px; font-weight: 700; color: #fff; }
-  .cam-topbar .tb-sub { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.65); }
-  .cam-topbar .tb-action { margin-left: auto; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); }
+  .cam-topbar .tb-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .cam-topbar .tb-sub { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+  .cam-topbar .tb-action { margin-left: auto; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 
   .cam-progress { display: flex; gap: 5px; padding: 0 14px 14px; position: relative; z-index: 5; }
-  .cam-progress .seg { height: 4px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.22); position: relative; overflow: hidden; }
+  .cam-progress .seg { height: 4px; flex: 1; border-radius: 99px; background: var(--n-200); position: relative; overflow: hidden; }
   .cam-progress .seg.done::after, .cam-progress .seg.active::after {
     content: ''; position: absolute; inset: 0; border-radius: 99px;
-    background: linear-gradient(90deg, #8ca5ff, #c4d2ff);
+    background: linear-gradient(90deg, var(--blue-500), #6b8cff);
   }
   .cam-progress .seg.active::after { width: 55%; }
 
-  .cam-head { padding: 6px 20px 18px; position: relative; z-index: 5; }
-  .cam-head .cam-title { font-size: 22px; line-height: 27px; font-weight: 600; letter-spacing: -0.015em; color: #fff; }
-  .cam-head .cam-title .hl { color: var(--blue-light); }
-  .cam-head .cam-intro { font-size: 12.5px; line-height: 18px; color: rgba(255,255,255,0.72); margin-top: 6px; }
+  .cam-head { padding: 16px 20px 16px; position: relative; z-index: 5; }
+  .cam-head .cam-title { font-size: 22px; line-height: 27px; font-weight: 600; letter-spacing: -0.015em; color: var(--navy); }
+  .cam-head .cam-title .hl { color: var(--blue-500); }
+  .cam-head .cam-intro { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 6px; }
 
   /* Document viewport */
   .doc-frame-wrap { padding: 6px 20px; position: relative; z-index: 5; }
@@ -118,8 +116,8 @@
     position: relative;
     background:
       radial-gradient(circle at 60% 35%, rgba(255,255,255,0.09), transparent 60%),
-      rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.12);
+      var(--gradient-doc-cam);
+    box-shadow: var(--shadow-elev);
     overflow: hidden;
   }
   .doc-frame .mock-doc {
@@ -194,14 +192,13 @@
     display: inline-flex; align-items: center; gap: 6px;
     height: 30px; padding: 0 12px;
     border-radius: 99px;
-    background: var(--glass-dark-bg);
-    border: 1px solid var(--glass-dark-border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: rgba(255,255,255,0.85);
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    color: var(--n-600);
     font-size: 11px; font-weight: 500;
   }
-  .cam-hint .icon-sm { color: var(--blue-light); }
+  .cam-hint .icon-sm { color: var(--blue-500); }
 
   .cam-footer {
     margin-top: auto;
@@ -209,21 +206,20 @@
     display: flex; flex-direction: column; align-items: center; gap: 12px;
     position: relative; z-index: 5;
   }
-  .cam-footer .auto-note { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 500; display: flex; align-items: center; gap: 7px; text-align: center; }
+  .cam-footer .auto-note { font-size: 12px; color: var(--text-secondary); font-weight: 500; display: flex; align-items: center; gap: 7px; text-align: center; }
   .cam-footer .auto-note .spinner {
     width: 14px; height: 14px; border-radius: 50%;
-    border: 2px solid rgba(140,165,255,0.3); border-top-color: var(--blue-light);
+    border: 2px solid rgba(56,91,248,0.25); border-top-color: var(--blue-500);
     animation: spin 0.9s linear infinite;
     flex-shrink: 0;
   }
   .btn-glass {
-    background: var(--glass-dark-bg);
-    border: 1px solid var(--glass-dark-border);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    color: #fff;
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+    color: var(--navy);
   }
-  .btn-glass:hover { background: rgba(255,255,255,0.12); }
+  .btn-glass:hover { background: var(--n-50); }
   .btn-danger-glass {
     background: rgba(255,255,255,0.94);
     color: var(--red-500);
@@ -257,7 +253,6 @@
     position: relative;
     overflow: hidden;
     background: radial-gradient(circle at 50% 34%, #d3d9e8 0%, #a9b1c8 72%);
-    border: 1px solid rgba(255,255,255,0.14);
     box-shadow: var(--shadow-elev);
     z-index: 5;
   }
@@ -350,17 +345,16 @@
   .fail-card {
     margin: 14px 20px 0;
     border-radius: 14px;
-    background: var(--glass-dark-bg);
-    border: 1px solid var(--glass-dark-border);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
     padding: 13px 15px;
     position: relative; z-index: 5;
   }
-  .fail-card .fc-title { font-size: 12.5px; font-weight: 700; color: #fff; margin-bottom: 7px; }
-  .fail-card .fc-item { display: flex; gap: 8px; align-items: flex-start; font-size: 11.5px; line-height: 16px; color: rgba(255,255,255,0.8); padding: 3px 0; }
+  .fail-card .fc-title { font-size: 12.5px; font-weight: 700; color: var(--navy); margin-bottom: 7px; }
+  .fail-card .fc-item { display: flex; gap: 8px; align-items: flex-start; font-size: 11.5px; line-height: 16px; color: var(--text-secondary); padding: 3px 0; }
   .fail-card .fc-item .icon-sm { color: var(--red-soft); margin-top: 1px; flex-shrink: 0; }
-  .fail-card .fc-item.tip .icon-sm { color: var(--blue-light); }
+  .fail-card .fc-item.tip .icon-sm { color: var(--blue-500); }
 
   /* ---------- Camera denied ---------- */
   .denied-illustration {
@@ -420,7 +414,7 @@
 <body>
 <div class="proto-stage">
   <h1>Identity Verification — Redesign 2.0 Prototype</h1>
-  <p class="lede">Happy path, edge cases, and the full liveness challenge sequence. Improvements: segmented glass progress, immersive framed camera, live guidance chips, masked face oval with progress ring, actionable failure states. Mock data only.</p>
+  <p class="lede">Happy path, edge cases, and the full liveness challenge sequence. Incremental improvements over the current redesign: segmented progress, live guidance chips around the existing camera card, masked face oval with progress ring, actionable failure states. Mock data only.</p>
 
   <!-- ═══════════════════ ROW 1: HAPPY PATH ═══════════════════ -->
   <div class="row-title">Happy path <small>intro → document → capture → back side → done</small></div>
@@ -569,7 +563,7 @@
       <div class="phone-label">3 · Scan front (auto-capture)</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -614,7 +608,7 @@
       <div class="phone-label">4 · Capture verified</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -626,7 +620,7 @@
             <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
           </div>
           <div class="cam-head">
-            <div class="cam-title">Photo <span class="hl" style="color:var(--green-500)">captured</span></div>
+            <div class="cam-title">Photo <span class="hl" style="color:var(--green-700)">captured</span></div>
             <div class="cam-intro">Checking quality and reading your document…</div>
           </div>
           <div class="doc-frame-wrap">
@@ -649,7 +643,7 @@
           </div>
           <div class="cam-footer">
             <button class="btn btn-primary btn-block">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
-            <button class="btn-ghost" style="color:rgba(255,255,255,0.65)">Retake photo</button>
+            <button class="btn-ghost">Retake photo</button>
           </div>
         </div>
       </div>
@@ -660,7 +654,7 @@
       <div class="phone-label">5 · Flip to back side</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -750,7 +744,7 @@
       <div class="phone-label">E1 · Photo validation failed</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -789,7 +783,7 @@
             <div class="fc-item tip"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg> Rest your phone on a surface and use daylight</div>
           </div>
           <div class="cam-footer">
-            <button class="btn-ghost" style="color:rgba(255,255,255,0.65)">Verify later</button>
+            <button class="btn-ghost">Verify later</button>
           </div>
         </div>
       </div>
@@ -914,7 +908,7 @@
       <div class="phone-label">L1 · Position your face</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -941,7 +935,7 @@
             <div class="challenge-dots"><span class="ls"></span><span class="ls"></span><span class="ls"></span><span class="ls"></span></div>
           </div>
           <div class="cam-footer">
-            <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:rgba(255,255,255,0.6)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+            <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
           </div>
         </div>
       </div>
@@ -952,7 +946,7 @@
       <div class="phone-label">L2 · Challenge: turn left</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -989,7 +983,7 @@
             <div class="challenge-dots"><span class="ls done"></span><span class="ls done"></span><span class="ls active"></span><span class="ls"></span></div>
           </div>
           <div class="cam-footer">
-            <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:rgba(255,255,255,0.6)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+            <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
           </div>
         </div>
       </div>
@@ -1000,7 +994,7 @@
       <div class="phone-label">L3 · Challenge: blink</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -1037,7 +1031,7 @@
             <div class="challenge-dots"><span class="ls done"></span><span class="ls done"></span><span class="ls done"></span><span class="ls active"></span></div>
           </div>
           <div class="cam-footer">
-            <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:rgba(255,255,255,0.6)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+            <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
           </div>
         </div>
       </div>
@@ -1048,7 +1042,7 @@
       <div class="phone-label">L4 · Liveness passed</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -1060,7 +1054,7 @@
             <div class="seg done"></div><div class="seg done"></div><div class="seg active"></div><div class="seg"></div>
           </div>
           <div class="cam-head">
-            <div class="cam-title">Liveness <span class="hl" style="color:var(--green-500)">passed</span></div>
+            <div class="cam-title">Liveness <span class="hl" style="color:var(--green-700)">passed</span></div>
             <div class="cam-intro">Matching your face with the document photo…</div>
           </div>
           <div class="face-viewport">
@@ -1090,7 +1084,7 @@
       <div class="phone-label">L5 · Liveness failed (timeout)</div>
       <div class="phone">
         <div class="screen cam-screen">
-          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
           <div class="cam-topbar">
             <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
             <div>
@@ -1127,8 +1121,8 @@
             <div class="fc-item tip"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-move"/></svg> Move slowly and hold each pose for a second</div>
           </div>
           <div class="cam-footer">
-            <button class="btn btn-block" style="background:rgba(255,255,255,0.94);color:var(--red-500);max-width:100%"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-rotate"/></svg> Try again</button>
-            <button class="btn-ghost" style="color:rgba(255,255,255,0.65)">Verify later</button>
+            <button class="btn btn-outline btn-block" style="color:var(--red-500);max-width:100%"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-rotate"/></svg> Try again</button>
+            <button class="btn-ghost">Verify later</button>
           </div>
         </div>
       </div>
