@@ -27,6 +27,13 @@
         { hash: 'r-review', label: 'Review & sign' },
         { hash: 'r-done', label: 'Hub — guest without IV' },
       ]},
+      { file: 'flow-registered-modal.html', label: 'Registered modal + offers', icon: '▶', subs: [
+        { hash: 'dm-loading', label: 'Full flow — with offers' },
+        { hash: 'dm-offers', label: 'Offer stack' },
+        { hash: 'dm-cart', label: 'Cart summary' },
+        { hash: 'dm-empty', label: 'No offers' },
+        { hash: 'dm-error', label: 'Submission failed' },
+      ]},
       { file: 'scroll-demo.html', label: 'Scroll behavior demo', icon: '↕' },
       { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },
     ]},
