@@ -16,7 +16,8 @@
 
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="dm-loading">▶ Full flow — with offers</button>
-    <button class="fh-chip" data-scenario="dm-empty-loading">No offers</button>
+    <button class="fh-chip" data-scenario="dm-empty-loading">No offers (upselling on)</button>
+    <button class="fh-chip" data-scenario="dm-plain-loading">Upselling disabled</button>
     <button class="fh-chip" data-scenario="dm-error">Submission failed</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
     <span class="fh-label"></span>
@@ -386,6 +387,56 @@
       </div>
     </div>
 
+    <!-- ═══ dm-plain-loading: upselling disabled — plain status modal, no offers UI ═══ -->
+    <div class="screen flow-screen" id="dm-plain-loading" data-label="Upselling disabled — sending data" data-autonext="dm-plain-done" data-autodelay="2200">
+      <div class="dm-back">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar"><div class="tb-titles"><div class="tb-title">Guest details</div><div class="tb-sub">Almost done</div></div></div>
+        <div class="page-head"><div class="kicker">Guest registration</div><div class="page-title">Review and <span class="hl">sign</span></div></div>
+      </div>
+      <div class="dm-scrim"></div>
+      <div class="dm-sheet">
+        <div class="dm-grabber"></div>
+        <div class="dm-pill loading">
+          <div class="p-state">
+            <span class="p-ic"><span class="dm-spin"></span></span>
+            <span>Sending Ana's details…<span class="p-sub">This usually takes a few seconds</span></span>
+          </div>
+        </div>
+        <p class="sim-note" style="margin:6px 0 8px">Upselling is not active for this reservation → plain status modal. Offers are never fetched, so no “Enhance your stay” header and no skeleton cards.</p>
+      </div>
+    </div>
+
+    <!-- ═══ dm-plain-done: upselling disabled — registered ═══ -->
+    <div class="screen flow-screen" id="dm-plain-done" data-label="Upselling disabled — Ana registered">
+      <div class="dm-back">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar"><div class="tb-titles"><div class="tb-title">Guest details</div><div class="tb-sub">Almost done</div></div></div>
+        <div class="page-head"><div class="kicker">Guest registration</div><div class="page-title">Review and <span class="hl">sign</span></div></div>
+      </div>
+      <div class="dm-scrim"></div>
+      <div class="dm-sheet">
+        <div class="dm-grabber"></div>
+        <div class="dm-pill done">
+          <div class="p-state">
+            <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+            <span>Ana is registered!<span class="p-sub">2 of 3 guests done</span></span>
+          </div>
+        </div>
+        <div class="dm-success">
+          <div class="s-ring"><svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+          <div class="s-title">Ana is registered!</div>
+          <p class="s-sub">Her details were sent to the property. One thing left before check-in day:</p>
+        </div>
+        <a class="dm-next" href="flow-iv-mobile.html">
+          <span class="nx-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id"/></svg></span>
+          <span><span class="nx-title" style="display:block">Verify Carlos's ID</span><span class="nx-sub">Details saved · takes ~2 minutes</span></span>
+          <svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg>
+        </a>
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registration.html#r-done">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+      </div>
+    </div>
+
     <!-- ═══ dm-error ═══ -->
     <div class="screen flow-screen" id="dm-error" data-label="Submission failed — retry without losing data">
       <div class="dm-back">
@@ -415,7 +466,7 @@
 
   <!-- ═══ Desktop dialog variant ═══ -->
   <h1 style="margin-top:56px">Desktop dialog</h1>
-  <p class="lede">Same modal as a centered 560&nbsp;px dialog (today's <b>StatusModal maxWidth 560</b>) over the review page — pill, header, segmented progress and stack are identical components, just more air.</p>
+  <p class="lede">Same modal as a centered 560&nbsp;px dialog (today's <b>StatusModal maxWidth 560</b>) over the review page — pill, header, segmented progress and stack are identical components, just more air. Desktop adds offer <b>switching</b>: arrow buttons, clickable progress segments and keyboard ←/→ — try them; added offers stay revisitable and removable.</p>
 
   <div class="browser" style="height:880px">
     <div class="browser-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">guest.chekin.com/registration/review</span></div>
@@ -427,7 +478,7 @@
       </div>
     </div>
     <div class="dm-scrim" style="top:44px"></div>
-    <div class="dm-dialog">
+    <div class="dm-dialog" id="dk-dialog">
       <div class="dm-pill done">
         <div class="p-state">
           <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
@@ -440,37 +491,143 @@
         <div class="dm-sub">3 offers hand-picked by your host</div>
       </div>
       <div class="dm-progress">
-        <span class="seg active"></span><span class="seg"></span><span class="seg"></span>
+        <button class="seg active" data-dk-seg="0" aria-label="Offer 1"></button><button class="seg" data-dk-seg="1" aria-label="Offer 2"></button><button class="seg" data-dk-seg="2" aria-label="Offer 3"></button>
         <span class="dm-count">1 of 3</span>
       </div>
-      <div class="deal-stack">
-        <div class="deal-card behind-2"><div class="deal-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)"></div></div>
-        <div class="deal-card behind-1"><div class="deal-photo" style="background:linear-gradient(135deg,#d0e2fd,#a9c4f5)"></div></div>
-        <div class="deal-card">
-          <div class="deal-photo" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8);height:180px;font-size:62px">🌇
-            <span class="dp-chip">★ Most popular</span>
-            <span class="dp-price">€15.00 <span class="per">/ stay</span></span>
-          </div>
-          <div class="deal-body">
-            <div class="d-title">Late check-out</div>
-            <p class="d-desc">Sleep in — keep the apartment for a couple of extra hours on your departure day.</p>
-            <div class="d-option">
-              <span class="o-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Check-out time</span>
-              <span class="o-value">14:00 <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-down"/></svg></span>
+      <div class="dk-wrap">
+        <button class="dk-arrow prev" data-dk-prev aria-label="Previous offer" disabled><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="deal-stack">
+          <div class="deal-card behind-2" data-dk-behind="2"><div class="deal-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)"></div></div>
+          <div class="deal-card behind-1" data-dk-behind="1"><div class="deal-photo" style="background:linear-gradient(135deg,#d0e2fd,#a9c4f5)"></div></div>
+
+          <div class="deal-card dk-card on">
+            <div class="deal-photo" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8);height:180px;font-size:62px">🌇
+              <span class="dp-chip">★ Most popular</span>
+              <span class="dp-price">€15.00 <span class="per">/ stay</span></span>
             </div>
-            <div class="d-total">Total <b>€15.00</b></div>
-            <div class="d-actions">
-              <button class="btn btn-ghost" style="border:1px solid var(--border);border-radius:var(--r-md)">Not now</button>
-              <button class="btn btn-primary"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart</button>
+            <div class="deal-body">
+              <div class="d-title">Late check-out</div>
+              <p class="d-desc">Sleep in — keep the apartment for a couple of extra hours on your departure day.</p>
+              <div class="d-option">
+                <span class="o-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Check-out time</span>
+                <span class="o-value">14:00 <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-down"/></svg></span>
+              </div>
+              <div class="d-total">Total <b>€15.00</b></div>
+              <div class="d-actions">
+                <button class="btn btn-ghost" data-dk-next-btn style="border:1px solid var(--border);border-radius:var(--r-md)">Not now</button>
+                <button class="btn btn-primary" data-dk-add><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart</button>
+              </div>
+              <div class="d-added-tag"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg> In your cart · €15.00 <button class="dk-remove" data-dk-remove>Remove</button></div>
+            </div>
+          </div>
+
+          <div class="deal-card dk-card">
+            <div class="deal-photo" style="background:linear-gradient(135deg,#d0e2fd,#a9c4f5);height:180px;font-size:62px">🚕
+              <span class="dp-price">€35.00 <span class="per">/ trip</span></span>
+            </div>
+            <div class="deal-body">
+              <div class="d-title">Airport transfer</div>
+              <p class="d-desc">Private driver waiting at arrivals — no taxi queue, fixed price to the apartment.</p>
+              <div class="d-option">
+                <span class="o-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> Trips</span>
+                <span class="d-counter"><button class="dis">−</button><span class="cnt">1</span><button>+</button></span>
+              </div>
+              <div class="d-total">Total <b>€35.00</b></div>
+              <div class="d-actions">
+                <button class="btn btn-ghost" data-dk-next-btn style="border:1px solid var(--border);border-radius:var(--r-md)">Not now</button>
+                <button class="btn btn-primary" data-dk-add><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart</button>
+              </div>
+              <div class="d-added-tag"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg> In your cart · €35.00 <button class="dk-remove" data-dk-remove>Remove</button></div>
+            </div>
+          </div>
+
+          <div class="deal-card dk-card">
+            <div class="deal-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0);height:180px;font-size:62px">🥐
+              <span class="dp-price">€12.50 <span class="per">/ guest</span></span>
+            </div>
+            <div class="deal-body">
+              <div class="d-title">Breakfast basket</div>
+              <p class="d-desc">Fresh pastries, juice and coffee delivered to your door on your first morning.</p>
+              <div class="d-option">
+                <span class="o-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> Guests</span>
+                <span class="d-counter"><button>−</button><span class="cnt">1</span><button>+</button></span>
+              </div>
+              <div class="d-total">Total <b>€12.50</b></div>
+              <div class="d-actions">
+                <button class="btn btn-ghost" data-dk-next-btn style="border:1px solid var(--border);border-radius:var(--r-md)">Not now</button>
+                <button class="btn btn-primary" data-dk-add><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart</button>
+              </div>
+              <div class="d-added-tag"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg> In your cart · €12.50 <button class="dk-remove" data-dk-remove>Remove</button></div>
             </div>
           </div>
         </div>
+        <button class="dk-arrow next" data-dk-next aria-label="Next offer"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg></button>
       </div>
       <div class="dm-foot">
+        <span class="dm-cart-chip" data-dk-chip style="display:none"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> <span>0 items</span></span>
         <button class="dm-skip">Skip offers — continue to check-in <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
       </div>
     </div>
   </div>
+
+  <script>
+  /* Desktop-only offer carousel: arrows + clickable segments + keyboard.
+     Scoped to #dk-dialog so it never touches the phone flow screens. */
+  (function () {
+    var dlg = document.getElementById('dk-dialog');
+    if (!dlg) return;
+    var cards = Array.prototype.slice.call(dlg.querySelectorAll('.dk-card'));
+    var segs = Array.prototype.slice.call(dlg.querySelectorAll('[data-dk-seg]'));
+    var count = dlg.querySelector('.dm-count');
+    var prev = dlg.querySelector('[data-dk-prev]');
+    var next = dlg.querySelector('[data-dk-next]');
+    var chip = dlg.querySelector('[data-dk-chip]');
+    var chipText = chip.querySelector('span');
+    var behinds = Array.prototype.slice.call(dlg.querySelectorAll('[data-dk-behind]'));
+    var PRICES = [15, 35, 12.5];
+    var idx = 0;
+    var added = [false, false, false];
+
+    function render() {
+      cards.forEach(function (c, i) {
+        c.classList.toggle('on', i === idx);
+        c.classList.toggle('added', added[i]);
+      });
+      segs.forEach(function (s, i) {
+        s.classList.toggle('active', i === idx);
+        s.classList.toggle('done', i < idx);
+      });
+      count.textContent = (idx + 1) + ' of 3';
+      prev.disabled = idx === 0;
+      next.disabled = idx === cards.length - 1;
+      behinds.forEach(function (b) {
+        b.style.display = cards.length - 1 - idx >= +b.getAttribute('data-dk-behind') ? '' : 'none';
+      });
+      var n = added.filter(Boolean).length;
+      var total = added.reduce(function (s, a, i) { return s + (a ? PRICES[i] : 0); }, 0);
+      chip.style.display = n ? 'inline-flex' : 'none';
+      chipText.textContent = n + (n === 1 ? ' item' : ' items') + ' · €' + total.toFixed(2);
+    }
+
+    function go(d) { idx = Math.max(0, Math.min(cards.length - 1, idx + d)); render(); }
+
+    dlg.addEventListener('click', function (e) {
+      if (e.target.closest('[data-dk-prev]')) return go(-1);
+      if (e.target.closest('[data-dk-next]') || e.target.closest('[data-dk-next-btn]')) return go(1);
+      var seg = e.target.closest('[data-dk-seg]');
+      if (seg) { idx = +seg.getAttribute('data-dk-seg'); return render(); }
+      if (e.target.closest('[data-dk-add]')) { added[idx] = true; go(idx < cards.length - 1 ? 1 : 0); return; }
+      if (e.target.closest('[data-dk-remove]')) { added[idx] = false; return render(); }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') go(-1);
+      if (e.key === 'ArrowRight') go(1);
+    });
+
+    render();
+  })();
+  </script>
 
   <!-- What changed -->
   <h1 style="margin-top:56px">What changed and why</h1>
@@ -496,6 +653,14 @@
       <p style="font-size:12px;line-height:17px;color:var(--text-secondary);margin-top:6px">When the host has no offers, guests get a pure success moment with the next step (“Verify Carlos's ID”) — never “no deals available”, which reads as an error at the happiest point of the flow.</p>
     </div>
     <div class="card" style="padding:16px">
+      <b style="font-size:13px;color:var(--navy)">Desktop can switch offers</b>
+      <p style="font-size:12px;line-height:17px;color:var(--text-secondary);margin-top:6px">Dragging cards is a mobile gesture — on desktop the stack gets prev/next arrows, clickable progress segments and keyboard ←/→. Skipping stops being final: added offers show “In your cart” with Remove when you come back.</p>
+    </div>
+    <div class="card" style="padding:16px">
+      <b style="font-size:13px;color:var(--navy)">Upselling off = no offer chrome</b>
+      <p style="font-size:12px;line-height:17px;color:var(--text-secondary);margin-top:6px">When upselling isn't active for the reservation, the modal is a plain status sheet — no “Enhance your stay” header, no skeleton cards that promise offers which never come. Sending → registered, done.</p>
+    </div>
+    <div class="card" style="padding:16px">
       <b style="font-size:13px;color:var(--navy)">Errors keep your work</b>
       <p style="font-size:12px;line-height:17px;color:var(--text-secondary);margin-top:6px">The error state explains what went wrong in human words, keeps the technical detail secondary, and reassures that the typed data is safe — with “Try again” and “Edit details” instead of a lone “OK”.</p>
     </div>
@@ -504,6 +669,7 @@
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
     <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
     <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
     <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>

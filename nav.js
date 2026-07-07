@@ -33,6 +33,7 @@
         { hash: 'dm-cart', label: 'Cart summary' },
         { hash: 'dm-empty-loading', label: 'No offers — full sequence' },
         { hash: 'dm-empty', label: 'No offers — registered' },
+        { hash: 'dm-plain-loading', label: 'Upselling disabled' },
         { hash: 'dm-error', label: 'Submission failed' },
       ]},
       { file: 'scroll-demo.html', label: 'Scroll behavior demo', icon: '↕' },
