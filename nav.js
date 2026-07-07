@@ -4,6 +4,12 @@
     { group: 'Hub', items: [
       { file: 'index.html', label: 'Overview & rationale', icon: '⌂' },
     ]},
+    { group: 'Interactive flows', items: [
+      { file: 'flow-iv-mobile.html', label: 'IV flow — mobile', icon: '▶' },
+      { file: 'flow-iv-desktop.html', label: 'IV flow — desktop', icon: '▶' },
+      { file: 'flow-registration.html', label: 'Registration flow', icon: '▶' },
+      { file: 'scroll-demo.html', label: 'Scroll behavior demo', icon: '↕' },
+    ]},
     { group: 'Mobile', items: [
       { file: 'home.html', label: 'Home & check-in list', icon: '📱' },
       { file: 'iv-flow.html', label: 'Identity verification', icon: '🪪' },

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IV Flow (Mobile, interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="iv.css">
+<style>
+  /* QR scanner viewport */
+  .qr-frame-wrap { padding: 6px 20px; position: relative; z-index: 5; }
+  .qr-frame {
+    aspect-ratio: 1/1.05;
+    border-radius: var(--r-xl);
+    position: relative;
+    background:
+      radial-gradient(circle at 55% 40%, rgba(255,255,255,0.08), transparent 62%),
+      var(--gradient-doc-cam);
+    box-shadow: var(--shadow-elev);
+    overflow: hidden;
+  }
+  .qr-frame .qr-target { position: absolute; left: 50%; top: 47%; transform: translate(-50%, -50%); width: 62%; aspect-ratio: 1/1; }
+  .qr-frame .qr-target i { position: absolute; width: 30px; height: 30px; border: 3px solid var(--blue-light); border-radius: 3px; }
+  .qr-frame .qr-target i:nth-child(1) { top: 0; left: 0; border-right: none; border-bottom: none; border-top-left-radius: 11px; }
+  .qr-frame .qr-target i:nth-child(2) { top: 0; right: 0; border-left: none; border-bottom: none; border-top-right-radius: 11px; }
+  .qr-frame .qr-target i:nth-child(3) { bottom: 0; left: 0; border-right: none; border-top: none; border-bottom-left-radius: 11px; }
+  .qr-frame .qr-target i:nth-child(4) { bottom: 0; right: 0; border-left: none; border-top: none; border-bottom-right-radius: 11px; }
+  .qr-mock-lg {
+    position: absolute; left: 50%; top: 47%; transform: translate(-50%, -50%) rotate(-4deg);
+    display: grid; grid-template-columns: repeat(9, 12px); grid-template-rows: repeat(9, 12px); gap: 2px;
+    padding: 10px; background: #fff; border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  }
+  .qr-mock-lg i { background: var(--navy); border-radius: 1.5px; }
+  .qr-mock-lg i.off { background: transparent; }
+
+  /* OTP inputs */
+  .otp-row { display: flex; gap: 8px; justify-content: center; }
+  .otp {
+    width: 44px; height: 52px; border-radius: 12px;
+    border: 1px solid var(--border-subtle); background: var(--n-0);
+    display: grid; place-items: center;
+    font-size: 20px; font-weight: 700; color: var(--navy);
+  }
+  .otp.focus { border-color: var(--blue-500); box-shadow: var(--shadow-focus); }
+  .otp.empty { color: var(--n-300); }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Identity Verification — Interactive Flow (Mobile)</h1>
+  <p class="lede">Tap through like a real guest. Choosing <b>Passport</b> takes the single-side + liveness path; <b>ID card / license</b> takes the front-and-back + plain selfie path. Camera and liveness steps advance automatically, like auto-capture would. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="s-start" data-doc="passport">▶ Full flow</button>
+    <button class="fh-chip" data-scenario="s-qr-scan">Continue from desktop (QR)</button>
+    <button class="fh-chip" data-scenario="s-unavailable">Outside check-in window</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="phone" style="height:820px">
+
+    <!-- ═══ s-start · StartView ═══ -->
+    <div class="screen flow-screen" id="s-start" data-start data-label="Start verification">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles"><div class="tb-title">Identity verification</div></div>
+        <button class="tb-action">Skip for now</button>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Guest registration</div>
+        <div class="page-title">Verify your <span class="hl">identity</span></div>
+        <p class="page-intro">Three quick steps with your phone camera. Your data is encrypted and only shared with your host.</p>
+        <div class="est-time" style="margin-top:6px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Takes about 2 minutes</div>
+      </div>
+      <div class="content">
+        <div class="card glass">
+          <div class="steps-list">
+            <div class="step-row">
+              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
+              <div>
+                <div class="st-title">Scan your document</div>
+                <div class="st-desc">Passport, ID card or driving license</div>
+              </div>
+              <div class="st-num">1</div>
+            </div>
+            <div class="step-row">
+              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-scan-face"/></svg></div>
+              <div>
+                <div class="st-title">Take a quick selfie</div>
+                <div class="st-desc">We match it with your document photo</div>
+              </div>
+              <div class="st-num">2</div>
+            </div>
+            <div class="step-row">
+              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg></div>
+              <div>
+                <div class="st-title">Confirm your details</div>
+                <div class="st-desc">Data is pre-filled from your document</div>
+              </div>
+              <div class="st-num">3</div>
+            </div>
+          </div>
+        </div>
+        <div class="privacy-note">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg>
+          <span><strong>Privacy protected.</strong> Photos are processed securely, never posted anywhere, and deleted after verification per GDPR.</span>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="s-doc">Begin verification <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+        <button class="btn-ghost">Register a guest under 16 without ID</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-unavailable · IVUnavailableView ═══ -->
+    <div class="screen flow-screen" id="s-unavailable" data-label="Verification unavailable (IVUnavailableView)">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles"><div class="tb-title">Identity verification</div></div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Guest registration</div>
+        <div class="page-title">Verification <span class="hl">unavailable</span></div>
+        <p class="page-intro">This property verifies guests on the day of check-in.</p>
+      </div>
+      <div class="content">
+        <div class="card">
+          <div class="card-header">
+            <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg></span>
+            <span class="ch-label">Outside check-in period</span>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px">
+            <p style="font-size:13px;line-height:19px;color:var(--text-secondary)">Identity verification opens on <b style="color:var(--navy)">Friday, 10 July</b> — the day you arrive at the property.</p>
+            <p style="font-size:13px;line-height:19px;color:var(--text-secondary)">Everything else on your checklist can be completed now.</p>
+          </div>
+        </div>
+        <div class="privacy-note">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg>
+          <span><b>Be ready on the day:</b> you'll need your ID document and a device with a camera.</span>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-outline btn-block" data-goto="s-start">Back to summary</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-qr-scan · IVQRScannerView ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-qr-scan" data-label="Scan QR on desktop (IVQRScannerView)" data-autonext="s-doc" data-autodelay="3200">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Connect devices</div>
+          <div class="tb-sub">Identity verification</div>
+        </div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Scan the <span class="hl">QR code</span></div>
+        <div class="cam-intro">Point your camera at the QR code on your computer screen — your verification continues here.</div>
+      </div>
+      <div class="qr-frame-wrap">
+        <div class="qr-frame">
+          <div class="qr-mock-lg"><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="qr-target"><i></i><i></i><i></i><i></i></div>
+          <div class="scan-line" style="left:20%;right:20%"></div>
+          <div class="status-pill"><span class="dot"></span> Looking for a QR code…</div>
+        </div>
+      </div>
+      <div class="cam-hints">
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-maximize"/></svg> Fill the square</span>
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg> Avoid screen glare</span>
+      </div>
+      <div class="cam-footer">
+        <span class="sim-note">simulating… connects in a moment</span>
+        <button class="btn-ghost" style="color:var(--blue-500)">Enter the code manually</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-doc · DocumentSelectionView ═══ -->
+    <div class="screen flow-screen" id="s-doc" data-label="Choose document — branch point">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Identity verification</div>
+          <div class="tb-sub">Step 1 of 4</div>
+        </div>
+        <button class="tb-action">Skip for now</button>
+      </div>
+      <div class="progress-track">
+        <div class="seg active"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Guest registration</div>
+        <div class="page-title">Choose your <span class="hl">document</span></div>
+        <p class="page-intro">Select your nationality and the ID you have with you.</p>
+      </div>
+      <div class="content">
+        <div class="card">
+          <div class="card-header">
+            <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg></span>
+            <span class="ch-label">Nationality</span>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <div class="input" style="justify-content:space-between">
+                <span style="display:flex;align-items:center;gap:10px">🇪🇸 <span style="font-weight:500">Spain</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-down"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin:2px 4px 10px;display:flex;align-items:center;gap:8px">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-id-card"/></svg> Document type
+          </div>
+          <div class="rc-group">
+            <div class="radio-card selected" data-set-doc="passport">
+              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></div>
+              <div>
+                <div class="rc-title">Passport</div>
+                <div class="rc-desc">Single-sided · liveness selfie</div>
+                <div class="rc-meta"><span class="badge badge-info"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended</span></div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="radio-card" data-set-doc="dni">
+              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
+              <div>
+                <div class="rc-title">National ID card (DNI)</div>
+                <div class="rc-desc">Front and back · quick selfie</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="radio-card" data-set-doc="dni">
+              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></div>
+              <div>
+                <div class="rc-title">Driving license</div>
+                <div class="rc-desc">Front and back · quick selfie</div>
+              </div>
+              <div class="radio"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="s-front">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══ s-front · FrontScanView ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-front" data-label="Scanning front (auto-capture)" data-autonext="s-front-captured" data-autodelay="3000">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Scan document</div>
+          <div class="tb-sub">Step 2 of 4</div>
+        </div>
+        <button class="tb-action">Skip</button>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Photo of the <span class="hl">front</span></div>
+        <div class="cam-intro">Hold steady — the photo is taken automatically when the document is in focus.</div>
+      </div>
+      <div class="doc-frame-wrap">
+        <div class="doc-frame">
+          <div class="mock-doc">
+            <div class="photo"></div>
+            <div class="lines"><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="brackets"><i></i><i></i><i></i><i></i></div>
+          <div class="scan-line"></div>
+          <div class="status-pill"><span class="dot"></span> Place document inside frame</div>
+        </div>
+      </div>
+      <div class="cam-hints">
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg> Good lighting</span>
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye-off"/></svg> No glare</span>
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-maximize"/></svg> All corners visible</span>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><span class="spinner"></span> Auto-capture is on</div>
+        <button class="btn btn-glass btn-block btn-sm" style="height:42px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-upload"/></svg> Upload a file instead</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-front-captured ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-front-captured" data-label="Front captured — branches by document">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Scan document</div>
+          <div class="tb-sub">Step 2 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Photo <span class="hl" style="color:var(--green-700)">captured</span></div>
+        <div class="cam-intro">Checking quality and reading your document…</div>
+      </div>
+      <div class="doc-frame-wrap">
+        <div class="doc-frame">
+          <div class="mock-doc">
+            <div class="photo"></div>
+            <div class="lines"><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="brackets success"><i></i><i></i><i></i><i></i></div>
+          <div class="frame-overlay success">
+            <div class="ov-badge"><svg viewBox="0 0 24 24" class="icon" style="width:30px;height:30px;stroke-width:3;color:#fff"><use href="#i-check"/></svg></div>
+            <div class="ov-title">Photo taken!</div>
+            <div class="ov-desc">Front side captured successfully</div>
+          </div>
+        </div>
+      </div>
+      <div class="cam-hints">
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--green-700)"><use href="#i-check"/></svg> Sharp image</span>
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--green-700)"><use href="#i-check"/></svg> Data readable</span>
+      </div>
+      <div class="cam-footer">
+        <button class="btn btn-primary btn-block" data-goto-doc-passport="s-live-1" data-goto-doc-dni="s-back">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+        <button class="btn-ghost" data-goto="s-front">Retake photo</button>
+        <button class="btn-ghost" style="color:var(--red-soft)" data-goto="s-front-failed">⚠ Simulate a failed validation</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-front-failed ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-front-failed" data-label="Validation failed — retry detour">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Scan document</div>
+          <div class="tb-sub">Step 2 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Let's try that <span class="hl" style="color:var(--red-soft)">again</span></div>
+        <div class="cam-intro">The photo was too blurry to read. It happens — one more try.</div>
+      </div>
+      <div class="doc-frame-wrap">
+        <div class="doc-frame">
+          <div class="mock-doc blurry">
+            <div class="photo"></div>
+            <div class="lines"><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="brackets error"><i></i><i></i><i></i><i></i></div>
+          <div class="frame-overlay error">
+            <div class="ov-badge"><svg viewBox="0 0 24 24" class="icon" style="width:28px;height:28px;color:#fff"><use href="#i-alert-triangle"/></svg></div>
+            <div class="ov-title">Photo is too blurry</div>
+            <div class="ov-desc">We couldn't read the document data from this image</div>
+            <div class="ov-actions">
+              <button class="btn btn-danger-glass" data-goto="s-front"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-rotate"/></svg> Try again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fail-card">
+        <div class="fc-title">Quick fixes</div>
+        <div class="fc-item"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg> Camera moved during capture</div>
+        <div class="fc-item tip"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg> Rest your phone on a surface and use daylight</div>
+      </div>
+      <div class="cam-footer">
+        <button class="btn-ghost" data-goto="s-start">Verify later</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-back · BackScanView ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-back" data-label="Scanning back side (ID card path)" data-autonext="s-back-captured" data-autodelay="3000">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Scan document</div>
+          <div class="tb-sub">Step 2 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Now the <span class="hl">back</span> side</div>
+        <div class="cam-intro">Flip your ID card over — we need the machine-readable zone at the bottom.</div>
+      </div>
+      <div class="doc-frame-wrap">
+        <div class="doc-frame">
+          <div class="mock-doc backside">
+            <div class="chipline"></div>
+            <div class="mrz"></div>
+            <div class="mrz"></div>
+          </div>
+          <div class="brackets"><i></i><i></i><i></i><i></i></div>
+          <div class="scan-line"></div>
+          <div class="status-pill"><span class="dot"></span> Flip your document over</div>
+        </div>
+      </div>
+      <div class="cam-hints">
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-flip"/></svg> Same position, other side</span>
+        <span class="cam-hint"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye-off"/></svg> No glare on the code</span>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><span class="spinner"></span> Auto-capture is on · front side ✓ saved</div>
+      </div>
+    </div>
+
+    <!-- ═══ s-back-captured ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-back-captured" data-label="Back captured">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Scan document</div>
+          <div class="tb-sub">Step 2 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Both sides <span class="hl" style="color:var(--green-700)">captured</span></div>
+        <div class="cam-intro">Document read successfully — one quick selfie to go.</div>
+      </div>
+      <div class="doc-frame-wrap">
+        <div class="doc-frame">
+          <div class="mock-doc backside">
+            <div class="chipline"></div>
+            <div class="mrz"></div>
+            <div class="mrz"></div>
+          </div>
+          <div class="brackets success"><i></i><i></i><i></i><i></i></div>
+          <div class="frame-overlay success">
+            <div class="ov-badge"><svg viewBox="0 0 24 24" class="icon" style="width:30px;height:30px;stroke-width:3;color:#fff"><use href="#i-check"/></svg></div>
+            <div class="ov-title">Document complete!</div>
+            <div class="ov-desc">Front and back captured successfully</div>
+          </div>
+        </div>
+      </div>
+      <div class="cam-footer">
+        <button class="btn btn-primary btn-block" data-goto="s-selfie">Continue to selfie <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+        <button class="btn-ghost" data-goto="s-back">Retake back side</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-selfie · SelfieScanView (no liveness) ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-selfie" data-label="Quick selfie (SelfieScanView, no liveness)" data-autonext="s-contacts" data-autodelay="3200">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Confirm it's you</div>
+          <div class="tb-sub">Step 3 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg done"></div><div class="seg active"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Take a quick <span class="hl">selfie</span></div>
+        <div class="cam-intro">We match it with your document photo — the picture is taken automatically.</div>
+      </div>
+      <div class="face-viewport">
+        <div class="mock-face"></div>
+        <div class="face-dim"></div>
+        <div class="face-ring">
+          <svg viewBox="0 0 300 400">
+            <ellipse class="ring-track dashed" cx="150" cy="176" rx="138" ry="152"/>
+          </svg>
+        </div>
+        <div class="cue-pill"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-light)"><use href="#i-scan-face"/></svg> Look at the camera</div>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><span class="spinner"></span> Auto-capture is on</div>
+        <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+      </div>
+    </div>
+
+    <!-- ═══ s-live-1..3 + passed · SelfieLivenessView ═══ -->
+    <div class="screen flow-screen cam-screen" id="s-live-1" data-label="Liveness 1 · position your face" data-autonext="s-live-2" data-autodelay="2600">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Confirm it's you</div>
+          <div class="tb-sub">Step 3 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg done"></div><div class="seg active"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Center your <span class="hl">face</span></div>
+        <div class="cam-intro">Keep your face inside the oval. The check starts automatically.</div>
+      </div>
+      <div class="face-viewport">
+        <div class="mock-face"></div>
+        <div class="face-dim"></div>
+        <div class="face-ring">
+          <svg viewBox="0 0 300 400">
+            <ellipse class="ring-track dashed" cx="150" cy="176" rx="138" ry="152"/>
+          </svg>
+        </div>
+        <div class="cue-pill"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-light)"><use href="#i-scan-face"/></svg> Looking for your face…</div>
+        <div class="challenge-dots"><span class="ls"></span><span class="ls"></span><span class="ls"></span><span class="ls"></span></div>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+      </div>
+    </div>
+
+    <div class="screen flow-screen cam-screen" id="s-live-2" data-label="Liveness 2 · turn your head" data-autonext="s-live-3" data-autodelay="2600">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Confirm it's you</div>
+          <div class="tb-sub">Step 3 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg done"></div><div class="seg active"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Follow the <span class="hl">prompts</span></div>
+        <div class="cam-intro">This proves it's really you, live.</div>
+      </div>
+      <div class="face-viewport">
+        <div class="mock-face"></div>
+        <div class="face-dim"></div>
+        <div class="face-ring">
+          <svg viewBox="0 0 300 400">
+            <defs>
+              <linearGradient id="ovalGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#385bf8"/>
+                <stop offset="100%" stop-color="#8ca5ff"/>
+              </linearGradient>
+            </defs>
+            <ellipse class="ring-track" cx="150" cy="176" rx="138" ry="152"/>
+            <ellipse class="ring-arc" cx="150" cy="176" rx="138" ry="152" stroke-dasharray="911" stroke-dashoffset="455"/>
+          </svg>
+        </div>
+        <div class="cue-pill">
+          <svg viewBox="0 0 24 24" class="icon arrow-anim" style="color:var(--blue-light)"><use href="#i-arrow-left"/></svg>
+          Turn your head left
+        </div>
+        <div class="challenge-dots"><span class="ls done"></span><span class="ls active"></span><span class="ls"></span><span class="ls"></span></div>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+      </div>
+    </div>
+
+    <div class="screen flow-screen cam-screen" id="s-live-3" data-label="Liveness 3 · blink" data-autonext="s-live-passed" data-autodelay="2600">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Confirm it's you</div>
+          <div class="tb-sub">Step 3 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg done"></div><div class="seg active"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Almost <span class="hl">there</span></div>
+        <div class="cam-intro">Last challenge — blink slowly, twice.</div>
+      </div>
+      <div class="face-viewport">
+        <div class="mock-face"></div>
+        <div class="face-dim"></div>
+        <div class="face-ring">
+          <svg viewBox="0 0 300 400">
+            <defs>
+              <linearGradient id="ovalGrad2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#385bf8"/>
+                <stop offset="100%" stop-color="#8ca5ff"/>
+              </linearGradient>
+            </defs>
+            <ellipse class="ring-track" cx="150" cy="176" rx="138" ry="152"/>
+            <ellipse class="ring-arc" cx="150" cy="176" rx="138" ry="152" stroke-dasharray="911" stroke-dashoffset="137" style="stroke:url(#ovalGrad2)"/>
+          </svg>
+        </div>
+        <div class="cue-pill">
+          <svg viewBox="0 0 24 24" class="icon blink-anim" style="color:var(--blue-light)"><use href="#i-eye"/></svg>
+          Blink twice
+        </div>
+        <div class="challenge-dots"><span class="ls done"></span><span class="ls done"></span><span class="ls active"></span><span class="ls"></span></div>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-shield"/></svg> Selfie is blurred &amp; encrypted before upload</div>
+      </div>
+    </div>
+
+    <div class="screen flow-screen cam-screen" id="s-live-passed" data-label="Liveness passed" data-autonext="s-contacts" data-autodelay="2600">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="cam-topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div>
+          <div class="tb-title">Confirm it's you</div>
+          <div class="tb-sub">Step 3 of 4</div>
+        </div>
+      </div>
+      <div class="cam-progress">
+        <div class="seg done"></div><div class="seg done"></div><div class="seg active"></div><div class="seg"></div>
+      </div>
+      <div class="cam-head">
+        <div class="cam-title">Liveness <span class="hl" style="color:var(--green-700)">passed</span></div>
+        <div class="cam-intro">Matching your face with the document photo…</div>
+      </div>
+      <div class="face-viewport">
+        <div class="mock-face" style="filter:blur(4px)"></div>
+        <div class="face-dim" style="background:rgba(11,58,48,0.5)"></div>
+        <div class="face-ring success">
+          <svg viewBox="0 0 300 400">
+            <ellipse class="ring-track" cx="150" cy="176" rx="138" ry="152"/>
+          </svg>
+        </div>
+        <div class="face-center-badge">
+          <div class="fb-circle ok"><svg viewBox="0 0 24 24" class="icon" style="width:30px;height:30px;stroke-width:3;color:#fff"><use href="#i-check"/></svg></div>
+          <div class="fb-title">All challenges passed</div>
+        </div>
+        <div class="cue-pill success"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:#fff"><use href="#i-check"/></svg> Verifying face match…</div>
+        <div class="challenge-dots"><span class="ls done"></span><span class="ls done"></span><span class="ls done"></span><span class="ls done"></span></div>
+      </div>
+      <div class="cam-footer">
+        <div class="auto-note"><span class="spinner"></span> This takes a few seconds — don't close the page</div>
+      </div>
+    </div>
+
+    <!-- ═══ s-contacts · ContactsVerificationView ═══ -->
+    <div class="screen flow-screen" id="s-contacts" data-label="Contacts verification (ContactsVerificationView)">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Verify contact</div>
+          <div class="tb-sub">Step 4 of 4</div>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Guest registration</div>
+        <div class="page-title">Check your <span class="hl">email</span></div>
+        <p class="page-intro">We sent a 6-digit code to <b style="color:var(--navy)">m•••a@gmail.com</b> — it confirms where to send your keys.</p>
+      </div>
+      <div class="content">
+        <div class="card" style="padding:22px 16px;display:flex;flex-direction:column;gap:16px;align-items:center">
+          <div class="otp-row">
+            <span class="otp">4</span>
+            <span class="otp">8</span>
+            <span class="otp">2</span>
+            <span class="otp focus">7</span>
+            <span class="otp empty">•</span>
+            <span class="otp empty">•</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-tertiary)">Resend code in <b style="color:var(--navy)">0:42</b></div>
+        </div>
+        <div class="privacy-note">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg>
+          <span>Wrong address? <b>Edit your email</b> and we'll send a new code.</span>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="s-complete">Verify email <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></button>
+        <button class="btn-ghost">Verify by SMS instead</button>
+      </div>
+    </div>
+
+    <!-- ═══ s-complete · VerificationCompleted ═══ -->
+    <div class="screen flow-screen" id="s-complete" data-label="Verification complete">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="done-screen">
+        <div class="done-ring">
+          <svg viewBox="0 0 24 24" class="icon" style="width:52px;height:52px;stroke-width:2.6;color:#fff"><use href="#i-check"/></svg>
+        </div>
+        <div class="done-title">You're verified!</div>
+        <p class="done-sub">Identity verification is completed. Your details were pre-filled from your document — just confirm them in the next step.</p>
+        <div class="card glass done-card">
+          <div class="dc-row">
+            <div class="chip-icon" style="background:var(--green-50);color:var(--green-700)"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
+            <div>
+              <div class="dc-label">Document scanned</div>
+              <div class="dc-sub">Passport · Spain</div>
+            </div>
+            <span class="dc-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg></span>
+          </div>
+          <div class="dc-row">
+            <div class="chip-icon" style="background:var(--green-50);color:var(--green-700)"><svg viewBox="0 0 24 24" class="icon"><use href="#i-scan-face"/></svg></div>
+            <div>
+              <div class="dc-label">Face match confirmed</div>
+              <div class="dc-sub">Selfie check passed</div>
+            </div>
+            <span class="dc-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg></span>
+          </div>
+        </div>
+        <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:26px">
+          <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registration.html">Confirm my details <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+          <button class="btn btn-outline btn-block" style="max-width:100%" data-restart>Restart this flow</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Lucide-style inline icon sprite -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-arrow-left"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-id-card"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M8 15c-1.5 0-2.5.5-3 1.5"/><path d="M8 15c1.5 0 2.5.5 3 1.5"/><path d="M14 9h5"/><path d="M14 13h4"/></g>
+    <g id="i-scan-face"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-book"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
+    <g id="i-car"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></g>
+    <g id="i-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></g>
+    <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></g>
+    <g id="i-eye-off"><path d="M10.7 5.1A9.6 9.6 0 0 1 12 5c7 0 10 7 10 7a13.2 13.2 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="m2 2 20 20"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></g>
+    <g id="i-eye"><path d="M2.06 12.35a1 1 0 0 1 0-.7C3.42 8.1 7.28 5 12 5s8.58 3.1 9.94 6.65a1 1 0 0 1 0 .7C20.58 15.9 16.72 19 12 19s-8.58-3.1-9.94-6.65"/><circle cx="12" cy="12" r="3"/></g>
+    <g id="i-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></g>
+    <g id="i-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></g>
+    <g id="i-flip"><path d="M3 8h13a4 4 0 0 1 4 4v1"/><path d="m7 4-4 4 4 4"/><path d="M21 16H8a4 4 0 0 1-4-4v-1"/><path d="m17 20 4-4-4-4"/></g>
+    <g id="i-alert-triangle"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-rotate"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
+  </defs>
+</svg>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>
