@@ -272,6 +272,11 @@
 }
 @keyframes pop-in { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes pulse-out { from { transform: scale(0.85); opacity: 1; } to { transform: scale(1.25); opacity: 0; } }
+.dm-success .s-ring.info {
+  background: var(--tint-info); color: var(--blue-500);
+  box-shadow: none; animation: none;
+}
+.dm-success .s-ring.info::after { border-color: rgba(56, 91, 248, 0.28); }
 .dm-success .s-title { font-size: 19px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
 .dm-success .s-sub { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); max-width: 250px; }
 

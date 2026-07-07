@@ -16,7 +16,7 @@
 
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="dm-loading">▶ Full flow — with offers</button>
-    <button class="fh-chip" data-scenario="dm-empty">No offers</button>
+    <button class="fh-chip" data-scenario="dm-empty-loading">No offers</button>
     <button class="fh-chip" data-scenario="dm-error">Submission failed</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
     <span class="fh-label"></span>
@@ -290,19 +290,91 @@
       </div>
     </div>
 
-    <!-- ═══ dm-empty: no offers ═══ -->
-    <div class="screen flow-screen" id="dm-empty" data-label="No offers — straight to success">
+    <!-- ═══ dm-empty-loading: no offers — data sending, offers still fetching ═══ -->
+    <div class="screen flow-screen" id="dm-empty-loading" data-label="No offers — sending data, offers loading" data-autonext="dm-empty-wait" data-autodelay="2400">
       <div class="dm-back">
         <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
         <div class="topbar"><div class="tb-titles"><div class="tb-title">Guest details</div><div class="tb-sub">Almost done</div></div></div>
         <div class="page-head"><div class="kicker">Guest registration</div><div class="page-title">Review and <span class="hl">sign</span></div></div>
       </div>
       <div class="dm-scrim"></div>
-      <div class="dm-sheet" style="max-height:none;bottom:auto;top:50%;left:22px;right:22px;transform:translateY(-50%);border-radius:22px">
-        <div class="dm-success" style="padding-top:10px">
+      <div class="dm-sheet">
+        <div class="dm-grabber"></div>
+        <div class="dm-pill loading">
+          <div class="p-state">
+            <span class="p-ic"><span class="dm-spin"></span></span>
+            <span>Sending Ana's details…<span class="p-sub">Takes a few seconds — feel free to browse meanwhile</span></span>
+          </div>
+        </div>
+        <div class="dm-head">
+          <div class="kicker">While you wait</div>
+          <div class="dm-title">Enhance your <span class="hl">stay</span></div>
+          <div class="dm-sub">Loading offers from your host…</div>
+        </div>
+        <div class="deal-stack">
+          <div class="deal-card behind-2 skel-card"></div>
+          <div class="deal-card behind-1 skel-card"></div>
+          <div class="deal-card skel-card">
+            <div class="sk-img"></div>
+            <div class="sk-body">
+              <div class="skel-line lg"></div>
+              <div class="skel-line md"></div>
+              <div class="skel-line sm"></div>
+              <div class="skel-line box"></div>
+              <div class="skel-btns"><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ dm-empty-wait: offers came back empty, registration still finishing ═══ -->
+    <div class="screen flow-screen" id="dm-empty-wait" data-label="No offers — registration still finishing" data-autonext="dm-empty" data-autodelay="2200">
+      <div class="dm-back">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar"><div class="tb-titles"><div class="tb-title">Guest details</div><div class="tb-sub">Almost done</div></div></div>
+        <div class="page-head"><div class="kicker">Guest registration</div><div class="page-title">Review and <span class="hl">sign</span></div></div>
+      </div>
+      <div class="dm-scrim"></div>
+      <div class="dm-sheet">
+        <div class="dm-grabber"></div>
+        <div class="dm-pill loading">
+          <div class="p-state">
+            <span class="p-ic"><span class="dm-spin"></span></span>
+            <span>Sending Ana's details…<span class="p-sub">Almost there — just a moment</span></span>
+          </div>
+        </div>
+        <div class="dm-success" style="padding-top:34px;padding-bottom:26px">
+          <div class="s-ring info">
+            <svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkles"/></svg>
+          </div>
+          <div class="s-title" style="font-size:16px">Nothing else needed here</div>
+          <p class="s-sub">Your host has no extra offers for this stay — we're just finishing Ana's registration.</p>
+        </div>
+        <p class="sim-note" style="margin-bottom:6px">Maps to DealsEmptyState while isRegistrationComplete = false — no button yet, it resolves on its own.</p>
+      </div>
+    </div>
+
+    <!-- ═══ dm-empty: no offers — registered, pure success ═══ -->
+    <div class="screen flow-screen" id="dm-empty" data-label="No offers — Ana registered">
+      <div class="dm-back">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar"><div class="tb-titles"><div class="tb-title">Guest details</div><div class="tb-sub">Almost done</div></div></div>
+        <div class="page-head"><div class="kicker">Guest registration</div><div class="page-title">Review and <span class="hl">sign</span></div></div>
+      </div>
+      <div class="dm-scrim"></div>
+      <div class="dm-sheet">
+        <div class="dm-grabber"></div>
+        <div class="dm-pill done">
+          <div class="p-state">
+            <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+            <span>Ana is registered!<span class="p-sub">2 of 3 guests done</span></span>
+          </div>
+        </div>
+        <div class="dm-success">
           <div class="s-ring"><svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
           <div class="s-title">Ana is registered!</div>
-          <p class="s-sub">Her details were sent to the property. 2 of 3 guests done.</p>
+          <p class="s-sub">Her details were sent to the property. One thing left before check-in day:</p>
         </div>
         <a class="dm-next" href="flow-iv-mobile.html">
           <span class="nx-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id"/></svg></span>
@@ -444,6 +516,7 @@
     <g id="i-id"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M14 9h5"/><path d="M14 13h4"/></g>
     <g id="i-refresh"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></g>
     <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1 1 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-sparkles"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4"/><path d="M21 5h-4"/><path d="M5 17v2"/><path d="M6 18H4"/></g>
   </defs>
 </svg>
 <script src="flow.js" defer></script>
