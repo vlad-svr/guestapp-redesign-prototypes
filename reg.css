@@ -185,3 +185,6 @@
   .guest-row.iv-pending .g-avatar { background: #fbf5e0; color: var(--amber-700); }
   .guest-row.iv-pending .st-label { color: var(--amber-700); }
   .guest-row.iv-pending .g-status .icon { color: var(--amber-500); }
+
+  /* Mobile: form fields are full width (matches GuestFormFields single-column stack) */
+  .phone .two-col { grid-template-columns: 1fr; }
