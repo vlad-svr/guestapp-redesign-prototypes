@@ -8,6 +8,7 @@ Open `index.html` in a browser — it links to all prototypes and documents ever
 
 | File | Contents |
 | --- | --- |
+| `SPEC.md` | **Flow spec for AI agents** — states, transitions, CTA decision tables. Must be updated in the same commit as any UI change here (see its sync contract) |
 | `index.html` | Overview + "what changed and why" for each improvement |
 | `home.html` | Home / check-in list (mobile): glass chrome, arrival countdown, "next up" spotlight, all-done state |
 | `iv-flow.html` | 14 IV screens (mobile): happy path, edge cases (validation fail, camera denied, upload), full liveness sequence |

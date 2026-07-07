@@ -312,6 +312,34 @@
 .dm-next .nx-sub { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
 .dm-next .icon.chev { margin-left: auto; color: var(--n-500); }
 
+/* live submission timeline (plain modal — upselling disabled) */
+.dm-timeline { display: flex; flex-direction: column; padding: 8px 8px 0; }
+.dm-timeline .tl-step { display: flex; gap: 13px; position: relative; padding-bottom: 20px; animation: fadeUp 0.4s ease both; }
+.dm-timeline .tl-step:nth-child(2) { animation-delay: 0.12s; }
+.dm-timeline .tl-step:nth-child(3) { animation-delay: 0.24s; }
+.dm-timeline .tl-step:last-child { padding-bottom: 8px; }
+.dm-timeline .tl-step::before {
+  content: ''; position: absolute; left: 13px; top: 30px; bottom: 3px;
+  width: 2px; border-radius: 2px; background: var(--n-150);
+}
+.dm-timeline .tl-step.done::before { background: var(--green-600); }
+.dm-timeline .tl-step:last-child::before { display: none; }
+.dm-timeline .tl-ic {
+  width: 27px; height: 27px; border-radius: 50%; flex-shrink: 0;
+  display: grid; place-items: center; z-index: 1;
+  background: var(--n-75);
+}
+.dm-timeline .tl-step.done .tl-ic {
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: #fff;
+}
+.dm-timeline .tl-step.active .tl-ic { background: var(--tint-info); }
+.dm-timeline .tl-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--n-300); }
+.dm-timeline .tl-step b { display: block; font-size: 12.5px; font-weight: 700; color: var(--navy); padding-top: 3px; }
+.dm-timeline .tl-step i { display: block; font-style: normal; font-size: 11px; line-height: 15px; color: var(--text-tertiary); margin-top: 1px; }
+.dm-timeline .tl-step:not(.done):not(.active) b { color: var(--text-tertiary); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
 /* error body */
 .dm-error-box {
   border: 1px solid rgba(223, 0, 68, 0.2);
@@ -354,6 +382,10 @@
 }
 .dm-dialog .deal-stack { height: 470px; margin: 2px 40px 0; }
 .dm-dialog .dm-progress { padding: 0 44px; }
+
+/* desktop dialog variants — only the one mirroring the phone scenario shows */
+.dm-dialog[data-dk-var] { display: none; }
+.dm-dialog[data-dk-var].on { display: flex; }
 
 /* --- desktop offer switching: arrows, clickable segments, added state --- */
 .dk-wrap { position: relative; }

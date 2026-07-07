@@ -403,7 +403,22 @@
             <span>Sending Ana's details…<span class="p-sub">This usually takes a few seconds</span></span>
           </div>
         </div>
-        <p class="sim-note" style="margin:6px 0 8px">Upselling is not active for this reservation → plain status modal. Offers are never fetched, so no “Enhance your stay” header and no skeleton cards.</p>
+        <div class="dm-timeline">
+          <div class="tl-step done">
+            <span class="tl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+            <span><b>Details encrypted</b><i>Sent to the property over a secure connection</i></span>
+          </div>
+          <div class="tl-step active">
+            <span class="tl-ic"><span class="dm-spin"></span></span>
+            <span><b>Registering Ana with the property</b><i>Checking her details against the booking</i></span>
+          </div>
+          <div class="tl-step">
+            <span class="tl-ic"><span class="tl-dot"></span></span>
+            <span><b>Confirmation</b><i>Appears right here — no need to refresh</i></span>
+          </div>
+        </div>
+        <div class="dm-safe"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Your details are saved on this device until we confirm</div>
+        <p class="sim-note" style="margin:2px 0 8px">Upselling is not active for this reservation → plain status modal, offers are never fetched.</p>
       </div>
     </div>
 
@@ -466,7 +481,7 @@
 
   <!-- ═══ Desktop dialog variant ═══ -->
   <h1 style="margin-top:56px">Desktop dialog</h1>
-  <p class="lede">Same modal as a centered 560&nbsp;px dialog (today's <b>StatusModal maxWidth 560</b>) over the review page — pill, header, segmented progress and stack are identical components, just more air. Desktop adds offer <b>switching</b>: arrow buttons, clickable progress segments and keyboard ←/→ — try them; added offers stay revisitable and removable.</p>
+  <p class="lede">Same modal as a centered 560&nbsp;px dialog (today's <b>StatusModal maxWidth 560</b>) over the review page — pill, header, segmented progress and stack are identical components, just more air. Desktop adds offer <b>switching</b>: arrow buttons, clickable progress segments and keyboard ←/→ — try them; added offers stay revisitable and removable. <b>The dialog mirrors the phone flow above</b> — pick a scenario chip or click through the phone and the desktop state follows.</p>
 
   <div class="browser" style="height:880px">
     <div class="browser-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">guest.chekin.com/registration/review</span></div>
@@ -478,7 +493,7 @@
       </div>
     </div>
     <div class="dm-scrim" style="top:44px"></div>
-    <div class="dm-dialog" id="dk-dialog">
+    <div class="dm-dialog" id="dk-dialog" data-dk-var="offers">
       <div class="dm-pill done">
         <div class="p-state">
           <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
@@ -568,7 +583,169 @@
         <button class="dm-skip">Skip offers — continue to check-in <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
       </div>
     </div>
+    <!-- desktop variant: offers loading (skeleton) -->
+    <div class="dm-dialog" data-dk-var="loading">
+      <div class="dm-pill loading">
+        <div class="p-state">
+          <span class="p-ic"><span class="dm-spin"></span></span>
+          <span>Sending Ana's details…<span class="p-sub">Takes a few seconds — feel free to browse meanwhile</span></span>
+        </div>
+      </div>
+      <div class="dm-head">
+        <div class="kicker">While you wait</div>
+        <div class="dm-title">Enhance your <span class="hl">stay</span></div>
+        <div class="dm-sub">Loading offers from your host…</div>
+      </div>
+      <div class="deal-stack">
+        <div class="deal-card behind-2 skel-card"></div>
+        <div class="deal-card behind-1 skel-card"></div>
+        <div class="deal-card skel-card">
+          <div class="sk-img" style="height:180px"></div>
+          <div class="sk-body">
+            <div class="skel-line lg"></div>
+            <div class="skel-line md"></div>
+            <div class="skel-line sm"></div>
+            <div class="skel-line box"></div>
+            <div class="skel-btns"><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- desktop variant: no offers, registration still finishing -->
+    <div class="dm-dialog" data-dk-var="wait">
+      <div class="dm-pill loading">
+        <div class="p-state">
+          <span class="p-ic"><span class="dm-spin"></span></span>
+          <span>Sending Ana's details…<span class="p-sub">Almost there — just a moment</span></span>
+        </div>
+      </div>
+      <div class="dm-success" style="padding:40px 8px 34px">
+        <div class="s-ring info"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkles"/></svg></div>
+        <div class="s-title" style="font-size:17px">Nothing else needed here</div>
+        <p class="s-sub" style="max-width:320px">Your host has no extra offers for this stay — we're just finishing Ana's registration.</p>
+      </div>
+    </div>
+
+    <!-- desktop variant: cart summary -->
+    <div class="dm-dialog" data-dk-var="cart">
+      <div class="dm-success">
+        <div class="s-ring"><svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+        <div class="s-title">Ana is registered!</div>
+        <p class="s-sub" style="max-width:340px">Her details were sent to the property. You also picked 2 extras for your stay:</p>
+      </div>
+      <div class="dm-cart-list">
+        <div class="cl-row">
+          <span class="cl-emoji" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇</span>
+          <span><span class="cl-name" style="display:block">Late check-out</span><span class="cl-meta">Until 14:00 · confirmed instantly</span></span>
+          <span class="cl-price">€15.00</span>
+        </div>
+        <div class="cl-row">
+          <span class="cl-emoji" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐</span>
+          <span><span class="cl-name" style="display:block">Breakfast basket</span><span class="cl-meta">1 guest · host confirms within 24 h</span></span>
+          <span class="cl-price">€12.50</span>
+        </div>
+        <div class="cl-row cl-total"><span>Total</span><b>€27.50</b></div>
+      </div>
+      <div class="dm-cart-note">
+        <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+        Nothing is charged yet — review everything on the payment step. You can remove extras any time before paying.
+      </div>
+      <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="dm-done">Review &amp; pay <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+      <a class="btn-ghost" style="text-align:center;font-size:12px" href="flow-registration.html#r-done">Back to guest list</a>
+    </div>
+
+    <!-- desktop variant: registered success -->
+    <div class="dm-dialog" data-dk-var="success">
+      <div class="dm-pill done">
+        <div class="p-state">
+          <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+          <span>Ana is registered!<span class="p-sub">2 of 3 guests done</span></span>
+        </div>
+      </div>
+      <div class="dm-success">
+        <div class="s-ring"><svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+        <div class="s-title">Ana is registered!</div>
+        <p class="s-sub" style="max-width:340px">Her details were sent to the property. One thing left before check-in day:</p>
+      </div>
+      <a class="dm-next" href="flow-iv-desktop.html">
+        <span class="nx-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id"/></svg></span>
+        <span><span class="nx-title" style="display:block">Verify Carlos's ID</span><span class="nx-sub">Details saved · takes ~2 minutes</span></span>
+        <svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg>
+      </a>
+      <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registration.html#r-done">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+    </div>
+
+    <!-- desktop variant: upselling disabled (plain status modal) -->
+    <div class="dm-dialog" data-dk-var="plain" style="width:440px">
+      <div class="dm-pill loading">
+        <div class="p-state">
+          <span class="p-ic"><span class="dm-spin"></span></span>
+          <span>Sending Ana's details…<span class="p-sub">This usually takes a few seconds</span></span>
+        </div>
+      </div>
+      <div class="dm-timeline">
+        <div class="tl-step done">
+          <span class="tl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+          <span><b>Details encrypted</b><i>Sent to the property over a secure connection</i></span>
+        </div>
+        <div class="tl-step active">
+          <span class="tl-ic"><span class="dm-spin"></span></span>
+          <span><b>Registering Ana with the property</b><i>Checking her details against the booking</i></span>
+        </div>
+        <div class="tl-step">
+          <span class="tl-ic"><span class="tl-dot"></span></span>
+          <span><b>Confirmation</b><i>Appears right here — no need to refresh</i></span>
+        </div>
+      </div>
+      <div class="dm-safe"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Your details are saved on this device until we confirm</div>
+    </div>
+
+    <!-- desktop variant: submission failed -->
+    <div class="dm-dialog" data-dk-var="error" style="width:480px">
+      <div class="dm-pill error">
+        <div class="p-state">
+          <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-x"/></svg></span>
+          <span>We couldn't register Ana<span class="p-sub">Her details are saved on this device</span></span>
+        </div>
+      </div>
+      <div class="dm-error-box">
+        <b>The registry didn't accept the document number.</b> This usually means a typo — double-check it and try again.
+        <div class="e-detail">document_number: “51204978R” — invalid checksum (DNI)</div>
+      </div>
+      <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="dm-loading">Try again <svg viewBox="0 0 24 24" class="icon"><use href="#i-refresh"/></svg></button>
+      <button class="btn btn-outline btn-block" style="max-width:100%" data-restart>Edit details</button>
+      <div class="dm-safe"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Nothing was lost — the form keeps everything you typed</div>
+    </div>
   </div>
+
+  <script>
+  /* Desktop dialog mirrors the phone flow: map the active flow screen
+     to a desktop dialog variant and switch on every screen change. */
+  (function () {
+    var MAP = {
+      'dm-loading': 'loading',
+      'dm-offers': 'offers', 'dm-offer-2': 'offers', 'dm-offer-3': 'offers',
+      'dm-cart': 'cart', 'dm-done': 'success',
+      'dm-empty-loading': 'loading', 'dm-empty-wait': 'wait', 'dm-empty': 'success',
+      'dm-plain-loading': 'plain', 'dm-plain-done': 'success',
+      'dm-error': 'error',
+    };
+    var dialogs = Array.prototype.slice.call(document.querySelectorAll('[data-dk-var]'));
+    function sync() {
+      var act = document.querySelector('.flow-screen.active');
+      var v = (act && MAP[act.id]) || 'offers';
+      dialogs.forEach(function (d) {
+        d.classList.toggle('on', d.getAttribute('data-dk-var') === v);
+      });
+    }
+    var obs = new MutationObserver(sync);
+    Array.prototype.forEach.call(document.querySelectorAll('.flow-screen'), function (s) {
+      obs.observe(s, { attributes: true, attributeFilter: ['class'] });
+    });
+    sync();
+  })();
+  </script>
 
   <script>
   /* Desktop-only offer carousel: arrows + clickable segments + keyboard.
