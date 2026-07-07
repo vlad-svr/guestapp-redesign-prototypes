@@ -24,13 +24,13 @@
   <div class="phone" style="height:820px">
 
     <!-- ═══ r-hub ═══ -->
-    <div class="screen flow-screen" id="r-hub" data-start data-label="Registration hub — 1 of 2 done">
+    <div class="screen flow-screen" id="r-hub" data-start data-label="Registration hub — 1 of 3 done">
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="topbar">
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
         <div class="tb-titles">
           <div class="tb-title">Guest registration</div>
-          <div class="tb-sub">1 of 2 guests registered</div>
+          <div class="tb-sub">1 of 3 guests registered</div>
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
@@ -51,13 +51,13 @@
                   </linearGradient>
                 </defs>
                 <circle class="track" cx="26" cy="26" r="22.5"/>
-                <circle class="arc" cx="26" cy="26" r="22.5"/>
+                <circle class="arc" cx="26" cy="26" r="22.5" style="stroke-dashoffset:94"/>
               </svg>
-              <span class="pct">1/2</span>
+              <span class="pct">1/3</span>
             </div>
             <div>
-              <div class="gs-title">One guest to go</div>
-              <div class="gs-sub">Registration is required by local law before arrival</div>
+              <div class="gs-title">Two guests to go</div>
+              <div class="gs-sub">1 registered · 1 needs ID verification · 1 missing details</div>
             </div>
           </div>
         </div>
@@ -86,8 +86,19 @@
             <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> Other guests
           </div>
           <div class="card">
+            <a class="guest-row iv-pending" href="flow-iv-mobile.html" style="display:flex">
+              <span class="g-avatar">CR</span>
+              <span>
+                <span class="g-name" style="display:block">Carlos Ruiz</span>
+                <span class="g-sub">Details saved · ID verification pending</span>
+              </span>
+              <span class="g-status">
+                <span class="st-label">Verify ID</span>
+                <svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg>
+              </span>
+            </a>
             <button class="guest-row pending" data-goto="r-details">
-              <span class="g-avatar">2</span>
+              <span class="g-avatar">3</span>
               <span>
                 <span class="g-name" style="display:block">Second guest</span>
                 <span class="g-sub">Waiting for details · ~2 min</span>
@@ -247,13 +258,13 @@
     </div>
 
     <!-- ═══ r-done ═══ -->
-    <div class="screen flow-screen" id="r-done" data-label="Hub — everyone registered">
+    <div class="screen flow-screen" id="r-done" data-label="Hub — Ana done, Carlos needs ID verification">
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="topbar">
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
         <div class="tb-titles">
           <div class="tb-title">Guest registration</div>
-          <div class="tb-sub">2 of 2 guests registered</div>
+          <div class="tb-sub">2 of 3 guests registered</div>
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
@@ -263,8 +274,8 @@
             <svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg>
           </div>
           <div>
-            <div style="font-size:14.5px;font-weight:700;color:var(--navy)">Everyone is registered!</div>
-            <div style="font-size:12px;color:var(--text-secondary);margin-top:2px">2 of 2 guests done — one step closer to your keys.</div>
+            <div style="font-size:14.5px;font-weight:700;color:var(--navy)">Ana is registered!</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:2px">2 of 3 done — Carlos still needs ID verification.</div>
           </div>
         </div>
 
@@ -291,10 +302,21 @@
               <svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg>
             </span>
           </button>
+          <a class="guest-row iv-pending" href="flow-iv-mobile.html" style="display:flex">
+            <span class="g-avatar">CR</span>
+            <span>
+              <span class="g-name" style="display:block">Carlos Ruiz</span>
+              <span class="g-sub">Details saved · ID verification pending</span>
+            </span>
+            <span class="g-status">
+              <span class="st-label">Verify ID</span>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg>
+            </span>
+          </a>
         </div>
       </div>
       <div class="cta-dock">
-        <button class="btn btn-primary btn-block" style="max-width:100%">Continue check-in — property protection <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-iv-mobile.html">Verify Carlos’s ID <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
         <button class="btn-ghost" data-restart>Restart this flow</button>
       </div>
     </div>

@@ -25,7 +25,7 @@
         { hash: 'r-hub', label: 'Full flow' },
         { hash: 'r-details', label: 'Add details' },
         { hash: 'r-review', label: 'Review & sign' },
-        { hash: 'r-done', label: 'All registered' },
+        { hash: 'r-done', label: 'Hub — guest without IV' },
       ]},
       { file: 'scroll-demo.html', label: 'Scroll behavior demo', icon: '↕' },
       { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },

@@ -178,3 +178,10 @@
   .vela-box .vb-text { font-size: 11.5px; line-height: 16px; color: var(--n-600); margin-top: 1px; }
   .vela-box .vb-text b { color: var(--navy); }
   .vela-box .vb-close { margin-left: auto; color: var(--n-500); flex-shrink: 0; padding: 2px; }
+
+  /* Guest registered but identity NOT verified yet */
+  .guest-row.iv-pending::before { background: var(--amber-500); }
+  .guest-row.iv-pending { background: linear-gradient(90deg, transparent 40%, rgba(255, 244, 229, 0.85)); }
+  .guest-row.iv-pending .g-avatar { background: #fbf5e0; color: var(--amber-700); }
+  .guest-row.iv-pending .st-label { color: var(--amber-700); }
+  .guest-row.iv-pending .g-status .icon { color: var(--amber-500); }
