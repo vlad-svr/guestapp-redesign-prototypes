@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vela Helper — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 22px;
+    width: min(1360px, 96vw);
+    align-items: start;
+  }
+  .comp-block {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .comp-block .cb-head {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--n-50);
+  }
+  .comp-block .cb-name { font-size: 12px; font-weight: 700; color: var(--navy); }
+  .comp-block .cb-tag { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); }
+  .comp-block .cb-body { padding: 18px 16px; background: var(--bg-page); }
+  .comp-block .cb-note { padding: 10px 16px 13px; font-size: 11px; line-height: 16px; color: var(--text-secondary); border-top: 1px solid var(--border); }
+
+  /* context demos */
+  .context-row { display: flex; gap: 40px; align-items: flex-start; justify-content: center; flex-wrap: wrap; width: min(1360px, 96vw); }
+  .rail-demo {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--n-200);
+    box-shadow: 0 30px 60px rgba(22, 22, 67, 0.18);
+    background:
+      radial-gradient(circle 200px at 20% 20%, rgba(79, 107, 255, 0.12), transparent 70%),
+      var(--bg-page);
+    display: flex;
+  }
+  .rail-demo .fake-content {
+    width: 300px;
+    padding: 26px 24px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .rail-demo .fake-content .fk-bar { border-radius: 8px; background: var(--n-150); }
+  .rail-demo .fake-content .fk-card { border-radius: 14px; background: var(--n-0); border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Vela Helper — Redesign 2.0 Prototype</h1>
+  <p class="lede">Vela is the contextual assistant: a glass rail on desktop, a sparkle FAB opening a right-side glass sheet on mobile. It combines the existing tips engine with new building blocks — Ask Vela input, quick actions (share link, switch to phone via QR, guest count), verification &amp; registration progress, offers and guidebook shortcuts. Mock data only.</p>
+
+  <!-- ═══════════ IN CONTEXT: desktop rail + mobile sheet ═══════════ -->
+  <div class="row-title" style="font-size:15px;font-weight:700;color:var(--navy);text-align:center;margin-top:8px">In context <span style="display:block;font-size:12px;font-weight:500;color:var(--text-secondary);margin-top:3px">desktop rail (IV scene) · mobile FAB + glass sheet</span></div>
+
+  <div class="context-row">
+
+    <!-- Desktop rail demo -->
+    <div class="rail-demo">
+      <div class="fake-content">
+        <div class="fk-bar" style="width:90px;height:10px"></div>
+        <div class="fk-bar" style="width:200px;height:22px;background:var(--n-200)"></div>
+        <div class="fk-bar" style="width:240px;height:10px"></div>
+        <div class="fk-card" style="height:150px;margin-top:8px"></div>
+        <div class="fk-card" style="height:74px"></div>
+        <div class="fk-card" style="height:74px"></div>
+        <div class="fk-bar" style="width:180px;height:38px;border-radius:12px;background:var(--blue-500);opacity:0.25;margin:10px auto 0"></div>
+      </div>
+
+      <!-- THE VELA RAIL -->
+      <aside class="vela-rail">
+        <div class="vela-head">
+          <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+          <div>
+            <div class="vela-name">Vela</div>
+            <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+          </div>
+        </div>
+        <p class="vela-intro">I'll guide you through verification — which documents work, how to get a clear photo, and why we ask for each step.</p>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Your verification</div>
+          <div class="vela-progress" style="margin-top:10px">
+            <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+            <div class="vp-track"><div class="vp-fill" style="width:40%"></div></div>
+            <div class="vela-steps">
+              <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px;stroke-width:3"><use href="#i-check"/></svg></span> Document chosen — Passport</div>
+              <div class="vs active"><span class="vs-dot"></span> Photo of the front</div>
+              <div class="vs todo"><span class="vs-dot"></span> Selfie &amp; liveness</div>
+              <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Quick actions</div>
+          <div class="vela-actions" style="margin-top:10px">
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+              <span>Continue on your phone<span class="va-sub">Scan a QR — phone cameras scan sharper</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
+              <span>Share booking link<span class="va-sub">Let co-travellers register themselves</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span>
+              <span>Change guest count<span class="va-sub">2 adults · 0 minors</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Best photo</div>
+          <div style="margin-top:6px">
+            <div class="vela-tip attention">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">Use daylight, avoid glare</span>
+                <span class="vt-desc">Lay the document flat and keep all four corners inside the frame.</span>
+              </span>
+            </div>
+            <div class="vela-tip clickable">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-help"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">Why we ask for photos</span>
+                <span class="vt-desc">Required by local law — here's how we treat your images.</span>
+              </span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Ask Vela</div>
+          <div class="vela-ask" style="margin-top:10px">
+            <div class="ask-input">
+              Ask anything about check-in…
+              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+            </div>
+            <div class="vela-chips">
+              <span class="chip">Which documents work?</span>
+              <span class="chip">Is my data safe?</span>
+              <span class="chip">Skip for now?</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Mobile sheet demo -->
+    <div class="phone-col">
+      <div class="phone-label">Mobile · FAB opens glass sheet</div>
+      <div class="phone">
+        <div class="screen" style="position:relative">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="topbar">
+            <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+            <div class="tb-titles">
+              <div class="tb-title">Identity verification</div>
+              <div class="tb-sub">Step 1 of 4</div>
+            </div>
+            <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+          </div>
+          <div class="page-head">
+            <div class="kicker">Guest registration</div>
+            <div class="page-title">Choose your <span class="hl">document</span></div>
+            <p class="page-intro">Select your nationality and the ID you have with you.</p>
+          </div>
+          <div class="content">
+            <div class="card" style="height:110px;opacity:0.45"></div>
+            <div class="card" style="height:190px;opacity:0.45"></div>
+          </div>
+
+          <!-- opened sheet -->
+          <div class="vela-sheet-scrim"></div>
+          <div class="vela-sheet">
+            <button class="sheet-close"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+            <div class="vela-head" style="padding-right:34px">
+              <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+              <div>
+                <div class="vela-name">Vela</div>
+                <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+              </div>
+            </div>
+
+            <div class="vela-section">
+              <div class="vela-eyebrow">Your verification</div>
+              <div class="vela-progress" style="margin-top:10px">
+                <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+                <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
+                <div class="vp-hint">A few quick steps — I'll guide you through each one.</div>
+              </div>
+            </div>
+
+            <div class="vela-section">
+              <div class="vela-eyebrow">Choosing a document</div>
+              <div style="margin-top:6px">
+                <div class="vela-tip">
+                  <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-zap"/></svg></span>
+                  <span>
+                    <span class="vt-title" style="display:block">Passport is fastest</span>
+                    <span class="vt-desc">Single-sided, so there's only one photo to take.</span>
+                  </span>
+                </div>
+                <div class="vela-tip">
+                  <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-baby"/></svg></span>
+                  <span>
+                    <span class="vt-title" style="display:block">Minors skip verification</span>
+                    <span class="vt-desc">Guests under 16 only fill the form — no ID photos needed.</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vela-section">
+              <div class="vela-eyebrow">Quick actions</div>
+              <div class="vela-actions" style="margin-top:10px">
+                <button class="vela-action">
+                  <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
+                  <span>Share booking link</span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+                </button>
+                <button class="vela-action">
+                  <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg></span>
+                  <span>Chat with your host</span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="vela-section">
+              <div class="vela-eyebrow">Ask Vela</div>
+              <div class="vela-ask" style="margin-top:10px">
+                <div class="ask-input">
+                  Ask anything…
+                  <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+                </div>
+                <div class="vela-chips">
+                  <span class="chip">Which documents work?</span>
+                  <span class="chip">Is my data safe?</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ COMPONENT LIBRARY ═══════════ -->
+  <div class="row-title" style="font-size:15px;font-weight:700;color:var(--navy);text-align:center;margin-top:14px">Building blocks <span style="display:block;font-size:12px;font-weight:500;color:var(--text-secondary);margin-top:3px">each component, isolated — new blocks for chekin-vela</span></div>
+
+  <div class="overview-grid">
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Vela header</span><span class="cb-tag">exists · restyled</span></div>
+      <div class="cb-body">
+        <div class="vela-head" style="border:none;padding:0">
+          <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+          <div>
+            <div class="vela-name">Vela</div>
+            <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Your AI assistant · here to help</div>
+          </div>
+        </div>
+      </div>
+      <div class="cb-note">Gradient avatar (brand → light), green presence dot, one-line role description. Same across rail and sheet.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Ask Vela · chat input</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-ask">
+          <div class="ask-input">
+            Ask anything about check-in…
+            <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+          </div>
+          <div class="vela-chips">
+            <span class="chip">Which documents work?</span>
+            <span class="chip">Is my data safe?</span>
+            <span class="chip">Skip for now?</span>
+          </div>
+        </div>
+      </div>
+      <div class="cb-note">Pill input + brand send button, with scene-aware quick-reply chips (the reserved <code>--chip-*</code> tokens finally get used).</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Quick actions · capsule</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-actions">
+          <button class="vela-action">
+            <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+            <span>Continue on your phone<span class="va-sub">Scan a QR code</span></span>
+            <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+          <button class="vela-action">
+            <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
+            <span>Share booking link</span>
+            <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+          <button class="vela-action">
+            <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span>
+            <span>Change guest count<span class="va-sub">2 adults · 0 minors</span></span>
+            <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="cb-note">Scene-dependent tool list: QR handoff shows on desktop IV scenes, share-link on registration scenes, host chat everywhere.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">QR handoff mini-card</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-qr">
+          <div class="qr-mini">
+            <div class="qr-cells">
+              <i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i>
+              <i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i>
+              <i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i>
+              <i class="off"></i><i class="off"></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i>
+              <i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i>
+              <i></i><i class="off"></i><i></i><i></i><i class="off"></i><i class="off"></i><i></i>
+              <i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i>
+            </div>
+          </div>
+          <div>
+            <div class="vq-title">Switch to your phone</div>
+            <div class="vq-desc">Scan with your camera — your progress moves with you, live.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cb-note">Expanded state of the "Continue on your phone" action. Progress syncs via the existing websocket channel.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">IV verification progress</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-progress">
+          <div class="vp-row"><span class="vp-title">Your verification</span><span class="vp-count">Step 2 of 4</span></div>
+          <div class="vp-track"><div class="vp-fill" style="width:40%"></div></div>
+          <div class="vela-steps">
+            <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px;stroke-width:3"><use href="#i-check"/></svg></span> Document chosen</div>
+            <div class="vs active"><span class="vs-dot"></span> Photo of the front</div>
+            <div class="vs todo"><span class="vs-dot"></span> Selfie &amp; liveness</div>
+            <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+          </div>
+        </div>
+      </div>
+      <div class="cb-note">"Where you are in your registration" — mirrors the IV step keys (document → back → selfie → form) from useIVStep.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Registration progress · guest count</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-progress">
+          <div class="vp-row"><span class="vp-title">Your progress</span><span class="vp-count">1 of 2 guests</span></div>
+          <div class="vp-track"><div class="vp-fill" style="width:50%"></div></div>
+          <div class="vp-hint">Finish the pending registrations so your guests can check in without waiting.</div>
+        </div>
+      </div>
+      <div class="cb-note">Registration-hub scene variant: guests done vs total, with a motivating hint line.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Contextual tip · focus-aware</span><span class="cb-tag">exists · restyled</span></div>
+      <div class="cb-body">
+        <div class="vela-tip attention">
+          <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg></span>
+          <span>
+            <span class="vt-title" style="display:block">Document number</span>
+            <span class="vt-desc">Authorities use it to match your registration — copy it exactly as printed.</span>
+          </span>
+        </div>
+        <div class="vela-tip clickable">
+          <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-help"/></svg></span>
+          <span>
+            <span class="vt-title" style="display:block">Why we ask for this</span>
+            <span class="vt-desc">Opens the "how we treat your data" sheet.</span>
+          </span>
+          <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+        </div>
+      </div>
+      <div class="cb-note">Driven by the existing useVelaFocusStore — focusing a form field re-animates the matching "why we ask" card.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Deal coupon</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-coupon">
+          <span class="vc-pct">−15%</span>
+          <div>
+            <div class="vc-title">Early check-in · access from 11:00</div>
+            <div class="vc-desc">You arrive around 12:30 — this saves the wait.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="height:28px;font-size:11px;padding:0 12px;margin-left:auto;flex-shrink:0">Add</button>
+        </div>
+      </div>
+      <div class="cb-note">Contextual deal: matched to arrival time ("picked for your arrival"). Dashed coupon chrome, one-tap add.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Sponsored banner · slim</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-sponsor">
+          <div class="sp-art"><span class="sp-tag">Sponsored</span></div>
+          <div class="sp-body">
+            <div style="flex:1">
+              <div class="sp-title">Travelling abroad? Activate an eSIM</div>
+              <div class="sp-desc">No roaming — data from € 4.50</div>
+            </div>
+            <button class="btn btn-outline btn-sm" style="height:28px;font-size:11px;padding:0 12px;flex-shrink:0">View plans</button>
+          </div>
+        </div>
+      </div>
+      <div class="cb-note">Slim sponsored slot (Airalo eSIM). Always labelled, always last in section order.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Guidebook · chapter list</span><span class="cb-tag">new</span></div>
+      <div class="cb-body">
+        <div class="vela-guide">
+          <button class="vg-row"><span class="vg-emoji">📶</span> WiFi &amp; password <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+          <button class="vg-row"><span class="vg-emoji">🔑</span> Getting inside <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+          <button class="vg-row"><span class="vg-emoji">🏠</span> House rules <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+          <button class="vg-row"><span class="vg-emoji">🍴</span> Eating nearby <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+        </div>
+      </div>
+      <div class="cb-note">"Everything about the property, in one place" — deep links into GuidebookView chapters. Shown on stay scenes.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Section header</span><span class="cb-tag">exists</span></div>
+      <div class="cb-body" style="display:flex;flex-direction:column;gap:16px">
+        <div class="vela-eyebrow">Good to know</div>
+        <div class="vela-eyebrow">Quick actions</div>
+        <div class="vela-eyebrow">Offers for your stay</div>
+      </div>
+      <div class="cb-note">9.5px extrabold eyebrow, hairline underline + 26px brand accent. Section order: whyWeAsk → choosingDocument → bestPhoto → goodToKnow → privacy → offers.</div>
+    </div>
+
+    <div class="comp-block">
+      <div class="cb-head"><span class="cb-name">Mobile trigger · FAB</span><span class="cb-tag">exists · restyled</span></div>
+      <div class="cb-body" style="display:flex;align-items:center;gap:16px">
+        <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <span style="font-size:12px;color:var(--text-secondary);line-height:17px">36px gradient circle in the mobile top bar. Opens the right-side glass sheet (88vw, max 380px).</span>
+      </div>
+      <div class="cb-note">Glow shadow uses the assistant-trigger token (brand-blue 34%). Hidden when the scene has no Vela content.</div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></g>
+    <g id="i-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></g>
+    <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></g>
+    <g id="i-baby"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-id-card"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M8 15c-1.5 0-2.5.5-3 1.5"/><path d="M8 15c1.5 0 2.5.5 3 1.5"/><path d="M14 9h5"/><path d="M14 13h4"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+</body>
+</html>

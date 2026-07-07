@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home / Check-in List — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* ---------- Home-specific ---------- */
+
+  .home-topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(18px) saturate(1.6);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    border-bottom: 1px solid rgba(229, 230, 238, 0.7);
+  }
+  .home-topbar .menu-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--n-50); display: grid; place-items: center; color: var(--navy);
+  }
+  .home-topbar .prop { flex: 1; display: flex; align-items: center; gap: 9px; justify-content: center; }
+  .home-topbar .prop-logo {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--gradient-brand);
+    display: grid; place-items: center;
+    color: #fff; font-size: 12px; font-weight: 700;
+  }
+  .home-topbar .prop-name { font-size: 13.5px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .home-topbar .prop-addr { font-size: 11px; color: var(--text-secondary); }
+  .home-topbar .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--tint-pressed); color: var(--blue-500);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+  }
+
+  .home-content { padding: 18px 16px 96px; display: flex; flex-direction: column; gap: 20px; }
+
+  .greet h1 { font-size: 23px; font-weight: 600; letter-spacing: -0.015em; color: var(--navy); line-height: 1.2; }
+  .greet p { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-top: 4px; }
+
+  /* Hero strip */
+  .hero {
+    border-radius: 20px;
+    background: var(--gradient-hero);
+    color: #fff;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-elev);
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -40px; right: -30px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(107, 224, 168, 0.22); filter: blur(46px);
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -60px; left: 20%;
+    width: 190px; height: 190px; border-radius: 50%;
+    background: rgba(140, 165, 255, 0.3); filter: blur(52px);
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .hero-loc { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #c9d0ff; }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    height: 26px; padding: 0 12px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 11px; font-weight: 600;
+  }
+  .hero-pill .tdot { width: 7px; height: 7px; border-radius: 50%; background: #7be3b0; box-shadow: 0 0 8px rgba(123,227,176,0.9); }
+  .hero-dates { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; }
+  .hero-dates .db-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); }
+  .hero-dates .db-time { font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; margin-top: 3px; }
+  .hero-dates .db-date { font-size: 11.5px; font-weight: 500; text-transform: uppercase; color: rgba(255,255,255,0.72); margin-top: 2px; }
+  .hero-dates .db-right { text-align: right; }
+  .hero-center { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .hero-center .nights { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.65); }
+  .hero-center .arrow-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: grid; place-items: center;
+  }
+  .hero-countdown {
+    margin-top: 16px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.85);
+  }
+  .hero-countdown .icon { color: #8ca5ff; }
+  .hero-countdown b { color: #fff; }
+
+  /* Checklist */
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; }
+  .section-head h2 { font-size: 17px; font-weight: 600; color: var(--navy); }
+  .section-head .counter { font-size: 13px; color: var(--text-secondary); }
+  .section-head .counter b { color: var(--blue-500); }
+
+  .checklist { padding: 0; }
+  .cl-progress {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cl-ring { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
+  .cl-ring svg { transform: rotate(-90deg); }
+  .cl-ring .track { fill: none; stroke: var(--n-75); stroke-width: 6.4; }
+  .cl-ring .arc { fill: none; stroke: url(#clGrad); stroke-width: 6.4; stroke-linecap: round; stroke-dasharray: 157; stroke-dashoffset: 63; }
+  .cl-ring .pct {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-size: 13px; font-weight: 700; color: var(--blue-500);
+  }
+  .cl-progress .cp-title { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .cl-progress .cp-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+  .task-row {
+    display: flex; align-items: center; gap: 13px;
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    width: 100%; text-align: left;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .task-row:first-of-type { border-top: none; }
+  .task-row:hover { background: #fbfbfe; }
+  .task-badge {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .task-badge.done { background: var(--green-50); color: var(--green-800); }
+  .task-badge.next {
+    background: var(--blue-500); color: #fff;
+    box-shadow: 0 0 0 4px rgba(56, 92, 248, 0.14);
+    animation: pulse-ring 2.4s infinite;
+  }
+  .task-badge.todo { background: var(--tint-pressed); color: var(--n-600); }
+  .task-badge.locked { background: var(--n-50); color: var(--n-500); }
+  .task-row .t-title { font-size: 14.5px; font-weight: 600; color: var(--navy); }
+  .task-row .t-sub { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+  .task-row .t-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .task-row .chev { color: var(--n-500); transition: transform 0.15s, color 0.15s; }
+  .task-row:hover .chev { transform: translateX(3px); color: var(--blue-500); }
+  .task-row.is-next {
+    background: linear-gradient(90deg, rgba(56, 91, 248, 0.05), transparent 65%);
+  }
+  .task-row.is-next::before {
+    content: ''; position: absolute; left: 0; top: 10px; bottom: 10px;
+    width: 3.5px; border-radius: 0 4px 4px 0;
+    background: var(--blue-500);
+  }
+  .t-chip {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    height: 22px; padding: 0 9px; border-radius: 99px;
+    display: inline-flex; align-items: center;
+  }
+  .t-chip.done { background: var(--green-50); color: var(--green-800); }
+  .t-chip.next { background: var(--tint-pressed); color: var(--blue-500); }
+  .t-chip.todo { background: var(--n-75); color: var(--n-600); }
+
+  /* Your stay cards */
+  .stay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stay-card {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 18px 14px 16px; gap: 8px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .stay-card:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(56,92,248,0.14), 0 3px 8px rgba(22,22,67,0.06); }
+  .stay-card .sc-icon {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--tint-pressed); color: var(--blue-500);
+    display: grid; place-items: center;
+  }
+  .stay-card .sc-title { font-size: 14.5px; font-weight: 600; color: var(--navy); }
+  .stay-card .sc-desc { font-size: 12px; color: var(--text-secondary); line-height: 16px; }
+  .stay-card .btn { margin-top: 4px; }
+  .btn-dark { background: var(--navy); color: #fff; }
+  .btn-dark:hover { background: var(--navy-700); }
+
+  /* Glass bottom nav */
+  .bottom-nav {
+    position: sticky; bottom: 0; z-index: 30;
+    margin-top: auto;
+    display: flex;
+    padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 8px));
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(20px) saturate(1.7);
+    -webkit-backdrop-filter: blur(20px) saturate(1.7);
+    border-top: 1px solid rgba(229, 230, 238, 0.7);
+  }
+  .bottom-nav .nav-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 0;
+    font-size: 10.5px; font-weight: 600;
+    color: var(--n-600);
+    border-radius: 12px;
+    position: relative;
+  }
+  .bottom-nav .nav-item.active { color: var(--blue-500); }
+  .bottom-nav .nav-item.active::before {
+    content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 22px; height: 3px; border-radius: 0 0 4px 4px;
+    background: linear-gradient(90deg, var(--blue-500), #6b8cff);
+  }
+  .bottom-nav .nav-item .nbadge {
+    position: absolute; top: 2px; right: calc(50% - 18px);
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--red-soft); color: #fff;
+    font-size: 9px; font-weight: 700;
+    display: grid; place-items: center;
+    border: 2px solid #fff;
+  }
+
+  /* All-done variant */
+  .cl-progress.all-done .cp-title { color: var(--green-800); }
+  .done-hero {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px;
+    border-radius: var(--r-xl);
+    background: linear-gradient(120deg, #e8fcf7, #f0fdf9 60%, #f6f7fc);
+    border: 1px solid rgba(53, 229, 188, 0.35);
+  }
+  .done-hero .dh-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-500), var(--green-700));
+    color: #fff; display: grid; place-items: center;
+    box-shadow: 0 6px 18px rgba(15,159,128,0.3);
+  }
+  .done-hero .dh-title { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+  .done-hero .dh-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Home &amp; Check-in List — Redesign 2.0 Prototype</h1>
+  <p class="lede">Mobile home with liquid-glass chrome (top bar + bottom nav), an arrival countdown in the hero, a "next step" spotlight on the checklist, and a celebratory all-done state. Mock data only.</p>
+
+  <div class="proto-row">
+
+    <!-- ══════════ SCREEN 1: HOME, in progress ══════════ -->
+    <div class="phone-col">
+      <div class="phone-label">1 · Home — check-in in progress</div>
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="home-topbar">
+            <button class="menu-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-menu"/></svg></button>
+            <div class="prop">
+              <div class="prop-logo">V</div>
+              <div>
+                <div class="prop-name">Villa Serena</div>
+                <div class="prop-addr">Carrer de Mallorca 21, Barcelona</div>
+              </div>
+            </div>
+            <div class="avatar">MG</div>
+          </div>
+
+          <div class="home-content">
+            <div class="greet fade-up">
+              <h1>Welcome, María 👋</h1>
+              <p>Your stay in Barcelona is almost ready.</p>
+            </div>
+
+            <!-- Hero -->
+            <section class="hero fade-up d1">
+              <div class="hero-top">
+                <span class="hero-loc"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg> Barcelona, Spain</span>
+                <span class="hero-pill"><span class="tdot"></span> Arrival confirmed</span>
+              </div>
+              <div class="hero-dates">
+                <div>
+                  <div class="db-label">Check-in</div>
+                  <div class="db-time">15:00</div>
+                  <div class="db-date">Fri, 10 Jul</div>
+                </div>
+                <div class="hero-center">
+                  <span class="nights">4 nights</span>
+                  <span class="arrow-circle"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></span>
+                </div>
+                <div class="db-right">
+                  <div class="db-label">Check-out</div>
+                  <div class="db-time">11:00</div>
+                  <div class="db-date">Tue, 14 Jul</div>
+                </div>
+              </div>
+              <div class="hero-countdown">
+                <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg>
+                <span>Check-in opens in <b>3 days</b> — finish 2 remaining tasks to get your keys instantly.</span>
+              </div>
+            </section>
+
+            <!-- Checklist -->
+            <div class="fade-up d2">
+              <div class="section-head" style="margin-bottom:10px">
+                <h2>Complete your check-in</h2>
+                <span class="counter"><b>2</b> of 4 done</span>
+              </div>
+              <div class="card checklist">
+                <div class="cl-progress">
+                  <div class="cl-ring">
+                    <svg width="58" height="58" viewBox="0 0 58 58">
+                      <defs>
+                        <linearGradient id="clGrad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#385bf8"/>
+                          <stop offset="100%" stop-color="#6b8cff"/>
+                        </linearGradient>
+                      </defs>
+                      <circle class="track" cx="29" cy="29" r="25"/>
+                      <circle class="arc" cx="29" cy="29" r="25"/>
+                    </svg>
+                    <span class="pct">60%</span>
+                  </div>
+                  <div>
+                    <div class="cp-title">You're more than halfway there</div>
+                    <div class="cp-sub">2 steps left · about 3 minutes</div>
+                  </div>
+                </div>
+
+                <button class="task-row">
+                  <span class="task-badge done"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span>
+                    <span class="t-title" style="display:block">Register guests</span>
+                    <span class="t-sub">2 of 2 guests verified &amp; registered</span>
+                  </span>
+                  <span class="t-right"><span class="t-chip done">Done</span></span>
+                </button>
+
+                <button class="task-row">
+                  <span class="task-badge done"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span>
+                    <span class="t-title" style="display:block">Booking payment</span>
+                    <span class="t-sub">€ 380.00 paid · receipt sent</span>
+                  </span>
+                  <span class="t-right"><span class="t-chip done">Done</span></span>
+                </button>
+
+                <button class="task-row is-next">
+                  <span class="task-badge next"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg></span>
+                  <span>
+                    <span class="t-title" style="display:block">Property protection</span>
+                    <span class="t-sub">Choose deposit or premium cover · ~1 min</span>
+                  </span>
+                  <span class="t-right"><span class="t-chip next">Next up</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+                </button>
+
+                <button class="task-row">
+                  <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg></span>
+                  <span>
+                    <span class="t-title" style="display:block">Tourist taxes</span>
+                    <span class="t-sub">€ 8.80 for 2 guests · 4 nights</span>
+                  </span>
+                  <span class="t-right"><span class="t-chip todo">To do</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Your stay -->
+            <div class="fade-up d3">
+              <div class="section-head" style="margin-bottom:10px"><h2>Your stay</h2></div>
+              <div class="stay-grid">
+                <div class="card stay-card">
+                  <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
+                  <div class="sc-title">Virtual keys</div>
+                  <div class="sc-desc">Unlocks after check-in is complete</div>
+                  <button class="btn btn-outline btn-sm" disabled style="opacity:0.55"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> Locked</button>
+                </div>
+                <div class="card stay-card">
+                  <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
+                  <div class="sc-title">Guidebooks</div>
+                  <div class="sc-desc">WiFi, house rules &amp; local tips</div>
+                  <button class="btn btn-dark btn-sm">Explore</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Glass bottom nav -->
+          <nav class="bottom-nav">
+            <a class="nav-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clipboard"/></svg> Check-in <span class="nbadge">2</span></a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-compass"/></svg> Discover</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Keys</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ SCREEN 2: HOME, all done ══════════ -->
+    <div class="phone-col">
+      <div class="phone-label">2 · Home — check-in complete</div>
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="home-topbar">
+            <button class="menu-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-menu"/></svg></button>
+            <div class="prop">
+              <div class="prop-logo">V</div>
+              <div>
+                <div class="prop-name">Villa Serena</div>
+                <div class="prop-addr">Carrer de Mallorca 21, Barcelona</div>
+              </div>
+            </div>
+            <div class="avatar">MG</div>
+          </div>
+
+          <div class="home-content">
+            <div class="greet fade-up">
+              <h1>Welcome, María 👋</h1>
+              <p>Everything is ready for your arrival.</p>
+            </div>
+
+            <div class="done-hero fade-up d1">
+              <div class="dh-icon"><svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+              <div>
+                <div class="dh-title">Check-in complete — you're all set!</div>
+                <div class="dh-sub">Your virtual keys are unlocked below.</div>
+              </div>
+            </div>
+
+            <section class="hero fade-up d1">
+              <div class="hero-top">
+                <span class="hero-loc"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg> Barcelona, Spain</span>
+                <span class="hero-pill"><span class="tdot"></span> Ready for arrival</span>
+              </div>
+              <div class="hero-dates">
+                <div>
+                  <div class="db-label">Check-in</div>
+                  <div class="db-time">15:00</div>
+                  <div class="db-date">Fri, 10 Jul</div>
+                </div>
+                <div class="hero-center">
+                  <span class="nights">4 nights</span>
+                  <span class="arrow-circle"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></span>
+                </div>
+                <div class="db-right">
+                  <div class="db-label">Check-out</div>
+                  <div class="db-time">11:00</div>
+                  <div class="db-date">Tue, 14 Jul</div>
+                </div>
+              </div>
+            </section>
+
+            <div class="fade-up d2">
+              <div class="section-head" style="margin-bottom:10px"><h2>Your stay</h2></div>
+              <div class="stay-grid">
+                <div class="card stay-card" style="border-color:rgba(56,91,248,0.4)">
+                  <div class="sc-icon" style="background:var(--blue-500);color:#fff;box-shadow:var(--shadow-brand)"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
+                  <div class="sc-title">Virtual keys</div>
+                  <div class="sc-desc">Main door &amp; apartment 2B</div>
+                  <button class="btn btn-primary btn-sm">Open door</button>
+                </div>
+                <div class="card stay-card">
+                  <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
+                  <div class="sc-title">Guidebooks</div>
+                  <div class="sc-desc">WiFi, house rules &amp; local tips</div>
+                  <button class="btn btn-dark btn-sm">Explore</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="fade-up d3">
+              <div class="section-head" style="margin-bottom:10px">
+                <h2>Recommended for you</h2>
+              </div>
+              <div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 16px">
+                <div class="chip-icon" style="background:linear-gradient(135deg,#ffb872,#ff7a58);color:#fff;border-radius:14px;width:44px;height:44px">
+                  <svg viewBox="0 0 24 24" class="icon"><use href="#i-luggage"/></svg>
+                </div>
+                <div style="flex:1">
+                  <div style="font-size:13.5px;font-weight:600;color:var(--navy)">Late checkout until 14:00</div>
+                  <div style="font-size:12px;color:var(--text-secondary);margin-top:1px">Sleep in on your last day · € 25</div>
+                </div>
+                <button class="btn btn-outline btn-sm">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <nav class="bottom-nav">
+            <a class="nav-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clipboard"/></svg> Check-in</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-compass"/></svg> Discover</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Keys</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-menu"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-clipboard"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></g>
+    <g id="i-compass"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></g>
+    <g id="i-luggage"><path d="M6 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2"/><path d="M8 18V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v14"/><circle cx="16" cy="20" r="2"/><circle cx="8" cy="20" r="2"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guest Registration Desktop — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .guests-summary { display: flex; align-items: center; gap: 16px; padding: 16px 20px; }
+  .gs-ring { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
+  .gs-ring svg { transform: rotate(-90deg); }
+  .gs-ring .track { fill: none; stroke: var(--n-75); stroke-width: 6; }
+  .gs-ring .arc { fill: none; stroke: url(#gsGrad); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 151; stroke-dashoffset: 76; }
+  .gs-ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--blue-500); }
+  .guests-summary .gs-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .guests-summary .gs-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+  .guest-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px;
+    width: 100%; text-align: left;
+    position: relative;
+    transition: background 0.15s;
+    overflow: hidden;
+  }
+  .guest-row + .guest-row, .guest-row + .add-row { border-top: 1px solid var(--border); }
+  .guest-row:hover { background: #fbfbfe; }
+  .guest-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+  .guest-row.complete::before { background: var(--green-700); }
+  .guest-row.pending::before { background: var(--amber-500); }
+  .guest-row.complete { background: linear-gradient(90deg, transparent 55%, rgba(232, 252, 247, 0.75)); }
+  .guest-row.pending { background: linear-gradient(90deg, transparent 55%, rgba(255, 242, 224, 0.75)); }
+  .guest-row .g-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 13.5px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .guest-row.complete .g-avatar { background: #e0e9fb; color: var(--blue-650); }
+  .guest-row.pending .g-avatar { background: var(--n-75); color: var(--n-600); border: 1.5px dashed var(--n-300); }
+  .guest-row .g-name { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+  .guest-row .g-sub { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+  .guest-row .g-status { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .guest-row .g-status .st-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .guest-row.complete .st-label { color: var(--green-700); }
+  .guest-row.pending .st-label { color: var(--amber-700); }
+  .guest-row.complete .g-status .icon { color: var(--green-700); }
+  .guest-row.pending .g-status .icon { color: var(--amber-500); }
+
+  .add-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px; width: 100%; text-align: left;
+    background: rgba(244, 246, 251, 0.7);
+    transition: background 0.15s;
+  }
+  .add-row:hover { background: rgba(56, 91, 248, 0.05); }
+  .add-row .plus-badge {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--tint-info); color: var(--blue-500);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .add-row .a-label { font-size: 13.5px; font-weight: 600; color: var(--blue-500); }
+  .add-row .a-sub { font-size: 11.5px; color: var(--text-tertiary); margin-top: 1px; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin: 4px 4px 10px;
+  }
+  .section-label .icon { color: var(--blue-500); }
+  .section-label .divider { flex: 1; height: 1px; background: var(--border); }
+
+  .register-all {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px;
+    border-radius: var(--r-lg);
+    background: var(--tint-promo);
+    border: 1px solid var(--n-100);
+  }
+  .register-all .ra-text { font-size: 12.5px; line-height: 18px; color: var(--n-600); flex: 1; }
+  .register-all .ra-text b { color: var(--navy); }
+
+  /* form */
+  .form-grid { display: flex; flex-direction: column; gap: 14px; }
+  .form-grid .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .prefilled-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--green-800);
+  }
+  .sig-pad {
+    border: 1.5px dashed var(--n-300);
+    border-radius: var(--r-lg);
+    background: var(--n-50);
+    height: 140px;
+    position: relative;
+    display: grid; place-items: center;
+    overflow: hidden;
+  }
+  .sig-pad .sig-mock { font-family: 'Caveat', cursive; font-size: 48px; color: var(--navy); transform: rotate(-3deg); }
+  .sig-pad .sig-clear {
+    position: absolute; top: 8px; right: 8px;
+    width: 30px; height: 30px; border-radius: 9px;
+    background: var(--n-0); border: 1px solid var(--border);
+    display: grid; place-items: center; color: var(--n-600);
+    box-shadow: var(--shadow-card);
+  }
+  .sig-pad .sig-line { position: absolute; left: 14%; right: 14%; bottom: 28px; border-bottom: 1.5px solid var(--n-300); }
+  .consent-row { display: flex; gap: 10px; align-items: flex-start; padding: 2px 4px; }
+  .consent-row .cbox {
+    width: 20px; height: 20px; border-radius: 6px;
+    background: var(--blue-500);
+    display: grid; place-items: center;
+    color: #fff; flex-shrink: 0; margin-top: 1px;
+  }
+  .consent-row p { font-size: 12px; line-height: 17px; color: var(--n-600); }
+  .consent-row a { color: var(--blue-500); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Guest Registration — Desktop (Redesign 2.0 Prototype)</h1>
+  <p class="lede">The registration hub and the pre-filled review form inside the desktop journey shell — group progress ring, per-guest status rows, share-link banner, auto-fill tags and a wider two-column form. Mock data only.</p>
+
+  <!-- ═══ SCREEN 1: HUB ═══ -->
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock-sm"/></svg> guest.chekin.com/villa-serena/registration</span>
+      <span style="width:52px"></span>
+    </div>
+    <div class="desktop-shell with-rail">
+      <aside class="sidebar">
+        <div class="sb-head">
+          <div class="sb-logo">V</div>
+          <div>
+            <div class="sb-prop">Villa Serena</div>
+            <div class="sb-ref">Booking · CHK-58291</div>
+          </div>
+        </div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
+          <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
+        </div>
+        <div class="sb-group">Before you arrive</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+        <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">1</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
+        <div class="sb-group">Your stay</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+        <div class="sb-footer">
+          <div class="sb-avatar">MG</div>
+          <div>
+            <div class="sb-user">María García</div>
+            <div class="sb-mail">maria@gmail.com</div>
+          </div>
+          <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <button class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</button>
+        <div class="desk-col">
+          <div class="page-head fade-up" style="padding:0 0 4px">
+            <div class="kicker">Guest summary</div>
+            <div class="page-title">Who are we <span class="hl">registering</span>?</div>
+            <p class="page-intro">Register yourself or everyone in your group — each guest takes about 2 minutes.</p>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:18px;margin-top:22px">
+            <div class="card glass fade-up d1">
+              <div class="guests-summary">
+                <div class="gs-ring">
+                  <svg width="56" height="56" viewBox="0 0 56 56">
+                    <defs>
+                      <linearGradient id="gsGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#385bf8"/>
+                        <stop offset="100%" stop-color="#6b8cff"/>
+                      </linearGradient>
+                    </defs>
+                    <circle class="track" cx="28" cy="28" r="24"/>
+                    <circle class="arc" cx="28" cy="28" r="24"/>
+                  </svg>
+                  <span class="pct">1/2</span>
+                </div>
+                <div>
+                  <div class="gs-title">One guest to go</div>
+                  <div class="gs-sub">Registration is required by local law before arrival · due Friday 10 July</div>
+                </div>
+                <button class="btn btn-primary btn-sm" style="margin-left:auto">Register second guest <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+              </div>
+            </div>
+
+            <div class="fade-up d2">
+              <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-star"/></svg> Responsible for booking</div>
+              <div class="card">
+                <button class="guest-row complete">
+                  <span class="g-avatar">MG</span>
+                  <span>
+                    <span class="g-name" style="display:block">María García</span>
+                    <span class="g-sub">You · primary guest · ID verified with passport</span>
+                  </span>
+                  <span class="g-status">
+                    <span class="st-label">Complete</span>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="fade-up d3">
+              <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> Other guests</div>
+              <div class="card">
+                <button class="guest-row pending">
+                  <span class="g-avatar">2</span>
+                  <span>
+                    <span class="g-name" style="display:block">Second guest</span>
+                    <span class="g-sub">Waiting for details · takes about 2 minutes</span>
+                  </span>
+                  <span class="g-status">
+                    <span class="st-label">Add details</span>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg>
+                  </span>
+                </button>
+                <button class="add-row">
+                  <span class="plus-badge"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                  <span>
+                    <span class="a-label" style="display:block">Add a minor under 18</span>
+                    <span class="a-sub">No ID verification needed</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="register-all fade-up d4">
+              <svg viewBox="0 0 24 24" class="icon" style="color:var(--blue-500)"><use href="#i-share"/></svg>
+              <p class="ra-text"><b>Not together right now?</b> Share a link so the second guest can register from their own phone — you'll see their status update here live.</p>
+              <button class="btn btn-outline btn-sm" style="flex-shrink:0"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-copy"/></svg> Copy link</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ═══ Vela helper rail ═══ -->
+      <aside class="vela-rail">
+        <div class="vela-head">
+          <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+          <div>
+            <div class="vela-name">Vela</div>
+            <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+          </div>
+        </div>
+        <p class="vela-intro">Register everyone before arrival and your keys unlock the moment you get there.</p>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Your progress</div>
+          <div class="vela-progress" style="margin-top:10px">
+            <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">1 of 2 guests</span></div>
+            <div class="vp-track"><div class="vp-fill" style="width:50%"></div></div>
+            <div class="vp-hint">Finish the pending registrations so your guests can check in without waiting.</div>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Quick actions</div>
+          <div class="vela-actions" style="margin-top:10px">
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
+              <span>Share booking link<span class="va-sub">Let co-travellers register themselves</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span>
+              <span>Change guest count<span class="va-sub">2 adults · 0 minors</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg></span>
+              <span>Chat with your host</span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Good to know</div>
+          <div style="margin-top:6px">
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-baby"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">Minors skip verification</span>
+                <span class="vt-desc">Guests under 18 only fill the form — no ID photos needed.</span>
+              </span>
+            </div>
+            <div class="vela-tip clickable">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-help"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">Why registration is required</span>
+                <span class="vt-desc">Local law asks hosts to register every guest.</span>
+              </span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Ask Vela</div>
+          <div class="vela-ask" style="margin-top:10px">
+            <div class="ask-input">
+              Ask anything about check-in…
+              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+            </div>
+            <div class="vela-chips">
+              <span class="chip">Can guests register later?</span>
+              <span class="chip">Is my data safe?</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 2: REVIEW FORM ═══ -->
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock-sm"/></svg> guest.chekin.com/villa-serena/registration/details</span>
+      <span style="width:52px"></span>
+    </div>
+    <div class="desktop-shell with-rail">
+      <aside class="sidebar">
+        <div class="sb-head">
+          <div class="sb-logo">V</div>
+          <div>
+            <div class="sb-prop">Villa Serena</div>
+            <div class="sb-ref">Booking · CHK-58291</div>
+          </div>
+        </div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
+          <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
+        </div>
+        <div class="sb-group">Before you arrive</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+        <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">1</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
+        <div class="sb-group">Your stay</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+        <div class="sb-footer">
+          <div class="sb-avatar">MG</div>
+          <div>
+            <div class="sb-user">María García</div>
+            <div class="sb-mail">maria@gmail.com</div>
+          </div>
+          <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <button class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to registration</button>
+        <div class="desk-col">
+          <div class="page-head fade-up" style="padding:0 0 4px">
+            <div class="kicker">Guest registration</div>
+            <div class="page-title">Review your <span class="hl">details</span></div>
+            <p class="page-intro">We pre-filled this from your document — check it and sign to finish.</p>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
+            <div class="card glass fade-up d1" style="padding:13px 16px;display:flex;align-items:center;gap:11px;border-color:rgba(53,229,188,0.4)">
+              <span class="chip-icon" style="background:var(--green-50);color:var(--green-700);width:36px;height:36px;border-radius:10px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sparkles"/></svg></span>
+              <span style="font-size:12.5px;line-height:18px;color:var(--n-600)"><b style="color:var(--navy)">8 fields auto-filled</b> from your passport — only 2 left to complete.</span>
+            </div>
+
+            <div class="form-grid fade-up d2">
+              <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg> Personal data <span class="divider"></span></div>
+              <div class="two-col">
+                <div class="field success">
+                  <label>First name <span class="prefilled-tag"><svg viewBox="0 0 24 24" class="icon" style="width:10px;height:10px"><use href="#i-sparkles"/></svg> auto</span></label>
+                  <div class="input">María</div>
+                </div>
+                <div class="field success">
+                  <label>Last name <span class="prefilled-tag"><svg viewBox="0 0 24 24" class="icon" style="width:10px;height:10px"><use href="#i-sparkles"/></svg> auto</span></label>
+                  <div class="input">García</div>
+                </div>
+              </div>
+              <div class="two-col">
+                <div class="field success">
+                  <label>Date of birth <span class="prefilled-tag"><svg viewBox="0 0 24 24" class="icon" style="width:10px;height:10px"><use href="#i-sparkles"/></svg> auto</span></label>
+                  <div class="input">14 / 03 / 1992</div>
+                </div>
+                <div class="field success">
+                  <label>Nationality <span class="prefilled-tag"><svg viewBox="0 0 24 24" class="icon" style="width:10px;height:10px"><use href="#i-sparkles"/></svg> auto</span></label>
+                  <div class="input">🇪🇸 Spain</div>
+                </div>
+              </div>
+
+              <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg> Document <span class="divider"></span></div>
+              <div class="two-col">
+                <div class="field success">
+                  <label>Document type <span class="prefilled-tag"><svg viewBox="0 0 24 24" class="icon" style="width:10px;height:10px"><use href="#i-sparkles"/></svg> auto</span></label>
+                  <div class="input">Passport</div>
+                </div>
+                <div class="field success">
+                  <label>Number <span class="prefilled-tag"><svg viewBox="0 0 24 24" class="icon" style="width:10px;height:10px"><use href="#i-sparkles"/></svg> auto</span></label>
+                  <div class="input">PAB123456</div>
+                </div>
+              </div>
+
+              <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg> Contact <span class="divider"></span></div>
+              <div class="two-col">
+                <div class="field">
+                  <label>Email</label>
+                  <div class="input" style="color:var(--n-500)">maria@…</div>
+                  <span class="hint">Booking confirmation &amp; keys go here</span>
+                </div>
+                <div class="field error">
+                  <label>Phone number</label>
+                  <div class="input">+34 6…</div>
+                  <span class="hint">Please complete your phone number</span>
+                </div>
+              </div>
+
+              <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Signature <span class="divider"></span></div>
+              <div>
+                <div class="sig-pad">
+                  <span class="sig-line"></span>
+                  <span class="sig-mock">María García</span>
+                  <button class="sig-clear"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eraser"/></svg></button>
+                </div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:7px">Draw with your mouse or trackpad — required by local regulations</div>
+              </div>
+
+              <div class="consent-row">
+                <span class="cbox"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px;stroke-width:3"><use href="#i-check"/></svg></span>
+                <p>I confirm my details are correct and accept the <a href="#">terms</a> and <a href="#">privacy policy</a>. Data is shared only with authorities as required by law.</p>
+              </div>
+
+              <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:6px;padding-bottom:8px">
+                <button class="btn btn-outline">Save for later</button>
+                <button class="btn btn-primary">Complete registration <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ═══ Vela helper rail (guest-form scene, focus-aware) ═══ -->
+      <aside class="vela-rail">
+        <div class="vela-head">
+          <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+          <div>
+            <div class="vela-name">Vela</div>
+            <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+          </div>
+        </div>
+        <p class="vela-intro">Almost done — check the pre-filled fields and I'll explain any of them as you go.</p>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Your progress</div>
+          <div class="vela-progress" style="margin-top:10px">
+            <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">2 fields left</span></div>
+            <div class="vp-track"><div class="vp-fill" style="width:80%"></div></div>
+            <div class="vp-hint">8 of 10 fields done — just contact details and the signature.</div>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Why we ask</div>
+          <div style="margin-top:6px">
+            <div class="vela-tip attention">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-phone"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">Phone number</span>
+                <span class="vt-desc">Your host uses it only for urgent arrival updates — never marketing.</span>
+              </span>
+            </div>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">Signature</span>
+                <span class="vt-desc">Local regulations require a signed registration form for each adult.</span>
+              </span>
+            </div>
+            <div class="vela-tip clickable">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-help"/></svg></span>
+              <span>
+                <span class="vt-title" style="display:block">How we treat your data</span>
+                <span class="vt-desc">Encrypted, shared only with authorities as required.</span>
+              </span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Quick actions</div>
+          <div class="vela-actions" style="margin-top:10px">
+            <button class="vela-action">
+              <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
+              <span>Share booking link<span class="va-sub">Let the second guest fill this themselves</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="vela-section">
+          <div class="vela-eyebrow">Ask Vela</div>
+          <div class="vela-ask" style="margin-top:10px">
+            <div class="ask-input">
+              Ask anything…
+              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+            </div>
+            <div class="vela-chips">
+              <span class="chip">What is the signature for?</span>
+              <span class="chip">Edit a pre-filled field?</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></g>
+    <g id="i-arrow-left"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-star"><path d="M11.5 3.4a.53.53 0 0 1 1 0l2.1 5.1a.53.53 0 0 0 .44.32l5.51.44c.46.04.64.6.29.9l-4.2 3.6a.53.53 0 0 0-.17.52l1.28 5.37a.53.53 0 0 1-.79.58L12.28 17a.53.53 0 0 0-.56 0l-4.7 2.87a.53.53 0 0 1-.79-.58l1.28-5.37a.53.53 0 0 0-.17-.52l-4.2-3.6a.53.53 0 0 1 .3-.9l5.5-.44a.53.53 0 0 0 .44-.32z"/></g>
+    <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-sparkles"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></g>
+    <g id="i-id-card"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M8 15c-1.5 0-2.5.5-3 1.5"/><path d="M8 15c1.5 0 2.5.5 3 1.5"/><path d="M14 9h5"/><path d="M14 13h4"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-pen"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></g>
+    <g id="i-eraser"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></g>
+    <g id="i-lock-sm"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-baby"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></g>
+    <g id="i-phone"><path d="M13.8 17.4a2 2 0 0 0 2.24-.4l.6-.6a2 2 0 0 0 0-2.83l-1.42-1.4a2 2 0 0 0-2.83 0 .82.82 0 0 1-1.17 0l-2.4-2.4a.82.82 0 0 1 0-1.17 2 2 0 0 0 0-2.83L7.42 4.34a2 2 0 0 0-2.83 0l-.6.6a2 2 0 0 0-.4 2.25 21 21 0 0 0 10.2 10.2"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+</body>
+</html>

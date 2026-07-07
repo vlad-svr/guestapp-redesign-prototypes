@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Desktop — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* hero (desktop) */
+  .hero {
+    border-radius: 20px;
+    background: var(--gradient-hero);
+    color: #fff;
+    padding: 26px 30px;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-elev);
+    margin-top: 22px;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50px; right: -30px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: rgba(107, 224, 168, 0.22); filter: blur(52px);
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -80px; left: 24%;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: rgba(140, 165, 255, 0.3); filter: blur(60px);
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .hero-loc { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #c9d0ff; }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    height: 28px; padding: 0 13px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 11.5px; font-weight: 600;
+  }
+  .hero-pill .tdot { width: 7px; height: 7px; border-radius: 50%; background: #7be3b0; box-shadow: 0 0 8px rgba(123,227,176,0.9); }
+  .hero-grid { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 26px; align-items: center; }
+  .hero .db-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); }
+  .hero .db-time { font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; margin-top: 4px; }
+  .hero .db-date { font-size: 12px; font-weight: 500; text-transform: uppercase; color: rgba(255,255,255,0.72); margin-top: 2px; }
+  .hero-center { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .hero-center .nights { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.65); }
+  .hero-center .arrow-circle {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: grid; place-items: center;
+  }
+  .hero-countdown {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.13);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.85);
+    max-width: 320px;
+  }
+  .hero-countdown .icon { color: #8ca5ff; flex-shrink: 0; }
+  .hero-countdown b { color: #fff; }
+
+  /* checklist desktop */
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 26px 0 12px; }
+  .section-head h2 { font-size: 17px; font-weight: 600; color: var(--navy); }
+  .section-head .counter { font-size: 13px; color: var(--text-secondary); }
+  .section-head .counter b { color: var(--blue-500); }
+
+  .cl-progress {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cl-ring { position: relative; width: 60px; height: 60px; flex-shrink: 0; }
+  .cl-ring svg { transform: rotate(-90deg); }
+  .cl-ring .track { fill: none; stroke: var(--n-75); stroke-width: 7; }
+  .cl-ring .arc { fill: none; stroke: url(#clGrad); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 163; stroke-dashoffset: 65; }
+  .cl-ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--blue-500); }
+  .cl-progress .cp-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .cl-progress .cp-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+  .cl-progress .cp-cta { margin-left: auto; }
+
+  .task-list { position: relative; }
+  .task-list::before {
+    content: ''; position: absolute; left: 40px; top: 12px; bottom: 12px;
+    width: 2px; background: var(--n-200);
+  }
+  .task-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    width: 100%; text-align: left;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .task-row:first-child { border-top: none; }
+  .task-row:hover { background: #fbfbfe; }
+  .task-badge {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+    border: 3px solid #fff;
+    position: relative; z-index: 1;
+  }
+  .task-badge.done { background: var(--green-50); color: var(--green-800); }
+  .task-badge.next { background: var(--blue-500); color: #fff; box-shadow: 0 0 0 4px rgba(56, 92, 248, 0.14); animation: pulse-ring 2.4s infinite; }
+  .task-badge.todo { background: var(--tint-pressed); color: var(--n-600); }
+  .task-row .t-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .task-row .t-sub { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .task-row .t-right { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .task-row .chev { color: var(--n-500); transition: transform 0.15s, color 0.15s; }
+  .task-row:hover .chev { transform: translateX(3px); color: var(--blue-500); }
+  .task-row.is-next { background: linear-gradient(90deg, rgba(56, 91, 248, 0.05), transparent 60%); }
+  .task-row.is-next::before {
+    content: ''; position: absolute; left: 0; top: 10px; bottom: 10px;
+    width: 3.5px; border-radius: 0 4px 4px 0;
+    background: var(--blue-500);
+  }
+  .t-chip {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    height: 23px; padding: 0 10px; border-radius: 99px;
+    display: inline-flex; align-items: center;
+  }
+  .t-chip.done { background: var(--green-50); color: var(--green-800); }
+  .t-chip.next { background: var(--tint-pressed); color: var(--blue-500); }
+  .t-chip.todo { background: var(--n-75); color: var(--n-600); }
+
+  /* stay cards */
+  .stay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .stay-card {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 22px 16px 18px; gap: 9px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .stay-card:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(56,92,248,0.14), 0 3px 8px rgba(22,22,67,0.06); }
+  .stay-card .sc-icon {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--tint-pressed); color: var(--blue-500);
+    display: grid; place-items: center;
+  }
+  .stay-card .sc-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .stay-card .sc-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 17px; }
+  .btn-dark { background: var(--navy); color: #fff; }
+  .btn-dark:hover { background: var(--navy-700); }
+
+  /* right rail cards */
+  .upsell-card { overflow: hidden; }
+  .upsell-card .uc-img { height: 110px; background: linear-gradient(135deg, #ffb872, #ff7a58); position: relative; }
+  .upsell-card .uc-img.sea { background: linear-gradient(135deg, #5975f5, #8ca5ff); }
+  .upsell-card .uc-img .uc-tag {
+    position: absolute; top: 10px; left: 10px;
+    height: 22px; padding: 0 9px;
+    display: inline-flex; align-items: center;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--navy);
+  }
+  .upsell-card .uc-body { padding: 13px 14px 14px; }
+  .upsell-card .uc-title { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+  .upsell-card .uc-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 3px; }
+  .upsell-card .uc-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 11px; }
+  .upsell-card .uc-price { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+
+  .contact-card { padding: 14px; display: flex; align-items: center; gap: 12px; }
+  .contact-card .cc-icon {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: var(--tint-info); color: var(--blue-500);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .contact-card .cc-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .contact-card .cc-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Home — Desktop (Redesign 2.0 Prototype)</h1>
+  <p class="lede">The V3 desktop journey: navy sidebar with a live check-in progress module, hero with glass countdown, checklist with progress ring, timeline and "next up" spotlight, and the upsell/contact right rail. Mock data only.</p>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock-sm"/></svg> guest.chekin.com/villa-serena</span>
+      <span style="width:52px"></span>
+    </div>
+
+    <div class="desktop-shell with-rail">
+
+      <!-- ═══ Sidebar ═══ -->
+      <aside class="sidebar">
+        <div class="sb-head">
+          <div class="sb-logo">V</div>
+          <div>
+            <div class="sb-prop">Villa Serena</div>
+            <div class="sb-ref">Booking · CHK-58291</div>
+          </div>
+        </div>
+
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>60%</span></div>
+          <div class="sp-track"><div class="sp-fill" style="width:60%"></div></div>
+        </div>
+
+        <div class="sb-group">Before you arrive</div>
+        <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
+
+        <div class="sb-group">Your stay</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-compass"/></svg> Experiences</a>
+
+        <div class="sb-footer">
+          <div class="sb-avatar">MG</div>
+          <div>
+            <div class="sb-user">María García</div>
+            <div class="sb-mail">maria@gmail.com</div>
+          </div>
+          <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+        </div>
+      </aside>
+
+      <!-- ═══ Main ═══ -->
+      <main class="desk-main">
+        <div class="greet fade-up">
+          <h1>Welcome, María 👋</h1>
+          <p>Your stay in Barcelona is almost ready — 2 tasks left before your keys unlock.</p>
+        </div>
+
+        <section class="hero fade-up d1">
+          <div class="hero-top">
+            <span class="hero-loc"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg> Carrer de Mallorca 21, Barcelona</span>
+            <span class="hero-pill"><span class="tdot"></span> Arrival confirmed</span>
+          </div>
+          <div class="hero-grid">
+            <div>
+              <div class="db-label">Check-in</div>
+              <div class="db-time">15:00</div>
+              <div class="db-date">Friday, 10 July</div>
+            </div>
+            <div class="hero-center">
+              <span class="nights">4 nights</span>
+              <span class="arrow-circle"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></span>
+            </div>
+            <div>
+              <div class="db-label">Check-out</div>
+              <div class="db-time">11:00</div>
+              <div class="db-date">Tuesday, 14 July</div>
+            </div>
+            <div class="hero-countdown">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg>
+              <span>Check-in opens in <b>3 days</b>. Finish your tasks to get keys instantly on arrival.</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="fade-up d2">
+          <div class="section-head">
+            <h2>Complete your check-in</h2>
+            <span class="counter"><b>2</b> of 4 done</span>
+          </div>
+          <div class="card" style="overflow:hidden">
+            <div class="cl-progress">
+              <div class="cl-ring">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <defs>
+                    <linearGradient id="clGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#385bf8"/>
+                      <stop offset="100%" stop-color="#6b8cff"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="track" cx="30" cy="30" r="26"/>
+                  <circle class="arc" cx="30" cy="30" r="26"/>
+                </svg>
+                <span class="pct">60%</span>
+              </div>
+              <div>
+                <div class="cp-title">You're more than halfway there</div>
+                <div class="cp-sub">2 steps left · about 3 minutes · due before Friday 10 July</div>
+              </div>
+              <button class="btn btn-primary btn-sm cp-cta">Continue check-in <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+            </div>
+
+            <div class="task-list">
+              <button class="task-row">
+                <span class="task-badge done"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Register guests</span>
+                  <span class="t-sub">2 of 2 guests verified &amp; registered</span>
+                </span>
+                <span class="t-right"><span class="t-chip done">Done</span></span>
+              </button>
+              <button class="task-row">
+                <span class="task-badge done"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Booking payment</span>
+                  <span class="t-sub">€ 380.00 paid · receipt sent to maria@gmail.com</span>
+                </span>
+                <span class="t-right"><span class="t-chip done">Done</span></span>
+              </button>
+              <button class="task-row is-next">
+                <span class="task-badge next"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Property protection</span>
+                  <span class="t-sub">Choose a security deposit or premium cover · takes about 1 minute</span>
+                </span>
+                <span class="t-right"><span class="t-chip next">Next up</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Tourist taxes</span>
+                  <span class="t-sub">€ 8.80 total for 2 guests · 4 nights</span>
+                </span>
+                <span class="t-right"><span class="t-chip todo">To do</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up d3">
+          <div class="section-head"><h2>Your stay</h2></div>
+          <div class="stay-grid">
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
+              <div class="sc-title">Virtual keys</div>
+              <div class="sc-desc">Unlocks after check-in is complete</div>
+              <button class="btn btn-outline btn-sm" disabled style="opacity:0.55"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock-sm"/></svg> Locked</button>
+            </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
+              <div class="sc-title">Guidebooks</div>
+              <div class="sc-desc">WiFi, house rules &amp; local tips</div>
+              <button class="btn btn-dark btn-sm">Explore</button>
+            </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-compass"/></svg></div>
+              <div class="sc-title">Experiences</div>
+              <div class="sc-desc">Tours &amp; activities in Barcelona</div>
+              <button class="btn btn-outline btn-sm">Browse</button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ═══ Right rail ═══ -->
+      <aside class="rail">
+        <h3>Make your stay better</h3>
+        <div class="card upsell-card fade-up d1">
+          <div class="uc-img">
+            <span class="uc-tag">Popular</span>
+          </div>
+          <div class="uc-body">
+            <div class="uc-title">Late checkout until 14:00</div>
+            <div class="uc-sub">Sleep in on your last day</div>
+            <div class="uc-foot">
+              <span class="uc-price">€ 25</span>
+              <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="card upsell-card fade-up d2">
+          <div class="uc-img sea">
+            <span class="uc-tag">Free cancellation</span>
+          </div>
+          <div class="uc-body">
+            <div class="uc-title">Sailing trip along the coast</div>
+            <div class="uc-sub">3 hours · drinks included</div>
+            <div class="uc-foot">
+              <span class="uc-price">€ 49 <span style="font-weight:500;font-size:11px;color:var(--text-secondary)">/ person</span></span>
+              <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Book</button>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:8px">Need help?</h3>
+        <div class="card contact-card fade-up d3">
+          <div class="cc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-message"/></svg></div>
+          <div>
+            <div class="cc-title">Chat with your host</div>
+            <div class="cc-sub">Usually replies within 1 hour</div>
+          </div>
+        </div>
+        <div class="card contact-card fade-up d4">
+          <div class="cc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg></div>
+          <div>
+            <div class="cc-title">FAQ &amp; support</div>
+            <div class="cc-sub">Check-in, keys, house rules</div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-compass"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-lock-sm"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chekin Guestapp — Redesign 2.0 UX Prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .wrap { max-width: 980px; margin: 0 auto; padding: 56px 24px 100px; }
+  .hero-head {
+    border-radius: 24px;
+    background: var(--gradient-hero);
+    color: #fff;
+    padding: 40px 40px 36px;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-elev);
+  }
+  .hero-head::before {
+    content: ''; position: absolute; top: -60px; right: -40px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: rgba(140, 165, 255, 0.3); filter: blur(60px);
+  }
+  .hero-head h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; position: relative; }
+  .hero-head p { font-size: 14.5px; line-height: 23px; color: rgba(255,255,255,0.8); margin-top: 12px; max-width: 640px; position: relative; }
+  .hero-head .meta { display: flex; gap: 8px; margin-top: 20px; position: relative; flex-wrap: wrap; }
+  .hero-head .meta span {
+    height: 28px; padding: 0 13px;
+    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(8px);
+    font-size: 11.5px; font-weight: 600;
+  }
+
+  .proto-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 28px; }
+  .proto-link {
+    display: block;
+    padding: 22px;
+    border-radius: 18px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .proto-link:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(56,92,248,0.14), 0 3px 8px rgba(22,22,67,0.06); }
+  .proto-link .pl-icon {
+    width: 46px; height: 46px; border-radius: 14px;
+    background: var(--gradient-brand); color: #fff;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-brand);
+    margin-bottom: 14px;
+  }
+  .proto-link h3 { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .proto-link p { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 6px; }
+  .proto-link .go { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 12.5px; font-weight: 700; color: var(--blue-500); }
+
+  h2.sec { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); margin: 48px 0 6px; }
+  p.sec-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; }
+
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+  .imp {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    padding: 18px;
+  }
+  .imp .tag {
+    display: inline-flex; align-items: center;
+    height: 22px; padding: 0 9px;
+    border-radius: 99px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .tag.glass-t { background: var(--tint-pressed); color: var(--blue-500); }
+  .tag.ux-t { background: var(--green-50); color: var(--green-800); }
+  .tag.trust-t { background: var(--amber-50); color: var(--amber-700); }
+  .imp h4 { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .imp .was { font-size: 12px; line-height: 17px; color: var(--text-tertiary); margin-top: 7px; }
+  .imp .was b { color: var(--n-600); font-weight: 600; }
+  .imp .now { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 6px; }
+  .imp .now b { color: var(--navy); font-weight: 600; }
+
+  .note {
+    margin-top: 40px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: var(--tint-promo);
+    border: 1px solid var(--n-100);
+    font-size: 12.5px; line-height: 19px; color: var(--n-600);
+  }
+  .note b { color: var(--navy); }
+</style>
+</head>
+<body>
+<div style="background: var(--gradient-page); min-height: 100vh;">
+<div class="wrap">
+
+  <div class="hero-head">
+    <h1>Guestapp Redesign 2.0 — UX prototypes</h1>
+    <p>Static HTML/CSS mockups of the redesigned Identity Verification, Guest Registration, and Home check-in flows — built on the real <b>@chekinapp/tokens</b> design system (Poppins, brand blue #385bf8, navy #161643, cool lavender neutrals) with proposed UX improvements layered on top, including a restrained liquid-glass treatment.</p>
+    <div class="meta">
+      <span>Pure HTML + CSS</span>
+      <span>Mock data only</span>
+      <span>Real design tokens</span>
+      <span>Liquid glass accents</span>
+    </div>
+  </div>
+
+  <div class="proto-links">
+    <a class="proto-link" href="home.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
+      <h3>Home &amp; check-in list</h3>
+      <p>Glass top bar and bottom nav, hero with arrival countdown, "next up" spotlight row, progress ring, all-done celebration state.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="iv-flow.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-scan-face"/></svg></div>
+      <h3>Identity verification</h3>
+      <p>14 screens: happy path (intro → document → capture → back side → done), edge cases (validation failure, camera denied, upload preview), and the full liveness sequence (position, turn, blink, pass, fail).</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="guest-registration.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-users"/></svg></div>
+      <h3>Guest registration</h3>
+      <p>Registration hub with per-guest states and share-link, review screen with auto-filled field tags, manual form with autofill hero card and signature.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="sec">Desktop versions</h2>
+  <p class="sec-sub">The V3 desktop journey shell: navy sidebar (per-task status badges + a live progress module), centered 640px content column, and the upsell/contact right rail on Home.</p>
+
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="home-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3>Home — desktop</h3>
+      <p>Sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="iv-flow-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3>Identity verification — desktop</h3>
+      <p>Choose webcam vs phone (QR handoff, recommended), then a live-sync view that mirrors the phone's progress in real time on the desktop.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="guest-registration-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3>Guest registration — desktop</h3>
+      <p>Hub with group progress ring and copy-link banner, plus the two-column pre-filled review form with auto tags and inline signature.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="vela.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkle"/></svg></div>
+      <h3>Vela helper</h3>
+      <p>The contextual assistant: glass rail on desktop, FAB + glass sheet on mobile — with Ask Vela input, quick actions (QR handoff, share link, guest count), progress, offers and guidebook blocks.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="sec">What changed and why</h2>
+  <p class="sec-sub">Each improvement maps to a concrete gap found in the current redesign-2.0 code.</p>
+
+  <div class="imp-grid">
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>Segmented progress bar in IV &amp; registration</h4>
+      <p class="was"><b>Now in code:</b> progress is text only — "Step X of Y" as the top-bar subtitle (IVTopBarSubtitle); the mobile stepper was removed.</p>
+      <p class="now"><b>Proposed:</b> a slim 4px <b>segmented bar under the glass top bar</b>. Text stays for accessibility; the bar gives instant "how much is left" without reading.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Glass chrome: top bar, bottom nav, camera pills</h4>
+      <p class="was"><b>Now in code:</b> solid white top bar and bottom nav; solid white status pill floating over the camera.</p>
+      <p class="now"><b>Proposed:</b> <b>backdrop-blur glass</b> for the sticky chrome and for on-camera status/hint pills. Content scrolls visibly underneath, chrome feels lighter, and on the dark camera view glass pills read better than solid white. Used only on chrome — never on reading surfaces.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Focus</span>
+      <h4>"Next up" spotlight on the checklist</h4>
+      <p class="was"><b>Now in code:</b> the pending row gets a blue badge ring, but all rows carry equal visual weight.</p>
+      <p class="now"><b>Proposed:</b> the next task gets a <b>left accent bar + soft blue wash + pulsing badge + "Next up" chip</b>, and completed rows show outcome facts ("€ 380.00 paid"). One glance answers "what do I do now?".</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>Time estimates &amp; privacy reassurance in IV</h4>
+      <p class="was"><b>Now in code:</b> the IV intro lists steps but gives no duration and no data-privacy message; camera permission and selfie steps are where guests drop off.</p>
+      <p class="now"><b>Proposed:</b> "<b>Takes about 2 minutes</b>" up front, a GDPR privacy note on the intro, and "selfie is blurred &amp; encrypted" right on the liveness screen — reassurance at the exact moment of hesitation.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Guidance</span>
+      <h4>Immersive camera with live hint chips</h4>
+      <p class="was"><b>Now in code:</b> camera sits in a card inside the standard light page; guidance is one static status pill.</p>
+      <p class="now"><b>Proposed:</b> <b>full-bleed dark camera screen</b> (the navy gradient already in tokens) with glass hint chips — "Good lighting · No glare · All corners visible" — that can flip to green checks as conditions are met. Capture success turns brackets green and shows quality confirmations before moving on.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Guidance</span>
+      <h4>Directional liveness cues + micro-steps</h4>
+      <p class="was"><b>Now in code:</b> Lottie icon + a text line below the camera; a 15s timeout then a red failure overlay.</p>
+      <p class="now"><b>Proposed:</b> an <b>animated arrow pill anchored to the face oval</b> ("Turn your head left") plus a 4-dot challenge tracker, so guests see progress inside the liveness check instead of guessing how many prompts remain.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>Completion screen that sells the next step</h4>
+      <p class="was"><b>Now in code:</b> a modal sheet with an 80px illustration and "verification is completed" text.</p>
+      <p class="now"><b>Proposed:</b> a full <b>celebration screen</b>: green ring, a receipt card of what was verified (document + face match), and a primary CTA "Confirm my details" that carries momentum into the pre-filled form.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Efficiency</span>
+      <h4>Auto-filled field tags on the review form</h4>
+      <p class="was"><b>Now in code:</b> the title flips to "Review your details" but pre-filled fields look identical to manual ones.</p>
+      <p class="now"><b>Proposed:</b> an "<b>8 fields auto-filled</b>" summary banner plus per-field <b>✦ auto tags</b> and green borders. Guests skim what came from the passport and jump straight to the 2 fields that actually need typing.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Collaboration</span>
+      <h4>Share-link for co-travellers</h4>
+      <p class="was"><b>Now in code:</b> one device registers everyone; a companion's data must be typed by the booker.</p>
+      <p class="now"><b>Proposed:</b> a "<b>Not together right now?</b>" banner on the hub that shares a registration link, letting each guest scan their own document on their own phone.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Motivation</span>
+      <h4>Arrival countdown &amp; instant-keys incentive</h4>
+      <p class="was"><b>Now in code:</b> the hero shows dates/times; the reason to finish check-in early is implicit.</p>
+      <p class="now"><b>Proposed:</b> a glass countdown strip in the hero — "Check-in opens in <b>3 days</b> — finish 2 tasks to get your keys instantly" — tying tasks to the reward (virtual keys), which also appears as a "Locked" state on the keys card.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Document picker with effort hints</h4>
+      <p class="was"><b>Now in code:</b> RadioCardList shows document names only.</p>
+      <p class="now"><b>Proposed:</b> each option states its cost — "<b>Single-sided · fastest</b>" vs "Front and back required" — with a ⚡ Recommended badge on passport, nudging guests to the least error-prone path.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Sticky glass CTA dock</h4>
+      <p class="was"><b>Now in code:</b> the Continue button sits in the page flow — on long forms it's below the fold.</p>
+      <p class="now"><b>Proposed:</b> the primary action lives in a <b>sticky dock with a gradient-fade glass background</b>, always reachable by thumb, with an "progress is saved automatically" reassurance where relevant.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Implementation notes.</b> Everything here uses existing token values (<code>@chekinapp/tokens</code>) — no new colors were invented. The glass effect is <code>backdrop-filter: blur() saturate()</code> over existing surfaces with graceful fallback (solid <code>rgba</code> backgrounds) and it is confined to chrome: top bars, bottom nav, on-camera pills, CTA docks. All motion respects <code>prefers-reduced-motion</code>. The segmented progress, accent-bar "next up" row, and auto-fill tags are pure CSS additions to existing components (<code>IVTopBarSubtitle → progress segments</code>, <code>TaskRow</code>, <code>GuestFormFields</code>).
+  </div>
+
+</div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-scan-face"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-monitor"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></g>
+    <g id="i-sparkle"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+</body>
+</html>
