@@ -69,7 +69,7 @@
       <div class="topbar">
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
         <div class="tb-titles"><div class="tb-title">Identity verification</div></div>
-        <button class="tb-action">Skip for now</button>
+        <button class="tb-action" data-modal="m-skip">Skip for now</button>
       </div>
       <div class="page-head">
         <div class="kicker">Guest registration</div>
@@ -191,7 +191,7 @@
           <div class="tb-title">Identity verification</div>
           <div class="tb-sub">Step 1 of 4</div>
         </div>
-        <button class="tb-action">Skip for now</button>
+        <button class="tb-action" data-modal="m-skip">Skip for now</button>
       </div>
       <div class="progress-track">
         <div class="seg active"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
@@ -263,7 +263,7 @@
           <div class="tb-title">Scan document</div>
           <div class="tb-sub">Step 2 of 4</div>
         </div>
-        <button class="tb-action">Skip</button>
+        <button class="tb-action" data-modal="m-skip">Skip</button>
       </div>
       <div class="cam-progress">
         <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
@@ -717,6 +717,7 @@
       </div>
     </div>
 
+<div class="proto-modal sheet" id="m-skip"><div class="pm-scrim"></div><div class="pm-card"><div class="pm-grabber"></div><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Verify later?</div><div class="pm-desc">You can skip identity verification now and finish it on arrival — but your <b style="color:var(--navy)">virtual keys stay locked</b> until it’s done, and check-in at the door takes longer.</div><div class="pm-actions"><button class="btn btn-primary" data-modal-close>Continue verification</button><button class="btn btn-outline" data-modal-close data-goto="s-start">Skip for now</button></div></div></div>
   </div>
 </div>
 
@@ -749,6 +750,7 @@
     <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
   </defs>
 </svg>
+<script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="nav.js" defer></script>
 </body>

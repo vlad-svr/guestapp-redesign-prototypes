@@ -32,7 +32,7 @@
           <div class="tb-title">Guest registration</div>
           <div class="tb-sub">1 of 2 guests registered</div>
         </div>
-        <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="page-head">
         <div class="kicker">Guest summary</div>
@@ -110,7 +110,7 @@
         <div class="register-all">
           <svg viewBox="0 0 24 24" class="icon ra-icon"><use href="#i-share"/></svg>
           <p class="ra-text"><b>Not together right now?</b> Share a link so the second guest can register from their own phone.</p>
-          <button class="btn btn-outline btn-sm" style="flex-shrink:0">Share</button>
+          <button class="btn btn-outline btn-sm" style="flex-shrink:0" data-modal="m-share">Share</button>
         </div>
       </div>
       <div class="cta-dock">
@@ -127,7 +127,7 @@
           <div class="tb-title">Guest details</div>
           <div class="tb-sub">Second guest</div>
         </div>
-        <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="page-head">
         <div class="kicker">Guest registration</div>
@@ -194,7 +194,7 @@
           <div class="tb-title">Guest details</div>
           <div class="tb-sub">Almost done</div>
         </div>
-        <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="page-head">
         <div class="kicker">Guest registration</div>
@@ -255,7 +255,7 @@
           <div class="tb-title">Guest registration</div>
           <div class="tb-sub">2 of 2 guests registered</div>
         </div>
-        <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="content" style="padding-top:22px">
         <div style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:18px;background:linear-gradient(120deg,#e8fcf7,#f0fdf9 60%,#f6f7fc);border:1px solid rgba(53,229,188,0.35)">
@@ -299,6 +299,8 @@
       </div>
     </div>
 
+<div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><div class="vela-section"><div class="vela-eyebrow">Your progress</div><div class="vela-progress" style="margin-top:10px"><div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">1 of 2 guests</span></div><div class="vp-track"><div class="vp-fill" style="width:50%"></div></div><div class="vp-hint">Finish the pending registrations so your guests can check in without waiting.</div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><button class="vela-action" data-modal-close data-modal="m-share"><span class="va-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></span><span>Share booking link<span class="va-sub">Let co-travellers register themselves</span></span></button><button class="vela-action"><span class="va-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host</span></button></div></div><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M14 9h5"/><path d="M14 13h4"/></svg></span><span><span class="vt-title" style="display:block">Minors skip verification</span><span class="vt-desc">Guests under 18 only fill the form — no ID photos needed.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Ask Vela</div><div class="vela-ask" style="margin-top:10px"><div class="ask-input">Ask anything…<span class="send" style="display:grid;place-items:center;color:#fff">↑</span></div><div class="vela-chips"><span class="chip">Can guests register later?</span><span class="chip">Is my data safe?</span></div></div></div></div></div>
+<div class="proto-modal sheet" id="m-share"><div class="pm-scrim"></div><div class="pm-card"><div class="pm-grabber"></div><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Share booking link</div><div class="pm-desc">Anyone with this link can register guests for booking <b style="color:var(--navy)">CHK-58291</b>. It stops working after check-in.</div><div class="pm-link">guest.chekin.com/r/chk-58291<button class="pm-copy"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy</button></div><div class="pm-share-grid"><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span> WhatsApp</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span> Email</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></span> More</button></div></div></div>
   </div>
 </div>
 
@@ -323,6 +325,7 @@
     <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
   </defs>
 </svg>
+<script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="nav.js" defer></script>
 </body>

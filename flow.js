@@ -31,11 +31,37 @@
   }
 
   function start() {
+    // deep link: #screen-id (from the Prototypes dropdown sub-menu) wins over data-start
+    var hashId = location.hash.slice(1);
+    var target = hashId && document.getElementById(hashId);
+    if (target && target.classList.contains('flow-screen')) {
+      state.history = [];
+      markChip(hashId);
+      show(hashId);
+      return;
+    }
     var first = document.querySelector('.flow-screen[data-start]') || document.querySelector('.flow-screen');
     if (!first) return;
     state.history = [];
     show(first.id);
   }
+
+  function markChip(id) {
+    var chips = document.querySelectorAll('.flow-hud [data-scenario]');
+    Array.prototype.forEach.call(chips, function (c) {
+      c.classList.toggle('on', c.getAttribute('data-scenario') === id);
+    });
+  }
+
+  window.addEventListener('hashchange', function () {
+    var id = location.hash.slice(1);
+    var t = document.getElementById(id);
+    if (t && t.classList.contains('flow-screen')) {
+      state.history = [];
+      markChip(id);
+      show(id);
+    }
+  });
 
   document.addEventListener('click', function (e) {
     var el;

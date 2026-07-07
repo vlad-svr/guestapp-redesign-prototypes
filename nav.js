@@ -1,14 +1,34 @@
-/* Floating prototype switcher — injected on every page. */
+/* Floating prototype switcher — injected on every page.
+   Flow pages expose sub-entries (scenarios) that deep-link via #hash;
+   flow.js picks the hash up and jumps straight to that scenario. */
 (function () {
   var PAGES = [
     { group: 'Hub', items: [
       { file: 'index.html', label: 'Overview & rationale', icon: '⌂' },
     ]},
     { group: 'Interactive flows', items: [
-      { file: 'flow-iv-mobile.html', label: 'IV flow — mobile', icon: '▶' },
-      { file: 'flow-iv-desktop.html', label: 'IV flow — desktop', icon: '▶' },
-      { file: 'flow-registration.html', label: 'Registration flow', icon: '▶' },
+      { file: 'flow-iv-mobile.html', label: 'IV flow — mobile', icon: '▶', subs: [
+        { hash: 's-start', label: 'Full flow (passport / ID card)' },
+        { hash: 's-qr-scan', label: 'Continue from desktop (QR)' },
+        { hash: 's-front-failed', label: 'Validation failed' },
+        { hash: 's-live-1', label: 'Liveness sequence' },
+        { hash: 's-contacts', label: 'Contacts verification' },
+        { hash: 's-unavailable', label: 'Outside check-in window' },
+      ]},
+      { file: 'flow-iv-desktop.html', label: 'IV flow — desktop', icon: '▶', subs: [
+        { hash: 'd-choice', label: 'Start — choose method' },
+        { hash: 'd-qr', label: 'Continue on phone (QR)' },
+        { hash: 'd-cam', label: 'Webcam capture' },
+        { hash: 'd-upload', label: 'Upload files' },
+      ]},
+      { file: 'flow-registration.html', label: 'Registration flow', icon: '▶', subs: [
+        { hash: 'r-hub', label: 'Full flow' },
+        { hash: 'r-details', label: 'Add details' },
+        { hash: 'r-review', label: 'Review & sign' },
+        { hash: 'r-done', label: 'All registered' },
+      ]},
       { file: 'scroll-demo.html', label: 'Scroll behavior demo', icon: '↕' },
+      { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },
     ]},
     { group: 'Mobile', items: [
       { file: 'home.html', label: 'Home & check-in list', icon: '📱' },
@@ -33,7 +53,7 @@
     '.proto-nav summary::-webkit-details-marker{display:none}',
     '.proto-nav summary:hover{background:rgba(30,30,85,0.92)}',
     '.proto-nav summary .pn-dot{width:8px;height:8px;border-radius:50%;background:#8ca5ff;box-shadow:0 0 8px rgba(140,165,255,0.9)}',
-    '.proto-nav .pn-menu{position:absolute;bottom:54px;right:0;width:280px;border-radius:16px;background:rgba(255,255,255,0.92);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid rgba(229,230,238,0.9);box-shadow:0 20px 50px rgba(22,22,67,0.25);padding:10px;max-height:70vh;overflow-y:auto}',
+    '.proto-nav .pn-menu{position:absolute;bottom:54px;right:0;width:300px;border-radius:16px;background:rgba(255,255,255,0.94);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid rgba(229,230,238,0.9);box-shadow:0 20px 50px rgba(22,22,67,0.25);padding:10px;max-height:76vh;overflow-y:auto}',
     '.proto-nav .pn-group{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#9696b9;padding:10px 10px 5px}',
     '.proto-nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;font-size:12.5px;font-weight:600;color:#161643;text-decoration:none}',
     '.proto-nav a:hover{background:#f0f3ff}',
@@ -41,6 +61,13 @@
     '.proto-nav a .pn-ic{width:20px;text-align:center;flex-shrink:0;font-size:13px}',
     '.proto-nav a .pn-badge{margin-left:auto;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#385bf8;background:#f0f3ff;border-radius:99px;padding:2px 7px}',
     '.proto-nav a.active .pn-badge{background:#fff}',
+    /* sub-entries (flow scenarios) */
+    '.proto-nav .pn-subs{margin:0 0 2px;padding-left:20px;position:relative}',
+    '.proto-nav .pn-subs::before{content:"";position:absolute;left:19px;top:4px;bottom:6px;width:2px;border-radius:2px;background:#e5e6ee}',
+    '.proto-nav a.pn-sub{padding:5px 10px 5px 14px;font-size:11.5px;font-weight:500;color:#6b6b95;border-radius:8px}',
+    '.proto-nav a.pn-sub:hover{color:#385bf8;background:#f0f3ff}',
+    '.proto-nav a.pn-sub .pn-dot2{width:5px;height:5px;border-radius:50%;background:#cecede;flex-shrink:0}',
+    '.proto-nav a.pn-sub:hover .pn-dot2{background:#385bf8}',
     '@media print{.proto-nav{display:none}}',
   ].join('\n');
 
@@ -56,6 +83,14 @@
       menu += '<a href="' + p.file + '"' + (active ? ' class="active"' : '') + '>' +
         '<span class="pn-ic">' + p.icon + '</span>' + p.label +
         (active ? '<span class="pn-badge">viewing</span>' : '') + '</a>';
+      if (p.subs) {
+        menu += '<div class="pn-subs">';
+        p.subs.forEach(function (sub) {
+          menu += '<a class="pn-sub" href="' + p.file + '#' + sub.hash + '">' +
+            '<span class="pn-dot2"></span>' + sub.label + '</a>';
+        });
+        menu += '</div>';
+      }
     });
   });
 
@@ -68,5 +103,7 @@
 
   document.addEventListener('click', function (e) {
     if (nav.open && !nav.contains(e.target)) nav.open = false;
+    var sub = e.target.closest && e.target.closest('.proto-nav a');
+    if (sub && nav.contains(sub)) nav.open = false;
   });
 })();
