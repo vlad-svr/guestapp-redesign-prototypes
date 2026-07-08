@@ -61,6 +61,10 @@
 
   h2.sec { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); margin: 48px 0 6px; }
   p.sec-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; }
+  h3.feat { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin: 26px 0 12px; display: flex; align-items: center; gap: 10px; }
+  h3.feat::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .proto-link .ff { font-size: 15px; margin-right: 2px; }
+  .badge-static { display: inline-flex; align-items: center; height: 18px; padding: 0 8px; border-radius: 99px; background: var(--n-100); color: var(--n-600); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; }
 
   .imp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
   .imp {
@@ -112,33 +116,76 @@
     </div>
   </div>
 
-  <h2 class="sec" style="margin-top:36px">Interactive flows</h2>
-  <p class="sec-sub">Click through like a real guest — scenario switcher per flow, camera and sync steps advance automatically, branches follow your choices.</p>
+  <h2 class="sec" style="margin-top:36px">Prototypes by feature</h2>
+  <p class="sec-sub">One canonical prototype per feature and form factor. <b>📱 Mobile</b> and <b>🖥 Desktop</b> sit together under each feature. Most are click-through flows (scenario switcher, auto-advancing camera/sync steps, branches follow your choices); a couple are static screen sets, labelled as such.</p>
 
+  <h3 class="feat">Home &amp; check-in list</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="home.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
+      <h3><span class="ff">📱</span> Home — mobile</h3>
+      <p>Glass top bar and bottom nav, hero with arrival countdown, "next up" spotlight row, progress ring, all-done celebration state.</p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="home-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Home — desktop</h3>
+      <p>Navy sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards.</p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Identity verification</h3>
   <div class="proto-links" style="margin-top:0">
     <a class="proto-link" href="flow-iv-mobile.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3>IV flow — mobile</h3>
+      <h3><span class="ff">📱</span> IV flow — mobile</h3>
       <p>Passport → liveness, or ID card → front + back + quick selfie. Plus QR handoff entry, upload → crop &amp; confirm, camera-denied, email + SMS contact verification (with wrong-code state), failure detours and the unavailable state.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-iv-desktop.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3>IV flow — desktop</h3>
+      <h3><span class="ff">🖥</span> IV flow — desktop</h3>
       <p>Full desktop parity: phone handoff (QR + live sync), webcam with document choice + back side + selfie/liveness, upload → crop &amp; confirm, email + SMS contact verification, and every detour (validation failed, webcam blocked, unavailable).</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
+  </div>
+
+  <h3 class="feat">Guest registration</h3>
+  <div class="proto-links" style="margin-top:0">
     <a class="proto-link" href="flow-registration.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3>Registration flow — mobile</h3>
+      <h3><span class="ff">📱</span> Registration flow — mobile</h3>
       <p>Hub → add details (scan-to-autofill jumps into IV) → review &amp; sign with the full submission tail: signature, backend-driven agreement clauses, contract copy opt-in and the legal fine print.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
+    <a class="proto-link" href="guest-registration-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Registration — desktop</h3>
+      <p>Hub with group progress ring and copy-link banner, plus the two-column pre-filled review form with auto tags, inline signature and the agreement clauses. <span class="badge-static">static screens</span></p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Registration complete &amp; offers</h3>
+  <div class="proto-links" style="margin-top:0">
     <a class="proto-link" href="flow-registered-modal.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3>Registered modal + offers</h3>
-      <p>The modal shown while a guest is being registered: offers load during the wait, the status pill flips to “registered” mid-browse, cart summary, no-offers and error states.</p>
+      <h3><span class="ff">📱🖥</span> Registered modal + offers</h3>
+      <p>The modal shown while a guest is being registered: offers load during the wait, the status pill flips to “registered” mid-browse, cart summary, no-offers and error states. Mobile bottom sheet and desktop dialog in one flow.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="sec">Building blocks</h2>
+  <p class="sec-sub">Shared primitives and behaviors used across the flows above.</p>
+
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="vela.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkle"/></svg></div>
+      <h3>Vela helper</h3>
+      <p>The contextual assistant: glass rail on desktop, FAB + glass sheet on mobile — with Ask Vela input, quick actions (QR handoff, share link, guest count), progress, offers and guidebook blocks.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="modals-demo.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-layers"/></svg></div>
@@ -148,63 +195,9 @@
     </a>
     <a class="proto-link" href="scroll-demo.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-scroll"/></svg></div>
-      <h3>Scroll behavior demo</h3>
+      <h3>Scroll behavior</h3>
       <p>Long form and long home on mobile (sticky glass top bar, CTA dock, pinned bottom nav) plus desktop with fixed sidebar and Vela rail.</p>
       <span class="go">Open demo <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-  </div>
-
-  <h2 class="sec">Screen galleries</h2>
-  <p class="sec-sub">All states side by side — for design review and comparison.</p>
-
-  <div class="proto-links" style="margin-top:0">
-    <a class="proto-link" href="home.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
-      <h3>Home &amp; check-in list</h3>
-      <p>Glass top bar and bottom nav, hero with arrival countdown, "next up" spotlight row, progress ring, all-done celebration state.</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="iv-flow.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-scan-face"/></svg></div>
-      <h3>Identity verification</h3>
-      <p>14 screens: happy path (intro → document → capture → back side → done), edge cases (validation failure, camera denied, upload preview), and the full liveness sequence (position, turn, blink, pass, fail).</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="guest-registration.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-users"/></svg></div>
-      <h3>Guest registration</h3>
-      <p>Registration hub in every state — nobody registered, partial with IV pending, everyone complete, single-guest booking with minors — plus review screen with auto-filled field tags and the manual form.</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-  </div>
-
-  <h2 class="sec">Desktop versions</h2>
-  <p class="sec-sub">The V3 desktop journey shell: navy sidebar (per-task status badges + a live progress module), centered 640px content column, and the upsell/contact right rail on Home.</p>
-
-  <div class="proto-links" style="margin-top:0">
-    <a class="proto-link" href="home-desktop.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
-      <h3>Home — desktop</h3>
-      <p>Sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards.</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="iv-flow-desktop.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
-      <h3>Identity verification — desktop</h3>
-      <p>Choose webcam vs phone (QR handoff, recommended), then a live-sync view that mirrors the phone's progress in real time on the desktop.</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="guest-registration-desktop.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
-      <h3>Guest registration — desktop</h3>
-      <p>Hub with group progress ring and copy-link banner, plus the two-column pre-filled review form with auto tags and inline signature.</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="vela.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkle"/></svg></div>
-      <h3>Vela helper</h3>
-      <p>The contextual assistant: glass rail on desktop, FAB + glass sheet on mobile — with Ask Vela input, quick actions (QR handoff, share link, guest count), progress, offers and guidebook blocks.</p>
-      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
 

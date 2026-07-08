@@ -2,12 +2,18 @@
    Flow pages expose sub-entries (scenarios) that deep-link via #hash;
    flow.js picks the hash up and jumps straight to that scenario. */
 (function () {
+  // Organized by FEATURE. Under each feature, mobile (📱) and desktop (🖥)
+  // sit together so the two form factors are never scattered across sections.
   var PAGES = [
-    { group: 'Hub', items: [
+    { group: 'Overview', items: [
       { file: 'index.html', label: 'Overview & rationale', icon: '⌂' },
     ]},
-    { group: 'Interactive flows', items: [
-      { file: 'flow-iv-mobile.html', label: 'IV flow — mobile', icon: '▶', subs: [
+    { group: 'Home', items: [
+      { file: 'home.html', label: 'Home — mobile', icon: '📱' },
+      { file: 'home-desktop.html', label: 'Home — desktop', icon: '🖥' },
+    ]},
+    { group: 'Identity verification', items: [
+      { file: 'flow-iv-mobile.html', label: 'IV flow — mobile', icon: '📱', subs: [
         { hash: 's-start', label: 'Full flow (passport / ID card)' },
         { hash: 's-qr-scan', label: 'Continue from desktop (QR)' },
         { hash: 's-crop', label: 'Upload — crop & confirm' },
@@ -17,7 +23,7 @@
         { hash: 's-contact-email', label: 'Contacts — email + SMS' },
         { hash: 's-unavailable', label: 'Outside check-in window' },
       ]},
-      { file: 'flow-iv-desktop.html', label: 'IV flow — desktop', icon: '▶', subs: [
+      { file: 'flow-iv-desktop.html', label: 'IV flow — desktop', icon: '🖥', subs: [
         { hash: 'd-choice', label: 'Start — choose method' },
         { hash: 'd-qr', label: 'Continue on phone (QR)' },
         { hash: 'd-doc', label: 'Webcam — choose document' },
@@ -29,12 +35,17 @@
         { hash: 'd-unavailable', label: 'Outside check-in window' },
         { hash: 'd-upload', label: 'Upload view (deprecated)' },
       ]},
-      { file: 'flow-registration.html', label: 'Registration flow', icon: '▶', subs: [
+    ]},
+    { group: 'Guest registration', items: [
+      { file: 'flow-registration.html', label: 'Registration flow — mobile', icon: '📱', subs: [
         { hash: 'r-hub', label: 'Full flow' },
         { hash: 'r-details', label: 'Add details' },
         { hash: 'r-review', label: 'Review & sign' },
         { hash: 'r-done', label: 'Hub — guest without IV' },
       ]},
+      { file: 'guest-registration-desktop.html', label: 'Registration — desktop', icon: '🖥' },
+    ]},
+    { group: 'Registration complete', items: [
       { file: 'flow-registered-modal.html', label: 'Registered modal + offers', icon: '▶', subs: [
         { hash: 'dm-loading', label: 'Full flow — with offers' },
         { hash: 'dm-offers', label: 'Offer stack' },
@@ -44,21 +55,11 @@
         { hash: 'dm-plain-loading', label: 'Upselling disabled' },
         { hash: 'dm-error', label: 'Submission failed' },
       ]},
-      { file: 'scroll-demo.html', label: 'Scroll behavior demo', icon: '↕' },
-      { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },
     ]},
-    { group: 'Mobile', items: [
-      { file: 'home.html', label: 'Home & check-in list', icon: '📱' },
-      { file: 'iv-flow.html', label: 'Identity verification', icon: '🪪' },
-      { file: 'guest-registration.html', label: 'Guest registration', icon: '📝' },
-    ]},
-    { group: 'Desktop', items: [
-      { file: 'home-desktop.html', label: 'Home', icon: '🖥' },
-      { file: 'iv-flow-desktop.html', label: 'Identity verification', icon: '🖥' },
-      { file: 'guest-registration-desktop.html', label: 'Guest registration', icon: '🖥' },
-    ]},
-    { group: 'Components', items: [
+    { group: 'Building blocks', items: [
       { file: 'vela.html', label: 'Vela helper', icon: '✦' },
+      { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },
+      { file: 'scroll-demo.html', label: 'Scroll behavior', icon: '↕' },
     ]},
   ];
 

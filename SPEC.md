@@ -19,14 +19,16 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | Prototype file | Spec section |
 > |---|---|
 > | `flow-registered-modal.html` + `deals.css` | §1 Guest-registered modal |
-> | `flow-registration.html`, `guest-registration.html`, `reg.css` | §2 Guest registration hub |
-> | `flow-iv-mobile.html`, `iv-flow.html`, `iv.css` | §3 Identity verification — mobile |
-> | `flow-iv-desktop.html`, `iv-flow-desktop.html`, `ivd.css` | §4 Identity verification — desktop |
+> | `flow-registration.html`, `guest-registration-desktop.html`, `reg.css` | §2 Guest registration |
+> | `flow-iv-mobile.html`, `iv.css` | §3 Identity verification — mobile |
+> | `flow-iv-desktop.html`, `ivd.css` | §4 Identity verification — desktop |
 > | `home.html`, `home-desktop.html`, `home.css` | §5 Home & check-in list |
 > | `vela.html`, vela blocks in other pages | §6 Vela helper |
 >
 > **Last synced:** 2026-07-08 · all sections match deployed prototypes at
-> https://vlad-svr.github.io/guestapp-redesign-prototypes/
+> https://vlad-svr.github.io/guestapp-redesign-prototypes/ · duplicate static galleries
+> (`iv-flow.html`, `iv-flow-desktop.html`, `guest-registration.html`) removed — the
+> interactive flows are now the single source per feature.
 
 Real-code anchors are given as `path/to/Component.tsx` relative to
 `apps/guestapp/src/` — the redesign must keep a 1:1 mapping to these components
@@ -146,7 +148,7 @@ empty-wait→empty 2.2 s, plain-loading→plain-done 2.2 s)
 
 **Real components:** `pages/GuestRegistrationView/GuestRegistrationView.tsx`,
 `components/GuestsPanel/*` (`GuestItem`, `GuestBox`), `HeaderGuestInformation.tsx`
-· **Prototypes:** `flow-registration.html` (interactive), `guest-registration.html` (gallery)
+· **Prototypes:** `flow-registration.html` (mobile flow), `guest-registration-desktop.html` (desktop, static screens)
 
 ### 2.1 Layout invariants
 
@@ -170,7 +172,7 @@ required-but-still-empty fields use the amber `.field.needed` treatment tied to 
 
 Kebab menu per registered guest: Edit (if editable), Delete.
 
-### 2.3 Hub cases (gallery `guest-registration.html`)
+### 2.3 Hub cases
 
 | Case | Ring | CTA |
 |---|---|---|
@@ -185,7 +187,7 @@ Kebab menu per registered guest: Edit (if editable), Delete.
 `flow-registered-modal.html`) → `r-done` (hub, 2/3, Carlos still `verification_pending`).
 Scan-to-autofill card in `r-details` deep-links to the IV flow (§3).
 
-### 2.5 Form composition (bottom of `r-review` + both gallery review forms)
+### 2.5 Form composition (bottom of `r-review` + the desktop review form)
 
 The real form is **schema-driven per property & country**
 (`hooks/useGuestFormFields/useDefaultFieldsMapper.tsx`, groups via `GroupedFields.tsx`) —
@@ -217,7 +219,7 @@ Fixed tail order after the field groups (mirrors `SignBlock.tsx`):
 
 ## §3 Identity verification — mobile
 
-**Prototypes:** `flow-iv-mobile.html` (interactive), `iv-flow.html` (gallery, 14 screens)
+**Prototype:** `flow-iv-mobile.html` (interactive; scenario chips reach all 14 screens/states)
 
 Branch rule (set at `s-doc`): `passport` → front capture → **liveness** sequence;
 `dni`/ID card → front → back → quick selfie. Encoded via `data-set-doc` +
@@ -264,7 +266,7 @@ step counter (Step N of 4), since the real step count varies by document type.
 
 ## §4 Identity verification — desktop
 
-**Prototypes:** `flow-iv-desktop.html` (interactive), `iv-flow-desktop.html` (gallery)
+**Prototype:** `flow-iv-desktop.html` (interactive; scenario chips reach every screen/state)
 
 Method choice at `d-choice`* (Vela rail visible), then desktop mirrors the full mobile
 case set:
