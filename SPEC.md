@@ -261,6 +261,10 @@ Skip is always available behind a confirm modal (`m-skip`) — skipping IV keeps
 Camera chrome: light shell; dark gradient only **inside** the capture frame.
 Intro copy avoids hard-coded step totals ("A few quick steps") — the stepper is the only
 step counter (Step N of 4), since the real step count varies by document type.
+Vela: a `vela-fab` in the top bar opens the IV help sheet (`m-vela` — photo tips,
+privacy note, upload escape, ask box) on **non-camera screens only**: `s-start`,
+`s-doc`, `s-crop`, `s-denied`, `s-unavailable` and the five contacts screens. Camera,
+crop-source capture, selfie and liveness screens never show the FAB (§6 placement rule).
 
 ---
 
@@ -292,6 +296,23 @@ case set:
 Detours: `d-front-failed` (validation retry — recovery is primary blue, offers upload
 fallback), `d-cam-denied` (webcam permission blocked — enable steps + QR/upload
 alternatives), `d-unavailable` (outside check-in window).
+**Vela rail (stage-aware):** every desktop screen carries the 324 px Vela rail except
+`d-complete` (full-bleed celebration) and deprecated `d-upload`. Rail content swaps per
+stage — progress module (4 nodes: Choose your document → Scan your document → Selfie &
+liveness → Confirm details) plus stage tips and escape actions:
+| Stage (screens) | Tips eyebrow | Escape actions |
+|---|---|---|
+| `d-qr`/`d-qr-done` | While your phone connects | webcam (`d-doc`), upload (`d-crop`) |
+| `d-doc` | Choosing your document | — (ask chips) |
+| `d-cam`/`d-cam-captured` | Getting a sharp photo | phone (`d-qr`) |
+| `d-front-failed` | Why photos get rejected | phone (`d-qr`), upload (`d-crop`) |
+| `d-back`/`d-back-captured` | Now the back side | — |
+| `d-crop`/`d-crop-back` | Uploading a file | — (ask chips) |
+| `d-selfie` | Getting a good selfie (incl. privacy tip) | — |
+| `d-live-1..3`/`d-live-passed` | Liveness check (single tip — kept minimal) | — |
+| contacts/code screens | Why we verify this / About your code / Wrong code? | — |
+| `d-cam-denied` | Camera blocked | phone (`d-qr`), upload (`d-crop`) |
+| `d-unavailable` | Why you can't start yet (no progress module) | share link (`m-share`) |
 `d-upload` (the old standalone dropzone view with a multi-file list) is **deprecated**
 but kept in the prototype behind a crossed-out overlay for reference — no entry links
 point to it; do not implement it.
@@ -318,6 +339,17 @@ Desktop: right rail (324 px) — progress module, quick actions (Share booking l
 QR mobile-switch → `m-qr`, chat), contextual tips, ask box. Mobile: FAB in the top bar →
 right sheet (`m-vela`); inline `vela-box` tips under focused form fields.
 Vela never blocks task UI; glass styling allowed (it's chrome, not reading surface).
+
+**Placement rule:** Vela is present on every screen of every flow **except** (a) over
+active camera / crop-source / liveness surfaces on mobile (attention must stay in the
+frame — the on-camera glass pills own that space), (b) full-bleed celebration screens
+(`d-complete`, `s-complete` — the next-step CTA *is* the screen), (c) inside modals
+(never stack Vela on an overlay), and (d) deprecated screens. On desktop the rail may
+stay beside camera screens (it sits outside the task column) but goes **minimal during
+liveness** — one tip, no actions, no ask box.
+**Rail content is stage-aware, never generic** — tips, escape actions and ask-chips must
+match what the guest is doing on that screen (see the §4 stage table); detour screens
+(failed / denied / unavailable) always offer at least one alternative path out.
 
 ---
 

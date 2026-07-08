@@ -167,7 +167,7 @@
               <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
               <div class="vela-steps">
                 <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
-                <div class="vs todo"><span class="vs-dot"></span> Photo of the front</div>
+                <div class="vs todo"><span class="vs-dot"></span> Scan your document</div>
                 <div class="vs todo"><span class="vs-dot"></span> Selfie &amp; liveness</div>
                 <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
               </div>
@@ -207,7 +207,7 @@
 
     <!-- ═══ d-qr · ScanQRCodeView (desktop shows QR, waits for phone) ═══ -->
     <div class="flow-screen" id="d-qr" data-label="QR handoff — waiting for phone (simulated)" data-autonext="d-qr-done" data-autodelay="4200" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -291,12 +291,58 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
+              <div class="vela-steps">
+                <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">While your phone connects</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye"/></svg></span><span><span class="vt-title" style="display:block">Keep this window open</span><span class="vt-desc">It updates live — you’ll see each step tick off here as you progress on your phone.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Same secure session</span><span class="vt-desc">The QR links your phone to this verification — nothing is shared with any other device.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-goto="d-doc">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-camera"/></svg></span>
+                <span>Use the webcam instead<span class="va-sub">If your phone isn’t handy</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="vela-action" data-goto="d-crop">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span>
+                <span>Upload a photo<span class="va-sub">Pick a file from this computer</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-qr-done ═══ -->
     <div class="flow-screen" id="d-qr-done" data-label="Phone finished — synced live" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -351,12 +397,58 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
+              <div class="vela-steps">
+                <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">While your phone connects</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye"/></svg></span><span><span class="vt-title" style="display:block">Keep this window open</span><span class="vt-desc">It updates live — you’ll see each step tick off here as you progress on your phone.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Same secure session</span><span class="vt-desc">The QR links your phone to this verification — nothing is shared with any other device.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-goto="d-doc">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-camera"/></svg></span>
+                <span>Use the webcam instead<span class="va-sub">If your phone isn’t handy</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="vela-action" data-goto="d-crop">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span>
+                <span>Upload a photo<span class="va-sub">Pick a file from this computer</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-cam · webcam ═══ -->
     <div class="flow-screen" id="d-cam" data-label="Webcam capture (auto)" data-autonext="d-cam-captured" data-autodelay="3200" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -421,12 +513,53 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Getting a sharp photo</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Good light, no glare</span><span class="vt-desc">Face a window if you can — tilt the card slightly if lamps reflect off it.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-maximize"/></svg></span><span><span class="vt-title" style="display:block">Fill the frame</span><span class="vt-desc">Hold it steady inside the brackets with all four corners visible — capture is automatic.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-goto="d-qr">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+                <span>Continue on your phone<span class="va-sub">Phone cameras scan sharper</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-cam-captured ═══ -->
     <div class="flow-screen" id="d-cam-captured" data-label="Webcam photo captured" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -488,12 +621,53 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Getting a sharp photo</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Good light, no glare</span><span class="vt-desc">Face a window if you can — tilt the card slightly if lamps reflect off it.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-maximize"/></svg></span><span><span class="vt-title" style="display:block">Fill the frame</span><span class="vt-desc">Hold it steady inside the brackets with all four corners visible — capture is automatic.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-goto="d-qr">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+                <span>Continue on your phone<span class="va-sub">Phone cameras scan sharper</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-doc ═══ -->
     <div class="flow-screen" id="d-doc" data-label="Choose document — branch point" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -584,12 +758,56 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
+              <div class="vela-steps">
+                <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Choosing your document</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-zap"/></svg></span><span><span class="vt-title" style="display:block">Passport is fastest</span><span class="vt-desc">Single-sided — one photo and you’re done. ID cards need front and back.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Your data is safe</span><span class="vt-desc">Photos are encrypted, used only for this verification, and deleted afterwards per GDPR.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Ask Vela</div>
+            <div class="vela-ask" style="margin-top:10px">
+              <div class="ask-input">
+                Ask anything about check-in…
+                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+              </div>
+              <div class="vela-chips">
+                <span class="chip">Which documents work?</span>
+                <span class="chip">Is my data safe?</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-front-failed ═══ -->
     <div class="flow-screen" id="d-front-failed" data-label="Validation failed — retry detour" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -660,12 +878,58 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Why photos get rejected</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-alert-triangle"/></svg></span><span><span class="vt-title" style="display:block">Glare and blur</span><span class="vt-desc">Reflections and camera shake are the most common causes — try tilting the card.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-maximize"/></svg></span><span><span class="vt-title" style="display:block">Check the corners</span><span class="vt-desc">The whole document must be inside the frame — nothing cropped.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-goto="d-qr">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+                <span>Continue on your phone<span class="va-sub">Phone cameras scan sharper</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="vela-action" data-goto="d-crop">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span>
+                <span>Upload a file instead<span class="va-sub">Pick a photo from this computer</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-back ═══ -->
     <div class="flow-screen" id="d-back" data-label="Webcam — back side (auto)" data-autonext="d-back-captured" data-autodelay="3000" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -726,12 +990,43 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Now the back side</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-flip"/></svg></span><span><span class="vt-title" style="display:block">Why we need the back</span><span class="vt-desc">The machine-readable lines confirm your document is genuine — and fill your form automatically.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Same tips apply</span><span class="vt-desc">Good light, no glare, all four corners inside the frame.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-back-captured ═══ -->
     <div class="flow-screen" id="d-back-captured" data-label="Back captured" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -792,12 +1087,43 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Now the back side</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-flip"/></svg></span><span><span class="vt-title" style="display:block">Why we need the back</span><span class="vt-desc">The machine-readable lines confirm your document is genuine — and fill your form automatically.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Same tips apply</span><span class="vt-desc">Good light, no glare, all four corners inside the frame.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-selfie ═══ -->
     <div class="flow-screen" id="d-selfie" data-label="Quick selfie (SelfieScanView, no liveness)" data-autonext="d-contact-email" data-autodelay="3200" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -853,12 +1179,44 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Getting a good selfie</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Even light on your face</span><span class="vt-desc">Face the light — avoid windows or lamps behind you.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye"/></svg></span><span><span class="vt-title" style="display:block">Nothing covering your face</span><span class="vt-desc">Remove glasses, hats or masks so we can match you to your document photo.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Your selfie stays private</span><span class="vt-desc">It’s encrypted, compared only with your document photo, then deleted.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-live-1 ═══ -->
     <div class="flow-screen" id="d-live-1" data-label="Liveness 1 · position your face" data-autonext="d-live-2" data-autodelay="2600" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -914,12 +1272,42 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Liveness check</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-scan-face"/></svg></span><span><span class="vt-title" style="display:block">Follow the prompts</span><span class="vt-desc">Keep your face inside the oval — about 10 seconds. This proves it’s really you, not a photo.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-live-2 ═══ -->
     <div class="flow-screen" id="d-live-2" data-label="Liveness 2 · turn your head" data-autonext="d-live-3" data-autodelay="2600" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -978,12 +1366,42 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Liveness check</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-scan-face"/></svg></span><span><span class="vt-title" style="display:block">Follow the prompts</span><span class="vt-desc">Keep your face inside the oval — about 10 seconds. This proves it’s really you, not a photo.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-live-3 ═══ -->
     <div class="flow-screen" id="d-live-3" data-label="Liveness 3 · blink" data-autonext="d-live-passed" data-autodelay="2600" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1042,12 +1460,42 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Liveness check</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-scan-face"/></svg></span><span><span class="vt-title" style="display:block">Follow the prompts</span><span class="vt-desc">Keep your face inside the oval — about 10 seconds. This proves it’s really you, not a photo.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-live-passed ═══ -->
     <div class="flow-screen" id="d-live-passed" data-label="Liveness passed" data-autonext="d-contact-email" data-autodelay="2600" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1107,12 +1555,42 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Liveness check</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-scan-face"/></svg></span><span><span class="vt-title" style="display:block">Follow the prompts</span><span class="vt-desc">Keep your face inside the oval — about 10 seconds. This proves it’s really you, not a photo.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-contact-email ═══ -->
     <div class="flow-screen" id="d-contact-email" data-label="Verify your email — enter address (ContactsVerificationView)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1165,12 +1643,55 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Selfie & liveness</div>
+                <div class="vs active"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Why we verify this</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span><span><span class="vt-title" style="display:block">Your host uses this address</span><span class="vt-desc">Check-in instructions and your virtual keys are sent here — a typo would lock you out.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Never shared</span><span class="vt-desc">Your contact details go to your host only — never to third parties.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Ask Vela</div>
+            <div class="vela-ask" style="margin-top:10px">
+              <div class="ask-input">
+                Ask anything about check-in…
+                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+              </div>
+              <div class="vela-chips">
+                <span class="chip">Why do you need my email?</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-code-email ═══ -->
     <div class="flow-screen" id="d-code-email" data-label="Enter email code (ContactsVerificationCodes)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1236,12 +1757,43 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Selfie & liveness</div>
+                <div class="vs active"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">About your code</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span><span><span class="vt-title" style="display:block">Nothing arrived?</span><span class="vt-desc">Check your spam folder — or tap Resend code under the boxes.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-rotate"/></svg></span><span><span class="vt-title" style="display:block">Codes expire quickly</span><span class="vt-desc">Each code lasts 2 minutes — request a fresh one if it lapsed.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-code-email-error ═══ -->
     <div class="flow-screen" id="d-code-email-error" data-label="Wrong code — retry (invalid_verification_code)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1301,12 +1853,43 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Selfie & liveness</div>
+                <div class="vs active"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Wrong code?</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-alert-triangle"/></svg></span><span><span class="vt-title" style="display:block">Typos happen</span><span class="vt-desc">Double-check the latest email — an older code may have expired already.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-rotate"/></svg></span><span><span class="vt-title" style="display:block">Start fresh</span><span class="vt-desc">Request a new code, or change the email address if it’s wrong.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-contact-phone ═══ -->
     <div class="flow-screen" id="d-contact-phone" data-label="Verify your phone — enter number (SMS)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1359,12 +1942,42 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Selfie & liveness</div>
+                <div class="vs active"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Why we verify this</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span><span><span class="vt-title" style="display:block">Your host texts this number</span><span class="vt-desc">Arrival updates and door codes arrive by SMS — use the phone you’ll travel with.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-code-phone ═══ -->
     <div class="flow-screen" id="d-code-phone" data-label="Enter SMS code" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1427,11 +2040,41 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Scan your document</div>
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Selfie & liveness</div>
+                <div class="vs active"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">About your code</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span><span><span class="vt-title" style="display:block">SMS can take a minute</span><span class="vt-desc">Wait a moment before requesting a new one — codes expire after 2 minutes.</span></span></div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
     <!-- ═══ d-unavailable ═══ -->
     <div class="flow-screen" id="d-unavailable" data-label="Verification unavailable (IVUnavailableView)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1490,12 +2133,40 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Why you can’t start yet</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span><span><span class="vt-title" style="display:block">Opens closer to arrival</span><span class="vt-desc">Your host enables verification 3 days before check-in — we’ll email you the moment it opens.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span><span><span class="vt-title" style="display:block">Why it’s worth it</span><span class="vt-desc">Finishing early unlocks your virtual keys for instant check-in.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-modal="m-share">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
+                <span>Share booking link<span class="va-sub">Let co-travellers register themselves</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-cam-denied ═══ -->
     <div class="flow-screen" id="d-cam-denied" data-label="Webcam blocked (permission denied)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1573,12 +2244,57 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Camera blocked</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-settings"/></svg></span><span><span class="vt-title" style="display:block">Re-enable it in your browser</span><span class="vt-desc">Click the camera icon in the address bar, allow access, then try again.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px">
+              <button class="vela-action" data-goto="d-qr">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+                <span>Continue on your phone<span class="va-sub">No webcam needed</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="vela-action" data-goto="d-crop">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span>
+                <span>Upload a photo instead<span class="va-sub">Pick a file from this computer</span></span>
+                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-crop (front) — upload goes straight here from the native file picker ═══ -->
     <div class="flow-screen" id="d-crop" data-label="Upload — crop &amp; confirm (front)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1647,12 +2363,56 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Uploading a file</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg></span><span><span class="vt-title" style="display:block">Use an original photo</span><span class="vt-desc">Sharp and well lit, straight from your camera — screenshots and photocopies are usually rejected.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg></span><span><span class="vt-title" style="display:block">One file per side</span><span class="vt-desc">ID cards need a separate photo of the back — we’ll ask for it next.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Ask Vela</div>
+            <div class="vela-ask" style="margin-top:10px">
+              <div class="ask-input">
+                Ask anything about check-in…
+                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+              </div>
+              <div class="vela-chips">
+                <span class="chip">My photo keeps failing</span>
+                <span class="chip">Is my data safe?</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
     <!-- ═══ d-crop-back ═══ -->
     <div class="flow-screen" id="d-crop-back" data-label="Upload — crop &amp; confirm (back)" style="flex:1">
-      <div class="desktop-shell" style="min-height:0;flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
         <aside class="sidebar">
           <div class="sb-head">
             <div class="sb-logo">V</div>
@@ -1719,6 +2479,50 @@
             </div>
           </div>
         </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your verification</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
+              <div class="vela-steps">
+                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
+                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
+                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
+                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Uploading a file</div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg></span><span><span class="vt-title" style="display:block">Use an original photo</span><span class="vt-desc">Sharp and well lit, straight from your camera — screenshots and photocopies are usually rejected.</span></span></div>
+              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg></span><span><span class="vt-title" style="display:block">One file per side</span><span class="vt-desc">ID cards need a separate photo of the back — we’ll ask for it next.</span></span></div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Ask Vela</div>
+            <div class="vela-ask" style="margin-top:10px">
+              <div class="ask-input">
+                Ask anything about check-in…
+                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+              </div>
+              <div class="vela-chips">
+                <span class="chip">My photo keeps failing</span>
+                <span class="chip">Is my data safe?</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
       </div>
     </div>
 
