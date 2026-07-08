@@ -261,7 +261,7 @@
           <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
           Nothing is charged yet — review everything on the payment step. You can remove extras any time before paying.
         </div>
-        <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="dm-done">Review &amp; pay <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-payments-mobile.html#p-cart">Review &amp; pay <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
         <a class="btn-ghost" style="text-align:center;font-size:12px" href="flow-registration.html#r-done">Back to guest list</a>
       </div>
     </div>
@@ -369,7 +369,7 @@
         <div class="dm-pill done">
           <div class="p-state">
             <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
-            <span>Ana is registered!<span class="p-sub">2 of 3 guests done</span></span>
+            <span>2 of 3 guests done<span class="p-sub">Ana's registration is confirmed</span></span>
           </div>
         </div>
         <div class="dm-success">
@@ -382,7 +382,8 @@
           <span><span class="nx-title" style="display:block">Verify Carlos's ID</span><span class="nx-sub">Details saved · takes ~2 minutes</span></span>
           <svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg>
         </a>
-        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registration.html#r-done">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-iv-mobile.html">Verify Carlos's ID <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn-ghost" style="text-align:center;font-size:12px" href="flow-registration.html#r-done">Back to guest list</a>
         <p class="sim-note">No offers for this property → the modal is a pure success moment, never an empty “no deals available”.</p>
       </div>
     </div>
@@ -435,7 +436,7 @@
         <div class="dm-pill done">
           <div class="p-state">
             <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
-            <span>Ana is registered!<span class="p-sub">2 of 3 guests done</span></span>
+            <span>2 of 3 guests done<span class="p-sub">Ana's registration is confirmed</span></span>
           </div>
         </div>
         <div class="dm-success">
@@ -448,7 +449,8 @@
           <span><span class="nx-title" style="display:block">Verify Carlos's ID</span><span class="nx-sub">Details saved · takes ~2 minutes</span></span>
           <svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg>
         </a>
-        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registration.html#r-done">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-iv-mobile.html">Verify Carlos's ID <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn-ghost" style="text-align:center;font-size:12px" href="flow-registration.html#r-done">Back to guest list</a>
       </div>
     </div>
 
@@ -494,8 +496,12 @@
     </div>
     <div class="dm-scrim" style="top:44px"></div>
     <div class="dm-dialog" id="dk-dialog" data-dk-var="offers">
-      <div class="dm-pill done">
-        <div class="p-state">
+      <div class="dm-pill morph">
+        <div class="p-state p-loading">
+          <span class="p-ic" style="background:var(--tint-info);color:var(--blue-500)"><span class="dm-spin"></span></span>
+          <span>Sending Ana's details…<span class="p-sub">Takes a few seconds — feel free to browse meanwhile</span></span>
+        </div>
+        <div class="p-state p-done">
           <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
           <span>Ana is registered!<span class="p-sub">2 of 3 guests done — you can keep browsing</span></span>
         </div>
@@ -651,7 +657,7 @@
         <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
         Nothing is charged yet — review everything on the payment step. You can remove extras any time before paying.
       </div>
-      <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="dm-done">Review &amp; pay <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+      <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-payments-desktop.html#pd-cart">Review &amp; pay <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
       <a class="btn-ghost" style="text-align:center;font-size:12px" href="flow-registration.html#r-done">Back to guest list</a>
     </div>
 
@@ -660,7 +666,7 @@
       <div class="dm-pill done">
         <div class="p-state">
           <span class="p-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
-          <span>Ana is registered!<span class="p-sub">2 of 3 guests done</span></span>
+          <span>2 of 3 guests done<span class="p-sub">Ana's registration is confirmed</span></span>
         </div>
       </div>
       <div class="dm-success">
@@ -673,7 +679,8 @@
         <span><span class="nx-title" style="display:block">Verify Carlos's ID</span><span class="nx-sub">Details saved · takes ~2 minutes</span></span>
         <svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg>
       </a>
-      <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registration.html#r-done">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+      <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-iv-mobile.html">Verify Carlos's ID <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+        <a class="btn-ghost" style="text-align:center;font-size:12px" href="flow-registration.html#r-done">Back to guest list</a>
     </div>
 
     <!-- desktop variant: upselling disabled (plain status modal) -->

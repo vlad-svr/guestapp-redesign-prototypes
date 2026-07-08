@@ -301,11 +301,10 @@ a { text-decoration: none; color: inherit; }
 }
 .card-body { padding: 16px 20px; }
 
-/* Glass card variant */
+/* "Glass" card variant — opaque by rule: liquid glass is chrome-only,
+   reading surfaces (cards carrying body text) stay solid for contrast. */
 .card.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(22px) saturate(1.65);
-  -webkit-backdrop-filter: blur(22px) saturate(1.65);
+  background: var(--n-0);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
@@ -402,6 +401,8 @@ a { text-decoration: none; color: inherit; }
 .field .hint { font-size: 11.5px; color: var(--text-tertiary); }
 .field.error .input { border-color: var(--red-soft); box-shadow: 0 0 0 3px rgba(248, 75, 122, 0.14); }
 .field.error .hint { color: var(--red-soft); font-weight: 500; }
+.field.needed .input { border-color: var(--amber-500); box-shadow: 0 0 0 3px rgba(255, 183, 0, 0.16); }
+.field.needed .hint { color: var(--amber-700); font-weight: 500; }
 .field.success .input { border-color: var(--green-600); }
 
 /* Badges */
@@ -864,4 +865,10 @@ a { text-decoration: none; color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
+}
+
+/* Solid fallback: browsers without backdrop-filter get opaque chrome
+   instead of translucency over content (Appendix A rule 1). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .topbar, .progress-track, .vela-rail, .vela-sheet { background: rgba(255, 255, 255, 0.97); }
 }

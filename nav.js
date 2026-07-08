@@ -56,6 +56,26 @@
         { hash: 'dm-error', label: 'Submission failed' },
       ]},
     ]},
+    { group: 'Payments', items: [
+      { file: 'flow-payments-mobile.html', label: 'Payments flow — mobile', icon: '📱', subs: [
+        { hash: 'p-cart', label: 'Full flow (cart → pay → receipt)' },
+        { hash: 'p-later', label: 'Pay later' },
+        { hash: 'p-form', label: 'Card form' },
+        { hash: 'p-3ds', label: 'Bank confirmation (3-D Secure)' },
+        { hash: 'p-error', label: 'Payment failed' },
+        { hash: 'p-slow', label: 'Slow confirmation' },
+        { hash: 'p-history', label: 'Order history' },
+        { hash: 'p-empty', label: 'Empty cart' },
+        { hash: 'p-deposit', label: 'Deposit chooser' },
+      ]},
+      { file: 'flow-payments-desktop.html', label: 'Payments flow — desktop', icon: '🖥', subs: [
+        { hash: 'pd-cart', label: 'Full flow (cart → pay → receipt)' },
+        { hash: 'pd-form', label: 'Card form' },
+        { hash: 'pd-error', label: 'Payment failed' },
+        { hash: 'pd-history', label: 'Order history' },
+        { hash: 'pd-deposit', label: 'Deposit chooser' },
+      ]},
+    ]},
     { group: 'Building blocks', items: [
       { file: 'vela.html', label: 'Vela helper', icon: '✦' },
       { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },

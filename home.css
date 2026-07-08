@@ -114,7 +114,7 @@
   .cl-ring { position: relative; width: 58px; height: 58px; flex-shrink: 0; }
   .cl-ring svg { transform: rotate(-90deg); }
   .cl-ring .track { fill: none; stroke: var(--n-75); stroke-width: 6.4; }
-  .cl-ring .arc { fill: none; stroke: url(#clGrad); stroke-width: 6.4; stroke-linecap: round; stroke-dasharray: 157; stroke-dashoffset: 63; }
+  .cl-ring .arc { fill: none; stroke: url(#clGrad); stroke-width: 6.4; stroke-linecap: round; stroke-dasharray: 157; stroke-dashoffset: 78.5; }
   .cl-ring .pct {
     position: absolute; inset: 0; display: grid; place-items: center;
     font-size: 13px; font-weight: 700; color: var(--blue-500);
@@ -262,3 +262,8 @@
     display: grid; place-items: center;
     color: rgba(255, 255, 255, 0.75);
   }
+
+/* Solid fallback for glass chrome without backdrop-filter support */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .home-topbar, .bottom-nav { background: rgba(255, 255, 255, 0.97); }
+}

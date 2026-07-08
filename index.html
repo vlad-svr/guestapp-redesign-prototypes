@@ -107,7 +107,7 @@
 
   <div class="hero-head">
     <h1>Guestapp Redesign 2.0 — UX prototypes</h1>
-    <p>Static HTML/CSS mockups of the redesigned Identity Verification, Guest Registration, and Home check-in flows — built on the real <b>@chekinapp/tokens</b> design system (Poppins, brand blue #385bf8, navy #161643, cool lavender neutrals) with incremental UX improvements layered on top — no structural changes, every screen maps 1:1 to an existing component.</p>
+    <p>Static HTML/CSS mockups of the redesigned Identity Verification, Guest Registration, Payments, and Home check-in flows — built on the real <b>@chekinapp/tokens</b> design system (Poppins, brand blue #385bf8, navy #161643, cool lavender neutrals) with incremental UX improvements layered on top — no structural changes, every screen maps 1:1 to an existing component.</p>
     <div class="meta">
       <span>Pure HTML + CSS</span>
       <span>Mock data only</span>
@@ -173,6 +173,22 @@
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱🖥</span> Registered modal + offers</h3>
       <p>The modal shown while a guest is being registered: offers load during the wait, the status pill flips to “registered” mid-browse, cart summary, no-offers and error states. Mobile bottom sheet and desktop dialog in one flow.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Payments</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-payments-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Payments flow — mobile</h3>
+      <p>Cart with charges split from card holds (dashed = never charged), pay later, the embedded Stripe payment element (fenced — Appearance-API theming only) with the €0.00-hold warning up front, mocked 3-D Secure bank step, live confirmation timeline with a slow-connection fallback, receipt with the next task, decline recovery, order history, empty cart and the deposit chooser.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-payments-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Payments flow — desktop</h3>
+      <p>Two-column cart with a sticky ledger, the embedded Stripe payment element, live confirmation timeline, full-bleed receipt celebration, decline recovery, order history and the deposit chooser — with a stage-aware Vela rail (holds, security, statement copy) on every step.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -272,6 +288,48 @@
       <p class="now"><b>Proposed:</b> each option states its cost — "<b>Single-sided · fastest</b>" vs "Front and back required" — with a ⚡ Recommended badge on passport, nudging guests to the least error-prone path.</p>
     </div>
     <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The pay button states the exact amount</h4>
+      <p class="was"><b>Now in code:</b> the cart CTA says "Confirm transaction" and the card form says "Confirm" — the total lives in a separate summary box (MyCart ConfirmButton, PaymentForm StyledButton).</p>
+      <p class="now"><b>Proposed:</b> every paying CTA reads <b>"Pay €380.00"</b> — cart, card form and the 3-D Secure sheet all quote the same number, so the guest never authorizes an amount they haven't just read.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Charges vs holds — the dashed ledger</h4>
+      <p class="was"><b>Now in code:</b> "Retention" and "Pre-authorizations:" appear as extra summary rows with an info icon (PaymentSummaryItem) — jargon next to real charges, easy to read as costs.</p>
+      <p class="now"><b>Proposed:</b> holds are <b>visually hollow</b> — dashed cards and dashed amount chips, kept out of the payable total, with one plain sentence ("reserved on your card, released after checkout") and a "How holds work" explainer. Same dashed treatment in the receipt and order history.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The €0.00 warning moves before the payment</h4>
+      <p class="was"><b>Now in code:</b> the pre-auth explanation (PreAuthorization3DSInfoModal — "you may see a €0 amount") pops up <b>during</b> the payment, when the guest is already anxious.</p>
+      <p class="now"><b>Proposed:</b> the payment page says the bank will register the <b>€300.00 hold, possibly shown as €0.00</b> — before the guest taps Pay, in our own components around the Stripe element (which itself can't be changed). The mocked bank sheet repeats it. No surprise modals mid-payment.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>Processing is a live timeline, not a spinner</h4>
+      <p class="was"><b>Now in code:</b> PaymentProcessingModal shows "Processing transaction" with a spinner while a websocket + 2 s polling (max 20 retries) works invisibly; slow confirmations look frozen.</p>
+      <p class="now"><b>Proposed:</b> a 3-step timeline — <b>bank approved → confirming with the property → receipt</b> — plus an honest slow-state ("we re-check every few seconds, the receipt also goes to your email") and "don't refresh — you won't be charged twice".</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>Declines explain and recover, not just "OK"</h4>
+      <p class="was"><b>Now in code:</b> the error state shows the raw server message with a single OK button (PaymentProcessingModal ERROR) that drops the guest back on the cart.</p>
+      <p class="now"><b>Proposed:</b> cause first ("Your bank declined the payment — usually a limit or online-payments setting"), technical code second, then <b>primary blue "Try again"</b>, "Use a different card", and the trust line "Nothing was charged — your cart is unchanged".</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>Receipt that sells the next step</h4>
+      <p class="was"><b>Now in code:</b> success is a modal titled "Transaction successful"; the guest closes it and finds their own way onward.</p>
+      <p class="now"><b>Proposed:</b> a full receipt moment — itemized receipt with the hold status line and card/date, "receipt sent to your email", and the §1.4 next-task CTA (<b>"Verify Carlos's ID — last task"</b>) to carry momentum through check-in.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Deposit options state their consequences</h4>
+      <p class="was"><b>Now in code:</b> DepositView shows two radio cards with feature bullets, but the money consequence ("what leaves my account today?") must be inferred.</p>
+      <p class="now"><b>Proposed:</b> each option leads with the cost today — <b>"€0.00 today"</b> (hold) vs <b>"€39.00 one-time"</b> (protection) — with release/refund rules as check bullets and a ⚡ Recommended badge on the no-cost option.</p>
+    </div>
+    <div class="imp">
       <span class="tag glass-t">Liquid glass</span>
       <h4>Sticky glass CTA dock</h4>
       <p class="was"><b>Now in code:</b> the Continue button sits in the page flow — on long forms it's below the fold.</p>
@@ -280,7 +338,7 @@
   </div>
 
   <div class="note">
-    <b>Implementation notes.</b> Everything here uses existing token values (<code>@chekinapp/tokens</code>) — no new colors were invented. The glass effect is <code>backdrop-filter: blur() saturate()</code> over existing surfaces with graceful fallback (solid <code>rgba</code> backgrounds) and it is confined to chrome: top bars, bottom nav, on-camera pills, CTA docks. All motion respects <code>prefers-reduced-motion</code>. The segmented progress, accent-bar "next up" row, and auto-fill tags are pure CSS additions to existing components (<code>IVTopBarSubtitle → progress segments</code>, <code>TaskRow</code>, <code>GuestFormFields</code>).
+    <b>Implementation notes.</b> Everything here uses existing token values (<code>@chekinapp/tokens</code>) — no new colors were invented. The payment-method UI is Stripe's embedded <code>&lt;PaymentElement&gt;</code> and cannot be restructured — the payments prototypes fence it off and confine changes to Appearance-API theming (<code>colorPrimary</code>, radius, font) plus the components around it (ledger, hold warning, CTA, processing timeline). The glass effect is <code>backdrop-filter: blur() saturate()</code> over existing surfaces with graceful fallback (solid <code>rgba</code> backgrounds) and it is confined to chrome: top bars, bottom nav, on-camera pills, CTA docks. All motion respects <code>prefers-reduced-motion</code>. The segmented progress, accent-bar "next up" row, and auto-fill tags are pure CSS additions to existing components (<code>IVTopBarSubtitle → progress segments</code>, <code>TaskRow</code>, <code>GuestFormFields</code>).
   </div>
 
 </div>

@@ -24,11 +24,14 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-iv-desktop.html`, `ivd.css` | §4 Identity verification — desktop |
 > | `home.html`, `home-desktop.html`, `home.css` | §5 Home & check-in list |
 > | `vela.html`, vela blocks in other pages | §6 Vela helper |
+> | `flow-payments-mobile.html`, `pay.css` | §7 Payments — mobile |
+> | `flow-payments-desktop.html`, `payd.css` (+`pay.css`) | §8 Payments — desktop |
 >
 > **Last synced:** 2026-07-08 · all sections match deployed prototypes at
 > https://vlad-svr.github.io/guestapp-redesign-prototypes/ · duplicate static galleries
 > (`iv-flow.html`, `iv-flow-desktop.html`, `guest-registration.html`) removed — the
-> interactive flows are now the single source per feature.
+> interactive flows are now the single source per feature. Payments flows added
+> (§7/§8) — `dm-cart` "Review & pay" now links into them (Appendix C gap 6 resolved).
 
 Real-code anchors are given as `path/to/Component.tsx` relative to
 `apps/guestapp/src/` — the redesign must keep a 1:1 mapping to these components
@@ -353,6 +356,141 @@ match what the guest is doing on that screen (see the §4 stage table); detour s
 
 ---
 
+## §7 Payments — mobile
+
+**Real components:** `pages/Payments/views/PaymentsView.tsx` (+ `components/MyCart/*`,
+`components/OrderHistory/*`), `pages/Payments/views/PaymentFormView.tsx`
+(+ `components/PaymentForm/*`, `context/stripe.tsx`),
+`components/PaymentProcessingModal/PaymentProcessingModal.tsx`,
+`hooks/payments/usePayment.ts`, `pages/DepositView/DepositView.tsx`
+· **Prototype:** `flow-payments-mobile.html`
+
+Happy path: `p-cart`* → `p-form` → `p-3ds` → `p-processing` (auto 3.0 s) → `p-success`.
+
+### 7.1 The ledger rule (THE core rule)
+
+Money is one of three kinds and each has a fixed treatment — never mix them:
+
+| Kind | Real source | Treatment |
+|---|---|---|
+| Charge (pay now) | `pay_now_payments[]`, `total_amount_to_pay` | solid card rows; summed into the payable total; the total is quoted **in the CTA label** ("Pay €380.00") |
+| Hold (pre-auth / retention) | `pre_auth_payments_total`, `retention_payments_total` | **dashed** card + dashed amount chip ("€300.00 hold"); NEVER summed into the payable total; always one plain sentence: "reserved on your card, released after checkout"; "How holds work" opens `m-hold` |
+| Already paid outside | `outside_paid_amount` | muted ledger row with a green check ("Already paid to Booking.com") |
+
+Every paying CTA (cart, card form, 3-DS sheet) quotes the same amount; the amount
+changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50).
+
+### 7.2 Cart (`p-cart`, `p-later`, `p-empty`)
+
+- Tabs "My cart {n}" / "Order history" map to the `Tabs` routes (index / `order-history`).
+- Item rows mirror `useBuildDisplayedPayments`: icon + name + human meta; tourist taxes
+  carry "+ Add exemptions" (→ taxes page); deposit hold carries "Edit protection"
+  (→ `p-deposit`); PMS-origin items (booking stay) have **no kebab** (`isPMSorigin`);
+  removable upsells get kebab ⋯ = remove / move to pay later.
+- Pay later (`store/payments/usePaymentsStore`): moving an item shows a toast, the item
+  lands in a "Pay later" box ("Nothing here is charged"), each row has "Send back to
+  cart", and the CTA amount updates. Prototype simulates via kebab on Breakfast basket
+  → `p-later`.
+- Empty cart (`p-empty`): success-toned "Nothing to pay" (never an error look), link to
+  order history, CTA "Back to check-in list".
+
+### 7.3 Pay (`p-form`, `p-3ds`)
+
+- **HARD CONSTRAINT — the payment method UI is Stripe's `<PaymentElement>`**
+  (`StripePaymentForm`: layout `tabs`, wallets applePay/googlePay `auto`). It's an
+  embedded Stripe iframe that cannot be restructured — only *themed* through the
+  Appearance API (`context/stripe.tsx`: `colorPrimary`, `colorText`, `borderRadius`;
+  proposal: also pass the brand font so it stops rendering `system-ui`). The prototype
+  draws it as a fenced "Rendered by Stripe" block (`.stripe-el`) with method tabs
+  (Card / Apple Pay / Google Pay) — treat the inside as Stripe's, byte for byte.
+  While the iframe loads, keep `PaymentFormSkeleton`.
+- Every improvement therefore lives **around** the element (all ours in the real code):
+  the **hold pre-warning above the element** — bank registers the €300.00 hold, may
+  appear as a €0.00 verification (replaces the mid-payment
+  `PreAuthorization3DSInfoModal`); the ledger repeating total + hold; the CTA (the real
+  `StyledButton` sits outside the element) quoting the amount; the trust line
+  "3-D Secure · Powered by Stripe".
+- `p-3ds` mocks the bank challenge (Stripe `confirmPaymentSetup` → `dataRequired`) —
+  also not our UI (bank/Stripe-rendered); it's specced only so the €0.00-hold copy and
+  the decline path are designed. Approve → `p-processing`, Decline → `p-error`.
+  Direct `location.state` guard from the real code applies: entering the form without
+  cart state returns to the cart.
+
+### 7.4 Confirmation (`p-processing`, `p-slow`), receipt (`p-success`), decline (`p-error`)
+
+- Processing is a 3-step live timeline: ✓ "Payment approved by your bank" → ⟳
+  "Confirming with Villa Serena" → ○ "Your receipt — appears right here", plus
+  "Don't refresh — you won't be charged twice". Maps to `usePayment` websocket
+  (`multiPaymentUpdated`) with 2 s polling fallback.
+- `p-slow` is the polling-fallback state (websocket silent): same timeline + amber note
+  "taking longer than usual… receipt will also be emailed"; never looks frozen.
+- `p-success`: "€380.00 paid" + itemized receipt (items, dashed hold line, card ····4242,
+  date) + "Receipt sent to {email}" + download PDF. Primary CTA follows the §1.4
+  priority table (mock story: Carlos `verification_pending` → "Verify Carlos's ID");
+  secondary "Back to check-in list".
+- `p-error`: human cause first, raw code second (monospace), primary blue "Try again"
+  (→ `p-form`), "Use a different card", trust line "Nothing was charged — your cart is
+  unchanged", ghost "Back to cart". Never a lone "OK".
+
+### 7.5 Order history (`p-history`) & deposit chooser (`p-deposit`)
+
+- History rows grouped by date with badges: green **Paid**, dashed **Hold** (active),
+  blue **Refunded** (+ "back on Visa ···· 4242 within 5–10 days"). Footer note explains
+  "pending" statement lines. Maps to `useBuildDisplayedOrderHistory` categories.
+- `p-deposit` (DepositView): each option leads with the cost **today** — "€0.00 today"
+  (security-deposit hold, ⚡ Recommended) vs "€39.00 one-time" (damage protection,
+  amber "non-refundable" caveat); consequence bullets per option; ghost "Continue
+  without protection" (never destructive-red); confirm returns to the cart
+  (`confirm_and_go_back_to_payment`).
+
+### 7.6 Vela & chrome
+
+`vela-fab` on every screen except `p-3ds`, `p-processing`/`p-slow` (attention stays on
+the wait) and `p-success` (celebration). `m-vela` tips: what's a hold (→ `m-hold`),
+is paying safe, where's the receipt. 3-segment `progress-track` on `p-form`/`p-3ds`/
+`p-processing` (review → pay → receipt).
+
+### 7.7 Screen-id registry (deep-link hashes)
+
+`p-cart`* · `p-later` · `p-history` · `p-empty` · `p-form` · `p-3ds` · `p-processing` ·
+`p-slow` · `p-success` · `p-error` · `p-deposit` · modals `m-vela`, `m-hold`
+(* = `data-start`; autonext: processing→success 3.0 s, slow→success 3.4 s)
+
+---
+
+## §8 Payments — desktop
+
+**Prototype:** `flow-payments-desktop.html` (loads `pay.css` + `payd.css`)
+
+Desktop mirrors §7 with the desktop shell (navy sidebar, Payments active) and these
+differences:
+
+- `pd-cart`: two-column grid — item list left, **sticky ledger** right with the CTA
+  inside it (mirrors MyCart's 852 px list/summary split). Tabs to `pd-history`.
+- `pd-form`: centered column with the same fenced Stripe `<PaymentElement>` block
+  (§7.3 constraint applies — theme-only); the 3-DS bank challenge is **not** a
+  separate desktop screen (Stripe renders it as an overlay) — "Pay €380.00" goes
+  straight to `pd-processing`; the mobile `p-3ds` mock documents the challenge copy.
+- `pd-success` is **full-bleed** (no Vela rail, per §6 placement rule); sidebar flips
+  Payments/protection/taxes badges to ✓ and progress to 75%.
+- Vela rail is stage-aware on all other screens:
+
+| Stage (screens) | Rail content | Escape actions |
+|---|---|---|
+| `pd-cart` | progress (Review cart → Pay → Receipt) + what's-a-hold (`m-hold`), pay-later tip | — |
+| `pd-history` | hold-isn't-a-charge, refund timing, invoice tip | — |
+| `pd-form` | progress step 2 + security tips (Stripe, 3-DS, statement descriptor) | back to cart (back-pill) |
+| `pd-processing` | **minimal** — one patience tip, no ask box (liveness precedent) | — |
+| `pd-error` | decline causes (banking app, limits) + "cart is saved" | back to cart |
+| `pd-deposit` | pick-the-hold-if / pick-protection-if | back to cart |
+
+### 8.1 Screen-id registry (deep-link hashes)
+
+`pd-cart`* · `pd-history` · `pd-form` · `pd-processing` · `pd-success` · `pd-error` ·
+`pd-deposit` · modal `m-hold` (* = `data-start`; autonext: processing→success 3.0 s)
+
+---
+
 ## Appendix A — Global UI rules (apply to every flow)
 
 1. Liquid glass only on chrome (top bars, docks, on-camera pills, Vela) — never on
@@ -382,12 +520,15 @@ match what the guest is doing on that screen (see the §4 stage table); detour s
 | Home mock progress | **2 of 4 tasks done = 50%** ring | derived from the same task list the checklist renders |
 | IV step counter | stepper "Step N of 4" only | intro copy avoids totals ("A few quick steps") — count varies by document type |
 | Modal mock story | Ana just registered · 2 of 3 guests done · Carlos `verification_pending` | all §1 screens + desktop mirrors quote this one story |
+| Payments mock story | Booking stay €320.00 + tourist taxes €32.50 (incl. €1.50 fee) + late check-out €15.00 + breakfast basket €12.50 = **€380.00 to pay now** · €300.00 deposit **hold** · €410.00 already paid to Booking.com · Visa ···· 4242 · receipt to maria@gmail.com · pay-later variant defers the breakfast basket → €367.50 | ties to Home's "€ 380.00 paid" row and the §1 cart's late check-out + breakfast basket |
 
 ## Appendix C — Known gaps (TODO, deliberately not mocked yet)
 
 Found by the design-principles audit (2026-07-08); logged for a later iteration.
 Resolved since: OTP wrong-code (→ `s-code-email-error`/`d-code-email-error`),
-camera/webcam denied (→ `s-denied`/`d-cam-denied`).
+camera/webcam denied (→ `s-denied`/`d-cam-denied`), payment surface (→ §7/§8:
+`dm-cart` "Review & pay" now enters the payments flow; decline, slow-confirmation,
+empty-cart and deposit-chooser states included).
 
 1. **Network offline / connection lost mid-flow** — variant of `dm-loading`/`dm-error`
    (submission interrupted ≠ server error) and on IV capture/upload screens.
@@ -396,8 +537,15 @@ camera/webcam denied (→ `s-denied`/`d-cam-denied`).
 4. **Webcam not found / device busy** on `d-cam` (distinct from permission-denied).
 5. **QR code expired + refresh** — `d-qr`/`m-qr`/`s-qr-scan` advertise "code expires in 9:41"
    but have no expired state or "generate new code" action.
-6. **Payment failure hand-off** — prototype has no payment surface at all; `dm-cart`
-   "Review & pay" carries a sim-note and continues to the next task.
+6. ~~Payment failure hand-off~~ — **resolved**: §7/§8 payments flows added; `dm-cart`
+   "Review & pay" links into them, decline + retry designed (`p-error`/`pd-error`).
 7. **Concurrent guest edit/delete while the §1 modal is open** (hub kebab vs live modal).
 8. **OTP resend cooldown / attempt lockout** — resend is a static link in the prototype;
    no cooldown timer or max-attempts state.
+9. **Addon / Global Payments HPP provider** (`AddonPaymentForm`) — §7 mocks the Stripe
+   provider only; the HPP iframe variant (pay triggered straight from the cart) isn't
+   designed.
+10. **Taxes exemption screens** (`TaxesTouristView` / `TaxesExemptionView`) — the cart's
+    "Add exemptions" affordance exists, but the exemption picker itself isn't mocked.
+11. **Checkout mini-cart** (`checkout/before-you-leave` → survey → thanks) — reuses the
+    payment form with `from: checkout`; its summary/survey/thanks screens aren't mocked.

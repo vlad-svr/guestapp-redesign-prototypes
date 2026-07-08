@@ -19,11 +19,14 @@ One canonical prototype per feature and form factor — organized by feature, wi
 | `flow-registration.html` | Guest registration · 📱 | Interactive registration flow: hub → add details (scan-to-autofill) → review & sign with agreements + contract opt-in |
 | `guest-registration-desktop.html` | Guest registration · 🖥 | Desktop hub + two-column review form with auto tags, signature and agreement clauses (static screens) |
 | `flow-registered-modal.html` | Registration complete · 📱🖥 | Interactive "guest registered" modal: offers load during the wait, status flips mid-browse, cart, no-offers, error |
+| `flow-payments-mobile.html` | Payments · 📱 | Interactive payments flow: cart with charges-vs-holds ledger, pay later, wallet/card form, 3-D Secure bank step, live confirmation timeline (+ slow fallback), receipt, decline recovery, order history, empty cart, deposit chooser |
+| `flow-payments-desktop.html` | Payments · 🖥 | Interactive desktop payments: two-column cart with sticky ledger, card form, confirmation timeline, receipt celebration, decline recovery, order history, deposit chooser — stage-aware Vela rail |
 | `vela.html` | Building blocks | Vela helper: desktop glass rail, mobile FAB + sheet, and every building block isolated |
 | `modals-demo.html` | Building blocks | QR handoff, share link, photo privacy, skip confirm and the Vela sheet — dialogs vs bottom/right sheets |
 | `scroll-demo.html` | Building blocks | Sticky glass chrome / CTA dock / pinned nav scroll behavior on long mobile and desktop layouts |
 | `shared.css` | — | Design tokens (copied from `@chekinapp/tokens` values) + shared primitives + liquid-glass + Vela + desktop shell |
 | `iv.css` / `ivd.css` / `reg.css` / `deals.css` / `home.css` | — | Per-flow styles for IV mobile / IV desktop / registration / offers modal / home |
+| `pay.css` / `payd.css` | — | Payments styles: mobile + shared primitives (`pay.css`), desktop additions (`payd.css` — desktop page loads both) |
 | `flow.js` / `modals.js` / `nav.js` | — | Scenario/screen switcher for flows, modal triggers, and the floating feature-first prototype nav |
 
 ## Ground rules used
