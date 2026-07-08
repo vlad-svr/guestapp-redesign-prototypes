@@ -208,6 +208,113 @@
   .upload-bar { width: 90px; height: 5px; border-radius: 99px; background: var(--n-75); overflow: hidden; }
   .upload-bar i { display: block; height: 100%; width: 65%; border-radius: 99px; background: linear-gradient(90deg, var(--blue-500), #6b8cff); }
 
+  /* deprecated-screen treatment (screen 4 kept for reference) */
+  .dep-wrap { position: relative; }
+  .dep-wrap .dep-content {
+    opacity: 0.45;
+    filter: grayscale(0.55);
+    pointer-events: none;
+    user-select: none;
+  }
+  .dep-wrap::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: repeating-linear-gradient(-45deg,
+      transparent 0 26px,
+      rgba(122, 122, 158, 0.10) 26px 30px);
+    pointer-events: none;
+  }
+  .dep-banner {
+    position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%) rotate(-3deg);
+    z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 18px 26px;
+    border-radius: var(--r-lg);
+    background: var(--n-0);
+    border: 2px dashed var(--n-400);
+    box-shadow: var(--shadow-elev);
+    text-align: center;
+    max-width: 380px;
+  }
+  .dep-banner .dep-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 26px; padding: 0 12px;
+    border-radius: 99px;
+    background: var(--n-100); color: var(--n-600);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .dep-banner .dep-title { font-size: 15px; font-weight: 700; color: var(--navy); text-decoration: line-through; text-decoration-color: var(--red-500); text-decoration-thickness: 2px; }
+  .dep-banner .dep-why { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); }
+
+  /* upload crop & confirm — maps to PhotoUpload + ImageCropper (react-easy-crop) */
+  .crop-stage {
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4/3;
+    background:
+      radial-gradient(circle at 60% 35%, rgba(255,255,255,0.06), transparent 60%),
+      var(--gradient-doc-cam);
+    box-shadow: var(--shadow-elev);
+  }
+  .crop-stage .mock-doc {
+    position: absolute; inset: 15% 12%;
+    transform: rotate(-1.6deg);
+    border-radius: 10px;
+    background: linear-gradient(145deg, #dfe6f5, #c3cee8);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    padding: 14px;
+    display: flex; gap: 12px;
+  }
+  .crop-stage .mock-doc .photo { width: 27%; border-radius: 6px; background: linear-gradient(160deg, #9aa8c7, #7c8bb0); }
+  .crop-stage .mock-doc .lines { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-top: 6px; }
+  .crop-stage .mock-doc .lines span { height: 8px; border-radius: 4px; background: rgba(22,22,67,0.22); display: block; }
+  .crop-stage .mock-doc .lines span:nth-child(1) { width: 55%; background: rgba(22,22,67,0.4); }
+  .crop-stage .mock-doc .lines span:nth-child(2) { width: 80%; }
+  .crop-stage .mock-doc .lines span:nth-child(3) { width: 65%; }
+  .crop-stage .mock-doc .lines span:nth-child(4) { width: 88%; margin-top: auto; height: 11px; background: repeating-linear-gradient(90deg, rgba(22,22,67,0.3) 0 7px, transparent 7px 10px); }
+  .crop-frame {
+    position: absolute; inset: 10% 8%;
+    border: 1.5px solid rgba(255,255,255,0.92);
+    border-radius: 6px;
+    box-shadow: 0 0 0 999px rgba(10, 10, 32, 0.55);
+    background:
+      linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)) 33.33% 0 / 1px 100% no-repeat,
+      linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)) 66.66% 0 / 1px 100% no-repeat,
+      linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)) 0 33.33% / 100% 1px no-repeat,
+      linear-gradient(rgba(255,255,255,0.25), rgba(255,255,255,0.25)) 0 66.66% / 100% 1px no-repeat;
+  }
+  .crop-frame .ch {
+    position: absolute; width: 22px; height: 22px;
+    border: 3.5px solid #fff; border-radius: 2px;
+    cursor: grab;
+  }
+  .crop-frame .ch.tl { top: -3px; left: -3px; border-right: none; border-bottom: none; border-top-left-radius: 7px; }
+  .crop-frame .ch.tr { top: -3px; right: -3px; border-left: none; border-bottom: none; border-top-right-radius: 7px; }
+  .crop-frame .ch.bl { bottom: -3px; left: -3px; border-right: none; border-top: none; border-bottom-left-radius: 7px; }
+  .crop-frame .ch.br { bottom: -3px; right: -3px; border-left: none; border-top: none; border-bottom-right-radius: 7px; }
+  .crop-zoom {
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    color: var(--n-500);
+  }
+  .crop-zoom .cz-track {
+    position: relative; width: 180px; height: 5px; border-radius: 99px;
+    background: var(--n-75);
+  }
+  .crop-zoom .cz-track i {
+    position: absolute; left: 0; top: 0; height: 100%; width: 38%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--blue-500), #6b8cff);
+  }
+  .crop-zoom .cz-track b {
+    position: absolute; left: 38%; top: 50%; transform: translate(-50%, -50%);
+    width: 17px; height: 17px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--blue-500);
+    box-shadow: var(--shadow-card);
+    cursor: grab;
+  }
+  .crop-zoom .cz-sign { font-size: 16px; font-weight: 700; line-height: 1; }
+
   /* live sync status card */
   .sync-card { padding: 16px 20px; display: flex; align-items: center; gap: 14px; }
   .sync-card .sc-phone {
@@ -228,7 +335,7 @@
 <body>
 <div class="proto-stage">
   <h1>Identity Verification — Desktop (Redesign 2.0 Prototype)</h1>
-  <p class="lede">Desktop IV inside the journey shell with the Vela helper rail: choose how to verify (webcam vs phone handoff), QR with live sync, webcam auto-capture, and file upload with quality checks. Mock data only.</p>
+  <p class="lede">Desktop IV inside the journey shell with the Vela helper rail: choose how to verify (webcam vs phone handoff), QR with live sync, webcam auto-capture, and file upload that goes straight to crop &amp; confirm — one file per side, no separate upload view (screen 4 shows the rejected version for reference). Mock data only.</p>
 
   <!-- ═══ SCREEN 1: choose method + document ═══ -->
   <div class="browser">
@@ -655,8 +762,13 @@
       <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock-sm"/></svg> guest.chekin.com/villa-serena/verification/upload</span>
       <span style="width:52px"></span>
     </div>
-    <div class="desktop-shell">
-      <aside class="sidebar">
+    <div class="desktop-shell dep-wrap">
+      <div class="dep-banner">
+        <span class="dep-tag">✕ Deprecated · not part of the flow</span>
+        <div class="dep-title">Separate "Upload your document" view</div>
+        <div class="dep-why">The real app has no upload screen — "Upload a file" opens the native file picker directly, one file per side, and the chosen photo lands on crop &amp; confirm (screen 5 below). This page added an extra step and implied multi-file front/back detection that doesn't exist in the code.</div>
+      </div>
+      <aside class="sidebar dep-content">
         <div class="sb-head">
           <div class="sb-logo">V</div>
           <div>
@@ -687,7 +799,7 @@
         </div>
       </aside>
 
-      <main class="desk-page">
+      <main class="desk-page dep-content">
         <button class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
         <div class="desk-col" style="max-width:560px">
           <div class="page-head fade-up" style="padding:0 0 4px">
@@ -736,6 +848,84 @@
               <button class="btn btn-primary btn-block" style="opacity:0.5" disabled>Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
               <span style="font-size:11.5px;color:var(--text-tertiary)">Continue unlocks when both sides pass the quality check</span>
               <button class="btn-ghost" style="color:var(--blue-500)"><svg viewBox="0 0 24 24" class="icon icon-sm" style="vertical-align:-3px"><use href="#i-camera"/></svg> Use the webcam instead</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 5: UPLOAD → CROP & CONFIRM (replaces the upload view above) ═══ -->
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock-sm"/></svg> guest.chekin.com/villa-serena/verification/front</span>
+      <span style="width:52px"></span>
+    </div>
+    <div class="desktop-shell">
+      <aside class="sidebar">
+        <div class="sb-head">
+          <div class="sb-logo">V</div>
+          <div>
+            <div class="sb-prop">Villa Serena</div>
+            <div class="sb-ref">Booking · CHK-58291</div>
+          </div>
+        </div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
+          <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
+        </div>
+        <div class="sb-group">Before you arrive</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+        <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
+        <div class="sb-group">Your stay</div>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+        <div class="sb-footer">
+          <div class="sb-avatar">MG</div>
+          <div>
+            <div class="sb-user">María García</div>
+            <div class="sb-mail">maria@gmail.com</div>
+          </div>
+          <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <button class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
+        <div class="desk-col" style="max-width:560px">
+          <div class="page-head fade-up" style="padding:0 0 4px">
+            <div class="kicker">Guest registration · Step 2 of 4</div>
+            <div class="page-title">Check the <span class="hl">front</span> side</div>
+            <p class="page-intro">Your photo is loaded — drag the corners so the document fills the frame. "Upload a file" opens the file picker directly; this screen appears once a photo is chosen (one file per side).</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
+            <div class="crop-stage fade-up d1">
+              <div class="mock-doc">
+                <div class="photo"></div>
+                <div class="lines"><span></span><span></span><span></span><span></span></div>
+              </div>
+              <div class="crop-frame"><i class="ch tl"></i><i class="ch tr"></i><i class="ch bl"></i><i class="ch br"></i></div>
+            </div>
+            <div class="crop-zoom fade-up d2">
+              <span class="cz-sign">−</span>
+              <span class="cz-track"><i></i><b></b></span>
+              <span class="cz-sign">+</span>
+            </div>
+            <div class="cam-hint-row fade-up d2">
+              <span class="cam-hint-lite"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-maximize"/></svg> All corners visible</span>
+              <span class="cam-hint-lite"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye-off"/></svg> No glare</span>
+              <span class="cam-hint-lite"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg> Text readable</span>
+            </div>
+            <div class="fade-up d3" style="display:flex;flex-direction:column;align-items:center;gap:10px">
+              <button class="btn btn-primary btn-block">Confirm front side <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+              <div style="display:flex;gap:18px">
+                <button class="btn-ghost"><svg viewBox="0 0 24 24" class="icon icon-sm" style="vertical-align:-3px"><use href="#i-upload"/></svg> Choose a different file</button>
+                <button class="btn-ghost" style="color:var(--blue-500)"><svg viewBox="0 0 24 24" class="icon icon-sm" style="vertical-align:-3px"><use href="#i-camera"/></svg> Use the webcam instead</button>
+              </div>
             </div>
           </div>
         </div>

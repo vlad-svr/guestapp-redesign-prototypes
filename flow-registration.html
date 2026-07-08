@@ -188,7 +188,21 @@
               <div class="input">51204978R</div>
             </div>
           </div>
+          <div class="field">
+            <label>Email</label>
+            <div class="input">ana.lopez@gmail.com</div>
+            <span class="hint">Booking updates &amp; virtual keys go here</span>
+          </div>
+          <div class="field">
+            <label>Phone number</label>
+            <div class="input" style="gap:10px"><span style="display:inline-flex;align-items:center;gap:6px;color:var(--text-secondary)">🇪🇸 +34 <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px;color:var(--n-500)"><use href="#i-chevron-down"/></svg></span> 612 345 678</div>
+          </div>
+          <div class="field">
+            <label>Residence city</label>
+            <div class="input" style="justify-content:space-between">Madrid <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-down"/></svg></div>
+          </div>
         </div>
+        <span class="sim-note">the field set is schema-driven per property &amp; country (useDefaultFieldsMapper) — this shows a typical Spain set; Italy adds fiscal code / tax fields, etc.</span>
       </div>
       <div class="cta-dock">
         <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="r-review">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
@@ -236,6 +250,16 @@
             </div>
           </div>
 
+          <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg> Contact <span class="divider"></span></div>
+          <div class="field success">
+            <label>Email</label>
+            <div class="input">ana.lopez@gmail.com</div>
+          </div>
+          <div class="field success">
+            <label>Phone number</label>
+            <div class="input">+34 612 345 678</div>
+          </div>
+
           <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Signature <span class="divider"></span></div>
           <div>
             <div class="sig-pad">
@@ -246,10 +270,23 @@
             <div class="sig-hint"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-info"/></svg> Sign with your finger — required by local regulations</div>
           </div>
 
-          <div class="consent-row">
-            <span class="cbox"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px;stroke-width:3"><use href="#i-check"/></svg></span>
-            <p>I confirm these details are correct and accept the <a href="#">terms</a> and <a href="#">privacy policy</a>.</p>
+          <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Agreements <span class="divider"></span></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="consent-row">
+              <span class="cbox unchecked" role="checkbox" aria-checked="false"></span>
+              <p>I consent to my personal data being processed and shared with the local authorities for traveller registration, as required by law.</p>
+            </div>
+            <div class="consent-row">
+              <span class="cbox unchecked" role="checkbox" aria-checked="false"></span>
+              <p>The property may contact me about my stay and local recommendations. <span class="pill-opt">optional</span></p>
+            </div>
+            <div class="consent-row">
+              <span class="cbox unchecked" role="checkbox" aria-checked="false"></span>
+              <p>Send me a copy of the signed contract by email. <span class="pill-opt">optional</span></p>
+            </div>
           </div>
+          <p class="fine-print">By tapping <b>Complete registration</b> you sign the check-in form with the signature above and accept the <a href="#">rental contract</a> and our <a href="#">privacy policy</a>.</p>
+          <span class="sim-note">agreement clauses are backend-driven per property (AgreementClausesBox) — count and wording vary; required ones block submission until checked</span>
         </div>
       </div>
       <div class="cta-dock">
@@ -338,6 +375,8 @@
     <g id="i-star"><path d="M11.5 3.4a.53.53 0 0 1 1 0l2.1 5.1a.53.53 0 0 0 .44.32l5.51.44c.46.04.64.6.29.9l-4.2 3.6a.53.53 0 0 0-.17.52l1.28 5.37a.53.53 0 0 1-.79.58L12.28 17a.53.53 0 0 0-.56 0l-4.7 2.87a.53.53 0 0 1-.79-.58l1.28-5.37a.53.53 0 0 0-.17-.52l-4.2-3.6a.53.53 0 0 1 .3-.9l5.5-.44a.53.53 0 0 0 .44-.32z"/></g>
     <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
     <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
     <g id="i-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></g>
     <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></g>
     <g id="i-pen"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></g>

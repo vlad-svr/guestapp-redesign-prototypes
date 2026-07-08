@@ -25,7 +25,7 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `home.html`, `home-desktop.html`, `home.css` | §5 Home & check-in list |
 > | `vela.html`, vela blocks in other pages | §6 Vela helper |
 >
-> **Last synced:** 2026-07-07 · all sections match deployed prototypes at
+> **Last synced:** 2026-07-08 · all sections match deployed prototypes at
 > https://vlad-svr.github.io/guestapp-redesign-prototypes/
 
 Real-code anchors are given as `path/to/Component.tsx` relative to
@@ -70,6 +70,11 @@ mirror the same logical state as mobile (prototype enforces this with the
 Rule: the pill must **never block** the offers UI; registration completing mid-browse
 only swaps the pill.
 
+The desktop dialog mirrors the same pill states **including the sending→success morph**.
+On success screens (`dm-done`, `dm-empty`, `dm-plain-done` and their desktop variants) the
+pill carries group progress ("2 of 3 guests done") while the heading celebrates the guest —
+the same message never appears twice in one dialog.
+
 ### 1.3 Offer stack — screens & CTA rules
 
 Screens: `dm-offers` (1/3) → `dm-offer-2` (2/3) → `dm-offer-3` (3/3) → `dm-cart` | `dm-done`.
@@ -108,6 +113,9 @@ trigger row 1 (maps to `autoApprovedDealsCount > 0 → onNavigateToCart`).
 
 ### 1.5 No-offers & plain sequences
 
+- `dm-empty` / `dm-plain-done` resolve their primary CTA by the same §1.4 table (row 2
+  beats row 3): with another guest `verification_pending`, primary = **"Verify {name}'s ID"**;
+  "Back to guest list" is the secondary link. They must not fall back to a generic "Continue".
 - No offers, upselling ON: `dm-empty-loading` (skeletons, ~2.4 s) → `dm-empty-wait`
   (blue sparkle ring, "Nothing else needed here", pill still sending, **no buttons** —
   resolves on its own) → `dm-empty` (success; CTA per table §1.4).
@@ -147,6 +155,10 @@ progress ring + one-line human summary · sections **Responsible for booking** (
 → **Other guests** (users icon) → **Minors — under 18** (user icon, only when
 `ivEnabled && underageAllowedAge != null`) · share banner · docked primary CTA.
 
+Review form rules: the consent checkbox is **never pre-checked** (explicit tap required);
+required-but-still-empty fields use the amber `.field.needed` treatment tied to the
+"N left to complete" banner — red `.field.error` appears only after user interaction/submit.
+
 ### 2.2 Guest row states (`GuestBox`)
 
 | State (real `guestapp_status`) | Accent | Status label (action-oriented — NOT "Incomplete") | Row tap target |
@@ -173,6 +185,34 @@ Kebab menu per registered guest: Edit (if editable), Delete.
 `flow-registered-modal.html`) → `r-done` (hub, 2/3, Carlos still `verification_pending`).
 Scan-to-autofill card in `r-details` deep-links to the IV flow (§3).
 
+### 2.5 Form composition (bottom of `r-review` + both gallery review forms)
+
+The real form is **schema-driven per property & country**
+(`hooks/useGuestFormFields/useDefaultFieldsMapper.tsx`, groups via `GroupedFields.tsx`) —
+the prototype shows a typical Spain set (names, birth date, nationality, document,
+email/phone, residence city). Italy adds fiscal code / tax-exemption / invoicing fields;
+never hard-code the field list.
+
+Fixed tail order after the field groups (mirrors `SignBlock.tsx`):
+
+1. **Signature** group (pen icon) — hand-drawn canvas (`SignatureCanvas`); mobile opens a
+   sheet (`SignatureModal`), desktop draws inline; "clear signature" resets. Hidden when
+   `reservation.auto_signature` is on (guest just clicks Submit); when the schema has no
+   `signature` field at all, submit sends `fakeSignature`.
+2. **Agreements** group (shield icon) — backend-driven clauses (`AgreementClausesBox`,
+   `agreement_clauses.agreement_clause_<id>`): count and wording vary per property;
+   required clauses block submission until checked; optional ones carry an
+   `optional` pill (`.pill-opt`). **Never pre-checked.**
+   Plus the contract opt-in (`ContractBox`): "Send me a copy of the signed contract by
+   email" — reveals a `contract_email` input when the guest has no email on file; shown
+   only when `summary.is_contract_enabled`.
+3. **Disclosure fine print** (`.fine-print`) — "By tapping *Complete registration* you sign
+   the check-in form with the signature above and accept the [rental contract] and our
+   [privacy policy]." Contract link downloads `contracts[0].file`; privacy-policy link is
+   property-custom when configured (`PrivacyPolicyLink`).
+4. **Submit** — on invalid form opens the incomplete-data modal; leader conflicts open
+   `LeaderConflictModal`; success opens the §1 registered modal.
+
 ---
 
 ## §3 Identity verification — mobile
@@ -185,12 +225,40 @@ Branch rule (set at `s-doc`): `passport` → front capture → **liveness** sequ
 
 Screens: `s-start`* → `s-doc` → `s-front` (auto 2.4 s) → `s-front-captured`
 → [passport: `s-live-1..3` (auto) → `s-live-passed`] | [dni: `s-back` → `s-back-captured`
-→ `s-selfie`] → `s-contacts` (OTP) → `s-complete`.
-Detours: `s-front-failed` (validation retry), `s-unavailable` (outside check-in window),
-`s-qr-scan` (entry from desktop QR handoff).
+→ `s-selfie`] → contacts verification (§3.1) → `s-complete`.
+Upload path: "Upload a file instead" on `s-front` opens the **native file picker
+directly** (no upload view) → `s-crop` (crop & confirm, one file per side,
+`PhotoUpload` + `ImageCropper`) → confirm → `s-front-captured`.
+Detours: `s-front-failed` (validation retry), `s-denied` (camera permission denied —
+Try again / upload fallback), `s-unavailable` (outside check-in window),
+`s-qr-scan` (entry from desktop QR handoff, `IVQRScannerView`).
+
+### 3.1 Contacts verification (`ContactsVerificationView`)
+
+Channels enabled per property (`useVerificationSettings`: `isEmailEnabled` /
+`isPhoneEnabled`); each enabled channel runs **two steps** — when both are enabled the
+header shows "contact 1 of 2 / 2 of 2" (real: `step_of`):
+
+1. **CONTACTS_INPUT** — "Verify your email / phone": pre-filled input (email, or phone
+   with country code), info note "We'll send a 6-digit verification code by email/SMS",
+   CTA **"Send verification code"**.
+2. **CODES_VERIFICATION** — "Enter the code": expiry note ("code expires in 2 minutes"),
+   6-slot OTP, masked "sent to" value, actions **Verify code** (primary) ·
+   **Resend code** · **✎ Change email / phone number** (returns to step 1).
+   Wrong code → inline red error on the OTP row ("that code didn't match"), retry in
+   place — never a modal.
+
+Mobile ids: `s-contact-email` → `s-code-email` (error variant `s-code-email-error`)
+→ `s-contact-phone` → `s-code-phone` → `s-complete`.
+Desktop ids: `d-contact-email` → `d-code-email` (`d-code-email-error`)
+→ `d-contact-phone` → `d-code-phone` → `d-complete`.
+On success the verified email/phone are written back to the reservation
+(`default_invite_email` / `default_phone_number`).
 Skip is always available behind a confirm modal (`m-skip`) — skipping IV keeps the guest
 `verification_pending` and returns to the hub (feeds §2.2 row 2 and §1.4 row 2).
 Camera chrome: light shell; dark gradient only **inside** the capture frame.
+Intro copy avoids hard-coded step totals ("A few quick steps") — the stepper is the only
+step counter (Step N of 4), since the real step count varies by document type.
 
 ---
 
@@ -198,11 +266,34 @@ Camera chrome: light shell; dark gradient only **inside** the capture frame.
 
 **Prototypes:** `flow-iv-desktop.html` (interactive), `iv-flow-desktop.html` (gallery)
 
-Method choice at `d-choice`* (Vela rail visible): **Continue on phone** (recommended,
-QR + live sync `d-qr` → auto `d-qr-done`) · **Webcam** (`d-cam` → auto `d-cam-captured`)
-· **Upload files** (`d-upload`, front/back dropzones + quality checks) → `d-complete`.
-Modals: `m-qr` (handoff), `m-share`, `m-privacy`. Completing on the phone must resolve
-the desktop session in real time (websocket), shown as the simulated sync.
+Method choice at `d-choice`* (Vela rail visible), then desktop mirrors the full mobile
+case set:
+
+- **Continue on phone** (recommended): QR + live sync `d-qr` → auto `d-qr-done` →
+  `d-complete`. The phone side (doc choice, capture, contacts) happens in §3; completing
+  on the phone must resolve the desktop session in real time (websocket), shown as the
+  simulated sync.
+- **Webcam**: `d-doc` (document choice — same `data-set-doc` branch point as `s-doc`)
+  → `d-cam` (auto) → `d-cam-captured` → branch: [passport: `d-live-1..3` (auto) →
+  `d-live-passed`] | [dni: `d-back` (auto) → `d-back-captured` → `d-selfie`]
+  → contacts (§3.1 desktop ids) → `d-complete`.
+- **Upload a file** — there is **no separate upload view**: the "Upload a file" action
+  opens the native file picker directly (one file per side), and the chosen photo lands
+  on crop & confirm: `d-crop` (front) → `d-crop-back` (back) → `d-selfie` → contacts →
+  `d-complete`. Maps 1:1 to `packages/shared/src/components/capture/CameraCapture.tsx`
+  (`openFileDialog` via `useImageFileUpload`, single image) rendering `PhotoUpload` +
+  `ImageCropper` (react-easy-crop). Crop screen actions: **Confirm {side} side**
+  (primary) · Choose a different file (reopens picker) · Use the webcam instead
+  (`d-cam`). Never infer front/back from filenames or upload order — each side is its
+  own picker + crop pass.
+
+Detours: `d-front-failed` (validation retry — recovery is primary blue, offers upload
+fallback), `d-cam-denied` (webcam permission blocked — enable steps + QR/upload
+alternatives), `d-unavailable` (outside check-in window).
+`d-upload` (the old standalone dropzone view with a multi-file list) is **deprecated**
+but kept in the prototype behind a crossed-out overlay for reference — no entry links
+point to it; do not implement it.
+Modals: `m-qr` (handoff), `m-share`, `m-privacy`.
 
 ---
 
@@ -231,13 +322,48 @@ Vela never blocks task UI; glass styling allowed (it's chrome, not reading surfa
 ## Appendix A — Global UI rules (apply to every flow)
 
 1. Liquid glass only on chrome (top bars, docks, on-camera pills, Vela) — never on
-   reading surfaces; keep list/cards opaque for contrast.
-2. Declining/skipping is never styled destructive-red; red = errors only.
+   reading surfaces; keep list/cards opaque for contrast. `.card.glass` is therefore
+   opaque (solid `--n-0`); chrome glass has an `@supports` solid fallback for browsers
+   without `backdrop-filter`.
+2. Declining/skipping is never styled destructive-red; red = errors only. Recovery
+   actions ("Try again") are **primary blue** even on error screens — red never styles
+   a button that moves the user forward. Exception: notification-count badges
+   (`.nbadge`) may be red by platform convention.
 3. Every waiting state names what's happening and what the user may do meanwhile.
 4. Success states always propose the next action (decision table §1.4 is the canonical
    priority order: pay → verify ID → register next → home).
 5. Status colors: green `--green-700` complete · amber `--amber-500/700` action needed ·
-   red `--red-500` error; icon + label together (never color alone).
+   red `--red-500` error; icon + label together (never color alone). Amber also marks
+   awaiting-input fields (`.field.needed`); red field styling (`.field.error`) is
+   reserved for post-interaction validation errors.
 6. Mobile forms: single-column full-width fields; two-column pairs allowed on desktop only.
 7. Screen ids in flow pages are the deep-link/hash API — `nav.js` flyouts and this spec
    must list the same ids.
+
+## Appendix B — Copy constants (one value, quoted everywhere)
+
+| Constant | Prototype value | Real source |
+|---|---|---|
+| Minors threshold | **under 18** | schema-driven `underage_allowed_age` — never hard-code two different numbers |
+| Home mock progress | **2 of 4 tasks done = 50%** ring | derived from the same task list the checklist renders |
+| IV step counter | stepper "Step N of 4" only | intro copy avoids totals ("A few quick steps") — count varies by document type |
+| Modal mock story | Ana just registered · 2 of 3 guests done · Carlos `verification_pending` | all §1 screens + desktop mirrors quote this one story |
+
+## Appendix C — Known gaps (TODO, deliberately not mocked yet)
+
+Found by the design-principles audit (2026-07-08); logged for a later iteration.
+Resolved since: OTP wrong-code (→ `s-code-email-error`/`d-code-email-error`),
+camera/webcam denied (→ `s-denied`/`d-cam-denied`).
+
+1. **Network offline / connection lost mid-flow** — variant of `dm-loading`/`dm-error`
+   (submission interrupted ≠ server error) and on IV capture/upload screens.
+2. **Session / booking-link expiry** — entry-level expired state for home / hub / IV.
+3. **Rejected upload** on `s-crop`/`d-crop` (wrong type / >10 MB / unreadable file).
+4. **Webcam not found / device busy** on `d-cam` (distinct from permission-denied).
+5. **QR code expired + refresh** — `d-qr`/`m-qr`/`s-qr-scan` advertise "code expires in 9:41"
+   but have no expired state or "generate new code" action.
+6. **Payment failure hand-off** — prototype has no payment surface at all; `dm-cart`
+   "Review & pay" carries a sim-note and continues to the next task.
+7. **Concurrent guest edit/delete while the §1 modal is open** (hub kebab vs live modal).
+8. **OTP resend cooldown / attempt lockout** — resend is a static link in the prototype;
+   no cooldown timer or max-attempts state.

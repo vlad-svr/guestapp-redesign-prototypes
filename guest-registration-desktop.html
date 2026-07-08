@@ -126,6 +126,16 @@
   }
   .consent-row p { font-size: 12px; line-height: 17px; color: var(--n-600); }
   .consent-row a { color: var(--blue-500); font-weight: 600; }
+  .consent-row .cbox.unchecked { background: var(--n-0); border: 1.5px solid var(--n-500); color: transparent; cursor: pointer; }
+  .pill-opt {
+    display: inline-block; padding: 1px 8px; border-radius: 99px;
+    background: var(--n-75); color: var(--text-secondary);
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    vertical-align: 1px; margin-left: 4px;
+  }
+  .fine-print { font-size: 11.5px; line-height: 17px; color: var(--text-tertiary); padding: 0 4px; }
+  .fine-print a { color: var(--blue-500); font-weight: 600; }
+  .fine-print b { color: var(--text-secondary); }
 </style>
 </head>
 <body>
@@ -436,15 +446,15 @@
 
               <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg> Contact <span class="divider"></span></div>
               <div class="two-col">
-                <div class="field">
+                <div class="field needed">
                   <label>Email</label>
                   <div class="input" style="color:var(--n-500)">maria@…</div>
                   <span class="hint">Booking confirmation &amp; keys go here</span>
                 </div>
-                <div class="field error">
+                <div class="field needed">
                   <label>Phone number</label>
                   <div class="input">+34 6…</div>
-                  <span class="hint">Please complete your phone number</span>
+                  <span class="hint">Still needed to finish your registration</span>
                 </div>
               </div>
 
@@ -458,10 +468,22 @@
                 <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:7px">Draw with your mouse or trackpad — required by local regulations</div>
               </div>
 
-              <div class="consent-row">
-                <span class="cbox"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px;stroke-width:3"><use href="#i-check"/></svg></span>
-                <p>I confirm my details are correct and accept the <a href="#">terms</a> and <a href="#">privacy policy</a>. Data is shared only with authorities as required by law.</p>
+              <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Agreements <span class="divider"></span></div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div class="consent-row">
+                  <span class="cbox unchecked" role="checkbox" aria-checked="false"></span>
+                  <p>I consent to my personal data being processed and shared with the local authorities for traveller registration, as required by law.</p>
+                </div>
+                <div class="consent-row">
+                  <span class="cbox unchecked" role="checkbox" aria-checked="false"></span>
+                  <p>The property may contact me about my stay and local recommendations. <span class="pill-opt">optional</span></p>
+                </div>
+                <div class="consent-row">
+                  <span class="cbox" role="checkbox" aria-checked="true"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-check"/></svg></span>
+                  <p>Send me a copy of the signed contract by email. <span class="pill-opt">optional</span></p>
+                </div>
               </div>
+              <p class="fine-print">By clicking <b>Complete registration</b> you sign the check-in form with the signature above and accept the <a href="#">rental contract</a> and our <a href="#">privacy policy</a>.</p>
 
               <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:6px;padding-bottom:8px">
                 <button class="btn btn-outline">Save for later</button>
