@@ -1,0 +1,731 @@
+/* ============================================================
+   Upselling flow — shared styles (flow-upselling-mobile.html +
+   flow-upselling-desktop.html). Loaded AFTER pay.css: reuses its
+   ledger / pay-item / pay-sec / hc-chip / empty-stage primitives
+   (the desktop page also layers payd.css for grid/cta helpers).
+   Signature element: the TWO-LANE booking model — every offer
+   declares ⚡ Instant (straight to cart) or 🕗 On request (host
+   confirms first) before you tap, requested deals carry a 3-step
+   approval TRACKER, and un-approved prices stay dashed chips —
+   extending the system rule that dashed = never charged. Partner
+   offers get dashed borders for the same reason: they book on the
+   partner's site and never enter the Chekin cart.
+   All values from shared.css tokens; photo pastels are imagery.
+   ============================================================ */
+
+/* ---------- Category pill rail (glass chrome, mobile-sticky) ---------- */
+.cat-rail {
+  position: sticky;
+  top: 56px; /* under the glass topbar */
+  z-index: 19;
+  flex-shrink: 0; /* .screen is a flex column — never compress the rail */
+  display: flex;
+  gap: 7px;
+  padding: 10px 14px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border-bottom: 1px solid rgba(229, 230, 238, 0.7);
+  margin-top: -1px;
+}
+.cat-rail::-webkit-scrollbar { display: none; }
+.cat {
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  font-size: 11.5px; font-weight: 600;
+  color: var(--n-600);
+  display: inline-flex; align-items: center; gap: 6px;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.cat:hover { border-color: var(--blue-500); color: var(--blue-500); }
+.cat.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.cat .icon { width: 13px; height: 13px; }
+/* Desktop variant: inline row, no glass, no stick */
+.cat-rail.flat {
+  position: static;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 0;
+  padding: 0;
+  margin: 18px 0 0;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+/* ---------- Lane chips: the booking model, declared up front ---------- */
+.lane {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 21px; padding: 0 8px;
+  border-radius: 99px;
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.lane .icon { width: 11px; height: 11px; }
+.lane.instant { background: var(--tint-pressed); color: var(--blue-500); }
+.lane.request { background: var(--amber-50); color: var(--amber-700); }
+.lane.incart { background: var(--green-50); color: var(--green-800); }
+
+/* Detail-page lane strip: chip meaning spelled out in a sentence */
+.lane-note {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 11.5px; line-height: 16px;
+  color: var(--text-secondary);
+}
+.lane-note b { color: var(--navy); }
+.lane-note .icon { flex-shrink: 0; margin-top: 1px; }
+.lane-note.instant { background: var(--tint-pressed); }
+.lane-note.instant .icon { color: var(--blue-500); }
+.lane-note.request { background: var(--amber-50); color: var(--amber-700); }
+.lane-note.request b { color: var(--amber-700); }
+
+/* ---------- Offer cards (list grid) ---------- */
+.of-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.of-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.of-card {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  text-align: left;
+  width: 100%;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.of-card.tap { cursor: pointer; }
+.of-card.tap:hover { box-shadow: var(--shadow-elev); transform: translateY(-1px); }
+.of-photo {
+  height: 92px;
+  display: grid; place-items: center;
+  font-size: 34px;
+  position: relative;
+  flex-shrink: 0;
+}
+/* Glass price pill on imagery — chrome-only glass rule allows on-photo pills */
+.of-price {
+  position: absolute; left: 8px; bottom: 8px;
+  display: inline-flex; align-items: baseline; gap: 3px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(10px) saturate(1.5);
+  -webkit-backdrop-filter: blur(10px) saturate(1.5);
+  border: 1px solid var(--glass-border);
+  font-size: 11px; font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+.of-price .per { font-size: 9px; font-weight: 500; color: var(--text-secondary); }
+.of-cartmark {
+  position: absolute; top: 8px; right: 8px;
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 20px; padding: 0 8px;
+  border-radius: 99px;
+  background: var(--green-50);
+  color: var(--green-800);
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.of-cartmark .icon { width: 11px; height: 11px; }
+.of-body {
+  padding: 10px 12px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1;
+}
+.of-title { font-size: 12.5px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+.of-meta { font-size: 10.5px; line-height: 14px; color: var(--text-secondary); }
+.of-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding-top: 2px; }
+.of-foot .icon.chev { width: 14px; height: 14px; color: var(--n-500); }
+
+/* ---------- Featured (exclusive) card ---------- */
+.of-feature {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  min-height: 150px;
+  display: flex; align-items: flex-end;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  text-align: left;
+}
+.of-feature .ft-art {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  padding: 12px 18px 0 0;
+  font-size: 44px;
+}
+.of-feature .ft-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(21, 21, 63, 0.74), rgba(21, 21, 63, 0.06) 62%); }
+.of-feature .ft-flag {
+  position: absolute; top: 10px; left: 10px;
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 10px;
+  border-radius: 99px;
+  background: var(--gradient-brand);
+  color: #fff;
+  font-size: 10px; font-weight: 700;
+  box-shadow: var(--shadow-brand);
+}
+.of-feature .ft-body {
+  position: relative;
+  width: 100%;
+  padding: 14px;
+  display: flex; align-items: flex-end; gap: 10px;
+  color: #fff;
+}
+.of-feature .ft-main { flex: 1; min-width: 0; }
+.of-feature .ft-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.of-feature .ft-sub { font-size: 11px; line-height: 15px; color: rgba(255, 255, 255, 0.82); margin-top: 2px; }
+/* dark glass price pill on the photo */
+.of-feature .ft-price {
+  display: inline-flex; align-items: baseline; gap: 3px;
+  padding: 5px 11px;
+  border-radius: 99px;
+  background: var(--glass-dark-bg);
+  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  border: 1px solid var(--glass-dark-border);
+  font-size: 13px; font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.of-feature .ft-price .per { font-size: 9.5px; font-weight: 500; color: rgba(255, 255, 255, 0.75); }
+
+/* ---------- Partner offers (dashed = never in your Chekin cart) ---------- */
+.partner-card {
+  display: flex; gap: 12px; align-items: center;
+  padding: 12px 14px;
+  border: 1.5px dashed var(--n-300);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  width: 100%;
+  text-align: left;
+  transition: border-color 0.15s;
+}
+.partner-card:hover { border-color: var(--blue-300); cursor: pointer; }
+.partner-card .pc-art {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.partner-card .pc-main { flex: 1; min-width: 0; }
+.partner-card .pc-title {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12.5px; font-weight: 700; color: var(--navy);
+}
+.partner-card .pc-title .icon { width: 12px; height: 12px; color: var(--n-500); }
+.partner-card .pc-sub { font-size: 10.5px; line-height: 14px; color: var(--text-tertiary); margin-top: 2px; }
+.partner-card .pc-price { font-size: 12px; font-weight: 700; color: var(--navy); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.partner-card .pc-price .per { font-size: 9.5px; font-weight: 500; color: var(--text-secondary); }
+
+/* ---------- The approval tracker (request lifecycle, always 3 steps) ---------- */
+.track { display: flex; align-items: flex-start; padding: 2px 0; }
+.track .tk {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px;
+  text-align: center;
+  position: relative;
+  min-width: 0;
+}
+/* connector to the previous step */
+.track .tk::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: calc(-50% + 15px);
+  right: calc(50% + 15px);
+  height: 2px;
+  border-radius: 99px;
+  background: var(--n-150);
+}
+.track .tk:first-child::before { display: none; }
+.track .tk.done::before { background: var(--green-600); }
+.track .tk.active::before { background: linear-gradient(90deg, var(--green-600), var(--blue-500)); }
+.track .tk-dot {
+  width: 21px; height: 21px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--n-75); color: var(--n-500);
+  position: relative; z-index: 1;
+}
+.track .tk-dot .icon { width: 11px; height: 11px; stroke-width: 2.6; }
+.track .tk.done .tk-dot { background: var(--green-50); color: var(--green-700); }
+.track .tk.active .tk-dot { background: var(--tint-pressed); }
+.track .tk.active .tk-dot::after {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--blue-500);
+  animation: pulse-ring 1.8s infinite;
+}
+.track .tk.fail .tk-dot { background: var(--red-100); color: var(--red-500); }
+.track .tk-label { font-size: 9.5px; line-height: 12px; font-weight: 600; color: var(--text-tertiary); }
+.track .tk.done .tk-label, .track .tk.active .tk-label { color: var(--navy); }
+.track .tk.fail .tk-label { color: var(--red-500); }
+.track .tk-when { font-size: 8.5px; font-weight: 500; color: var(--text-tertiary); margin-top: -3px; }
+
+/* ---------- Request cards (My requests) ---------- */
+.req-card {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.req-card .rq-top {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 14px 10px;
+}
+.req-card .rq-thumb {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.req-card .rq-main { flex: 1; min-width: 0; }
+.req-card .rq-title { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.req-card .rq-meta { font-size: 11px; line-height: 15px; color: var(--text-secondary); margin-top: 2px; }
+.req-card .rq-side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.req-card .rq-track { padding: 2px 14px 13px; }
+.req-card .rq-foot {
+  display: flex; align-items: center; gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: 10px 14px;
+  font-size: 11px; line-height: 15px;
+  color: var(--text-tertiary);
+}
+.req-card .rq-foot .icon { color: var(--blue-500); flex-shrink: 0; }
+.req-card .rq-foot .rq-cancel {
+  margin-left: auto;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+.req-card .rq-foot .rq-cancel:hover { color: var(--navy); }
+
+/* Status chips on request cards */
+.st-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 20px; padding: 0 8px;
+  border-radius: 99px;
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.st-chip .icon { width: 11px; height: 11px; }
+.st-chip.waiting { background: var(--amber-50); color: var(--amber-700); }
+.st-chip.declined { background: var(--red-100); color: var(--red-500); }
+
+/* Declined: the host's reply, quoted */
+.host-note {
+  margin: 0 14px 13px;
+  padding: 10px 13px;
+  border-left: 3px solid var(--n-200);
+  border-radius: 0 10px 10px 0;
+  background: var(--n-50);
+  font-size: 11.5px; line-height: 16px;
+  color: var(--text-secondary);
+}
+.host-note .hn-from { display: block; font-size: 10.5px; font-weight: 600; color: var(--text-tertiary); margin-top: 4px; }
+
+/* ---------- Detail page ---------- */
+.of-hero {
+  height: 172px;
+  display: grid; place-items: center;
+  font-size: 62px;
+  position: relative;
+  flex-shrink: 0;
+}
+.of-hero .of-price { left: 14px; bottom: 12px; font-size: 13px; padding: 5px 12px; }
+.of-hero .of-price .per { font-size: 10px; }
+.of-hero .ft-flag {
+  position: absolute; top: 12px; left: 14px;
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 10px;
+  border-radius: 99px;
+  background: var(--gradient-brand);
+  color: #fff;
+  font-size: 10px; font-weight: 700;
+  box-shadow: var(--shadow-brand);
+}
+
+.of-desc { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); }
+.of-desc b { color: var(--navy); font-weight: 600; }
+
+/* Fact rows (availability, delivery, cancellation) */
+.of-facts {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.of-facts .fact {
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 12px 14px;
+  font-size: 12px; line-height: 17px;
+  color: var(--text-secondary);
+}
+.of-facts .fact + .fact { border-top: 1px solid var(--n-75); }
+.of-facts .fact .icon { width: 16px; height: 16px; color: var(--blue-500); flex-shrink: 0; margin-top: 0.5px; }
+.of-facts .fact b { color: var(--navy); font-weight: 600; }
+
+/* Quantity stepper row */
+.qty-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--n-50);
+}
+.qty-row .ql { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-secondary); min-width: 0; }
+.qty-row .ql .icon { color: var(--blue-500); width: 15px; height: 15px; flex-shrink: 0; }
+.qty-row .ql .q-sub { display: block; font-size: 10px; font-weight: 500; color: var(--text-tertiary); margin-top: 1px; }
+.stepper { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.stepper button {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  display: grid; place-items: center;
+  color: var(--navy);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s, color 0.15s;
+}
+.stepper button:hover { border-color: var(--blue-500); color: var(--blue-500); }
+.stepper button.dis { color: var(--n-300); border-color: var(--border); pointer-events: none; box-shadow: none; }
+.stepper .sv { font-size: 15px; font-weight: 700; color: var(--navy); min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* Where replies go (inline — replaces the surprise email modal) */
+.mail-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  font-size: 12px; line-height: 16px;
+  color: var(--text-secondary);
+}
+.mail-row .icon { color: var(--blue-500); flex-shrink: 0; }
+.mail-row b { color: var(--navy); font-weight: 600; }
+.mail-row .pi-edit { margin: 0 0 0 auto; flex-shrink: 0; }
+
+/* Suggested alternative (declined recovery) */
+.sug-card {
+  display: flex; gap: 12px; align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  text-align: left;
+}
+.sug-card .pc-art { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; flex-shrink: 0; }
+.sug-card .pc-main { flex: 1; min-width: 0; }
+.sug-card .pc-title { font-size: 12.5px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.sug-card .pc-sub { font-size: 10.5px; line-height: 14px; color: var(--text-tertiary); margin-top: 2px; }
+.sug-card .pc-price { font-size: 12px; font-weight: 700; color: var(--navy); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.sug-card .pc-price .per { font-size: 9.5px; font-weight: 500; color: var(--text-secondary); }
+
+/* ---------- Desktop additions ---------- */
+/* Two-column detail: story left, sticky booking box right */
+.upd-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 22px;
+  align-items: start;
+  margin-top: 20px;
+}
+.upd-hero {
+  height: 264px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  display: grid; place-items: center;
+  font-size: 84px;
+}
+.upd-hero .of-price { left: 14px; bottom: 12px; font-size: 13px; padding: 5px 12px; }
+.book-box {
+  position: sticky;
+  top: 24px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 13px;
+}
+.book-box .bb-price { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.book-box .bb-price .bp-label { font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+.book-box .bb-price .bp-amount { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; color: var(--navy); font-variant-numeric: tabular-nums; }
+.book-box .bb-price .bp-amount .per { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+.book-box .btn { width: 100%; }
+.book-box .lg-note { display: flex; align-items: flex-start; gap: 7px; font-size: 11px; line-height: 15px; color: var(--text-tertiary); }
+.book-box .lg-note .icon { color: var(--blue-500); margin-top: 1px; flex-shrink: 0; }
+
+/* ============================================================
+   Partner banners & Home recommendations
+   Faithful to the live guestapp surfaces (Mozio transfer banner,
+   Airalo eSIM banner, GuruWalk free-offer cards, "Handpicked for
+   your trip" grid). Depend only on shared.css tokens so the Home
+   pages can load this file without pay.css. Partner accents stay
+   on-palette (amber tokens for Mozio's "HOT DEAL", violet/brand
+   tints for Airalo eSIM) rather than importing partner brand hexes.
+   ============================================================ */
+
+/* ---------- "Handpicked for your trip" grid ---------- */
+.home-reco {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.home-reco.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.home-reco .col-full { grid-column: 1 / -1; }
+
+.reco-card {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  text-align: left; width: 100%;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.reco-card.tap { cursor: pointer; }
+.reco-card.tap:hover { box-shadow: var(--shadow-elev); transform: translateY(-1px); }
+.reco-photo { height: 116px; display: grid; place-items: center; font-size: 40px; position: relative; flex-shrink: 0; }
+.reco-chip {
+  position: absolute; top: 9px; left: 9px;
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 20px; padding: 0 9px;
+  border-radius: 99px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(8px) saturate(1.5);
+  -webkit-backdrop-filter: blur(8px) saturate(1.5);
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--blue-500);
+}
+.reco-chip .icon { width: 11px; height: 11px; }
+.reco-chip.free { color: var(--green-800); }
+.reco-body { padding: 11px 13px 13px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.reco-title { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+.reco-desc { font-size: 11px; line-height: 15px; color: var(--text-secondary); }
+.reco-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 4px; }
+.reco-price { font-size: 13px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.reco-price .from { font-size: 10px; font-weight: 500; color: var(--text-secondary); }
+.reco-rating { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--amber-700); }
+.reco-rating .icon { width: 12px; height: 12px; fill: var(--amber-500); stroke: var(--amber-500); }
+.reco-rating .rc-count { color: var(--text-tertiary); font-weight: 500; }
+.reco-add {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 30px; padding: 0 13px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  font-size: 12px; font-weight: 600; color: var(--navy);
+  box-shadow: var(--shadow-card);
+  flex-shrink: 0;
+}
+.reco-add:hover { border-color: var(--blue-500); color: var(--blue-500); }
+.reco-add .icon { width: 13px; height: 13px; }
+
+/* Interleave helpers: a banner spans the whole offer grid row (mirrors the
+   live BANNER_AFTER_CARD = [2, 5] col-span-full injection). */
+.of-grid > .col-full { grid-column: 1 / -1; }
+.of-rating { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--amber-700); }
+.of-rating .icon { width: 12px; height: 12px; fill: var(--amber-500); stroke: var(--amber-500); }
+.of-rating .rc-count { color: var(--text-tertiary); font-weight: 500; }
+.of-ext { display: inline-flex; align-items: center; gap: 4px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-tertiary); }
+.of-ext .icon { width: 11px; height: 11px; }
+.of-cartmark.free { background: var(--green-50); color: var(--green-800); }
+
+/* ---------- Mozio — Airport & City Transfers (the "HOT DEAL" banner) ---------- */
+.mozio-banner {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  background: linear-gradient(118deg, #15153f 0%, #1c1c50 52%, #2a2a68 100%);
+  color: #fff;
+  padding: 16px 18px 16px;
+  box-shadow: var(--shadow-elev);
+  display: flex; flex-direction: column; gap: 11px;
+  text-align: left; width: 100%;
+}
+.mozio-banner::after {
+  content: '';
+  position: absolute; right: -50px; top: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 91, 248, 0.42), transparent 68%);
+  z-index: -1;
+}
+.mozio-banner .mz-head { display: flex; align-items: center; gap: 12px; }
+.mozio-banner .mz-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: grid; place-items: center; flex-shrink: 0;
+  color: #fff;
+}
+.mozio-banner .mz-titles { flex: 1; min-width: 0; }
+.mozio-banner .mz-title {
+  font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.mozio-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  height: 20px; padding: 0 8px;
+  border-radius: 99px;
+  background: var(--amber-500); color: var(--navy);
+  font-size: 9.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.mozio-banner .mz-partner { font-size: 10.5px; font-weight: 600; color: rgba(255, 255, 255, 0.55); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+.mozio-banner .mz-partner .icon { width: 11px; height: 11px; }
+.mozio-banner .mz-sub { font-size: 12px; line-height: 17px; color: rgba(255, 255, 255, 0.82); }
+.mozio-banner .mz-accent { font-size: 12.5px; font-weight: 600; color: var(--amber-500); display: inline-flex; align-items: center; gap: 6px; }
+.mozio-banner .mz-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+.mozio-banner .mz-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 24px; padding: 0 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 10.5px; font-weight: 600; color: rgba(255, 255, 255, 0.9);
+}
+.mozio-banner .mz-pill .icon { width: 12px; height: 12px; color: #8ca5ff; }
+.mozio-banner .mz-cta {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 40px; padding: 0 18px;
+  border-radius: 11px;
+  background: #fff; color: var(--navy);
+  font-size: 13px; font-weight: 700;
+  margin-top: 2px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+.mozio-banner .mz-cta:hover { background: #eef1ff; }
+.mozio-banner .mz-cta .icon { width: 15px; height: 15px; }
+/* Desktop wide layout: art rail on the right */
+.mozio-banner.wide { flex-direction: row; align-items: center; gap: 20px; padding: 20px 22px; }
+.mozio-banner.wide .mz-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 11px; }
+.mozio-banner.wide .mz-art {
+  width: 130px; height: 108px; flex-shrink: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid; place-items: center; font-size: 52px;
+}
+
+/* ---------- Airalo — eSIM banner ---------- */
+.airalo-banner {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.93) 30%, rgba(255, 255, 255, 0.55)),
+    linear-gradient(115deg, #e5ddff 0%, #dbe6ff 55%, #e8faf4 100%);
+  padding: 15px 18px;
+  display: flex; align-items: center; gap: 16px;
+  text-align: left; width: 100%;
+}
+.airalo-banner .ai-mark {
+  width: 46px; height: 46px; border-radius: 13px;
+  background: var(--gradient-brand);
+  display: grid; place-items: center;
+  color: #fff; font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-brand);
+}
+.airalo-banner .ai-main { flex: 1; min-width: 0; }
+.airalo-banner .ai-brand {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--blue-500);
+  display: flex; align-items: center; gap: 5px;
+}
+.airalo-banner .ai-title { font-size: 13.5px; font-weight: 700; color: var(--navy); line-height: 1.35; margin-top: 3px; }
+.airalo-banner .ai-side {
+  flex-shrink: 0; text-align: right;
+  padding-left: 16px;
+  border-left: 1px solid var(--border-subtle);
+  align-self: stretch;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
+}
+.airalo-banner .ai-price { font-size: 15px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.airalo-banner .ai-price .from { display: block; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+.airalo-banner .ai-link { font-size: 12px; font-weight: 600; color: var(--blue-500); display: inline-flex; align-items: center; gap: 4px; }
+.airalo-banner .ai-link .icon { width: 13px; height: 13px; }
+/* Mobile: stack the side under the title */
+@media (max-width: 460px) {
+  .airalo-banner { flex-wrap: wrap; }
+  .airalo-banner .ai-side { border-left: 0; border-top: 1px solid var(--border-subtle); padding-left: 0; padding-top: 10px; margin-top: 4px; width: 100%; text-align: left; flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+/* ---------- Free-offers FAB (GuruWalk) ---------- */
+.free-fab {
+  position: absolute;
+  right: 16px; bottom: 78px;
+  z-index: 25;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 42px; padding: 0 16px 0 14px;
+  border-radius: 99px;
+  background: linear-gradient(135deg, var(--green-600), var(--green-700));
+  color: #fff;
+  font-size: 12.5px; font-weight: 700;
+  box-shadow: 0 10px 26px rgba(15, 159, 128, 0.4);
+  animation: pulse-ring-green 2.6s infinite;
+}
+.free-fab .icon { width: 16px; height: 16px; }
+.free-fab .ff-x {
+  margin-left: 2px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: grid; place-items: center;
+}
+.free-fab .ff-x .icon { width: 11px; height: 11px; }
+@keyframes pulse-ring-green {
+  0% { box-shadow: 0 10px 26px rgba(15, 159, 128, 0.4), 0 0 0 0 rgba(43, 194, 159, 0.4); }
+  70% { box-shadow: 0 10px 26px rgba(15, 159, 128, 0.4), 0 0 0 12px rgba(43, 194, 159, 0); }
+  100% { box-shadow: 0 10px 26px rgba(15, 159, 128, 0.4), 0 0 0 0 rgba(43, 194, 159, 0); }
+}
+/* Desktop variant floats inside the browser frame */
+.free-fab.desk { position: absolute; right: 24px; bottom: 24px; }
+
+/* My-requests / declined: stacked column (the 3-col shell is too narrow at
+   ~1280 for a side ledger next to the tracker card) — cards full width, the
+   ledger drops below at a capped width. */
+.upd-stack { display: flex; flex-direction: column; gap: 18px; margin-top: 20px; }
+.upd-stack .ledger { max-width: 520px; }
+
+/* Solid fallback for glass surfaces introduced here (Appendix A rule 1) */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .cat-rail { background: rgba(255, 255, 255, 0.97); }
+  .of-price { background: rgba(255, 255, 255, 0.95); }
+  .of-feature .ft-price { background: rgba(21, 21, 63, 0.82); }
+  .reco-chip { background: rgba(255, 255, 255, 0.95); }
+}

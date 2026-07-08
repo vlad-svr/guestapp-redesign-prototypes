@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upselling Flow (interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="pay.css">
+<link rel="stylesheet" href="upsell.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Upselling — Interactive Flow (Mobile)</h1>
+  <p class="lede">Extras &amp; experiences with the booking model made visible: ⚡ instant offers go straight to the payments cart, 🕗 on-request offers show a live 3-step approval tracker, un-approved prices stay dashed (dashed = never charged), and partner offers say up front that they book outside the app. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="u-list">▶ Full flow</button>
+    <button class="fh-chip" data-scenario="u-detail">Instant offer</button>
+    <button class="fh-chip" data-scenario="u-request">On-request offer</button>
+    <button class="fh-chip" data-scenario="u-track">My requests</button>
+    <button class="fh-chip" data-scenario="u-rejected">Request declined</button>
+    <button class="fh-chip" data-scenario="u-empty">No extras</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="phone" style="height:840px">
+
+    <!-- ═══ u-list · OfferListView ═══ -->
+    <div class="screen flow-screen" id="u-list" data-start data-label="Browse extras — every offer declares its lane">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="tb-titles">
+          <div class="tb-title">Extras &amp; experiences</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="tb-action" data-goto="u-track">My requests</button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="cat-rail">
+        <button class="cat on"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill" style="fill:currentColor;stroke:none"/></svg> All</button>
+        <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Check-in &amp; out</button>
+        <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coffee"/></svg> Food &amp; drinks</button>
+        <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg> Transport</button>
+        <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-heart"/></svg> Wellness</button>
+        <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map"/></svg> Free tours</button>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Extras &amp; experiences</div>
+        <div class="page-title">Make it <span class="hl">your stay</span></div>
+        <p class="page-intro">Upgrades from Villa Serena — instant ones go straight to your cart, the rest need a quick yes from the host. Nothing is charged outside your payments cart.</p>
+      </div>
+      <div class="content" style="gap:16px">
+
+        <button class="of-feature">
+          <span class="ft-art" style="background:linear-gradient(135deg,#ffd3a5,#f78ca0)">🌅</span>
+          <span class="ft-scrim"></span>
+          <span class="ft-flag">✦ Exclusive for guests</span>
+          <span class="ft-body">
+            <span class="ft-main">
+              <span class="ft-title" style="display:block">Sunset vineyard tour</span>
+              <span class="ft-sub" style="display:block">Small-group tasting in the hills above town — guests of Villa Serena only.</span>
+            </span>
+            <span class="ft-price">€45.00 <span class="per">/ person</span></span>
+          </span>
+        </button>
+
+        <div>
+          <div class="pay-sec">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sparkle-fill" style="fill:currentColor;stroke:none"/></svg> For your stay
+          </div>
+          <div class="of-grid">
+            <button class="of-card tap" data-goto="u-detail">
+              <span class="of-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+                <span class="of-price">€12.50 <span class="per">/ basket</span></span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Breakfast basket</span>
+                <span class="of-meta">Pastries, juice &amp; coffee at your door on your first morning.</span>
+                <span class="of-foot"><span class="lane instant"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </span>
+            </button>
+            <button class="of-card tap" data-goto="u-request">
+              <span class="of-photo" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+                <span class="of-price">€20.00 <span class="per">/ stay</span></span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Early check-in</span>
+                <span class="of-meta">Get in from 12:00 instead of 15:00.</span>
+                <span class="of-foot"><span class="lane request"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> On request</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </span>
+            </button>
+
+            <!-- Partner banner #1 (Mozio) — interleaved after card 2 (live BANNER_AFTER_CARD[0]) -->
+            <button class="mozio-banner col-full" data-modal="m-partner">
+              <span class="mz-head">
+                <span class="mz-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
+                <span class="mz-titles">
+                  <span class="mz-title">Airport &amp; City Transfers <span class="mozio-tag">🔥 Hot deal</span></span>
+                  <span class="mz-partner"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Powered by Mozio · books on the partner site</span>
+                </span>
+              </span>
+              <span class="mz-sub">Prebook airport shuttles, taxis, buses &amp; private transfers — anytime, everywhere.</span>
+              <span class="mz-accent">✨ Discover unbeatable rates</span>
+              <span class="mz-pills">
+                <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Free cancellation</span>
+                <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> 24/7 support</span>
+                <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant confirmation</span>
+              </span>
+              <span class="mz-cta">Book a transfer <svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg></span>
+            </button>
+
+            <div class="of-card">
+              <span class="of-photo" style="background:linear-gradient(135deg,#d0e2fd,#a9c4f5)">🚕
+                <span class="of-price">€35.00 <span class="per">/ trip</span></span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Airport transfer</span>
+                <span class="of-meta">Private driver at arrivals — fixed price, no taxi queue.</span>
+                <span class="of-foot"><span class="lane instant"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant</span></span>
+              </span>
+            </div>
+            <div class="of-card">
+              <span class="of-photo" style="background:linear-gradient(135deg,#d8f5e3,#a8e6cf)">🧖
+                <span class="of-price">€18.00 <span class="per">/ person</span></span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Spa day pass</span>
+                <span class="of-meta">Pool, sauna and steam room at the partner hotel next door.</span>
+                <span class="of-foot"><span class="lane instant"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant</span></span>
+              </span>
+            </div>
+            <div class="of-card">
+              <span class="of-photo" style="background:linear-gradient(135deg,#ffe3c2,#f7b267)">🥘
+                <span class="of-price">€35.00 <span class="per">/ person</span></span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Paella cooking class</span>
+                <span class="of-meta">Cook and eat with a local chef — 3 hours, market visit included.</span>
+                <span class="of-foot"><span class="lane request"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> On request</span></span>
+              </span>
+            </div>
+
+            <!-- Partner banner #2 (Airalo eSIM) — interleaved after card 5 (live BANNER_AFTER_CARD[1]) -->
+            <button class="airalo-banner col-full" data-modal="m-partner">
+              <span class="ai-mark">📶</span>
+              <span class="ai-main">
+                <span class="ai-brand"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-external"/></svg> Airalo eSIM</span>
+                <span class="ai-title">Activate your eSIM instantly and forget about roaming.</span>
+              </span>
+              <span class="ai-side">
+                <span class="ai-price">€4.00<span class="from">Starting from</span></span>
+                <span class="ai-link">View plans <svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg></span>
+              </span>
+            </button>
+
+            <div class="of-card">
+              <span class="of-photo" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇
+                <span class="of-price">€15.00 <span class="per">/ stay</span></span>
+                <span class="of-cartmark"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> In cart</span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Late check-out</span>
+                <span class="of-meta">Keep the keys until 14:00 on departure day.</span>
+                <span class="of-foot"><span class="lane incart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cart"/></svg> In your cart</span></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pay-sec">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map"/></svg> Free walking tours
+            <button class="sec-info" data-modal="m-partner"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> By GuruWalk</button>
+          </div>
+          <div class="of-grid">
+            <button class="of-card" data-modal="m-partner">
+              <span class="of-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+                <span class="of-cartmark free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Gothic Quarter walking tour</span>
+                <span class="of-meta">2 hours through medieval Barcelona — tip what you like.</span>
+                <span class="of-foot"><span class="of-rating"><svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg> 4.9 <span class="rc-count">(326)</span></span><span class="of-ext"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Partner</span></span>
+              </span>
+            </button>
+            <button class="of-card" data-modal="m-partner">
+              <span class="of-photo" style="background:linear-gradient(135deg,#e3f0ff,#b7d4ff)">⛪
+                <span class="of-cartmark free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
+              </span>
+              <span class="of-body">
+                <span class="of-title">Gaudí &amp; Modernism tour</span>
+                <span class="of-meta">Sagrada Família, Casa Batlló and the story behind them.</span>
+                <span class="of-foot"><span class="of-rating"><svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg> 4.8 <span class="rc-count">(211)</span></span><span class="of-ext"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Partner</span></span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-payments-mobile.html#p-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cart"/></svg> Review cart — 1 extra · €15.00</a>
+      </div>
+    </div>
+
+    <!-- ═══ u-detail · OfferView (instant lane) ═══ -->
+    <div class="screen flow-screen" id="u-detail" data-label="Instant offer — straight to the cart, nothing charged now">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="u-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Breakfast basket</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="of-hero" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+        <span class="of-price">€12.50 <span class="per">/ basket</span></span>
+      </div>
+      <div class="content" style="gap:16px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="lane-note instant">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg>
+            <span><b>Instant — no approval needed.</b> This goes straight to your payments cart; you pay for everything together at the end.</span>
+          </div>
+          <p class="of-desc">Fresh pastries, orange juice and hot coffee at your door on your <b>first morning</b> — Villa Serena preps the basket the evening before, so it's warm when you wake up.</p>
+        </div>
+
+        <div class="of-facts">
+          <div class="fact"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg><span>Delivered <b>8:30–9:00</b> on your first morning.</span></div>
+          <div class="fact"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg><span>One basket is <b>generous for two</b>.</span></div>
+          <div class="fact"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg><span><b>Remove it free</b> any time before you pay your cart.</span></div>
+        </div>
+
+        <div class="qty-row">
+          <span class="ql"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coffee"/></svg><span>Baskets<span class="q-sub">€12.50 each</span></span></span>
+          <span class="stepper">
+            <button class="dis" aria-label="Remove one basket"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button>
+            <span class="sv">1</span>
+            <button aria-label="Add one basket"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button>
+          </span>
+        </div>
+
+        <div class="ledger">
+          <div class="lg-total"><span class="lt-label">To your payments cart</span><span class="lt-amount">€12.50</span></div>
+          <div class="lg-row">
+            <span class="lr-label"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-coffee"/></svg> Breakfast basket × 1</span>
+            <span class="lr-amount">€12.50</span>
+          </div>
+          <div class="lg-note"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Nothing is charged now — the basket joins your cart and you pay everything in one payment.</div>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" style="max-width:100%" data-modal="m-added">Add to cart — €12.50 <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══ u-request · OfferView (on-request lane) ═══ -->
+    <div class="screen flow-screen" id="u-request" data-label="On-request offer — host approves before anything is charged">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="u-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Early check-in</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="of-hero" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+        <span class="of-price">€20.00 <span class="per">/ stay</span></span>
+      </div>
+      <div class="content" style="gap:16px">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="lane-note request">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg>
+            <span><b>On request — Villa Serena confirms first.</b> The host checks the cleaning schedule and usually replies within a few hours. You're charged only if they say yes.</span>
+          </div>
+          <p class="of-desc">Get into the apartment from <b>12:00 instead of 15:00</b> on your arrival day — drop the bags, freshen up and start the day without waiting.</p>
+        </div>
+
+        <div class="of-facts">
+          <div class="fact"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg><span>On your <b>arrival day</b>, entry from <b>12:00</b>.</span></div>
+          <div class="fact"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg><span>The host usually replies <b>within a few hours</b>.</span></div>
+          <div class="fact"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg><span><b>Charged only if approved</b> — approved requests land in your cart to pay.</span></div>
+        </div>
+
+        <div>
+          <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-route"/></svg> How your request travels</div>
+          <div class="card" style="padding:14px 10px 12px">
+            <div class="track">
+              <div class="tk active">
+                <span class="tk-dot"></span>
+                <span class="tk-label">Send request</span>
+                <span class="tk-when">now</span>
+              </div>
+              <div class="tk">
+                <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg></span>
+                <span class="tk-label">Host reviews</span>
+                <span class="tk-when">a few hours</span>
+              </div>
+              <div class="tk">
+                <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cart"/></svg></span>
+                <span class="tk-label">Pay in cart</span>
+                <span class="tk-when">if approved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mail-row">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-mail"/></svg>
+          <span>The reply goes to <b>maria@gmail.com</b></span>
+          <button class="pi-edit"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Edit</button>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" style="max-width:100%" data-modal="m-sent">Send request — nothing charged yet</button>
+        <span class="secure-line"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> €20.00 is charged only after Villa Serena approves</span>
+      </div>
+    </div>
+
+    <!-- ═══ u-track · deals status (today: invisible after "Added") ═══ -->
+    <div class="screen flow-screen" id="u-track" data-label="My requests — the lifecycle, visible end to end">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="u-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">My requests &amp; extras</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Extras &amp; experiences</div>
+        <div class="page-title">Where things <span class="hl">stand</span></div>
+        <p class="page-intro">Every request and extra, with its next step. Dashed amounts are never charged — they become real only when the host approves and you pay.</p>
+      </div>
+      <div class="content" style="gap:18px">
+
+        <div>
+          <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Waiting for the host</div>
+          <div class="req-card">
+            <div class="rq-top">
+              <span class="rq-thumb" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤</span>
+              <span class="rq-main">
+                <span class="rq-title" style="display:block">Early check-in</span>
+                <span class="rq-meta" style="display:block">Sent today, 10:24 · entry from 12:00 on arrival day</span>
+              </span>
+              <span class="rq-side">
+                <span class="st-chip waiting"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> Waiting</span>
+                <span class="hc-chip">€20.00</span>
+              </span>
+            </div>
+            <div class="rq-track">
+              <div class="track">
+                <div class="tk done">
+                  <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="tk-label">Request sent</span>
+                  <span class="tk-when">10:24</span>
+                </div>
+                <div class="tk active">
+                  <span class="tk-dot"></span>
+                  <span class="tk-label">Host reviewing</span>
+                  <span class="tk-when">usually a few hours</span>
+                </div>
+                <div class="tk">
+                  <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cart"/></svg></span>
+                  <span class="tk-label">Pay in cart</span>
+                  <span class="tk-when">if approved</span>
+                </div>
+              </div>
+            </div>
+            <div class="rq-foot">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg>
+              <span>We'll email you the moment Villa Serena replies — keep browsing meanwhile.</span>
+              <button class="rq-cancel" data-modal="m-cancel">Cancel request</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pay-sec">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> In your cart — pay when ready
+            <a class="sec-info" href="flow-payments-mobile.html#p-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg> Open cart</a>
+          </div>
+          <div class="card">
+            <div class="pay-item">
+              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇</span>
+              <span class="pi-main">
+                <span class="pi-name" style="display:block">Late check-out</span>
+                <span class="pi-meta" style="display:block">Until 14:00 on departure day · added during registration</span>
+              </span>
+              <span class="pi-side"><span class="pi-price"><span class="pi-amount">€15.00</span></span></span>
+            </div>
+            <div class="pay-item">
+              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐</span>
+              <span class="pi-main">
+                <span class="pi-name" style="display:block">Breakfast basket × 1</span>
+                <span class="pi-meta" style="display:block">First morning, 8:30–9:00 · remove free until you pay</span>
+              </span>
+              <span class="pi-side"><span class="pi-price"><span class="pi-amount">€12.50</span></span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ledger">
+          <div class="lg-total"><span class="lt-label">Extras in your cart</span><span class="lt-amount">€27.50</span></div>
+          <hr class="lg-sep">
+          <div class="lg-row hold">
+            <span class="lr-label">Early check-in — waiting for the host</span>
+            <span class="lr-amount">€20.00</span>
+          </div>
+          <div class="lg-note"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> The dashed amount isn't part of your total — it joins the cart only if the host approves.</div>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-payments-mobile.html#p-cart">Pay in your cart — €27.50 in extras <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+        <button class="btn-ghost" data-goto="u-list">Keep browsing extras</button>
+      </div>
+    </div>
+
+    <!-- ═══ u-rejected · declined request (today: status never surfaces) ═══ -->
+    <div class="screen flow-screen" id="u-rejected" data-label="Request declined — the why, and a way forward">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="u-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">My requests &amp; extras</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Extras &amp; experiences</div>
+        <div class="page-title">Where things <span class="hl">stand</span></div>
+        <p class="page-intro">The host couldn't make one request work this time — nothing was charged, and there's a plan B below.</p>
+      </div>
+      <div class="content" style="gap:18px">
+
+        <div>
+          <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x-circle"/></svg> Declined by the host</div>
+          <div class="req-card">
+            <div class="rq-top">
+              <span class="rq-thumb" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba);filter:saturate(0.4)">🌤</span>
+              <span class="rq-main">
+                <span class="rq-title" style="display:block">Early check-in</span>
+                <span class="rq-meta" style="display:block">Requested yesterday · answered today, 9:05 · nothing was charged</span>
+              </span>
+              <span class="rq-side">
+                <span class="st-chip declined"><svg viewBox="0 0 24 24" class="icon"><use href="#i-x"/></svg> Declined</span>
+              </span>
+            </div>
+            <div class="rq-track">
+              <div class="track">
+                <div class="tk done">
+                  <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="tk-label">Request sent</span>
+                </div>
+                <div class="tk fail">
+                  <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-x"/></svg></span>
+                  <span class="tk-label">Declined</span>
+                  <span class="tk-when">today, 9:05</span>
+                </div>
+                <div class="tk">
+                  <span class="tk-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cart"/></svg></span>
+                  <span class="tk-label">Not charged</span>
+                </div>
+              </div>
+            </div>
+            <div class="host-note">
+              "We have a late departure that morning — the earliest we can hand over is 15:00. Sorry! Leave your bags with us any time from 9:00."
+              <span class="hn-from">— Villa Serena</span>
+            </div>
+            <div class="rq-foot">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+              <span>Declined requests never reach your cart — there's nothing to undo.</span>
+              <button class="rq-cancel">Dismiss</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sparkle-fill" style="fill:currentColor;stroke:none"/></svg> Plan B for that morning</div>
+          <button class="sug-card">
+            <span class="pc-art" style="background:linear-gradient(135deg,#e8e8f0,#c9c9dd)">🧳</span>
+            <span class="pc-main">
+              <span class="pc-title">Luggage drop <span class="lane instant"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant</span></span>
+              <span class="pc-sub">Leave your bags at the property from 9:00 and explore hands-free.</span>
+            </span>
+            <span class="pc-price">€5.00 <span class="per">/ bag</span></span>
+          </button>
+        </div>
+
+        <div>
+          <div class="pay-sec">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> In your cart — pay when ready
+            <a class="sec-info" href="flow-payments-mobile.html#p-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg> Open cart</a>
+          </div>
+          <div class="card">
+            <div class="pay-item">
+              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇</span>
+              <span class="pi-main">
+                <span class="pi-name" style="display:block">Late check-out</span>
+                <span class="pi-meta" style="display:block">Until 14:00 on departure day</span>
+              </span>
+              <span class="pi-side"><span class="pi-price"><span class="pi-amount">€15.00</span></span></span>
+            </div>
+            <div class="pay-item">
+              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐</span>
+              <span class="pi-main">
+                <span class="pi-name" style="display:block">Breakfast basket × 1</span>
+                <span class="pi-meta" style="display:block">First morning, 8:30–9:00</span>
+              </span>
+              <span class="pi-side"><span class="pi-price"><span class="pi-amount">€12.50</span></span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" style="max-width:100%" data-goto="u-list">Browse other extras</button>
+        <a class="btn-ghost" href="flow-payments-mobile.html#p-cart">Go to my cart — €27.50</a>
+      </div>
+    </div>
+
+    <!-- ═══ u-empty · no offers published ═══ -->
+    <div class="screen flow-screen" id="u-empty" data-label="No extras — an invitation, not a dead end">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="tb-titles">
+          <div class="tb-title">Extras &amp; experiences</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="empty-stage">
+        <div class="empty-ring" style="background:var(--tint-pressed);color:var(--blue-500)"><svg viewBox="0 0 24 24" class="icon" style="width:34px;height:34px"><use href="#i-gift"/></svg></div>
+        <div class="proc-title" style="font-size:20px">No extras for this stay yet</div>
+        <p class="proc-sub" style="margin-top:-8px">Villa Serena hasn't published any extras. Need something specific — an earlier arrival, a cot, an airport ride? Ask Vela and we'll pass it to the host.</p>
+        <button class="btn btn-primary" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg> Ask Vela</button>
+        <a class="btn-ghost" href="home.html">Back to home</a>
+      </div>
+    </div>
+
+    <!-- ═══ m-added · CreateDealCompleteModal (instant lane) ═══ -->
+    <div class="proto-modal sheet" id="m-added">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Added to your cart!</div>
+        <p class="pm-desc">Breakfast basket × 1 is in your payments cart — €12.50. Pay it together with the rest of your check-in, in one payment. You can remove it free any time before paying.</p>
+        <div class="pm-actions">
+          <a class="btn btn-primary" href="flow-payments-mobile.html#p-cart">Review cart &amp; pay <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+          <button class="btn-ghost" data-modal-close data-goto="u-list">Keep browsing extras</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ m-sent · request sent (on-request lane) ═══ -->
+    <div class="proto-modal sheet" id="m-sent">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Request sent to Villa Serena!</div>
+        <p class="pm-desc">The host usually replies within a few hours — we'll email you at <b>maria@gmail.com</b> the moment they do. Nothing is charged unless they approve.</p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close data-goto="u-track">Track my request</button>
+          <button class="btn-ghost" data-modal-close data-goto="u-list">Keep browsing extras</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ m-partner · partner hand-off ═══ -->
+    <div class="proto-modal sheet" id="m-partner">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Booking with a partner</div>
+        <p class="pm-desc">This offer is provided by a Chekin partner. You'll book and pay on their site, with their support — partner offers never appear in your Chekin cart.</p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Continue to the partner site <svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg></button>
+          <button class="btn-ghost" data-modal-close>Stay here</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ m-cancel · cancel request confirm ═══ -->
+    <div class="proto-modal" id="m-cancel">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-title">Cancel this request?</div>
+        <p class="pm-desc">Villa Serena won't see it anymore and nothing is charged. You can request early check-in again any time before your arrival.</p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Cancel request</button>
+          <button class="btn-ghost" data-modal-close>Keep waiting</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ m-vela · Vela sheet (upselling context) ═══ -->
+    <div class="proto-modal right" id="m-vela">
+      <div class="pm-scrim"></div>
+      <div class="pm-card" style="display:flex;flex-direction:column;gap:18px">
+        <button class="pm-close" data-modal-close><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        <div class="vela-head" style="border-bottom:1px solid var(--border)">
+          <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+          <div>
+            <div class="vela-name">Vela</div>
+            <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+          </div>
+        </div>
+        <div class="vela-section">
+          <div class="vela-eyebrow">About extras</div>
+          <div class="vela-tip">
+            <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-zap"/></svg></span>
+            <span><span class="vt-title" style="display:block">Two ways to book</span><span class="vt-desc">⚡ Instant goes straight to your cart. 🕗 On request means the host confirms first — charged only if approved.</span></span>
+          </div>
+          <div class="vela-tip">
+            <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg></span>
+            <span><span class="vt-title" style="display:block">When am I charged?</span><span class="vt-desc">Never here — everything lands in your payments cart and you pay once, at the end.</span></span>
+          </div>
+          <div class="vela-tip">
+            <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x-circle"/></svg></span>
+            <span><span class="vt-title" style="display:block">Can I change my mind?</span><span class="vt-desc">Cancel a request while it's waiting, and remove cart extras free any time before you pay.</span></span>
+          </div>
+        </div>
+        <div class="vela-section">
+          <div class="vela-eyebrow">Ask Vela</div>
+          <div class="vela-ask" style="margin-top:10px">
+            <div class="ask-input">
+              Ask anything about extras…
+              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+            </div>
+            <div class="vela-chips">
+              <span class="chip">Can we arrive at noon?</span>
+              <span class="chip">Is the breakfast vegetarian?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-x-circle"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-minus"><path d="M5 12h14"/></g>
+    <g id="i-pen"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></g>
+    <g id="i-external"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
+    <g id="i-coffee"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></g>
+    <g id="i-car"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></g>
+    <g id="i-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></g>
+    <g id="i-map"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/></g>
+    <g id="i-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></g>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-route"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+  </defs>
+</svg>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

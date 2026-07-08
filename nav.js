@@ -76,6 +76,55 @@
         { hash: 'pd-deposit', label: 'Deposit chooser' },
       ]},
     ]},
+    { group: 'Tourist taxes', items: [
+      { file: 'flow-taxes-mobile.html', label: 'Taxes flow — mobile', icon: '📱', subs: [
+        { hash: 't-setup', label: 'Full flow (setup → cart)' },
+        { hash: 't-exemption', label: 'Add exemption' },
+        { hash: 't-newguest', label: 'New guest with exemption' },
+        { hash: 't-added', label: 'Exemption added' },
+        { hash: 't-edit', label: 'From payments cart' },
+        { hash: 't-empty', label: 'Age-priced region (no exemptions)' },
+        { hash: 't-paid', label: 'Taxes paid (locked)' },
+      ]},
+      { file: 'flow-taxes-desktop.html', label: 'Taxes flow — desktop', icon: '🖥', subs: [
+        { hash: 'td-setup', label: 'Full flow (setup → cart)' },
+        { hash: 'td-exemption', label: 'Add exemption' },
+        { hash: 'td-edit', label: 'From payments cart' },
+        { hash: 'td-paid', label: 'Taxes paid (locked)' },
+      ]},
+    ]},
+    { group: 'Upselling', items: [
+      { file: 'flow-upselling-mobile.html', label: 'Upselling flow — mobile', icon: '📱', subs: [
+        { hash: 'u-list', label: 'Full flow (browse → book → cart)' },
+        { hash: 'u-detail', label: 'Instant offer — add to cart' },
+        { hash: 'u-request', label: 'On-request offer — host approval' },
+        { hash: 'u-track', label: 'My requests & cart' },
+        { hash: 'u-rejected', label: 'Request declined' },
+        { hash: 'u-empty', label: 'No extras' },
+      ]},
+      { file: 'flow-upselling-desktop.html', label: 'Upselling flow — desktop', icon: '🖥', subs: [
+        { hash: 'ud-list', label: 'Full flow (browse → book → cart)' },
+        { hash: 'ud-detail', label: 'Instant offer — booking box' },
+        { hash: 'ud-request', label: 'On-request offer — host approval' },
+        { hash: 'ud-track', label: 'My requests & cart' },
+        { hash: 'ud-rejected', label: 'Request declined' },
+      ]},
+    ]},
+    { group: 'FAQ & language', items: [
+      { file: 'flow-faq-mobile.html', label: 'FAQ & language — mobile', icon: '📱', subs: [
+        { hash: 'h-faq', label: 'FAQ page' },
+        { hash: 'h-search', label: 'Search with matches' },
+        { hash: 'h-empty', label: 'No results' },
+        { hash: 'h-lang', label: 'Language sheet' },
+        { hash: 'h-es', label: 'Switched to Español' },
+      ]},
+      { file: 'flow-faq-desktop.html', label: 'FAQ & language — desktop', icon: '🖥', subs: [
+        { hash: 'hd-faq', label: 'FAQ page' },
+        { hash: 'hd-search', label: 'Search with matches' },
+        { hash: 'hd-lang', label: 'Language dialog' },
+        { hash: 'hd-es', label: 'Switched to Español' },
+      ]},
+    ]},
     { group: 'Building blocks', items: [
       { file: 'vela.html', label: 'Vela helper', icon: '✦' },
       { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },

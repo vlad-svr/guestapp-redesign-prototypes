@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="upsell.css">
 <style>
   /* hero (desktop) */
   .hero {
@@ -188,7 +189,7 @@
   <h1>Home — Desktop (Redesign 2.0 Prototype)</h1>
   <p class="lede">The V3 desktop journey: navy sidebar with a live check-in progress module, hero with glass countdown, checklist with progress ring, timeline and "next up" spotlight, and the upsell/contact right rail. Mock data only.</p>
 
-  <div class="browser">
+  <div class="browser" style="position:relative">
     <div class="browser-bar">
       <span class="dots"><i></i><i></i><i></i></span>
       <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock-sm"/></svg> guest.chekin.com/villa-serena</span>
@@ -351,8 +352,83 @@
               <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-compass"/></svg></div>
               <div class="sc-title">Experiences</div>
               <div class="sc-desc">Tours &amp; activities in Barcelona</div>
-              <button class="btn btn-outline btn-sm">Browse</button>
+              <a class="btn btn-outline btn-sm" href="flow-upselling-desktop.html">Browse</a>
             </div>
+          </div>
+        </div>
+
+        <!-- Handpicked for your trip (RecommendationsSection + partner banners) -->
+        <div class="fade-up d4">
+          <div class="section-head">
+            <h2>✨ Handpicked for your trip</h2>
+            <a class="counter" href="flow-upselling-desktop.html" style="color:var(--blue-500);font-weight:600">See all extras</a>
+          </div>
+          <div class="home-reco cols-3">
+            <a class="reco-card tap" href="flow-upselling-desktop.html#ud-detail">
+              <span class="reco-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+                <span class="reco-chip">Food &amp; drinks</span>
+              </span>
+              <span class="reco-body">
+                <span class="reco-title">Breakfast basket</span>
+                <span class="reco-desc">Pastries, juice &amp; coffee at your door on your first morning.</span>
+                <span class="reco-foot"><span class="reco-price">€12.50</span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg> Add</span></span>
+              </span>
+            </a>
+            <a class="reco-card tap" href="flow-upselling-desktop.html#ud-request">
+              <span class="reco-photo" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+                <span class="reco-chip">Check-in &amp; out</span>
+              </span>
+              <span class="reco-body">
+                <span class="reco-title">Early check-in</span>
+                <span class="reco-desc">Get into the apartment from 12:00 instead of 15:00.</span>
+                <span class="reco-foot"><span class="reco-price">€20.00</span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg> View</span></span>
+              </span>
+            </a>
+            <a class="reco-card tap" href="flow-upselling-desktop.html#ud-list">
+              <span class="reco-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+                <span class="reco-chip free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
+              </span>
+              <span class="reco-body">
+                <span class="reco-title">Gothic Quarter walking tour</span>
+                <span class="reco-desc">2 hours through medieval Barcelona · by GuruWalk.</span>
+                <span class="reco-foot"><span class="reco-rating"><svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg> 4.9 <span class="rc-count">(326)</span></span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Book</span></span>
+              </span>
+            </a>
+
+            <!-- Mozio transfer banner (WideCard on Home — spans the row) -->
+            <a class="mozio-banner wide col-full" href="flow-upselling-desktop.html#ud-list">
+              <span class="mz-main">
+                <span class="mz-head">
+                  <span class="mz-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
+                  <span class="mz-titles">
+                    <span class="mz-title">Airport &amp; City Transfers <span class="mozio-tag">🔥 Hot deal</span></span>
+                    <span class="mz-partner"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Powered by Mozio · books on the partner site</span>
+                  </span>
+                </span>
+                <span class="mz-sub">Prebook airport shuttles, taxis, buses and private transfers &amp; limousines — anytime, everywhere.</span>
+                <span class="mz-accent">✨ Discover unbeatable rates</span>
+                <span class="mz-pills">
+                  <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Free cancellation</span>
+                  <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> 24/7 support</span>
+                  <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant confirmation</span>
+                </span>
+                <span class="mz-cta">Book a transfer <svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg></span>
+              </span>
+              <span class="mz-art">🚐</span>
+            </a>
+
+            <!-- Airalo eSIM banner -->
+            <a class="airalo-banner col-full" href="flow-upselling-desktop.html#ud-list">
+              <span class="ai-mark">📶</span>
+              <span class="ai-main">
+                <span class="ai-brand"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-external"/></svg> Airalo eSIM</span>
+                <span class="ai-title">Activate your eSIM instantly and forget about roaming — instant mobile data, no physical SIM.</span>
+              </span>
+              <span class="ai-side">
+                <span class="ai-price">€4.00<span class="from">Starting from</span></span>
+                <span class="ai-link">View plans <svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg></span>
+              </span>
+            </a>
           </div>
         </div>
       </main>
@@ -405,6 +481,12 @@
       </aside>
 
     </div>
+
+    <!-- Free-offers FAB (GuruWalk) -->
+    <a class="free-fab desk" href="flow-upselling-desktop.html#ud-list">
+      <svg viewBox="0 0 24 24" class="icon" style="fill:none"><use href="#i-gift"/></svg> Free offers
+      <span class="ff-x"><svg viewBox="0 0 24 24" class="icon"><use href="#i-x"/></svg></span>
+    </a>
   </div>
 </div>
 
@@ -427,6 +509,14 @@
     <g id="i-lock-sm"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
     <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
     <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-external"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></g>
+    <g id="i-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></g>
+    <g id="i-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></g>
+    <g id="i-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></g>
+    <g id="i-car"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></g>
   </defs>
 </svg>
 <script src="nav.js" defer></script>

@@ -107,7 +107,7 @@
 
   <div class="hero-head">
     <h1>Guestapp Redesign 2.0 — UX prototypes</h1>
-    <p>Static HTML/CSS mockups of the redesigned Identity Verification, Guest Registration, Payments, and Home check-in flows — built on the real <b>@chekinapp/tokens</b> design system (Poppins, brand blue #385bf8, navy #161643, cool lavender neutrals) with incremental UX improvements layered on top — no structural changes, every screen maps 1:1 to an existing component.</p>
+    <p>Static HTML/CSS mockups of the redesigned Identity Verification, Guest Registration, Payments, Tourist Taxes, FAQ &amp; Language, and Home check-in flows — built on the real <b>@chekinapp/tokens</b> design system (Poppins, brand blue #385bf8, navy #161643, cool lavender neutrals) with incremental UX improvements layered on top — no structural changes, every screen maps 1:1 to an existing component.</p>
     <div class="meta">
       <span>Pure HTML + CSS</span>
       <span>Mock data only</span>
@@ -124,13 +124,13 @@
     <a class="proto-link" href="home.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
       <h3><span class="ff">📱</span> Home — mobile</h3>
-      <p>Glass top bar and bottom nav, hero with arrival countdown, "next up" spotlight row, progress ring, all-done celebration state.</p>
+      <p>Glass top bar and bottom nav, hero with arrival countdown, "next up" spotlight row, progress ring, all-done celebration state, and a "Handpicked for your trip" section (native offers + Mozio "HOT DEAL" &amp; Airalo eSIM banners) with a GuruWalk Free-offers FAB.</p>
       <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="home-desktop.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
       <h3><span class="ff">🖥</span> Home — desktop</h3>
-      <p>Navy sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards.</p>
+      <p>Navy sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards, plus a "Handpicked for your trip" 3-col grid with the Mozio wide banner + Airalo eSIM banner and a Free-offers FAB.</p>
       <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -189,6 +189,54 @@
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">🖥</span> Payments flow — desktop</h3>
       <p>Two-column cart with a sticky ledger, the embedded Stripe payment element, live confirmation timeline, full-bleed receipt celebration, decline recovery, order history and the deposit chooser — with a stage-aware Vela rail (holds, security, statement copy) on every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Tourist taxes</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-taxes-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Taxes flow — mobile</h3>
+      <p>The tax total as visible math: a per-guest breakdown card (taxed nights × rate) with exempt guests kept on the list as dashed €0.00 rows, the season rule pinned on top, an exemption picker that previews the new total before confirming, new-guest exemptions, the edit-from-cart mode, an age-priced region variant and the paid/locked state.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-taxes-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Taxes flow — desktop</h3>
+      <p>Per-guest math on the left, the running total sticky on the right with the confirm CTA inside it, exemption picker with a live "new total if confirmed" preview, edit-from-cart mode that returns to payments, and the paid/locked state — with a stage-aware Vela rail on every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Upselling — extras &amp; experiences</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-upselling-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Upselling flow — mobile</h3>
+      <p>Extras with the booking model made visible: every offer declares ⚡ Instant (straight to cart) or 🕗 On request (host confirms first) before you tap, a "My requests" view tracks the whole lifecycle on a 3-step tracker with dashed un-approved prices, declined requests quote the host and offer a plan B, and partner offers (eSIM, free tours) say up front that they book outside the app.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-upselling-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Upselling flow — desktop</h3>
+      <p>Extras as a sidebar destination: a 3-column grid with lane chips and an exclusive featured card, detail pages with a sticky booking box (quantity, total, "nothing charged now" note), the request tracker inside the booking box for on-request offers, and a "My requests" ledger where waiting amounts stay dashed — with a stage-aware Vela rail on every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">FAQ &amp; language</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-faq-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> FAQ &amp; language — mobile</h3>
+      <p>The FAQ grouped by check-in task with answers that end in the action they describe, search that auto-opens and highlights its matches, a no-results state with a way out (Ask Vela), and the language bottom sheet with a "Suggested" group — switching is instant, translated in place, no reload.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-faq-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> FAQ &amp; language — desktop</h3>
+      <p>FAQ as a sidebar destination (new "Support" group: Language with its current value, FAQs, Privacy policy), highlight search, and the language dialog with a two-column grid — picking Español translates the sidebar, page and Vela rail in place.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -330,6 +378,84 @@
       <p class="now"><b>Proposed:</b> each option leads with the cost today — <b>"€0.00 today"</b> (hold) vs <b>"€39.00 one-time"</b> (protection) — with release/refund rules as check bullets and a ⚡ Recommended badge on the no-cost option.</p>
     </div>
     <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>The tax total becomes visible math</h4>
+      <p class="was"><b>Now in code:</b> TaxesTouristView shows a single grey pill — "Total tourist taxes: €31" — the per-guest calculation happens server-side and is never shown to the guest.</p>
+      <p class="now"><b>Proposed:</b> a <b>per-guest math card</b> — every guest is a row (<b>5 taxed nights × €3.10</b>), exempt guests stay on the list as dashed €0.00 rows (the payments rule: dashed = never charged), and the season rule ("only the first 5 nights are taxed") is pinned on top of the card.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Exemptions preview their savings</h4>
+      <p class="was"><b>Now in code:</b> GuestTaxesForm is two bare selects (exemption, guest); the new total only appears after confirming and returning to the taxes screen.</p>
+      <p class="now"><b>Proposed:</b> a live delta card — <b>"New total if confirmed: €17.00 (was €32.50)"</b> — under the picker, so the money consequence is read before the confirm tap, plus the proof warning moved up front instead of fine print.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>Every exemption names its proof</h4>
+      <p class="was"><b>Now in code:</b> the exemptions list modal says only that exemptions "need to be verified upon arrival" — which document, nobody says.</p>
+      <p class="now"><b>Proposed:</b> each exemption type states its document everywhere it appears — <b>"Registered resident — residence certificate"</b> — in the picker helper, the list modal and the exempt guest's row, so nothing is refused at the door.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>Tax setup lands in the cart, not a dead end</h4>
+      <p class="was"><b>Now in code:</b> the confirm button says "Confirm", and the success modal ("Tourist taxes setup complete!") offers generic navigation.</p>
+      <p class="now"><b>Proposed:</b> the CTA states the amount and destination — <b>"Confirm — €32.50 to my cart"</b> — the success sheet routes straight into the payments cart, and the edit-from-cart mode confirms directly back to payment (its real i18n label, "Confirm and go back to Payment").</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>The FAQ is grouped by task, not a flat list</h4>
+      <p class="was"><b>Now in code:</b> FAQView renders one flat accordion of ~10 questions; conditional ones (IV, taxes, payments) silently appear or disappear per reservation (Questions.tsx).</p>
+      <p class="now"><b>Proposed:</b> the same questions under <b>section labels that mirror the check-in tasks</b> — Your data &amp; registration, Identity verification, Taxes &amp; payments — so guests scan to their problem instead of reading ten headlines. Grouping is presentation only; the conditional logic is unchanged.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>FAQ answers end in the action they describe</h4>
+      <p class="was"><b>Now in code:</b> answers are static rich text (renderRichText) — the only links are to the Privacy Policy; a guest who reads "you can complete the payment later" still has to find the payments page alone.</p>
+      <p class="now"><b>Proposed:</b> answers that describe a task close with a <b>pill action into that task</b> — "Review your tourist taxes", "Open your payments cart", "Start identity verification" — the same next-step rule the success screens follow.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>FAQ no-results is an exit, not a dead end</h4>
+      <p class="was"><b>Now in code:</b> the empty state is a SearchX icon plus "No results for … — try a different word"; there is no other way forward and no contact/escalation anywhere on the page.</p>
+      <p class="now"><b>Proposed:</b> the same empty state adds <b>"Ask Vela instead"</b> and "Browse all questions" — an unanswered question becomes a conversation, not a shrug.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Language switching is one tap closer and suggests first</h4>
+      <p class="was"><b>Now in code:</b> the LanguageModal opens only from menu/footer entries (useNavigationLinks); the sheet is a flat searchable grid of 18 languages, and the browser-language detection (querystring → localStorage → navigator) is invisible to the guest.</p>
+      <p class="now"><b>Proposed:</b> a <b>globe on the page top bar</b> (mobile) and a sidebar "Support" row showing the current value ("Language · English"); the sheet pins a <b>Suggested group</b> — current language plus the device language, labelled "from your device" — above the full list. The good parts stay: search, pending spinner on the picked row, instant in-place switch with no reload.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>The deal lifecycle becomes visible</h4>
+      <p class="was"><b>Now in code:</b> after adding a deal, the only feedback is a green "ADDED" chip on the offer card (OfferCardMark renders APPROVED and PRE_REQUESTED only); REQUESTED, REJECTED and PAID never surface anywhere — a guest whose request was declined simply never hears back.</p>
+      <p class="now"><b>Proposed:</b> a <b>"My requests" view with a 3-step tracker</b> — Request sent → Host reviewing → Pay in cart — where waiting amounts stay <b>dashed</b> (the system rule: dashed = never charged), declined requests quote the host's reply and suggest a plan B, and approved extras link straight into the cart.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Instant vs on-request, declared before the tap</h4>
+      <p class="was"><b>Now in code:</b> auto- and manual-confirmation offers (confirmation_type) look identical on the list and the detail page; the approval requirement surfaces only as a fine-print note in AddToCartForm after the guest has already chosen.</p>
+      <p class="now"><b>Proposed:</b> every offer card carries a <b>lane chip — ⚡ Instant or 🕗 On request</b> — and the detail page opens with one sentence of what that means ("the host checks the schedule and usually replies within a few hours; you're charged only if they say yes"). The CTA matches the lane: "Add to cart — €12.50" vs "Send request — nothing charged yet".</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The reply email is inline, not a surprise modal</h4>
+      <p class="was"><b>Now in code:</b> tapping the CTA on a manual-confirmation offer can pop EnterContactEmailModal (or a separate confirm-email route) — an unexplained email form between the guest and their request.</p>
+      <p class="now"><b>Proposed:</b> the request page shows <b>"The reply goes to maria@gmail.com — Edit"</b> as a row of the form itself, so the email is confirmed in context and the send button stays one tap.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>Partner banners stay prominent, but clearly external</h4>
+      <p class="was"><b>Now in code:</b> Mozio/Airalo banners and GuruWalk cards are interleaved with native offers (BANNER_AFTER_CARD = [2, 5]) but read as native — guests can't tell which bookings leave the app and pay off-site.</p>
+      <p class="now"><b>Proposed:</b> keep the <b>prominent interleaved banners</b> the business runs (Mozio "🔥 HOT DEAL" transfers, Airalo eSIM, GuruWalk free tours) on both Home and the offer list, but make each unmistakably a partner: provider named ("Powered by Mozio · books on the partner site"), an external-link glyph, and a hand-off dialog before leaving. They never enter the Chekin cart.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Discovery</span>
+      <h4>"Handpicked for your trip" on Home</h4>
+      <p class="was"><b>Now in code:</b> Home spreads upsells across three disconnected surfaces — RecommendationsSection grid, a desktop-only UpsellCarousel in the aside, and a FreeOffersFab — each reading the same items list.</p>
+      <p class="now"><b>Proposed:</b> one <b>"Handpicked for your trip" section</b> that mixes native offers (Add/View) with the Mozio and Airalo banners in a single grid, a <b>"See all"</b> into the extras flow, and a GuruWalk <b>Free-offers FAB</b> — the same sources, one coherent moment.</p>
+    </div>
+    <div class="imp">
       <span class="tag glass-t">Liquid glass</span>
       <h4>Sticky glass CTA dock</h4>
       <p class="was"><b>Now in code:</b> the Continue button sits in the page flow — on long forms it's below the fold.</p>
@@ -338,7 +464,7 @@
   </div>
 
   <div class="note">
-    <b>Implementation notes.</b> Everything here uses existing token values (<code>@chekinapp/tokens</code>) — no new colors were invented. The payment-method UI is Stripe's embedded <code>&lt;PaymentElement&gt;</code> and cannot be restructured — the payments prototypes fence it off and confine changes to Appearance-API theming (<code>colorPrimary</code>, radius, font) plus the components around it (ledger, hold warning, CTA, processing timeline). The glass effect is <code>backdrop-filter: blur() saturate()</code> over existing surfaces with graceful fallback (solid <code>rgba</code> backgrounds) and it is confined to chrome: top bars, bottom nav, on-camera pills, CTA docks. All motion respects <code>prefers-reduced-motion</code>. The segmented progress, accent-bar "next up" row, and auto-fill tags are pure CSS additions to existing components (<code>IVTopBarSubtitle → progress segments</code>, <code>TaskRow</code>, <code>GuestFormFields</code>).
+    <b>Implementation notes.</b> Everything here uses existing token values (<code>@chekinapp/tokens</code>) — no new colors were invented. The payment-method UI is Stripe's embedded <code>&lt;PaymentElement&gt;</code> and cannot be restructured — the payments prototypes fence it off and confine changes to Appearance-API theming (<code>colorPrimary</code>, radius, font) plus the components around it (ledger, hold warning, CTA, processing timeline). The per-guest tax math in the taxes prototypes uses data the backend already returns (<code>SeasonRule</code> age brackets, <code>max_nights</code> cap, the season's <code>Exemption</code> list) — it's a presentation change, not a new API surface. The glass effect is <code>backdrop-filter: blur() saturate()</code> over existing surfaces with graceful fallback (solid <code>rgba</code> backgrounds) and it is confined to chrome: top bars, bottom nav, on-camera pills, CTA docks. All motion respects <code>prefers-reduced-motion</code>. The segmented progress, accent-bar "next up" row, and auto-fill tags are pure CSS additions to existing components (<code>IVTopBarSubtitle → progress segments</code>, <code>TaskRow</code>, <code>GuestFormFields</code>).
   </div>
 
 </div>

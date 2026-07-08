@@ -68,17 +68,17 @@
   background: var(--n-0);
 }
 .pay-item + .pay-item { border-top: 1px solid var(--border); }
-.pay-item .pi-main { flex: 1; min-width: 0; }
-.pay-item .pi-name { font-size: 13.5px; font-weight: 700; color: var(--navy); }
-.pay-item .pi-meta { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
-.pay-item .pi-edit {
+.pi-main { flex: 1; min-width: 0; }
+.pi-name { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.pi-meta { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.pi-edit {
   display: inline-flex; align-items: center; gap: 5px;
   margin-top: 7px;
   font-size: 11.5px; font-weight: 600;
   color: var(--blue-500);
   padding: 0;
 }
-.pay-item .pi-edit:hover { color: var(--blue-600); }
+.pi-edit:hover { color: var(--blue-600); }
 .pay-item .pi-side { display: flex; align-items: flex-start; gap: 4px; flex-shrink: 0; }
 .pay-item .pi-price { text-align: right; }
 .pay-item .pi-amount { font-size: 14px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
@@ -122,7 +122,7 @@
   background: var(--n-0);
 }
 .hold-card .pi-icon { background: var(--n-75); color: var(--n-600); }
-.hold-card .hc-chip {
+.hc-chip {
   display: inline-flex; align-items: center; gap: 5px;
   height: 26px; padding: 0 11px;
   border-radius: 99px;
@@ -131,6 +131,7 @@
   color: var(--n-600);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* ---------- The ledger (summary) ---------- */
@@ -190,12 +191,14 @@
 }
 .paylater .pl-head .pl-sum { margin-left: auto; font-size: 11.5px; font-weight: 600; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .paylater .pl-item {
-  display: flex; align-items: center; gap: 11px;
+  display: flex; align-items: flex-start; gap: 11px;
   padding: 12px 16px;
   border-top: 1px solid var(--n-100);
   background: var(--n-0);
 }
+.paylater .pl-item > span:not(.pi-icon):not(.pl-price) { flex: 1; min-width: 0; }
 .paylater .pl-item .pi-icon { width: 32px; height: 32px; border-radius: 9px; }
+.paylater .pl-item .pl-price { margin-left: 0; }
 .paylater .pl-item .pl-name { font-size: 12.5px; font-weight: 700; color: var(--navy); }
 .paylater .pl-item .pl-meta { font-size: 10.5px; color: var(--text-tertiary); margin-top: 1px; }
 .paylater .pl-item .pl-price { margin-left: auto; font-size: 12.5px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
@@ -215,7 +218,7 @@
 /* Toast (matches dm-toast pattern) */
 .pay-toast {
   position: absolute;
-  left: 16px; right: 16px; top: 64px;
+  left: 16px; right: 16px; top: 112px; /* below statusbar + glass topbar */
   z-index: 30;
   display: flex; align-items: center; gap: 9px;
   padding: 11px 14px;
