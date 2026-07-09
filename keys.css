@@ -1,0 +1,402 @@
+/* ============================================================
+   Virtual keys / Remote access — redesign styles
+   Layered on shared.css + pay.css primitives (.ledger, .pay-sec,
+   .pay-toast, .hc-chip reused). Tokens only, no new colors.
+   Signature element: the slide-to-open control (.slide) — the
+   real OpenDoorSwitch, made tactile and accident-proof.
+   ============================================================ */
+
+/* ---------- Property instructions (collapsible, HTML string) ---------- */
+.instr {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.instr > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 15px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.instr > summary::-webkit-details-marker { display: none; }
+.instr > summary .in-ic {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.instr > summary .in-chev { margin-left: auto; color: var(--n-500); transition: transform 0.2s; }
+.instr[open] > summary .in-chev { transform: rotate(180deg); }
+.instr .in-body {
+  padding: 0 15px 15px 58px;
+  font-size: 12.5px; line-height: 19px; color: var(--text-secondary);
+}
+.instr .in-body a { color: var(--blue-500); font-weight: 600; }
+.instr .in-body b { color: var(--navy); }
+
+/* ---------- Section label reused from pay.sec; "way in" order rail ---------- */
+.doors { display: flex; flex-direction: column; gap: 14px; position: relative; }
+
+/* ---------- Door card ---------- */
+.door {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.door.now { border-color: rgba(43, 194, 159, 0.5); }
+.door-top {
+  display: flex; align-items: center; gap: 13px;
+  padding: 15px 16px 14px;
+}
+.door-ic {
+  width: 46px; height: 46px; border-radius: 13px;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.door-ic.building { background: var(--navy); color: #fff; }
+.door-ic.unit { background: var(--gradient-brand); color: #fff; }
+.door-ic.gate { background: var(--n-100); color: var(--navy); }
+.door-ic .icon { width: 22px; height: 22px; }
+.door-main { flex: 1; min-width: 0; }
+.door-name { display: block; font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.door-sub { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; }
+.door-step {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--n-75); color: var(--n-600);
+  font-size: 11px; font-weight: 800;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+
+/* Door state badge */
+.door-state {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 24px; padding: 0 10px;
+  border-radius: 99px;
+  font-size: 11px; font-weight: 700;
+  flex-shrink: 0;
+}
+.door-state .dot { width: 6px; height: 6px; border-radius: 50%; }
+.door-state.now { background: var(--green-50); color: var(--green-800); }
+.door-state.now .dot { background: var(--green-600); box-shadow: 0 0 0 0 rgba(43, 194, 159, 0.5); animation: pulse-dot 1.8s infinite; }
+.door-state.wait { background: var(--amber-50); color: var(--amber-700); }
+.door-state.wait .dot { background: var(--amber-500); }
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(43, 194, 159, 0.5); }
+  70% { box-shadow: 0 0 0 7px rgba(43, 194, 159, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 194, 159, 0); }
+}
+
+/* Door body (code / slide) */
+.door-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+
+/* Keypad / lockbox code */
+.door-code {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px;
+  border-radius: 13px;
+  background: var(--n-50);
+  border: 1px dashed var(--border-subtle);
+}
+.door-code .dc-label {
+  display: block;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--text-tertiary);
+}
+.door-code .dc-val {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 24px; font-weight: 700; color: var(--navy);
+  letter-spacing: 0.14em; line-height: 1;
+  margin-top: 3px;
+}
+.door-code .dc-copy {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 38px; padding: 0 14px;
+  border-radius: 10px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  font-size: 12px; font-weight: 700; color: var(--navy);
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.door-code .dc-copy:hover { border-color: var(--blue-500); color: var(--blue-500); }
+.door-code .dc-copy.done { border-color: var(--green-600); color: var(--green-700); }
+
+/* ---------- Slide-to-open (the signature control) ---------- */
+.slide {
+  position: relative;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--n-75), var(--n-100));
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+.slide-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 56px;
+  background: linear-gradient(90deg, var(--green-600), var(--green-500));
+  border-radius: 16px;
+}
+.slide-label {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  padding-left: 34px;
+  font-size: 13.5px; font-weight: 700; color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+.slide-label .chevs { display: inline-flex; color: var(--n-500); }
+.slide-label .chevs .icon { width: 15px; height: 15px; margin-left: -7px; animation: chev-hint 1.6s infinite; }
+.slide-label .chevs .icon:nth-child(2) { animation-delay: 0.15s; }
+.slide-label .chevs .icon:nth-child(3) { animation-delay: 0.3s; }
+@keyframes chev-hint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+.slide-thumb {
+  position: absolute; left: 5px; top: 5px;
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(22, 22, 67, 0.18);
+  display: grid; place-items: center;
+  color: var(--blue-500);
+  cursor: grab;
+  z-index: 2;
+}
+.slide-thumb:active { cursor: grabbing; }
+.slide-thumb .icon { width: 22px; height: 22px; }
+.slide.dragging .slide-thumb, .slide.dragging .slide-fill { transition: none; }
+.slide:not(.dragging) .slide-thumb, .slide:not(.dragging) .slide-fill { transition: left 0.3s cubic-bezier(.2,.8,.2,1), width 0.3s cubic-bezier(.2,.8,.2,1); }
+.slide.armed .slide-label { color: var(--green-800); }
+.slide.done .slide-label { color: #fff; }
+.slide.done .slide-thumb { color: var(--green-700); }
+
+/* Locked slide (out of window / not yet available) */
+.slide.locked {
+  background: repeating-linear-gradient(135deg, var(--n-75), var(--n-75) 10px, var(--n-100) 10px, var(--n-100) 20px);
+  cursor: default;
+}
+.slide.locked .slide-thumb { color: var(--n-500); background: #fff; cursor: default; box-shadow: var(--shadow-card); }
+.slide.locked .slide-label { color: var(--text-tertiary); font-weight: 600; }
+
+/* Door foot note */
+.door-note {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: 11.5px; line-height: 16px; color: var(--text-tertiary);
+  padding: 0 2px;
+}
+.door-note .icon { width: 14px; height: 14px; margin-top: 1px; color: var(--n-500); flex-shrink: 0; }
+
+/* ---------- The gate: keys not available yet (redesigned NoAccessKeysBox) ---------- */
+.gate-hero {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 10px;
+  padding: 8px 10px 6px;
+}
+.gate-ring {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: var(--tint-info);
+  display: grid; place-items: center;
+  color: var(--blue-500);
+  position: relative;
+}
+.gate-ring .icon { width: 32px; height: 32px; }
+.gate-ring::after {
+  content: ''; position: absolute; inset: -6px;
+  border-radius: 50%; border: 2px dashed var(--blue-light);
+  opacity: 0.6;
+}
+.gate-title { font-size: 19px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.gate-sub { font-size: 13px; line-height: 19px; color: var(--text-secondary); max-width: 300px; }
+
+/* Availability banner */
+.gate-when {
+  display: flex; align-items: center; gap: 11px;
+  padding: 13px 15px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-700));
+  color: #fff;
+}
+.gate-when .gw-ic {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14); color: #fff;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.gate-when .gw-title { display: block; font-size: 13px; font-weight: 700; }
+.gate-when .gw-sub { display: block; font-size: 11.5px; color: rgba(255, 255, 255, 0.68); margin-top: 1px; }
+
+/* Conditions checklist */
+.cond-list { display: flex; flex-direction: column; }
+.cond {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 4px;
+}
+.cond + .cond { border-top: 1px solid var(--border); }
+.cond-ic {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.cond.done .cond-ic { background: var(--green-50); color: var(--green-700); }
+.cond.active .cond-ic { background: var(--tint-pressed); color: var(--blue-500); position: relative; }
+.cond.active .cond-ic .icon { animation: spin 1.4s linear infinite; }
+.cond.todo .cond-ic { background: var(--n-75); color: var(--n-500); }
+.cond-main { flex: 1; min-width: 0; }
+.cond-title { display: block; font-size: 13px; font-weight: 600; color: var(--navy); }
+.cond.todo .cond-title, .cond.active .cond-title { color: var(--navy); }
+.cond-meta { display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+.cond-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 32px; padding: 0 13px; border-radius: 99px;
+  background: var(--blue-500); color: #fff;
+  font-size: 12px; font-weight: 700;
+  box-shadow: var(--shadow-brand); flex-shrink: 0;
+}
+.cond-link.ghost { background: var(--n-0); color: var(--blue-500); border: 1px solid var(--border); box-shadow: var(--shadow-card); }
+.cond-done-chip { font-size: 11.5px; font-weight: 700; color: var(--green-700); flex-shrink: 0; }
+
+/* ---------- Waiting-for-window note ---------- */
+.win-note {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: var(--amber-50);
+  border: 1px solid rgba(255, 183, 0, 0.35);
+}
+.win-note .icon { width: 17px; height: 17px; color: var(--amber-700); flex-shrink: 0; margin-top: 1px; }
+.win-note b { color: var(--navy); }
+.win-note span { font-size: 12px; line-height: 17px; color: var(--amber-700); }
+
+/* Locked door row (code/remote not live during the wait) */
+.win-lock {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px;
+  border-radius: 13px;
+  background: var(--n-50);
+  border: 1px dashed var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 12.5px; font-weight: 600;
+}
+.win-lock .icon { width: 16px; height: 16px; color: var(--n-500); flex-shrink: 0; }
+.win-lock b { color: var(--navy); }
+
+/* ---------- Keyless (partner app) ---------- */
+.kl-steps { display: flex; flex-direction: column; gap: 12px; }
+.kl-step { display: flex; gap: 12px; align-items: flex-start; }
+.kl-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--tint-info); color: var(--blue-500);
+  font-size: 12px; font-weight: 800;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.kl-step .kl-txt { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); }
+.kl-step .kl-txt b { color: var(--navy); }
+.kl-ref {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px;
+  border-radius: 13px;
+  background: var(--tint-promo);
+  border: 1px dashed var(--blue-300);
+}
+.kl-ref .kr-label {
+  display: block;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--text-tertiary);
+}
+.kl-ref .kr-val {
+  display: block;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 18px; font-weight: 700; color: var(--navy);
+  letter-spacing: 0.08em; margin-top: 3px;
+}
+.kl-stores { display: flex; gap: 10px; }
+.store-btn {
+  flex: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 46px; border-radius: 12px;
+  background: var(--navy); color: #fff;
+  font-size: 12.5px; font-weight: 600;
+}
+.store-btn .icon { width: 18px; height: 18px; }
+.store-btn:hover { background: var(--navy-700); }
+.partner-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; color: var(--text-secondary);
+}
+.partner-tag .icon { width: 13px; height: 13px; }
+
+/* ---------- Salto multi-room group ---------- */
+.rooms {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.rooms > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 11px;
+  padding: 13px 15px;
+  font-size: 13px; font-weight: 700; color: var(--navy);
+}
+.rooms > summary::-webkit-details-marker { display: none; }
+.rooms > summary .rm-chev { margin-left: auto; color: var(--n-500); transition: transform 0.2s; }
+.rooms[open] > summary .rm-chev { transform: rotate(180deg); }
+.room-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 15px;
+  border-top: 1px solid var(--border);
+}
+.room-row .rr-ic {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.room-row .rr-name { font-size: 13px; font-weight: 600; color: var(--navy); flex: 1; }
+.room-row .rr-vendor { font-size: 11px; color: var(--text-tertiary); }
+.room-open {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 15px; border-radius: 10px;
+  background: var(--blue-500); color: #fff;
+  font-size: 12.5px; font-weight: 700;
+  box-shadow: var(--shadow-brand); flex-shrink: 0;
+}
+.room-open.offline { background: var(--n-100); color: var(--n-500); box-shadow: none; }
+
+/* ---------- Opening status modal (OpenLockStatusModal) ---------- */
+.open-stat { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 14px 6px 4px; }
+.open-spinner {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: 5px solid var(--tint-info);
+  border-top-color: var(--blue-500);
+  animation: spin 0.9s linear infinite;
+}
+.open-burst {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: var(--green-50); color: var(--green-700);
+  display: grid; place-items: center;
+  animation: burst-in 0.4s cubic-bezier(.2,.9,.3,1.3) both;
+}
+.open-burst .icon { width: 38px; height: 38px; stroke-width: 2.5; }
+@keyframes burst-in { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.open-fail { width: 76px; height: 76px; border-radius: 50%; background: var(--red-100); color: var(--red-500); display: grid; place-items: center; }
+.open-fail .icon { width: 36px; height: 36px; }
+.open-stat .os-title { font-size: 17px; font-weight: 700; color: var(--navy); }
+.open-stat .os-sub { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); max-width: 280px; }
+
+/* ---------- Desktop tweaks ---------- */
+.keys-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 26px; align-items: start; }
+.keys-grid .doors { gap: 16px; }
+.gate-desk { max-width: 560px; }
+@media (max-width: 900px) { .keys-grid { grid-template-columns: 1fr; } }
+
+/* Solid fallback where backdrop-filter is unsupported already handled in shared.css.
+   No new glass surfaces introduced here. */

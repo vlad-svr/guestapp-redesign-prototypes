@@ -1,0 +1,188 @@
+/* Kiosko key cards — the /remote-keys route (components/RemoteAccess/RemoteKeys).
+   Despite the route name this screen is not "virtual keys": it drives the physical
+   card dispenser bolted under the kiosk. Everything here is sized for a 1-metre
+   viewing distance and a finger, not a cursor. Loads after shared.css. */
+
+/* ── The kiosk itself ─────────────────────────────────────────────────────────── */
+.kiosk {
+  width: 720px;
+  margin: 0 auto;
+  border-radius: 30px;
+  background: var(--n-0);
+  border: 12px solid #1b1b3a;
+  box-shadow: 0 40px 90px rgba(22, 22, 67, 0.3);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 1000px;
+}
+.kiosk .screen, .kiosk .flow-screen {
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+  scrollbar-width: none;
+}
+.kiosk .flow-screen::-webkit-scrollbar { display: none; }
+
+/* the dispenser slot lives below the glass — screens point at it, so draw it.
+   sticky, because it is hardware: it does not scroll away with the content. */
+.kiosk-dispenser {
+  position: sticky; bottom: 0; margin-top: auto; z-index: 30;
+  height: 62px; flex-shrink: 0;
+  background: #1b1b3a;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.kiosk-dispenser .kd-slot {
+  width: 220px; height: 12px; border-radius: 99px;
+  background: #0d0d24; box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7);
+}
+.kiosk-dispenser .kd-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+.kiosk-dispenser.live .kd-slot { background: var(--blue-500); box-shadow: 0 0 24px rgba(56, 91, 248, 0.8); }
+.kiosk-dispenser.live .kd-label { color: #fff; }
+
+/* ── Kiosk chrome ─────────────────────────────────────────────────────────────── */
+.k-top {
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px 30px; border-bottom: 1px solid var(--border);
+  background: var(--n-0); flex-shrink: 0;
+}
+.k-top .k-prop { font-size: 20px; font-weight: 700; color: var(--navy); }
+.k-top .k-room { font-size: 15px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; }
+.k-top .k-exit {
+  margin-left: auto; height: 52px; padding: 0 24px; border-radius: 16px;
+  border: 1.5px solid var(--border); color: var(--n-600);
+  font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px;
+}
+.k-top .k-exit:hover { border-color: var(--red-500); color: var(--red-500); }
+.k-top .k-exit .icon { width: 20px; height: 20px; }
+
+.k-body { padding: 34px 40px 40px; display: flex; flex-direction: column; gap: 30px; flex: 1; }
+.k-h1 { font-size: 34px; font-weight: 600; color: var(--navy); text-align: center; letter-spacing: -0.02em; }
+.k-lede { font-size: 19px; line-height: 28px; color: var(--text-secondary); text-align: center; max-width: 520px; margin: -14px auto 0; }
+
+/* ── Kiosk-sized buttons (real: KIOSKO_BUTTON_CLASSES) ────────────────────────── */
+.k-btn {
+  height: 84px; min-width: 420px; padding: 0 34px; border-radius: 26px;
+  font-size: 21px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 14px;
+  margin: 0 auto;
+}
+.k-btn .icon { width: 26px; height: 26px; }
+.k-btn-primary { background: var(--blue-500); color: #fff; box-shadow: var(--shadow-brand); }
+.k-btn-primary:hover { background: var(--blue-600); }
+.k-btn-primary:disabled, .k-btn-primary.disabled { background: var(--n-200); color: var(--n-500); box-shadow: none; cursor: not-allowed; }
+.k-btn-outline { border: 1.5px solid var(--border); color: var(--navy); background: var(--n-0); }
+.k-btn-outline:hover { border-color: var(--blue-500); color: var(--blue-500); }
+
+/* ── The card stack: printed cards are solid, the remaining ones are ghosts ───── */
+.k-panel {
+  background: var(--n-0); border-radius: 30px; padding: 34px;
+  box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 30px;
+}
+.k-cards { display: flex; justify-content: center; gap: 16px; }
+.kc {
+  width: 132px; height: 84px; border-radius: 12px; flex-shrink: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 12px; position: relative;
+}
+.kc.done {
+  background: linear-gradient(135deg, var(--navy) 0%, #3b3b7a 100%);
+  color: #fff; box-shadow: 0 10px 22px rgba(22, 22, 67, 0.28);
+}
+.kc.done .kc-chip { width: 22px; height: 17px; border-radius: 3px; background: linear-gradient(135deg, #ffd76e, #d99f22); }
+.kc.done .kc-name { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+.kc.pending {
+  border: 2px dashed var(--n-200); background: var(--n-50); color: var(--n-500);
+  align-items: center; justify-content: center;
+}
+.kc.pending .icon { width: 24px; height: 24px; }
+.kc.pending .kc-name { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.kc.printing { border: 2px solid var(--blue-500); background: var(--tint-info); color: var(--blue-500); align-items: center; justify-content: center; }
+
+/* progress (real: ProgressTaskBar) */
+.k-prog .kp-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.k-prog .kp-ic { width: 44px; height: 44px; border-radius: 13px; background: var(--tint-info); color: var(--blue-500); display: grid; place-items: center; }
+.k-prog .kp-ic .icon { width: 24px; height: 24px; }
+.k-prog .kp-title { font-size: 19px; font-weight: 600; color: var(--navy); }
+.k-prog .kp-count { margin-left: auto; font-size: 19px; font-weight: 600; color: var(--navy); font-variant-numeric: tabular-nums; }
+.k-prog .kp-track { height: 12px; border-radius: 99px; background: var(--n-100); overflow: hidden; }
+.k-prog .kp-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--blue-500), #8ca5ff); transition: width 0.3s; }
+.k-prog .kp-note { font-size: 16px; color: var(--text-secondary); margin-top: 14px; }
+.k-prog .kp-note b { color: var(--navy); font-weight: 600; }
+
+/* ── Alerts, sized for the kiosk ──────────────────────────────────────────────── */
+.k-alert {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 22px 26px; border-radius: 22px;
+  font-size: 17px; line-height: 26px;
+}
+.k-alert .icon { width: 26px; height: 26px; flex-shrink: 0; margin-top: 2px; }
+.k-alert.info { background: var(--tint-info); color: var(--navy); }
+.k-alert.info .icon { color: var(--blue-500); }
+.k-alert.warn { background: var(--amber-50); color: var(--amber-700); }
+.k-alert.warn b { color: var(--amber-700); }
+
+/* ── Dispenser call-out: the screen points at the physical slot ───────────────── */
+.k-dispense {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 26px; border-radius: 24px;
+  border: 2px dashed rgba(56, 91, 248, 0.35); background: var(--tint-info);
+}
+.k-dispense .kd-arrow { color: var(--blue-500); animation: kd-bob 1.5s ease-in-out infinite; }
+.k-dispense .kd-arrow .icon { width: 40px; height: 40px; stroke-width: 2.4; }
+.k-dispense .kd-text { font-size: 18px; font-weight: 600; color: var(--navy); text-align: center; line-height: 26px; }
+@keyframes kd-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+/* ── Status screens (real: StatusModal states) ────────────────────────────────── */
+.k-status { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; padding: 40px; }
+.k-status .ks-mark { width: 140px; height: 140px; border-radius: 50%; display: grid; place-items: center; }
+.k-status .ks-mark .icon { width: 62px; height: 62px; stroke-width: 2.2; }
+.k-status.loading .ks-mark { background: var(--tint-info); color: var(--blue-500); }
+.k-status.success .ks-mark { background: var(--green-50); color: var(--green-700); }
+.k-status.error .ks-mark { background: var(--red-50, #fdeaf0); color: var(--red-500); }
+.k-status .ks-title { font-size: 30px; font-weight: 600; color: var(--navy); letter-spacing: -0.02em; }
+.k-status .ks-text { font-size: 19px; line-height: 28px; color: var(--text-secondary); max-width: 480px; }
+
+.k-spin { width: 140px; height: 140px; border-radius: 50%; display: grid; place-items: center; position: relative; background: var(--tint-info); }
+.k-spin::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 5px solid transparent; border-top-color: var(--blue-500);
+  animation: k-rot 0.9s linear infinite;
+}
+@keyframes k-rot { to { transform: rotate(360deg); } }
+
+/* ── Sheet overlays (RegisteredGuestsInfoModal / PrintedCardsModal) ───────────── */
+.k-sheet-wrap { position: absolute; inset: 0; z-index: 40; display: flex; align-items: flex-end; }
+.k-sheet-scrim { position: absolute; inset: 0; background: rgba(22, 22, 67, 0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.k-sheet {
+  position: relative; width: 100%; background: var(--n-0);
+  border-radius: 38px 38px 0 0; padding: 40px 34px 34px;
+  display: flex; flex-direction: column; gap: 34px;
+  max-height: 88%; overflow-y: auto; scrollbar-width: none;
+  animation: k-up 0.3s ease both;
+}
+.k-sheet::-webkit-scrollbar { display: none; }
+@keyframes k-up { from { transform: translateY(30px); opacity: 0; } }
+.k-sheet .ks-h { font-size: 26px; font-weight: 600; color: var(--navy); text-align: center; }
+.k-sheet .ks-sub { font-size: 17px; color: var(--text-secondary); text-align: center; margin-top: 8px; }
+.k-sheet .k-btn { min-width: 340px; height: 76px; font-size: 19px; }
+
+.k-tally { background: var(--n-50); border: 1px solid var(--border); border-radius: 28px; padding: 26px 28px; display: flex; flex-direction: column; gap: 20px; }
+.k-tally .kt-row { display: flex; align-items: center; gap: 16px; font-size: 18px; font-weight: 500; color: var(--navy); }
+.k-tally .kt-ic { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; }
+.k-tally .kt-ic.ok { background: var(--green-50); color: var(--green-700); }
+.k-tally .kt-ic.wait { background: var(--amber-50); color: var(--amber-700); }
+.k-tally .kt-ic .icon { width: 22px; height: 22px; }
+.k-tally .kt-row b { font-weight: 700; }
+
+.k-share {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-size: 16px; font-weight: 600; color: var(--blue-500); padding: 10px;
+}
+.k-share .icon { width: 20px; height: 20px; }

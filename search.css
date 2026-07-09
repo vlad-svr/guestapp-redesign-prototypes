@@ -1,0 +1,475 @@
+/* ============================================================
+   Find your booking — search-reservation flow styles
+   Maps pages/SearchReservation (SearchReservation / BookingCodeView /
+   CheckInDateView / NewReservationView / DirectReservationView) +
+   SearchingBookingModal + ReservationNotFoundModal.
+   Layered on shared.css primitives. Loaded by both form factors;
+   desktop also reuses the standalone auth-card shell below.
+   ============================================================ */
+
+/* ---------- Property context chip (housing from useHousing) ---------- */
+/* Reassurance: the guest sees the exact place before they search, so a
+   wrong / stale link is caught here instead of after a failed search. */
+.prop-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.prop-chip .pc-thumb {
+  width: 46px; height: 46px;
+  border-radius: 11px;
+  background: var(--gradient-hero);
+  display: grid; place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.prop-chip .pc-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 70% 20%, rgba(140,165,255,0.5), transparent 60%);
+}
+.prop-chip .pc-main { min-width: 0; flex: 1; }
+.prop-chip .pc-name { font-size: 13.5px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.prop-chip .pc-loc { font-size: 11.5px; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.prop-chip .pc-loc .icon { width: 12px; height: 12px; }
+.prop-chip .pc-verified {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700;
+  color: var(--green-700);
+  flex-shrink: 0;
+}
+.prop-chip .pc-verified .icon { width: 13px; height: 13px; }
+
+/* Compact variant reused on the sub-screens (topbar-adjacent) */
+.prop-chip.compact { padding: 8px 12px; box-shadow: none; background: rgba(255, 255, 255, 0.5); border-color: var(--glass-border); }
+.prop-chip.compact .pc-thumb { width: 34px; height: 34px; border-radius: 9px; }
+.prop-chip.compact .pc-name { font-size: 12.5px; }
+
+/* ---------- Method picker (SearchOptions radio → descriptive cards) ---------- */
+/* Was two bare radios + a Continue button (select, then press). Cards make the
+   choice self-explanatory (what each method needs) and advance on tap. */
+.method-list { display: flex; flex-direction: column; gap: 12px; }
+.method-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 16px;
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s, background 0.15s;
+}
+.method-card:hover { border-color: var(--blue-500); background: rgba(255, 255, 255, 0.82); box-shadow: var(--glass-shadow), var(--shadow-focus); }
+.method-card:active { transform: scale(0.99); }
+.method-card.selected { border-color: var(--blue-500); background: rgba(56, 92, 248, 0.16); }
+.method-card .mc-ic {
+  width: 46px; height: 46px;
+  border-radius: 13px;
+  background: rgba(56, 92, 248, 0.14);
+  color: var(--blue-500);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.method-card .mc-main { flex: 1; min-width: 0; }
+.method-card .mc-title { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+.method-card .mc-desc { font-size: 12px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.method-card .mc-need {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 8px;
+  font-size: 10.5px; font-weight: 600;
+  color: var(--n-600);
+  background: var(--n-75);
+  border-radius: 99px;
+  padding: 3px 9px;
+}
+.method-card .mc-need .icon { width: 12px; height: 12px; }
+.method-card .mc-chev { color: var(--n-500); flex-shrink: 0; align-self: center; }
+.method-card:hover .mc-chev { color: var(--blue-500); }
+
+.method-or {
+  text-align: center;
+  font-size: 11px; font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+}
+.method-or::before, .method-or::after {
+  content: ''; position: absolute; top: 50%;
+  width: calc(50% - 26px); height: 1px; background: var(--border);
+}
+.method-or::before { left: 0; }
+.method-or::after { right: 0; }
+
+/* ---------- Booking-code input (BookingCodeView) ---------- */
+/* Codes are short, alphanumeric, case-insensitive on the wire — so render big,
+   spaced, uppercase, with an example, instead of a plain text field. */
+.code-field .input.code {
+  height: 58px;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  color: var(--navy);
+  justify-content: flex-start;
+}
+.code-field .input.code::placeholder,
+.code-field .input.code .ph { color: var(--n-300); font-weight: 600; }
+.code-field .input.code .caret {
+  display: inline-block; width: 2px; height: 24px;
+  background: var(--blue-500); margin-left: 1px;
+  animation: sr-caret 1.1s step-end infinite;
+}
+@keyframes sr-caret { 50% { opacity: 0; } }
+
+/* "Where do I find this?" affordance */
+.sr-help-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  color: var(--blue-500);
+  padding: 6px 2px;
+}
+.sr-help-link .icon { width: 14px; height: 14px; }
+.sr-help-link:hover { color: var(--blue-600); }
+
+/* Reassurance / why-we-ask line */
+.sr-why {
+  display: flex; gap: 9px; align-items: flex-start;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  background: var(--n-50);
+  border: 1px solid var(--border);
+  font-size: 11.5px; line-height: 16px;
+  color: var(--text-secondary);
+}
+.sr-why .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; margin-top: 1px; }
+.sr-why b { color: var(--navy); font-weight: 600; }
+
+/* Inline "invalid code" error (was a modal-only outcome) */
+.sr-inline-error {
+  display: flex; gap: 9px; align-items: flex-start;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  background: var(--red-100);
+  border: 1px solid rgba(248, 75, 122, 0.35);
+  font-size: 12px; line-height: 16px;
+  color: var(--red-500);
+}
+.sr-inline-error .icon { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; }
+.sr-inline-error b { font-weight: 700; }
+
+/* ---------- Grouped form (NewReservationView) ---------- */
+/* The flat 6-field list becomes two labelled groups: the stay, then the guest. */
+.field-group { display: flex; flex-direction: column; gap: 14px; }
+.fg-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--text-secondary);
+  display: flex; align-items: center; gap: 7px;
+}
+.fg-label .icon { width: 14px; height: 14px; color: var(--blue-500); }
+.field-group + .field-group { margin-top: 22px; }
+
+/* "From your search" tag — preloaded value carried in from the search step
+   (NewReservationView preloadKnowsFields: startDate / email). */
+.from-search {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700;
+  color: var(--green-700);
+  background: var(--green-50);
+  border-radius: 99px;
+  padding: 2px 8px;
+}
+.from-search .icon { width: 11px; height: 11px; }
+.lbl-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+/* ---------- Centered state screens: searching / found / not found / direct ---------- */
+/* SearchingBookingModal (LOADING / SUCCESS) + ReservationNotFoundModal +
+   DirectReservationView, rendered as centered states. */
+.sr-state {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  gap: 6px;
+  padding: 32px 26px;
+}
+.sr-state .ss-title { font-size: 19px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; margin-top: 22px; }
+.sr-state .ss-sub { font-size: 13px; line-height: 19px; font-weight: 500; color: var(--text-secondary); max-width: 300px; }
+.sr-state .ss-prop { margin-top: 20px; }
+
+/* Radar/pulse while searching */
+.sr-radar { position: relative; width: 104px; height: 104px; display: grid; place-items: center; }
+.sr-radar .rr {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid var(--blue-500);
+  opacity: 0;
+  animation: sr-radar 2.1s ease-out infinite;
+}
+.sr-radar .rr:nth-child(2) { animation-delay: 0.7s; }
+.sr-radar .rr:nth-child(3) { animation-delay: 1.4s; }
+.sr-radar .core {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--tint-info);
+  color: var(--blue-500);
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-brand);
+  z-index: 1;
+}
+.sr-radar .core .icon { width: 26px; height: 26px; }
+@keyframes sr-radar {
+  0% { transform: scale(0.45); opacity: 0.55; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+/* Success check */
+.sr-check {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: var(--green-50); color: var(--green-700);
+  display: grid; place-items: center;
+  animation: sr-pop 0.34s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+.sr-check .icon { width: 40px; height: 40px; stroke-width: 2.4; }
+@keyframes sr-pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* Not-found warning ring */
+.sr-warn {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--amber-50); color: var(--amber-700);
+  display: grid; place-items: center;
+}
+.sr-warn .icon { width: 38px; height: 38px; }
+
+/* Redirect note under the success state */
+.sr-redirect {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.sr-redirect .spin {
+  width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid rgba(56, 91, 248, 0.25);
+  border-top-color: var(--blue-500);
+  animation: spin 0.9s linear infinite;
+}
+
+/* Actionable not-found: stacked next-step rows (replaces the OK-only modal) */
+.sr-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 340px; margin-top: 8px; }
+.sr-nf-row {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; text-align: left;
+  padding: 13px 14px;
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s, background 0.15s;
+}
+.sr-nf-row:hover { border-color: var(--blue-500); background: var(--tint-pressed); }
+.sr-nf-row .nf-ic {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.sr-nf-row .nf-main { flex: 1; min-width: 0; }
+.sr-nf-row .nf-title { font-size: 13px; font-weight: 700; color: var(--navy); }
+.sr-nf-row .nf-desc { font-size: 11px; line-height: 15px; color: var(--text-secondary); margin-top: 1px; }
+.sr-nf-row .nf-chev { color: var(--n-500); flex-shrink: 0; }
+.sr-nf-row:hover .nf-chev { color: var(--blue-500); }
+.sr-nf-row.contact .nf-ic { background: var(--green-50); color: var(--green-700); }
+
+/* ---------- Desktop standalone auth shell ---------- */
+/* Search runs pre-auth (no reservation yet → no sidebar). Desktop is a centered
+   card on the branded gradient, matching the real standalone entry. */
+.sr-standalone {
+  flex: 1;
+  width: 100%;
+  min-height: 720px;
+  background: var(--gradient-page);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 44px 24px;
+  position: relative;
+  overflow: hidden;
+}
+/* Soft color orbs so the frosted card actually has something to refract */
+.sr-standalone::before, .sr-standalone::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(58px);
+  pointer-events: none;
+  z-index: 0;
+}
+.sr-standalone::before {
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(56, 92, 248, 0.5), transparent 70%);
+  top: -110px; left: -90px;
+}
+.sr-standalone::after {
+  width: 330px; height: 330px;
+  background: radial-gradient(circle, rgba(53, 229, 188, 0.38), transparent 70%);
+  bottom: -120px; right: -80px;
+}
+.sr-standalone > * { position: relative; z-index: 1; }
+.sr-brandmark {
+  position: absolute; top: 26px; left: 30px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; font-weight: 700; color: var(--navy);
+}
+.sr-brandmark .bm-logo {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--gradient-brand);
+  display: grid; place-items: center; color: #fff; font-size: 14px;
+  box-shadow: var(--shadow-brand);
+}
+.sr-lang {
+  position: absolute; top: 30px; right: 30px;
+  z-index: 2;
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 34px; padding: 0 14px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+}
+.sr-brandmark { z-index: 2; }
+/* Liquid-glass auth card — frosted panel over the orbs/gradient.
+   Input fields inside stay solid (var(--n-0)) so entered text keeps contrast. */
+.sr-card {
+  width: 100%; max-width: 460px;
+  z-index: 1;
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.66));
+  backdrop-filter: blur(36px) saturate(1.8);
+  -webkit-backdrop-filter: blur(36px) saturate(1.8);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--glass-shadow), 0 26px 64px rgba(22, 22, 67, 0.2);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 520px;
+}
+.sr-card .sc-head { padding: 26px 30px 4px; display: flex; flex-direction: column; gap: 6px; }
+.sr-card .sc-body { padding: 20px 30px 8px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+.sr-card .sc-foot {
+  padding: 8px 30px 26px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.sr-card .page-title { font-size: 24px; line-height: 29px; }
+.sr-card .sc-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 600; color: var(--text-secondary);
+  padding: 4px 0;
+}
+.sr-card .sc-back:hover { color: var(--navy); }
+.sr-card .sc-back .icon { width: 15px; height: 15px; }
+/* the centered states fill the card body on desktop too */
+.sr-card .sr-state { padding: 30px 26px 40px; }
+
+/* footnote under the card */
+.sr-foot-note {
+  margin-top: 22px;
+  z-index: 1;
+  font-size: 11.5px; font-weight: 500;
+  color: var(--text-secondary);
+  display: flex; align-items: center; gap: 7px;
+}
+.sr-foot-note .icon { width: 14px; height: 14px; color: var(--green-700); }
+
+/* ---------- Mobile glass stage ---------- */
+/* search.css is loaded only by the two search pages, so restyling .phone here is
+   scoped to this flow: a gradient canvas + color orbs give the glass chrome and the
+   frosted cards something to refract (flat --bg-page would make the blur invisible). */
+.phone { background: var(--gradient-page); }
+.phone::before, .phone::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+.phone::before {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(56, 92, 248, 0.42), transparent 70%);
+  top: -70px; right: -80px;
+}
+.phone::after {
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(140, 165, 255, 0.42), transparent 70%);
+  bottom: 40px; left: -80px;
+}
+/* screens paint above the orbs (positioned elements otherwise cover static content) */
+.phone > .screen { position: relative; z-index: 1; }
+/* let the sticky CTA dock fade into the gradient instead of a flat page colour */
+.phone .cta-dock {
+  background: linear-gradient(to top, rgba(244, 246, 252, 0.92) 46%, rgba(244, 246, 252, 0));
+}
+
+/* ---------- Solid fallback (no backdrop-filter) ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sr-card { background: rgba(255, 255, 255, 0.97); }
+  .method-card, .prop-chip, .prop-chip.compact, .sr-lang { background: rgba(255, 255, 255, 0.96); }
+}
+
+/* ============================================================
+   "Minimal" glass version — toggled via glass-toggle.js (html.glass-lite).
+   Reverts the EXTRA frosted surfaces + orbs + gradient stage to solids;
+   keeps only the baseline chrome glass (top bars, CTA docks). This is the
+   restrained A/B counterpart to the full liquid-glass version above.
+   ============================================================ */
+html.glass-lite .sr-standalone { background: var(--bg-page); }
+html.glass-lite .sr-standalone::before,
+html.glass-lite .sr-standalone::after { display: none; }
+
+html.glass-lite .sr-card {
+  background: var(--n-0);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-elev);
+}
+
+html.glass-lite .prop-chip {
+  background: var(--n-0);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-card);
+}
+html.glass-lite .prop-chip.compact { background: var(--n-50); box-shadow: none; }
+
+html.glass-lite .method-card {
+  background: var(--n-0);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-card);
+}
+html.glass-lite .method-card:hover { background: var(--n-0); box-shadow: var(--shadow-focus); }
+html.glass-lite .method-card.selected { background: var(--tint-info); }
+html.glass-lite .method-card .mc-ic { background: var(--tint-info); }
+
+html.glass-lite .sr-lang {
+  background: var(--n-0);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-card);
+}
+
+/* mobile: flatten the gradient stage + drop the orbs */
+html.glass-lite .phone { background: var(--bg-page); }
+html.glass-lite .phone::before,
+html.glass-lite .phone::after { display: none; }

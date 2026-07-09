@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an experience (interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="pay.css">
+<link rel="stylesheet" href="upsell.css">
+<link rel="stylesheet" href="book.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Book an experience — Interactive Flow (Mobile)</h1>
+  <p class="lede">The booking chain behind an offer, which §13 only ever pointed at: <code>BookExperienceView</code> (the quantity/slot/delivery form) → <code>EnterContactEmailView</code> → <code>CreateDealCompleteModal</code>, plus the <code>/:token/:slug</code> deep link (<code>OfferSlugRedirectView</code>). Resolves three SPEC gaps: the <b>delivery date &amp; time picker</b> (gap 15), <b>multi-item offers</b> (gap 16) and the <b>slug deep-link</b> (gap 17). <b>Mobile only</b> — on a laptop both views render <code>OfferView</code> instead, so the desktop story stays §14. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="bx-tour">▶ On-request offer (per person)</button>
+    <button class="fh-chip" data-scenario="bx-multi">Multi-item offer (breakfast)</button>
+    <button class="fh-chip" data-scenario="bx-time">Time-based (late check-out)</button>
+    <button class="fh-chip" data-scenario="bx-delivery">Delivery date &amp; time</button>
+    <button class="fh-chip" data-scenario="bx-email">Confirm contact email</button>
+    <button class="fh-chip" data-scenario="bx-slug">Deep link (/:slug)</button>
+    <button class="fh-chip" data-scenario="bx-slug-nf">Deep link — offer gone</button>
+    <button class="fh-chip" data-scenario="bx-guard">Empty cart guard</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="phone" style="height:880px">
+
+    <!-- ═══ bx-tour · AddToCartForm, per-person, MANUAL (on request) ═══ -->
+    <div class="screen flow-screen" id="bx-tour" data-start data-label="Per-person offer — the price moves as you count, and the lane is stated before you commit">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="bx-tour"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Sunset vineyard tour</div>
+        </div>
+      </div>
+
+      <div class="content" style="gap:16px;padding-top:18px">
+        <div class="bx-offer">
+          <div class="bo-thumb tour"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-map"/></svg></div>
+          <div>
+            <div class="bo-title">Sunset vineyard tour</div>
+            <div class="bo-meta">Thu 21 Aug · 17:30 · 3 hours · pick-up included</div>
+          </div>
+        </div>
+
+        <span class="lane request" style="align-self:flex-start"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> On request — the host confirms first</span>
+
+        <div class="bx-block">
+          <div class="bx-head">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> How many people?
+            <span class="bx-sub">€45.00 / person</span>
+          </div>
+          <div class="qty-row">
+            <span class="ql">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-user"/></svg>
+              <span>Adults<span class="q-sub">€45.00 each</span></span>
+            </span>
+            <span class="stepper" data-step data-price="45" data-max="6">
+              <button class="dis" data-minus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button>
+              <span class="sv" data-val>0</span>
+              <button data-plus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button>
+            </span>
+          </div>
+        </div>
+
+        <div class="bx-total dashed">
+          <span class="bt-label">Total if approved</span>
+          <span class="bt-amount" data-total>€0.00</span>
+        </div>
+
+        <div class="bx-info">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+          <span><b>Nothing is charged now.</b> The host has to accept first — you'll get an email, and the amount stays dashed in your cart until they do.</span>
+        </div>
+        <span class="sim-note">AddToCartForm · `PriceCounter` per `PriceItem` · the dashed total is the `total_price_info` note made visual (`confirmation_type === MANUAL`)</span>
+      </div>
+
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-cta disabled style="opacity:.5;pointer-events:none" data-goto="bx-email">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Request from the host
+        </button>
+        <span class="sim-note" style="margin-top:8px">disabled while every quantity is 0 (the real guard, drawn) · real: `AddToCartButton` takes a <code>type</code> prop and <b>never reads it</b> — an on-request offer still says "Add to cart"</span>
+      </div>
+    </div>
+
+    <!-- ═══ bx-multi · OFFER_PRICE_TYPES.MULTIPLE_PRICE (SPEC gap 16) ═══ -->
+    <div class="screen flow-screen" id="bx-multi" data-label="Multi-item offer — named items, each with its own price and counter">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="bx-tour"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Breakfast basket</div>
+        </div>
+      </div>
+
+      <div class="content" style="gap:16px;padding-top:18px">
+        <div class="bx-offer">
+          <div class="bo-thumb"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-coffee"/></svg></div>
+          <div>
+            <div class="bo-title">Breakfast basket</div>
+            <div class="bo-meta">Delivered to the door · order by 20:00 the night before</div>
+          </div>
+        </div>
+
+        <span class="lane instant" style="align-self:flex-start"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant — straight to your cart</span>
+
+        <div class="bx-block">
+          <div class="bx-head"><svg viewBox="0 0 24 24" class="icon"><use href="#i-basket"/></svg> Choose your baskets</div>
+
+          <div class="bx-item">
+            <div class="bi-main">
+              <div class="bi-name">Continental</div>
+              <div class="bi-desc">Pastries, jam, orange juice, coffee</div>
+            </div>
+            <span class="bi-price">€12.50<span class="per">/basket</span></span>
+            <span class="stepper" data-step data-price="12.5" data-max="4">
+              <button class="dis" data-minus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button>
+              <span class="sv" data-val>0</span>
+              <button data-plus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button>
+            </span>
+          </div>
+
+          <div class="bx-item">
+            <div class="bi-main">
+              <div class="bi-name">Vegan</div>
+              <div class="bi-desc">Sourdough, avocado, fruit, oat coffee</div>
+            </div>
+            <span class="bi-price">€14.00<span class="per">/basket</span></span>
+            <span class="stepper" data-step data-price="14" data-max="4">
+              <button class="dis" data-minus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button>
+              <span class="sv" data-val>0</span>
+              <button data-plus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button>
+            </span>
+          </div>
+
+          <div class="bx-item">
+            <div class="bi-main">
+              <div class="bi-name">Kids</div>
+              <div class="bi-desc">Cereal, milk, banana, apple juice</div>
+            </div>
+            <span class="bi-price">€7.00<span class="per">/basket</span></span>
+            <span class="stepper" data-step data-price="7" data-max="4">
+              <button class="dis" data-minus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button>
+              <span class="sv" data-val>0</span>
+              <button data-plus><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button>
+            </span>
+          </div>
+        </div>
+
+        <div class="bx-total">
+          <span class="bt-label">Total price</span>
+          <span class="bt-amount" data-total>€0.00</span>
+        </div>
+        <span class="sim-note">SPEC gap 16 resolved · <code>OFFER_PRICE_TYPES.MULTIPLE_PRICE</code> — one `PriceCounter` per named `PriceItem`, each with its own `unit_type`</span>
+      </div>
+
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-cta disabled style="opacity:.5;pointer-events:none" data-goto="bx-done">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ bx-time · TimeBasedCounter (isTimeBasedOffer) ═══ -->
+    <div class="screen flow-screen" id="bx-time" data-label="Time-based offer — slots are radios, and the standard time is the baseline">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="bx-tour"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Late check-out</div>
+        </div>
+      </div>
+
+      <div class="content" style="gap:16px;padding-top:18px">
+        <div class="bx-offer">
+          <div class="bo-thumb late"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-clock"/></svg></div>
+          <div>
+            <div class="bo-title">Late check-out</div>
+            <div class="bo-meta">Fri 22 Aug · keep the room past the standard hour</div>
+          </div>
+        </div>
+
+        <span class="lane instant" style="align-self:flex-start"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant — straight to your cart</span>
+
+        <div class="bx-block">
+          <div class="bx-head"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> Until when?</div>
+          <div class="bx-standard">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+            <span>Standard check-out is <b>11:00</b> and costs nothing.</span>
+          </div>
+          <div class="bx-slots">
+            <button class="bx-slot" data-slot data-price="15">
+              <span class="bs-radio"></span>
+              <span><span class="bs-time">until 12:00</span><span class="bs-note">One extra hour</span></span>
+              <span class="bs-price">€15.00</span>
+            </button>
+            <button class="bx-slot selected" data-slot data-price="25">
+              <span class="bs-radio"></span>
+              <span><span class="bs-time">until 14:00</span><span class="bs-note">Enough for a late flight</span></span>
+              <span class="bs-price">€25.00</span>
+            </button>
+            <button class="bx-slot" data-slot data-price="35">
+              <span class="bs-radio"></span>
+              <span><span class="bs-time">until 16:00</span><span class="bs-note">Half a day more</span></span>
+              <span class="bs-price">€35.00</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bx-total">
+          <span class="bt-label">Total price</span>
+          <span class="bt-amount" data-slot-total>€25.00</span>
+        </div>
+        <span class="sim-note">TimeBasedCounter · slots are `PriceItem`s whose <b>name carries the time</b> — `parseTimeFromName()` turns "until 14:00" into the `requested_for` timestamp. A name without a clock silently books no time.</span>
+      </div>
+
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="bx-done"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart</button>
+      </div>
+    </div>
+
+    <!-- ═══ bx-delivery · DeliveryDateTimePicker (SPEC gap 15) ═══ -->
+    <div class="screen flow-screen" id="bx-delivery" data-label="Delivery offer — a date strip bounded by the stay, then an hour slot">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="bx-multi"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Breakfast basket</div>
+        </div>
+      </div>
+
+      <div class="content" style="gap:16px;padding-top:18px">
+        <div class="bx-block">
+          <div class="bx-head"><svg viewBox="0 0 24 24" class="icon"><use href="#i-basket"/></svg> Your basket <span class="bx-sub">2 × Continental</span></div>
+          <div class="bx-item zero" style="border:none;padding:0">
+            <div class="bi-main"><div class="bi-name">Continental × 2</div></div>
+            <span class="bi-price">€25.00</span>
+          </div>
+        </div>
+
+        <div class="bx-block">
+          <div class="bx-head"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> When should it arrive?</div>
+
+          <div class="bx-dates">
+            <button class="bd-arrow dis"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg></button>
+            <div class="bd-strip" id="bd-strip">
+              <button class="bd-day today" data-day><span class="bd-dow">Today</span><span class="bd-num">15</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day selected" data-day><span class="bd-dow">Sat</span><span class="bd-num">16</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day" data-day><span class="bd-dow">Sun</span><span class="bd-num">17</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day" data-day><span class="bd-dow">Mon</span><span class="bd-num">18</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day" data-day><span class="bd-dow">Tue</span><span class="bd-num">19</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day" data-day><span class="bd-dow">Wed</span><span class="bd-num">20</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day" data-day><span class="bd-dow">Thu</span><span class="bd-num">21</span><span class="bd-mon">Aug</span></button>
+              <button class="bd-day" data-day><span class="bd-dow">Fri</span><span class="bd-num">22</span><span class="bd-mon">Aug</span></button>
+            </div>
+            <button class="bd-arrow"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-right"/></svg></button>
+          </div>
+
+          <button class="bx-select">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg>
+            <span>08:00 – 09:00</span>
+            <svg viewBox="0 0 24 24" class="icon icon-sm bs-chev"><use href="#i-chevron-down"/></svg>
+          </button>
+
+          <div class="bx-info plain">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+            <span>The strip stops at <b>check-out, 22 Aug</b> — and never runs more than 14 days out. Hours come from the host's <b>delivery windows</b>, so 07:00 and 23:00 aren't offered.</span>
+          </div>
+        </div>
+
+        <div class="bx-total">
+          <span class="bt-label">Total price</span>
+          <span class="bt-amount">€25.00</span>
+        </div>
+        <span class="sim-note">SPEC gap 15 resolved · `DeliveryDateTimePicker`: `eachDayOfInterval(max(today, checkIn) … min(checkOut, +13d))`, slots from `duration_availabilities` (skipping `is_all_day`). Picking a new date <b>clears the time</b> — drawn as the disabled state on first render.</span>
+      </div>
+
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="bx-done"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Add to cart</button>
+        <span class="sim-note" style="margin-top:8px">CTA blocked until <b>both</b> date and time land (`requiresDeliveryDateTime && !deliveryDateTime`)</span>
+      </div>
+    </div>
+
+    <!-- ═══ bx-email · EnterContactEmailView ═══ -->
+    <div class="screen flow-screen" id="bx-email" data-label="Confirm contact email — asked once, and only when the host must reply">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="bx-tour"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Sunset vineyard tour</div>
+        </div>
+      </div>
+
+      <div class="page-head">
+        <div class="kicker">One last thing</div>
+        <div class="page-title">Where should the host <span class="hl">reply</span>?</div>
+        <p class="page-intro">This request needs a human answer. We'll send their yes or no here — and nothing else.</p>
+      </div>
+
+      <div class="content" style="gap:16px;padding-top:6px">
+        <div class="bx-block" style="padding:14px 16px">
+          <div class="bx-item" style="border:none;padding:0">
+            <div class="bi-main"><div class="bi-name">Sunset vineyard tour × 2</div><div class="bi-desc">Thu 21 Aug · 17:30</div></div>
+            <span class="bi-price">€90.00</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bx-mail">Email</label>
+          <div class="input">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg>
+            <input id="bx-mail" type="email" value="maria@gmail.com" inputmode="email" autocomplete="email" spellcheck="false" style="border:none;outline:none;flex:1;font:inherit;color:var(--navy);background:none">
+          </div>
+          <span class="hint">Pre-filled from your registration. Change it if the tour should go to someone else.</span>
+        </div>
+
+        <div class="bx-why">
+          <div class="bw-row"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg><span><b>Only on-request offers ask.</b> Instant ones go straight to the cart without this step.</span></div>
+          <div class="bw-row"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg><span>Approved or declined, <b>you're told either way</b> — usually within a few hours.</span></div>
+        </div>
+        <span class="sim-note">EnterContactEmailView · reached only when `getEmail()` is empty <b>and</b> `confirmation_type !== AUTO`; the email is remembered in `store/bookExperience` for the next offer</span>
+      </div>
+
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="bx-done-request">Confirm</button>
+      </div>
+    </div>
+
+    <!-- ═══ bx-done · CreateDealCompleteModal (AUTO) ═══ -->
+    <div class="screen flow-screen" id="bx-done" data-label="Added — instant offers land in the cart, and the cart is one tap away">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <div class="tb-titles" style="margin-left:12px">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Breakfast basket</div>
+        </div>
+      </div>
+      <div class="content" style="opacity:.4;filter:blur(2px)">
+        <div class="bx-block" style="height:150px"></div>
+        <div class="bx-block" style="height:90px"></div>
+      </div>
+
+      <div class="proto-modal open" id="m-added">
+        <div class="pm-scrim"></div>
+        <div class="pm-card" style="text-align:center">
+          <div style="width:76px;height:76px;border-radius:50%;background:var(--green-50);color:var(--green-700);display:grid;place-items:center;margin:0 auto 14px">
+            <svg viewBox="0 0 24 24" class="icon" style="width:36px;height:36px;stroke-width:2.4"><use href="#i-check"/></svg>
+          </div>
+          <div class="pm-title" style="padding-right:0">Added to your cart</div>
+          <p class="pm-desc">2 × Continental basket, €25.00. Nothing is charged until you pay for the stay.</p>
+          <div class="pm-actions">
+            <a class="btn btn-primary" href="flow-payments-mobile.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> My cart</a>
+            <a class="btn btn-ghost" href="flow-upselling-mobile.html">Keep browsing extras</a>
+          </div>
+          <span class="sim-note" style="margin-top:10px">CreateDealCompleteModal (`StatusModal` SUCCESS) · onClose → `navigateAfterSuccess()`, which returns to the offer list</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ bx-done-request · CreateDealCompleteModal (MANUAL) ═══ -->
+    <div class="screen flow-screen" id="bx-done-request" data-label="Requested — the same modal must not claim the booking exists">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <div class="tb-titles" style="margin-left:12px">
+          <div class="tb-title">Book experience</div>
+          <div class="tb-sub">Sunset vineyard tour</div>
+        </div>
+      </div>
+      <div class="content" style="opacity:.4;filter:blur(2px)">
+        <div class="bx-block" style="height:150px"></div>
+        <div class="bx-block" style="height:90px"></div>
+      </div>
+
+      <div class="proto-modal open" id="m-requested">
+        <div class="pm-scrim"></div>
+        <div class="pm-card" style="text-align:center">
+          <div style="width:76px;height:76px;border-radius:50%;background:var(--amber-50);color:var(--amber-700);display:grid;place-items:center;margin:0 auto 14px">
+            <svg viewBox="0 0 24 24" class="icon" style="width:34px;height:34px"><use href="#i-clock"/></svg>
+          </div>
+          <div class="pm-title" style="padding-right:0">Request sent to Elena</div>
+          <p class="pm-desc">2 people, Thu 21 Aug. She usually replies within a few hours — we'll email <b>maria@gmail.com</b> either way. Nothing is charged unless she accepts.</p>
+          <div class="pm-actions">
+            <a class="btn btn-primary" href="flow-upselling-mobile.html#u-track">Track my request</a>
+            <a class="btn btn-ghost" href="flow-upselling-mobile.html">Keep browsing extras</a>
+          </div>
+          <span class="sim-note" style="margin-top:10px">real: the modal prints <code>create_deal_complete_modal.auto_confirmation_type.message</code> for <b>both</b> lanes and offers "My cart" — for an unapproved request the cart is the wrong destination and the copy is a lie. `confirmationType` is passed in and never read.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ bx-slug · OfferSlugRedirectView (SPEC gap 17) ═══ -->
+    <div class="screen flow-screen" id="bx-slug" data-autonext="bx-tour" data-autodelay="2400" data-label="Deep link — a shared /:slug resolves to the offer it names">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="bx-resolve">
+        <div class="br-spin"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-map"/></svg></div>
+        <div class="br-title">Opening the vineyard tour</div>
+        <div class="br-text">Elena shared this link with you. We're matching it to an offer at Villa Serena.</div>
+        <div class="br-slug">guest.chekin.com/CHK-58291/sunset-vineyard-tour</div>
+        <span class="sim-note">OfferSlugRedirectView · `useFetchOfferBySlug` → `replace` to <code>recommendations/:id</code>, preserving <code>location.search</code>. Today it renders a bare `ViewLoader` with no idea what's loading.</span>
+      </div>
+    </div>
+
+    <!-- ═══ bx-slug-nf · slug error → toast + list ═══ -->
+    <div class="screen flow-screen" id="bx-slug-nf" data-label="Deep link — the offer is gone, so land somewhere useful">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="tb-titles">
+          <div class="tb-title">Extras</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+      </div>
+      <div class="bx-resolve error" style="flex:0;padding-bottom:8px">
+        <div class="br-spin"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-alert-triangle"/></svg></div>
+        <div class="br-title">That offer isn't available</div>
+        <div class="br-text">The vineyard tour was withdrawn by the host, or the link has expired. Here's everything else on offer.</div>
+      </div>
+      <div class="content" style="padding-top:6px">
+        <div class="of-grid">
+          <a class="of-card tap" href="#" data-goto="bx-multi"><span class="of-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐</span><div class="of-body"><div class="of-title">Breakfast basket</div><div class="of-meta">from €7.00</div></div></a>
+          <a class="of-card tap" href="#" data-goto="bx-time"><span class="of-photo" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤</span><div class="of-body"><div class="of-title">Late check-out</div><div class="of-meta">from €15.00</div></div></a>
+        </div>
+        <span class="sim-note">real: `toastResponseError(error)` + `navigate(recommendations, {replace: true})` — a raw API message on a page the guest never asked for. Proposal: name the offer, then hand over the list.</span>
+      </div>
+      <div class="bx-toast">
+        <svg viewBox="0 0 24 24" class="icon"><use href="#i-alert-triangle"/></svg>
+        <span>This offer is no longer available.</span>
+      </div>
+    </div>
+
+    <!-- ═══ bx-guard · the zero-quantity bounce out of confirm-email ═══ -->
+    <div class="screen flow-screen" id="bx-guard" data-autonext="bx-tour" data-autodelay="2600" data-label="Reloaded the email step with an empty cart — say why you're going back">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="bx-resolve">
+        <div class="br-spin"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-cart"/></svg></div>
+        <div class="br-title">Let's pick your places first</div>
+        <div class="br-text">Your selection didn't survive the reload, so there's nothing to confirm an email for yet.</div>
+        <span class="sim-note">EnterContactEmailView · `useEffect` sees every quantity at 0 and calls `navigateToBookExperience({replace: true})` — today a silent, unexplained jump backwards</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-plus"><path d="M12 5v14"/><path d="M5 12h14"/></g>
+    <g id="i-minus"><path d="M5 12h14"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-alert-triangle"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g>
+    <g id="i-calendar"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>
+    <g id="i-cart"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h2.5l2.6 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-mail"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></g>
+    <g id="i-map"><path d="M3 6v15l6-3 6 3 6-3V3l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></g>
+    <g id="i-coffee"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M6 2v2M10 2v2M14 2v2"/></g>
+    <g id="i-basket"><path d="m5 11 4-7M19 11l-4-7"/><path d="M2 11h20l-2 9H4z"/><path d="M9 15v2M15 15v2"/></g>
+    <g id="i-zap"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></g>
+  </defs>
+</svg>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+<script>
+/* prototype-only: steppers drive the running total and the CTA's enabled state */
+(function () {
+  var fmt = function (n) { return '€' + n.toFixed(2); };
+
+  function recalc(screen) {
+    var total = 0;
+    screen.querySelectorAll('[data-step]').forEach(function (s) {
+      total += parseFloat(s.getAttribute('data-price')) * parseInt(s.querySelector('[data-val]').textContent, 10);
+    });
+    var out = screen.querySelector('[data-total]');
+    if (out) out.textContent = fmt(total);
+    var cta = screen.querySelector('[data-cta]');
+    if (cta) {
+      var on = total > 0;
+      cta.disabled = !on;
+      cta.style.opacity = on ? '' : '.5';
+      cta.style.pointerEvents = on ? '' : 'none';
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var step = e.target.closest('[data-step]');
+    if (step) {
+      var val = step.querySelector('[data-val]');
+      var n = parseInt(val.textContent, 10);
+      var max = parseInt(step.getAttribute('data-max'), 10);
+      if (e.target.closest('[data-plus]') && n < max) n++;
+      else if (e.target.closest('[data-minus]') && n > 0) n--;
+      val.textContent = n;
+      step.querySelector('[data-minus]').classList.toggle('dis', n === 0);
+      step.querySelector('[data-plus]').classList.toggle('dis', n === max);
+      recalc(step.closest('.flow-screen'));
+      return;
+    }
+    var slot = e.target.closest('[data-slot]');
+    if (slot) {
+      var screen = slot.closest('.flow-screen');
+      screen.querySelectorAll('[data-slot]').forEach(function (s) { s.classList.remove('selected'); });
+      slot.classList.add('selected');
+      var t = screen.querySelector('[data-slot-total]');
+      if (t) t.textContent = fmt(parseFloat(slot.getAttribute('data-price')));
+      return;
+    }
+    var day = e.target.closest('[data-day]');
+    if (day) {
+      day.parentElement.querySelectorAll('[data-day]').forEach(function (d) { d.classList.remove('selected'); });
+      day.classList.add('selected');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auth &amp; Onboarding (interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Sign in &amp; Onboarding — Interactive Flow (Mobile)</h1>
+  <p class="lede">The instant check-in entry: the hidden email → password → code sign-up machine gets a real stepper, a password show/strength and an OTP with a resend countdown; the account is <i>sold</i> (save progress · check in faster) rather than just asked for; and the four onboarding steps become icon/avatar choice cards on a labelled step rail. Pre-auth uses the branded gradient + liquid-glass card. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="a-signin">▶ Create account</button>
+    <button class="fh-chip" data-scenario="a-login">Returning — log in</button>
+    <button class="fh-chip" data-scenario="a-code">Verify email code</button>
+    <button class="fh-chip" data-scenario="a-welcome">Welcome</button>
+    <button class="fh-chip" data-scenario="a-type">Onboarding · your trip</button>
+    <button class="fh-chip" data-scenario="a-guests">Onboarding · guests</button>
+    <button class="fh-chip" data-scenario="a-who">Onboarding · who's coming</button>
+    <button class="fh-chip" data-scenario="a-leader">Onboarding · lead guest</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="phone" style="height:860px">
+
+    <!-- ═══ a-signin · LoginView (create-account · email step) ═══ -->
+    <div class="screen flow-screen" id="a-signin" data-start data-label="Create account — email step, with the account sold up front">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+            <button class="at-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</button>
+          </div>
+
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head">
+              <span class="ah-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg></span>
+              <div class="auth-title">Check in, faster</div>
+              <p class="auth-sub">Create a quick account so your details are saved — <b>next time it's one tap</b>.</p>
+            </div>
+
+            <div class="auth-perks">
+              <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-save"/></svg></span> Your progress is saved as you go</div>
+              <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span> Register everyone in your party once</div>
+              <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span> Come back any time for your keys &amp; guides</div>
+            </div>
+
+            <div class="auth-form">
+              <div class="field">
+                <label>Email</label>
+                <div class="input"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-mail"/></svg> maria@gmail.com<span class="caret" style="width:1.5px;height:16px;background:var(--blue-500);display:inline-block;margin-left:1px"></span></div>
+              </div>
+              <button class="btn btn-primary btn-block" data-goto="a-password">Continue <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+            </div>
+
+            <div class="auth-sep"><span>or</span></div>
+            <button class="social-btn" data-modal="m-oauth"><svg viewBox="0 0 24 24" class="g"><use href="#i-google"/></svg> Continue with Google</button>
+            <button class="auth-alt" data-goto="a-type"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-x"/></svg> Continue without an account</button>
+
+            <div class="auth-switch">Already have an account? <a data-goto="a-login">Log in</a></div>
+            <div class="auth-foot"><a>Terms of use</a><span>·</span><a>Privacy policy</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-password · LoginView (create-account · password step) ═══ -->
+    <div class="screen flow-screen" id="a-password" data-label="Password — show/hide + strength, and a clear step of 3">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head">
+              <div class="auth-title">Create a password</div>
+              <p class="auth-sub">For <b>maria@gmail.com</b> · step 2 of 3</p>
+            </div>
+            <div class="auth-form">
+              <div class="field">
+                <label>Password</label>
+                <div class="input with-btn">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-lock"/></svg>
+                  <span style="letter-spacing:2px;color:var(--navy)">••••••••••</span>
+                  <button class="pwd-eye"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye"/></svg></button>
+                </div>
+              </div>
+              <div class="pwd-strength">
+                <div class="pwd-bars"><i class="on3"></i><i class="on3"></i><i class="on3"></i><i></i></div>
+                <div class="pwd-hint strong">Strong — nice and secure</div>
+              </div>
+              <button class="btn btn-primary btn-block" data-goto="a-code">Create account <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+              <button class="auth-link center" data-goto="a-signin">← Use a different email</button>
+            </div>
+            <div class="auth-foot"><a>Terms of use</a><span>·</span><a>Privacy policy</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-code · LoginView (check_email_code step) ═══ -->
+    <div class="screen flow-screen" id="a-code" data-label="Verify email — OTP with a resend countdown">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head">
+              <span class="ah-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-mail-check"/></svg></span>
+              <div class="auth-title">Check your inbox</div>
+              <p class="auth-sub">We sent a 6-digit code to <b>maria@gmail.com</b> · step 3 of 3</p>
+            </div>
+            <div class="auth-form">
+              <div class="otp-row">
+                <div class="otp-cell filled">4</div>
+                <div class="otp-cell filled">7</div>
+                <div class="otp-cell filled">1</div>
+                <div class="otp-cell active"><span class="caret"></span></div>
+                <div class="otp-cell"></div>
+                <div class="otp-cell"></div>
+              </div>
+              <div class="otp-resend">Didn't get it? Resend in <b>0:24</b> · <span class="lnk">Resend code</span></div>
+              <button class="btn btn-primary btn-block" data-goto="a-welcome">Verify &amp; continue <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+              <button class="auth-link center" data-goto="a-password">← Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-login · LoginView (login route — welcome back) ═══ -->
+    <div class="screen flow-screen" id="a-login" data-label="Returning guest — log in (welcome back)">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+            <button class="at-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</button>
+          </div>
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head">
+              <span class="ah-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill"/></svg></span>
+              <div class="auth-title">Welcome back</div>
+              <p class="auth-sub">Log in to pick up right where you left off.</p>
+            </div>
+            <div class="auth-form">
+              <div class="field">
+                <label>Email</label>
+                <div class="input"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-mail"/></svg> maria@gmail.com</div>
+              </div>
+              <div class="field">
+                <label>Password</label>
+                <div class="input with-btn"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-lock"/></svg> <span style="letter-spacing:2px;color:var(--navy)">••••••••</span><button class="pwd-eye"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye"/></svg></button></div>
+              </div>
+              <a class="auth-link">Forgot password?</a>
+              <button class="btn btn-primary btn-block" data-goto="a-welcome">Log in <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+            </div>
+            <div class="auth-sep"><span>or</span></div>
+            <button class="social-btn" data-modal="m-oauth"><svg viewBox="0 0 24 24" class="g"><use href="#i-google"/></svg> Continue with Google</button>
+            <div class="auth-switch">New here? <a data-goto="a-signin">Create an account</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-welcome · WelcomeView ═══ -->
+    <div class="screen flow-screen" id="a-welcome" data-label="Welcome — warm moment, then continue to the reservation">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll" style="justify-content:center">
+          <div class="auth-top" style="position:absolute;top:20px;left:18px;right:18px">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="auth-card fade-up" style="margin:auto 0">
+            <div class="auth-welcome">
+              <span class="aw-art"><svg viewBox="0 0 24 24" class="icon"><use href="#i-hand-wave"/></svg></span>
+              <div class="auth-title">Welcome, María!</div>
+              <p class="auth-sub">Your account is ready. Let's set up who's staying at Villa Serena — it takes about a minute.</p>
+            </div>
+            <button class="auth-nextcard" data-goto="a-type">
+              <span class="nc-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span>
+              <span style="flex:1"><span class="nc-t">Set up your reservation</span><span class="nc-s">Trip type, guests &amp; who's in charge</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="btn btn-primary btn-block" data-goto="a-type">Continue to reservation <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-type · Onboarding step 1 — ReservationTypeStep ═══ -->
+    <div class="screen flow-screen" id="a-type" data-label="Onboarding 1/4 — how are you traveling (choice cards)">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="onb-rail" style="margin-top:16px"><span class="or-seg active"></span><span class="or-seg"></span><span class="or-seg"></span><span class="or-seg"></span></div>
+          <div class="onb-step"><span class="os-now">Your trip</span><span class="os-count">Step 1 of 4</span></div>
+
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head" style="align-items:flex-start;text-align:left">
+              <div class="auth-title">How are you traveling?</div>
+              <p class="auth-sub" style="max-width:none">Pick what best describes this reservation.</p>
+            </div>
+            <div class="choice">
+              <button class="choice-card on">
+                <span class="cc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-family"/></svg></span>
+                <span class="cc-main"><span class="cc-t">Family</span><span class="cc-s">Parents and children</span></span>
+                <span class="cc-radio"></span>
+              </button>
+              <button class="choice-card">
+                <span class="cc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg></span>
+                <span class="cc-main"><span class="cc-t">Group</span><span class="cc-s">Friends or colleagues traveling together</span></span>
+                <span class="cc-radio"></span>
+              </button>
+              <button class="choice-card">
+                <span class="cc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-flag"/></svg></span>
+                <span class="cc-main"><span class="cc-t">Tourist group</span><span class="cc-s">An organised tour party</span></span>
+                <span class="cc-radio"></span>
+              </button>
+            </div>
+            <button class="btn btn-primary btn-block" data-goto="a-guests">Confirm</button>
+          </div>
+          <span class="sim-note" style="color:rgba(255,255,255,0.7)">GROUP_TYPES F/G/T — the "single" type is derived when the count is ≤ 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-guests · Onboarding step 2 — NumberOfGuestsStep ═══ -->
+    <div class="screen flow-screen" id="a-guests" data-label="Onboarding 2/4 — number of guests (age-split counters)">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="onb-rail" style="margin-top:16px"><span class="or-seg done"></span><span class="or-seg active"></span><span class="or-seg"></span><span class="or-seg"></span></div>
+          <div class="onb-step"><span class="os-now">Guests</span><span class="os-count">Step 2 of 4</span></div>
+
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head" style="align-items:flex-start;text-align:left">
+              <div class="auth-title">How many guests?</div>
+              <p class="auth-sub" style="max-width:none">Count everyone staying — ages set the tourist tax later.</p>
+            </div>
+            <div class="counter-list">
+              <div class="counter">
+                <span class="ct-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg></span>
+                <span class="ct-main"><span class="ct-t">Adults</span><span class="ct-s">18 and over</span></span>
+                <span class="ct-stepper"><button class="ct-btn"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button><span class="ct-val">2</span><button class="ct-btn plus"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button></span>
+              </div>
+              <div class="counter">
+                <span class="ct-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-child"/></svg></span>
+                <span class="ct-main"><span class="ct-t">Children</span><span class="ct-s">Under 18</span></span>
+                <span class="ct-stepper"><button class="ct-btn"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button><span class="ct-val">1</span><button class="ct-btn plus"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button></span>
+              </div>
+              <div class="counter">
+                <span class="ct-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-paw"/></svg></span>
+                <span class="ct-main"><span class="ct-t">Pets</span><span class="ct-s">A small pet fee applies</span></span>
+                <span class="ct-stepper"><button class="ct-btn off"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-minus"/></svg></button><span class="ct-val">0</span><button class="ct-btn plus"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg></button></span>
+              </div>
+            </div>
+            <div class="counter-total"><span>Total guests</span><span><b>3</b> of 6 allowed</span></div>
+            <button class="btn btn-primary btn-block" data-goto="a-who">Confirm</button>
+          </div>
+          <span class="sim-note" style="color:rgba(255,255,255,0.7)">counters &amp; age brackets are season-rule driven (junior / middle / senior); pets shown only when a pet-fee offer exists</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-who · Onboarding step 3 — WhoIsComingStep ═══ -->
+    <div class="screen flow-screen" id="a-who" data-label="Onboarding 3/4 — who's coming (guest checkboxes + clause)">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="onb-rail" style="margin-top:16px"><span class="or-seg done"></span><span class="or-seg done"></span><span class="or-seg active"></span><span class="or-seg"></span></div>
+          <div class="onb-step"><span class="os-now">Who's coming</span><span class="os-count">Step 3 of 4</span></div>
+
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head" style="align-items:flex-start;text-align:left">
+              <div class="auth-title">Who's coming?</div>
+              <p class="auth-sub" style="max-width:none">Select the guests included in this reservation.</p>
+            </div>
+            <div class="who-list">
+              <button class="who-row locked">
+                <span class="wr-av reg">MG</span>
+                <span class="wr-main"><span class="wr-name">María García</span><span class="wr-tag"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px;color:var(--green-700)"><use href="#i-check"/></svg> You · already registered</span></span>
+                <span class="wr-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+              </button>
+              <button class="who-row on">
+                <span class="wr-av">AG</span>
+                <span class="wr-main"><span class="wr-name">Ana García</span><span class="wr-tag">Adult</span></span>
+                <span class="wr-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+              </button>
+              <button class="who-row on">
+                <span class="wr-av">CG</span>
+                <span class="wr-main"><span class="wr-name">Carlos García</span><span class="wr-tag">Minor · 17</span></span>
+                <span class="wr-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+              </button>
+            </div>
+            <div class="clause">
+              <span class="cl-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+              <span class="cl-txt">I accept the <a>house rules</a> and the <a>rental agreement</a> on behalf of my party.</span>
+            </div>
+            <button class="btn btn-primary btn-block" data-goto="a-leader">Confirm</button>
+          </div>
+          <span class="sim-note" style="color:rgba(255,255,255,0.7)">registered guests are locked-checked; agreement clauses / contracts show only when the reservation has them</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ a-leader · Onboarding step 4 — ConfirmGuestLeaderStep ═══ -->
+    <div class="screen flow-screen" id="a-leader" data-label="Onboarding 4/4 — who's in charge (radio + Crown)">
+      <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="auth-stage">
+        <div class="auth-scroll">
+          <div class="auth-top">
+            <span class="at-logo">V</span>
+            <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
+          </div>
+          <div class="onb-rail" style="margin-top:16px"><span class="or-seg done"></span><span class="or-seg done"></span><span class="or-seg done"></span><span class="or-seg active"></span></div>
+          <div class="onb-step"><span class="os-now">Lead guest</span><span class="os-count">Step 4 of 4</span></div>
+
+          <div class="auth-card top-gap fade-up">
+            <div class="auth-head" style="align-items:flex-start;text-align:left">
+              <div class="auth-title">Who's in charge?</div>
+              <p class="auth-sub" style="max-width:none">The lead guest is our main contact for this stay.</p>
+            </div>
+            <div class="choice">
+              <button class="choice-card on">
+                <span class="cc-ic" style="background:var(--gradient-brand);color:#fff">MG</span>
+                <span class="cc-main"><span class="cc-t">María García</span><span class="cc-s">You · the account holder</span></span>
+                <span class="cc-crown"><svg viewBox="0 0 24 24" class="icon"><use href="#i-crown"/></svg></span>
+              </button>
+              <button class="choice-card">
+                <span class="cc-ic" style="background:var(--n-100);color:var(--n-600)">AG</span>
+                <span class="cc-main"><span class="cc-t">Ana García</span><span class="cc-s">Adult</span></span>
+                <span class="cc-radio"></span>
+              </button>
+              <button class="choice-card">
+                <span class="cc-ic" style="background:var(--n-100);color:var(--n-600)"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span>
+                <span class="cc-main"><span class="cc-t">None of the above</span><span class="cc-s">Someone else will be responsible</span></span>
+                <span class="cc-radio"></span>
+              </button>
+            </div>
+            <button class="btn btn-primary btn-block" data-modal="m-creating">Finish setup</button>
+          </div>
+          <span class="sim-note" style="color:rgba(255,255,255,0.7)">only adults are eligible; "none of the above" hidden when shouldShowOnlyGuests. Confirm → createGuests()</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Shared overlays ═══ -->
+    <!-- Guest creation modal (LOADING → SUCCESS → guest registration) -->
+    <div class="proto-modal" id="m-creating">
+      <div class="pm-scrim"></div>
+      <div class="pm-card" style="text-align:center">
+        <div class="gc-art"><svg viewBox="0 0 24 24" class="icon icon-lg" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+        <div class="pm-title" style="text-align:center;padding:0">Guests registered</div>
+        <p class="pm-desc" style="text-align:center">3 guests added to your reservation. Taking you to complete each guest's details…</p>
+        <div class="gc-guests" style="text-align:left">
+          <div class="gc-guest"><span class="g-av">MG</span> María García <span class="g-ok"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span></div>
+          <div class="gc-guest"><span class="g-av">AG</span> Ana García <span class="g-ok"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span></div>
+          <div class="gc-guest"><span class="g-av">CG</span> Carlos García <span class="g-ok"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span></div>
+        </div>
+        <div class="pm-actions">
+          <a class="btn btn-primary" href="flow-registration.html#r-hub">Continue to guest details <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></a>
+        </div>
+        <span class="sim-note" style="margin-top:12px">GuestCreationModal: LOADING (spinner) → SUCCESS then auto-navigates to guest registration after 3s</span>
+      </div>
+    </div>
+
+    <!-- Google OAuth popup (mock) -->
+    <div class="proto-modal" id="m-oauth">
+      <div class="pm-scrim"></div>
+      <div class="pm-card" style="text-align:center">
+        <button class="pm-close" data-modal-close><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        <div class="gc-art load"><span class="spin"></span></div>
+        <div class="pm-title" style="text-align:center;padding:0">Signing in with Google…</div>
+        <p class="pm-desc" style="text-align:center">A Google window opens to authorise. When it's done this closes itself.</p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close data-goto="a-welcome">Simulate success</button>
+          <button class="btn-ghost" data-modal-close>Cancel</button>
+        </div>
+        <span class="sim-note" style="margin-top:10px">OAuthCallback posts {isLoginSuccessful, accessToken} to the opener, then window.close()</span>
+      </div>
+    </div>
+
+    <!-- Logged-out sheet -->
+    <div class="proto-modal sheet" id="m-logout">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">You've been logged out</div>
+        <p class="pm-desc">Your session ended for security. Log back in to pick up where you left off — nothing is lost.</p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close data-goto="a-login">Log back in</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-minus"><path d="M5 12h14"/></g>
+    <g id="i-plus"><path d="M12 5v14M5 12h14"/></g>
+    <g id="i-mail"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-mail-check"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9"/><path d="m2 7 8.97 5.7a1.94 1.94 0 0 0 2.06 0L22 7"/><path d="m16 19 2 2 4-4"/></g>
+    <g id="i-lock"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-eye"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></g>
+    <g id="i-eye-off"><path d="M10.7 5.1A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a13.2 13.2 0 0 1-2.2 2.9"/><path d="M6.6 6.6A13.3 13.3 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 4.4-1"/><path d="m2 2 20 20"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-zap"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></g>
+    <g id="i-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-user-x"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m17 8 5 5M22 8l-5 5"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L21 5"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-crown"><path d="M2 18h20l-2-9-5 4-3-7-3 7-5-4z"/><path d="M4 22h16"/></g>
+    <g id="i-family"><circle cx="7" cy="6" r="2.6"/><circle cx="17" cy="6" r="2.6"/><path d="M2.5 20v-3a4 4 0 0 1 4-4h1a4 4 0 0 1 4 4v3"/><path d="M13.5 20v-3a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4v3"/><circle cx="12" cy="15.5" r="1.8"/></g>
+    <g id="i-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></g>
+    <g id="i-child"><circle cx="12" cy="5" r="2.4"/><path d="M12 8v7M8 11h8M9 21l3-4 3 4"/></g>
+    <g id="i-paw"><circle cx="6.5" cy="10" r="1.8"/><circle cx="17.5" cy="10" r="1.8"/><circle cx="9.5" cy="6" r="1.8"/><circle cx="14.5" cy="6" r="1.8"/><path d="M8.5 14c-1.5 1-2 2.5-1.3 3.8.6 1.2 2.1 1.3 3.4.9 1-.3 1.8-.3 2.8 0 1.3.4 2.8.3 3.4-.9.7-1.3.2-2.8-1.3-3.8-1.8-1.2-5.2-1.2-7 0z"/></g>
+    <g id="i-hand-wave"><path d="M18 11V6a1.5 1.5 0 0 0-3 0M15 6V4.5a1.5 1.5 0 0 0-3 0V6M12 6.5V5a1.5 1.5 0 0 0-3 0v7"/><path d="M9 12V9a1.5 1.5 0 0 0-3 0v5a7 7 0 0 0 7 7 7 7 0 0 0 7-7v-3a1.5 1.5 0 0 0-3 0"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-google"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" stroke="none"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z" fill="#34A853" stroke="none"/><path d="M5.84 14.09a6.6 6.6 0 0 1 0-4.18V7.07H2.18a11 11 0 0 0 0 9.86l3.66-2.84z" fill="#FBBC05" stroke="none"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" stroke="none"/></g>
+  </defs>
+</svg>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+<script src="glass-toggle.js" defer></script>
+<script>
+/* password show/hide affordance (prototype-only) */
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('.pwd-eye');
+  if (!b) return;
+  e.preventDefault();
+  var dots = b.parentElement.querySelector('span');
+  var on = b.getAttribute('data-shown') === '1';
+  b.setAttribute('data-shown', on ? '0' : '1');
+  b.querySelector('use').setAttribute('href', on ? '#i-eye' : '#i-eye-off');
+  if (dots) { dots.textContent = on ? '••••••••••' : 'serena·2024'; dots.style.letterSpacing = on ? '2px' : '0'; }
+});
+</script>
+</body>
+</html>

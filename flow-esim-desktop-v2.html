@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel eSIM V2 — buy once, install now (Desktop)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="esim-v2.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Travel eSIM V2 — buy once, install now (Desktop)</h1>
+  <p class="lede">The same three views as the navy-sidebar <b>“Travel eSIM”</b> destination. The mobile CTA dock becomes a <b>sticky ledger</b> that itemises what's being bought; the install ladder gets a reading column, and the desktop admits what it is — a place to <b>choose and pay</b>, not to install. The eSIM goes on a phone, so the install screen leads with a <b>hand-off to that phone</b>. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="ed2-hub">eSIM home</button>
+    <button class="fh-chip" data-scenario="ed2-plans">Choose a plan</button>
+    <button class="fh-chip" data-scenario="ed2-plans-loading">Plans loading</button>
+    <button class="fh-chip" data-scenario="ed2-my">Install (not installed)</button>
+    <button class="fh-chip" data-scenario="ed2-my-done">Installed &amp; connected</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-lock"/></svg> guest.chekin.com/villa-serena/esim</span>
+      <span style="width:52px"></span>
+    </div>
+
+    <!-- ══════════════════ 1 · eSIM HOME ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="ed2-hub" data-start data-label="eSIM home — nothing bought yet">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>100%</span></div>
+          <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
+        <div class="sb-group">Your stay</div>
+        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <span class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back to home</span>
+
+        <div class="desk-col" style="display:flex;flex-direction:column;gap:18px">
+          <section class="es-hero es-desk-hero">
+            <div class="es-hero-top">
+              <span class="es-flag" aria-hidden="true">🇪🇸</span>
+              <div>
+                <div class="es-hero-kicker">Your destination</div>
+                <div style="font-size:14px;font-weight:650;margin-top:1px">Spain · Valencia</div>
+              </div>
+            </div>
+            <h1>Land with <span class="hl">mobile data</span> already working</h1>
+            <p>A digital SIM for your stay. No shop, no plastic card, no roaming bill when you get home — and nothing starts counting until you're in Spain.</p>
+            <div class="es-hero-facts">
+              <span class="es-fact"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Plans from <b>€4.50</b></span>
+              <span class="es-fact"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-signal"/></svg> Movistar network</span>
+              <span class="es-fact"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plane-landing"/></svg> Activates on arrival</span>
+            </div>
+          </section>
+
+          <!-- Desktop is the wrong device to check compatibility on — say so
+               rather than claiming to have detected the guest's phone. -->
+          <button class="es-compat unknown" data-modal="m-e2-compat">
+            <span class="es-compat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+            <span class="es-compat-body">
+              <span class="es-compat-title">Will it work on <b>your phone</b>?</span>
+              <span class="es-compat-sub">Three requirements, and the full device list</span>
+            </span>
+            <svg viewBox="0 0 24 24" class="icon es-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+          </button>
+
+          <div class="card" style="padding:6px 18px">
+            <div class="es-values">
+              <div class="es-value">
+                <span class="es-val-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg></span>
+                <div>
+                  <h3>Stay connected in Spain</h3>
+                  <p>Full coverage on the Movistar network from the moment you land.</p>
+                </div>
+              </div>
+              <div class="es-value">
+                <span class="es-val-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-coins"/></svg></span>
+                <div>
+                  <h3>Avoid roaming charges</h3>
+                  <p>A fixed price for the trip instead of a surprise on next month's bill.</p>
+                </div>
+              </div>
+              <div class="es-value">
+                <span class="es-val-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plane-landing"/></svg></span>
+                <div>
+                  <h3>Activates when you land</h3>
+                  <p>Buy and install now — nothing starts counting until you connect in Spain.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <details class="es-explain">
+            <summary>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-card-sim"/></svg>
+              What's an eSIM?
+              <svg viewBox="0 0 24 24" class="icon icon-sm es-mark" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+            </summary>
+            <p class="es-explain-body">A SIM card built into your phone. Instead of swapping a plastic chip, you install a profile — the phone then has two numbers: your normal one for calls, and this one for data in Spain.</p>
+          </details>
+
+          <div style="display:flex;gap:10px">
+            <a class="btn btn-primary" data-goto="ed2-plans" style="flex:1">
+              See plans for Spain
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+            </a>
+            <a class="btn btn-outline" data-goto="ed2-my">View my eSIMs</a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 2 · CHOOSE A PLAN ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="ed2-plans" data-label="Choose a plan — sticky ledger, priced per GB">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
+        <div class="sb-group">Your stay</div>
+        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <button class="back-pill" data-goto="ed2-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</button>
+
+        <div class="page-head" style="padding:16px 0 0">
+          <div class="kicker">Spain · Valencia</div>
+          <h1 class="page-title" style="font-size:27px;line-height:32px">Choose your <span class="hl">plan</span></h1>
+          <p class="page-intro" style="font-size:14px">Prices include tax. Every plan works on the Movistar network.</p>
+        </div>
+
+        <div class="es-desk-grid">
+          <div>
+            <div class="es-groups">
+              <fieldset class="es-group" data-es-group>
+                <legend class="es-sr">Data plan</legend>
+
+                <div class="es-group-head">
+                  <span class="es-group-label" data-es-group-label>Your plan</span>
+                  <button type="button" class="es-removeplan" data-es-removeplan hidden>Remove</button>
+                </div>
+
+                <div class="es-dur" role="tablist" aria-label="Plan duration">
+                  <button type="button" class="es-dur-chip" role="tab" data-es-dur="7" aria-selected="true">
+                    <span class="d-match">Covers your stay</span>
+                    <span class="d-len">7 days</span>
+                    <span class="d-from">from €4.50</span>
+                  </button>
+                  <button type="button" class="es-dur-chip" role="tab" data-es-dur="15" aria-selected="false">
+                    <span class="d-len">15 days</span>
+                    <span class="d-from">from €12.50</span>
+                  </button>
+                  <button type="button" class="es-dur-chip" role="tab" data-es-dur="30" aria-selected="false">
+                    <span class="d-len">30 days</span>
+                    <span class="d-from">from €19.00</span>
+                  </button>
+                </div>
+
+                <!-- ---------- 7 days ---------- -->
+                <div data-es-panel="7">
+                  <p class="es-stay" style="margin-bottom:12px">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+                    <span><b>You're staying 5 nights</b> (14–19 July) — a 7-day plan covers your arrival and departure days.</span>
+                  </p>
+                  <div class="es-plans">
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="4.50" data-es-name="1 GB · 7 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">1 GB</span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-wifi"/></svg> Data only</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€4.50</b><span class="p-unit">€4.50 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" checked data-es-price="9.50" data-es-name="3 GB · 7 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">3 GB <span class="es-tag es-tag-value"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-zap"/></svg> Best value</span></span>
+                          <span class="es-plan-specs">
+                            <span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 100 min calls</span>
+                            <span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-message"/></svg> 50 SMS</span>
+                          </span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€9.50</b><span class="p-unit">€3.17 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="16.00" data-es-name="5 GB · 7 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">5 GB</span>
+                          <span class="es-plan-specs">
+                            <span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 100 min calls</span>
+                            <span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-message"/></svg> 50 SMS</span>
+                          </span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€16.00</b><span class="p-unit">€3.20 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="29.00" data-es-name="Unlimited · 7 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">Unlimited <span class="es-tag es-tag-unlimited"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-infinity"/></svg> No data cap</span></span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-signal"/></svg> Speed drops after 20 GB</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€29.00</b><span class="p-unit">no GB price</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ---------- 15 days ---------- -->
+                <div data-es-panel="15" hidden>
+                  <div class="es-plans">
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="12.50" data-es-name="3 GB · 15 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">3 GB</span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-wifi"/></svg> Data only</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€12.50</b><span class="p-unit">€4.17 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="26.00" data-es-name="10 GB · 15 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">10 GB <span class="es-tag es-tag-value"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-zap"/></svg> Best value</span></span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 200 min calls</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€26.00</b><span class="p-unit">€2.60 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="39.00" data-es-name="Unlimited · 15 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">Unlimited <span class="es-tag es-tag-unlimited"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-infinity"/></svg> No data cap</span></span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-signal"/></svg> Speed drops after 40 GB</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€39.00</b><span class="p-unit">no GB price</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ---------- 30 days ---------- -->
+                <div data-es-panel="30" hidden>
+                  <div class="es-plans">
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="19.00" data-es-name="5 GB · 30 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">5 GB</span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-wifi"/></svg> Data only</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€19.00</b><span class="p-unit">€3.80 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="42.00" data-es-name="20 GB · 30 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">20 GB <span class="es-tag es-tag-value"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-zap"/></svg> Best value</span></span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 500 min calls</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€42.00</b><span class="p-unit">€2.10 / GB</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="es-plan">
+                      <label class="es-plan-main">
+                        <input type="radio" data-es-price="59.00" data-es-name="Unlimited · 30 days">
+                        <span class="es-radio" aria-hidden="true"></span>
+                        <span class="es-plan-body">
+                          <span class="es-plan-title">Unlimited <span class="es-tag es-tag-unlimited"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-infinity"/></svg> No data cap</span></span>
+                          <span class="es-plan-specs"><span class="es-spec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-signal"/></svg> Speed drops after 60 GB</span></span>
+                        </span>
+                        <span class="es-plan-price"><b class="p-amt">€59.00</b><span class="p-unit">no GB price</span></span>
+                      </label>
+                      <div class="es-plan-extra">
+                        <div><div class="es-plan-extra-label">How many devices?</div><div class="es-plan-extra-sub">One eSIM profile per device</div></div>
+                        <div class="es-counter">
+                          <button type="button" data-es-step="-1" aria-label="One device fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                          <output data-es-qty aria-label="Number of devices">1</output>
+                          <button type="button" data-es-step="1" aria-label="One device more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+
+              <button type="button" class="es-addplan" data-es-addplan>
+                <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg>
+                Add a different plan for someone else
+              </button>
+            </div>
+          </div>
+
+          <!-- The mobile dock, reborn as an itemised ledger -->
+          <aside class="es-ledger" aria-label="Order summary">
+            <div class="es-ledger-eyebrow">Your order</div>
+            <div class="es-ledger-rows" data-es-ledger-rows></div>
+            <div class="es-ledger-split"></div>
+            <div class="es-ledger-total">
+              <span class="k">Total to pay</span>
+              <span class="v" data-es-sum-total>€0.00</span>
+            </div>
+            <a class="btn btn-primary" data-es-cta href="flow-payments-desktop.html">
+              Continue to payment
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+            </a>
+            <div class="es-ledger-note">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+              <span><b>Nothing is charged yet.</b> You confirm the amount on the payment page.</span>
+            </div>
+            <div class="es-ledger-split"></div>
+            <div class="es-ledger-note">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plane-landing"/></svg>
+              <span>Your plan <b>activates on arrival</b> in Spain, not when you buy it.</span>
+            </div>
+            <div class="es-ledger-note">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-smartphone"/></svg>
+              <span>You'll install it on your <b>phone</b> — we'll show you how after payment.</span>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 3 · PLANS LOADING ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="ed2-plans-loading" data-label="Plans loading — shape-matched skeleton" data-autonext="ed2-plans" data-autodelay="2200">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-group">Your stay</div>
+        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM</span>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <span class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</span>
+        <div class="page-head" style="padding:16px 0 0">
+          <div class="kicker">Spain · Valencia</div>
+          <h1 class="page-title" style="font-size:27px;line-height:32px">Choose your <span class="hl">plan</span></h1>
+        </div>
+
+        <div class="es-desk-grid" aria-busy="true">
+          <div>
+            <div class="es-dur" style="margin-bottom:14px">
+              <span class="es-skel" style="width:112px;height:58px;border-radius:12px;flex-shrink:0"></span>
+              <span class="es-skel" style="width:100px;height:58px;border-radius:12px;flex-shrink:0"></span>
+              <span class="es-skel" style="width:100px;height:58px;border-radius:12px;flex-shrink:0"></span>
+            </div>
+            <div class="es-plans">
+              <div class="es-skel-plan">
+                <span class="es-skel" style="width:20px;height:20px;border-radius:50%;flex-shrink:0"></span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:7px"><span class="es-skel" style="width:26%;height:16px"></span><span class="es-skel" style="width:44%;height:11px"></span></span>
+                <span class="es-skel" style="width:70px;height:32px;flex-shrink:0"></span>
+              </div>
+              <div class="es-skel-plan">
+                <span class="es-skel" style="width:20px;height:20px;border-radius:50%;flex-shrink:0"></span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:7px"><span class="es-skel" style="width:40%;height:16px"></span><span class="es-skel" style="width:52%;height:11px"></span></span>
+                <span class="es-skel" style="width:70px;height:32px;flex-shrink:0"></span>
+              </div>
+              <div class="es-skel-plan">
+                <span class="es-skel" style="width:20px;height:20px;border-radius:50%;flex-shrink:0"></span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:7px"><span class="es-skel" style="width:24%;height:16px"></span><span class="es-skel" style="width:50%;height:11px"></span></span>
+                <span class="es-skel" style="width:70px;height:32px;flex-shrink:0"></span>
+              </div>
+              <div class="es-skel-plan">
+                <span class="es-skel" style="width:20px;height:20px;border-radius:50%;flex-shrink:0"></span>
+                <span style="flex:1;display:flex;flex-direction:column;gap:7px"><span class="es-skel" style="width:34%;height:16px"></span><span class="es-skel" style="width:38%;height:11px"></span></span>
+                <span class="es-skel" style="width:70px;height:32px;flex-shrink:0"></span>
+              </div>
+            </div>
+            <p class="sim-note" style="margin-top:14px">Skeletons mirror the real card geometry. Auto-advances…</p>
+          </div>
+          <aside class="es-ledger">
+            <div class="es-ledger-eyebrow">Your order</div>
+            <span class="es-skel" style="height:38px"></span>
+            <div class="es-ledger-split"></div>
+            <span class="es-skel" style="height:26px"></span>
+            <span class="es-skel" style="height:44px;border-radius:12px"></span>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 4 · MY eSIM — NOT INSTALLED ══════════════════
+         A desktop browser cannot install an eSIM. Leading with a QR that
+         the guest's *phone* can scan is the one place the big screen wins.
+         ════════════════════════════════════════════════════════════════ -->
+    <div class="desktop-shell flow-screen" id="ed2-my" data-label="My eSIMs — hand off to the phone">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
+        <div class="sb-group">Your stay</div>
+        <span class="sb-item active">
+          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM
+          <span class="sb-badge warn" data-es-badge>1</span>
+        </span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <button class="back-pill" data-goto="ed2-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</button>
+
+        <div class="desk-col" style="display:flex;flex-direction:column;gap:18px">
+          <div class="page-head" style="padding:16px 0 0">
+            <div class="kicker">Paid · ready to install</div>
+            <h1 class="page-title" style="font-size:27px;line-height:32px">Install your <span class="hl">eSIM</span></h1>
+            <p class="page-intro" style="font-size:14px">An eSIM lives on a phone, not on this computer. Scan the code below with the phone you're travelling with.</p>
+          </div>
+
+          <article class="es-esim is-pending" aria-labelledby="ed2-esim-name">
+            <div class="es-esim-head">
+              <span class="es-op" aria-hidden="true">MOVI<br>STAR</span>
+              <div class="es-esim-titles">
+                <h2 class="es-esim-name" id="ed2-esim-name">Spain · 3 GB</h2>
+                <div class="es-esim-meta">7 days · Movistar · ICCID ••••&nbsp;4192</div>
+              </div>
+              <span class="es-status" data-es-status>
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-circle-plus"/></svg>
+                Not installed
+              </span>
+            </div>
+
+            <div class="es-facts">
+              <div><span class="es-fact-k">Data</span><span class="es-fact-v">3 GB</span></div>
+              <div><span class="es-fact-k">Valid for</span><span class="es-fact-v">7 days</span></div>
+              <div><span class="es-fact-k">Starts</span><span class="es-fact-v">On arrival</span></div>
+            </div>
+
+            <div class="es-esim-body">
+              <p class="es-activate">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plane-landing"/></svg>
+                <span><b>Install it now, it won't start counting.</b> The 7 days begin when you land in Spain and the eSIM connects to a network.</span>
+              </p>
+
+              <div class="es-ladder">
+                <div class="es-rung primary">
+                  <div class="es-rung-head">
+                    <span class="es-rung-n" aria-hidden="true">1</span>
+                    <div class="es-rung-titles">
+                      <div class="es-rung-title">Scan this with your phone's camera</div>
+                      <div class="es-rung-sub">The one method that works from a computer</div>
+                    </div>
+                  </div>
+                  <div class="es-rung-body">
+                    <div class="es-qr-block">
+                      <div class="es-qr-frame">
+                        <div class="es-qr-cells" data-es-qr role="img" aria-label="QR code containing your eSIM activation profile. The same profile is available as text in step 2: SM-DP+ address consumer.e-sim.global, activation code K2-9FJ4L-2QQ8X-7HTBW."></div>
+                      </div>
+                      <p class="es-qr-note">
+                        <b>Open the camera app and point it here.</b>
+                        Your phone offers to add a mobile plan — accept, then label it “Spain”.
+                        <button type="button" class="es-qr-expand" data-modal="m-e2-qr">
+                          <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-scan"/></svg>
+                          Show it bigger
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <details class="es-rung">
+                  <summary class="es-rung-head">
+                    <span class="es-rung-n" aria-hidden="true">2</span>
+                    <div class="es-rung-titles">
+                      <div class="es-rung-title">Type the codes into your phone</div>
+                      <div class="es-rung-sub">If the camera doesn't recognise the code</div>
+                    </div>
+                    <svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                  </summary>
+                  <div class="es-rung-body">
+                    <div class="es-code">
+                      <div class="es-code-head">
+                        <span class="es-code-label">SM-DP+ address</span>
+                        <button type="button" class="es-copy" data-es-copy="SM-DP+ address">
+                          <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-copy"/></svg> Copy
+                        </button>
+                      </div>
+                      <div class="es-code-val">consumer.e-sim.global</div>
+                    </div>
+                    <div class="es-code">
+                      <div class="es-code-head">
+                        <span class="es-code-label">Activation code</span>
+                        <button type="button" class="es-copy" data-es-copy="Activation code">
+                          <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-copy"/></svg> Copy
+                        </button>
+                      </div>
+                      <div class="es-code-val">K2-9FJ4L-2QQ8X-7HTBW</div>
+                    </div>
+                    <ol class="es-steps">
+                      <li><b>iPhone:</b> Settings → Mobile Data → Add eSIM → Enter details manually.</li>
+                      <li><b>Android:</b> Settings → Network &amp; internet → SIMs → Add eSIM → Enter it manually.</li>
+                    </ol>
+                  </div>
+                </details>
+
+                <details class="es-rung es-trouble">
+                  <summary class="es-rung-head">
+                    <span class="es-rung-n" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-alert"/></svg></span>
+                    <div class="es-rung-titles">
+                      <div class="es-rung-title">Installed, but no mobile data?</div>
+                      <div class="es-rung-sub">Turn on roaming and set the APN</div>
+                    </div>
+                    <svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                  </summary>
+                  <div class="es-rung-body">
+                    <ol class="es-steps">
+                      <li>Turn <b>Data Roaming ON</b> for the Spain line. (Normal for an eSIM — you are not being charged roaming.)</li>
+                      <li>Make <b>Spain</b> the line used for mobile data.</li>
+                      <li>If there is still no data, set the APN below.</li>
+                    </ol>
+                    <div class="es-code">
+                      <div class="es-code-head">
+                        <span class="es-code-label">APN</span>
+                        <button type="button" class="es-copy" data-es-copy="APN">
+                          <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-copy"/></svg> Copy
+                        </button>
+                      </div>
+                      <div class="es-code-val">globaldata</div>
+                    </div>
+                  </div>
+                </details>
+              </div>
+
+              <button type="button" class="es-confirm" data-es-installed>
+                <span class="es-confirm-box" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+                <span>
+                  I've installed it on my phone
+                  <span class="es-confirm-sub">Clears the reminder badge in the sidebar</span>
+                </span>
+              </button>
+
+              <p class="es-activate" data-es-after-install hidden style="background:var(--green-50);color:#0b6d58">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+                <span><b>Ready to go.</b> It'll connect by itself once you land in Spain.</span>
+              </p>
+            </div>
+          </article>
+
+          <button class="es-usage" data-modal="m-e2-usage">
+            <span class="es-usage-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-signal"/></svg></span>
+            <span>
+              <span class="es-usage-t">How much data have I used?</span>
+              <span class="es-usage-s">Tracked in the Airalo app — we're not sent the figure</span>
+            </span>
+            <svg viewBox="0 0 24 24" class="icon es-chev" style="margin-left:auto;color:var(--n-500)" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+          </button>
+
+          <!-- Help, folded back in. Shipped: a second tab labelled "help". -->
+          <section class="es-help">
+            <div class="es-help-head">
+              <span class="es-help-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-life-buoy"/></svg></span>
+              <div>
+                <h2>Need a hand?</h2>
+                <p class="es-help-desc">Our partner <b style="color:var(--navy)">Airalo</b> runs support for everything eSIM. They answer in about 2 hours — <a href="mailto:support@airalo.com">support@airalo.com</a>.</p>
+              </div>
+            </div>
+            <div class="es-faq" style="border-top:1px solid var(--border);padding:2px 16px">
+              <details>
+                <summary>When does my eSIM activate?<svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+                <p class="es-faq-a">Automatically, when you arrive in Spain and it connects to a local network. Installing it at home costs you nothing and uses none of your days.</p>
+              </details>
+              <details>
+                <summary>What if I run out of data?<svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+                <p class="es-faq-a">Buy another plan here, or top up the same eSIM from the Airalo app. Your existing eSIM keeps working — the new data is added to it.</p>
+              </details>
+              <details>
+                <summary>Will I keep my normal number?<svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+                <p class="es-faq-a">Yes. The eSIM is a second line for data. Your usual number stays active for calls and messages — keep it set as your default voice line.</p>
+              </details>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 5 · INSTALLED & CONNECTED ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="ed2-my-done" data-label="My eSIMs — installed and connected">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
+        <div class="sb-group">Your stay</div>
+        <span class="sb-item active">
+          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM
+          <span class="sb-badge teal">✓</span>
+        </span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <button class="back-pill" data-goto="ed2-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</button>
+
+        <div class="desk-col" style="display:flex;flex-direction:column;gap:18px">
+          <div class="page-head" style="padding:16px 0 0">
+            <div class="kicker">Spain · Valencia</div>
+            <h1 class="page-title" style="font-size:27px;line-height:32px">Your eSIM is <span class="hl">connected</span></h1>
+            <p class="page-intro" style="font-size:14px">Nothing left to do. Your phone is on the Movistar network.</p>
+          </div>
+
+          <article class="es-esim is-live" aria-labelledby="ed2-esim2-name">
+            <div class="es-esim-head">
+              <span class="es-op" aria-hidden="true">MOVI<br>STAR</span>
+              <div class="es-esim-titles">
+                <h2 class="es-esim-name" id="ed2-esim2-name">Spain · 3 GB</h2>
+                <div class="es-esim-meta">Expires 21 July · Movistar</div>
+              </div>
+              <span class="es-status">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-signal"/></svg>
+                Connected
+              </span>
+            </div>
+
+            <div class="es-facts">
+              <div><span class="es-fact-k">Data</span><span class="es-fact-v">3 GB</span></div>
+              <div><span class="es-fact-k">Days left</span><span class="es-fact-v">5 of 7</span></div>
+              <div><span class="es-fact-k">Network</span><span class="es-fact-v">Movistar</span></div>
+            </div>
+
+            <div class="es-esim-body">
+              <button class="es-usage" data-modal="m-e2-usage">
+                <span class="es-usage-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-signal"/></svg></span>
+                <span>
+                  <span class="es-usage-t">Check your remaining data</span>
+                  <span class="es-usage-s">Airalo tracks usage — we're not told the figure</span>
+                </span>
+                <svg viewBox="0 0 24 24" class="icon es-chev" style="margin-left:auto;color:var(--n-500)" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+              </button>
+
+              <details class="es-rung">
+                <summary class="es-rung-head">
+                  <span class="es-rung-n" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-smartphone"/></svg></span>
+                  <div class="es-rung-titles">
+                    <div class="es-rung-title">Installation guide</div>
+                    <div class="es-rung-sub">Codes, QR and steps — if you need to reinstall</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                </summary>
+                <div class="es-rung-body">
+                  <div class="es-code">
+                    <div class="es-code-head">
+                      <span class="es-code-label">SM-DP+ address</span>
+                      <button type="button" class="es-copy" data-es-copy="SM-DP+ address">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-copy"/></svg> Copy
+                      </button>
+                    </div>
+                    <div class="es-code-val">consumer.e-sim.global</div>
+                  </div>
+                  <div class="es-code">
+                    <div class="es-code-head">
+                      <span class="es-code-label">Activation code</span>
+                      <button type="button" class="es-copy" data-es-copy="Activation code">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-copy"/></svg> Copy
+                      </button>
+                    </div>
+                    <div class="es-code-val">K2-9FJ4L-2QQ8X-7HTBW</div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="es-rung es-trouble">
+                <summary class="es-rung-head">
+                  <span class="es-rung-n" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-alert"/></svg></span>
+                  <div class="es-rung-titles">
+                    <div class="es-rung-title">Data stopped working?</div>
+                    <div class="es-rung-sub">Roaming, default line, APN</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" class="icon es-mark" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                </summary>
+                <div class="es-rung-body">
+                  <ol class="es-steps">
+                    <li>Check <b>Data Roaming</b> is still on for the Spain line.</li>
+                    <li>Make sure <b>Spain</b> is the mobile-data line, not your home number.</li>
+                    <li>Restart the phone — this fixes most cases.</li>
+                  </ol>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <a class="btn btn-outline" data-goto="ed2-plans" style="align-self:flex-start">
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg>
+            Buy more data
+          </a>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ TOAST + LIVE REGION ══════════════════ -->
+    <div class="es-toast" data-es-toast hidden role="status" style="left:auto;right:24px;bottom:24px;width:auto">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>
+      <span data-es-toast-text>Copied</span>
+    </div>
+    <p class="es-sr" role="status" aria-live="polite" data-es-live></p>
+
+    <!-- ══════════════════ MODALS ══════════════════ -->
+
+    <div class="proto-modal" id="m-e2-compat" role="dialog" aria-modal="true" aria-labelledby="ed2-compat-t">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+        <div class="pm-title" id="ed2-compat-t">Will it work on my phone?</div>
+        <div class="pm-desc">We can't detect your phone from this computer. Three things have to be true:</div>
+
+        <div class="es-checklist">
+          <div class="es-check">
+            <span class="es-check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+            <span><b>Supports eSIM.</b> Every iPhone from the XS onwards, and most Android flagships since 2020.</span>
+          </div>
+          <div class="es-check">
+            <span class="es-check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+            <span><b>Not carrier-locked.</b> Phones bought outright are unlocked; ask your carrier if you're on a contract.</span>
+          </div>
+          <div class="es-check">
+            <span class="es-check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+            <span><b>Not jailbroken or rooted.</b> Modified phones cannot install eSIM profiles.</span>
+          </div>
+        </div>
+
+        <p style="font-size:11.5px;line-height:17px;color:var(--text-secondary);margin-top:16px;font-weight:500">
+          If your model isn't listed it may be too new, or a regional variant without eSIM support — check with the manufacturer.
+        </p>
+
+        <div class="es-search">
+          <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-search"/></svg>
+          Search your device…
+        </div>
+        <ul class="es-devices">
+          <li>iPhone 14 / 14 Plus / 14 Pro / 14 Pro Max</li>
+          <li>iPhone 13 (all models)</li>
+          <li>iPhone SE (2020, 2022)</li>
+          <li>Google Pixel 3 and newer</li>
+          <li>Samsung Galaxy S20 and newer</li>
+        </ul>
+
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-modal" id="m-e2-qr" role="dialog" aria-modal="true" aria-labelledby="ed2-qr-t">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+        <div class="pm-title" id="ed2-qr-t">Scan with your phone</div>
+        <div class="pm-desc">Open the camera app, point it at the code, and accept the “Add mobile plan” prompt.</div>
+        <div class="es-qr-big">
+          <div class="es-qr-frame">
+            <div class="es-qr-cells" data-es-qr role="img" aria-label="eSIM activation QR code. The same profile is available as text: SM-DP+ address consumer.e-sim.global, activation code K2-9FJ4L-2QQ8X-7HTBW."></div>
+          </div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-outline" data-modal-close>Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-modal" id="m-e2-usage" role="dialog" aria-modal="true" aria-labelledby="ed2-usage-t">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+        <div class="pm-title" id="ed2-usage-t">Where your data balance lives</div>
+        <div class="pm-desc">Chekin doesn't receive usage figures from the network, so we won't show you a number we can't stand behind. Two places have the real one:</div>
+        <div class="pm-list">
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-smartphone"/></svg></span>
+            <span><b>Your phone's settings.</b> iOS: Settings → Mobile Data → Spain. Android: Settings → Network → Data usage.</span>
+          </div>
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span><b>The Airalo app.</b> Sign in with the email on your booking to see the balance and top up.</span>
+          </div>
+        </div>
+        <div class="pm-actions">
+          <a class="btn btn-primary" href="https://www.airalo.com" target="_blank" rel="noopener">
+            Open Airalo
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-external"/></svg>
+          </a>
+          <button class="btn btn-ghost" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-circle-plus"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-minus"><path d="M5 12h14"/></g>
+    <g id="i-alert"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-scan"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/></g>
+    <g id="i-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></g>
+    <g id="i-card-sim"><path d="M12 14v4"/><path d="M14.172 2a2 2 0 0 1 1.414.586l3.828 3.828A2 2 0 0 1 20 7.828V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M8 14h8"/><rect x="8" y="10" width="8" height="8" rx="1"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-plane-landing"><path d="M2 22h20"/><path d="M3.77 10.77 2 9l2-4.5 1.1.55c.55.28.9.84.9 1.45s.35 1.17.9 1.45L8 8.5l3-6 1.05.53a2 2 0 0 1 1.09 1.52l.72 5.4a2 2 0 0 0 1.09 1.52l4.4 2.2c.42.22.78.55 1.01.96l.6 1.03c.49.88-.06 1.98-1.06 2.1l-1.18.15c-.47.06-.95-.02-1.37-.24L4.29 11.28a2 2 0 0 1-.52-.51z"/></g>
+    <g id="i-signal"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></g>
+    <g id="i-wifi"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/></g>
+    <g id="i-phone"><path d="M13.83 19a11.36 11.36 0 0 1-8.83-8.83l1.6-1.6a1 1 0 0 0 .23-1.05L5.6 3.9A1 1 0 0 0 4.66 3.2H3a1 1 0 0 0-1 1.05A17 17 0 0 0 19.75 22a1 1 0 0 0 1.05-1v-1.66a1 1 0 0 0-.7-.94l-3.62-1.23a1 1 0 0 0-1.05.23z"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-life-buoy"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-external"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></g>
+    <g id="i-infinity"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-home"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
+    <g id="i-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></g>
+    <g id="i-key"><path d="m15.5 7.5 3 3L22 7l-3-3"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="modals.js" defer></script>
+<script src="esim-v2.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

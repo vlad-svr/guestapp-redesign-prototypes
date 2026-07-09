@@ -1,0 +1,386 @@
+/* ============================================================
+   Auth + Onboarding (instant check-in) —
+   flow-auth-mobile.html / flow-auth-desktop.html
+   Maps pages/Auth: LoginView (email → password → code state
+   machine), WelcomeView, the 4 Onboarding steps (reservation-type
+   → number-of-guest → who-is-coming → confirm-leader-guest),
+   OAuthCallback, and the GuestCreation success modal.
+   Layered on shared.css only.
+
+   Signature of the redesign:
+   - the hidden 3-step sign-up machine gets a real labelled stepper,
+     a password show/strength, and an OTP with a resend countdown;
+   - the account is SOLD (save progress · check in faster) instead of
+     just asked for, and "continue without an account" is honest;
+   - onboarding radios/checkboxes become icon/avatar CHOICE CARDS with
+     a labelled step rail, and the lead-guest gets the Crown;
+   - pre-auth uses the branded gradient + liquid-glass card (same
+     treatment as Find-booking / Error), and desktop becomes a proper
+     brand-panel split instead of a lone narrow mobile card.
+   All colors from shared.css tokens.
+   ============================================================ */
+
+/* ---------- Pre-auth branded stage (inside the phone / browser) ---------- */
+.auth-stage {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--gradient-hero);
+  overflow: hidden;
+}
+.auth-stage::before,
+.auth-stage::after { /* soft color orbs behind the glass */
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.auth-stage::before { width: 240px; height: 240px; top: -40px; left: -60px; background: #4f6bff; }
+.auth-stage::after { width: 260px; height: 260px; bottom: 40px; right: -70px; background: #35e5bc; }
+.auth-scroll {
+  position: relative; z-index: 1;
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column;
+  padding: 20px 18px 24px;
+  scrollbar-width: none;
+}
+.auth-scroll::-webkit-scrollbar { display: none; }
+
+/* Top brand row (logo + property) on the gradient */
+.auth-top {
+  display: flex; align-items: center; gap: 11px;
+  color: #fff; padding: 6px 2px 0;
+}
+.auth-top .at-logo {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: grid; place-items: center; font-weight: 700; font-size: 16px;
+  flex-shrink: 0;
+}
+.auth-top .at-prop { font-size: 14px; font-weight: 700; line-height: 1.2; }
+.auth-top .at-ref { font-size: 11px; color: rgba(255, 255, 255, 0.7); font-variant-numeric: tabular-nums; }
+.auth-top .at-lang {
+  margin-left: auto;
+  height: 30px; padding: 0 11px; border-radius: 99px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  color: #fff; font-size: 12px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+/* The glass card that carries the form */
+.auth-card {
+  margin: auto 0 0;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(26px) saturate(1.7); -webkit-backdrop-filter: blur(26px) saturate(1.7);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--r-2xl);
+  padding: 22px 20px 20px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.auth-card.top-gap { margin-top: 22px; }
+
+.auth-head { display: flex; flex-direction: column; gap: 5px; text-align: center; align-items: center; }
+.auth-head .ah-badge {
+  width: 52px; height: 52px; border-radius: 16px;
+  background: var(--gradient-brand); color: #fff;
+  display: grid; place-items: center; margin-bottom: 4px;
+  box-shadow: var(--shadow-brand);
+}
+.auth-head .ah-badge .icon { width: 26px; height: 26px; }
+.auth-title { font-size: 21px; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); line-height: 1.2; }
+.auth-sub { font-size: 13px; line-height: 19px; color: var(--text-secondary); max-width: 300px; }
+.auth-sub b { color: var(--navy); }
+.auth-sub .em { color: var(--blue-500); font-weight: 600; }
+
+/* Value-prop bullets (why make an account) */
+.auth-perks { display: flex; flex-direction: column; gap: 9px; }
+.auth-perk { display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 500; color: var(--navy); }
+.auth-perk .ap-ic {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+
+/* Form */
+.auth-form { display: flex; flex-direction: column; gap: 13px; }
+.auth-form .field .input.with-btn { padding-right: 6px; }
+.pwd-eye {
+  margin-left: auto; width: 34px; height: 34px; border-radius: 8px;
+  display: grid; place-items: center; color: var(--n-500);
+  flex-shrink: 0;
+}
+.pwd-eye:hover { color: var(--navy); background: var(--n-50); }
+
+/* Password strength */
+.pwd-strength { display: flex; flex-direction: column; gap: 6px; margin-top: -2px; }
+.pwd-bars { display: flex; gap: 5px; }
+.pwd-bars i { height: 4px; flex: 1; border-radius: 99px; background: var(--n-200); }
+.pwd-bars i.on1 { background: var(--red-soft); }
+.pwd-bars i.on2 { background: var(--amber-500); }
+.pwd-bars i.on3 { background: var(--green-600); }
+.pwd-hint { font-size: 11px; font-weight: 500; color: var(--text-tertiary); }
+.pwd-hint.strong { color: var(--green-700); }
+
+.auth-link { font-size: 12.5px; font-weight: 600; color: var(--blue-500); align-self: flex-start; }
+.auth-link:hover { color: var(--blue-600); }
+.auth-link.center { align-self: center; }
+
+/* OTP */
+.otp-row { display: flex; gap: 9px; justify-content: center; }
+.otp-cell {
+  width: 44px; height: 54px; border-radius: 12px;
+  border: 1px solid var(--border-subtle); background: var(--n-0);
+  display: grid; place-items: center;
+  font-size: 22px; font-weight: 700; color: var(--navy);
+}
+.otp-cell.filled { border-color: var(--blue-300); }
+.otp-cell.active { border-color: var(--blue-500); box-shadow: var(--shadow-focus); }
+.otp-cell .caret { width: 2px; height: 24px; background: var(--blue-500); border-radius: 2px; animation: caret-blink 1.1s steps(1) infinite; }
+@keyframes caret-blink { 50% { opacity: 0; } }
+.otp-resend { font-size: 12px; color: var(--text-secondary); text-align: center; }
+.otp-resend b { color: var(--navy); font-variant-numeric: tabular-nums; }
+.otp-resend .lnk { color: var(--n-400, var(--n-500)); font-weight: 600; }
+.otp-resend .lnk.on { color: var(--blue-500); }
+
+/* Social + separator + alt */
+.auth-sep { display: flex; align-items: center; gap: 10px; }
+.auth-sep::before, .auth-sep::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
+.auth-sep span { font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; }
+.social-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  height: 48px; border-radius: 12px;
+  background: var(--n-0); border: 1px solid var(--border-subtle);
+  font-size: 14px; font-weight: 600; color: var(--navy);
+  box-shadow: var(--shadow-card); width: 100%;
+}
+.social-btn:hover { background: var(--n-50); }
+.social-btn .g { width: 18px; height: 18px; flex-shrink: 0; }
+.auth-switch { font-size: 13px; color: var(--text-secondary); text-align: center; }
+.auth-switch a { color: var(--blue-500); font-weight: 600; }
+.auth-alt {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  padding: 6px;
+}
+.auth-alt:hover { color: var(--navy); }
+.auth-foot { display: flex; gap: 6px; justify-content: center; font-size: 11px; color: var(--text-tertiary); }
+.auth-foot a { color: var(--text-secondary); text-decoration: underline; }
+
+/* Welcome moment */
+.auth-welcome { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.auth-welcome .aw-art {
+  width: 96px; height: 96px; border-radius: 28px;
+  background: var(--gradient-brand); color: #fff;
+  display: grid; place-items: center; margin-bottom: 6px;
+  box-shadow: var(--shadow-brand);
+  animation: aw-pop 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+.auth-welcome .aw-art .icon { width: 46px; height: 46px; }
+@keyframes aw-pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.auth-nextcard {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: var(--r-lg);
+  background: var(--n-0); border: 1px solid var(--border); width: 100%; text-align: left;
+}
+.auth-nextcard .nc-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--tint-info); color: var(--blue-500); display: grid; place-items: center; flex-shrink: 0; }
+.auth-nextcard .nc-t { display: block; font-size: 13px; font-weight: 700; color: var(--navy); }
+.auth-nextcard .nc-s { display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+
+/* ============================================================
+   ONBOARDING — labelled step rail + choice cards
+   ============================================================ */
+.onb-rail { display: flex; align-items: center; gap: 8px; padding: 2px 2px 0; }
+.onb-rail .or-seg { height: 5px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.28); overflow: hidden; }
+.onb-rail .or-seg.done, .onb-rail .or-seg.active { background: rgba(255,255,255,0.95); }
+.onb-rail .or-seg.active { background: linear-gradient(90deg, #fff 55%, rgba(255,255,255,0.4)); }
+.onb-step { display: flex; justify-content: space-between; align-items: baseline; color: #fff; padding: 0 2px; }
+.onb-step .os-now { font-size: 12px; font-weight: 700; }
+.onb-step .os-count { font-size: 11px; color: rgba(255,255,255,0.72); font-variant-numeric: tabular-nums; }
+
+/* Choice card (reservation type / lead guest) */
+.choice { display: flex; flex-direction: column; gap: 10px; }
+.choice-card {
+  display: flex; align-items: center; gap: 13px;
+  padding: 14px 15px; border-radius: var(--r-lg);
+  background: var(--n-0); border: 1.5px solid var(--border);
+  text-align: left; width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.choice-card:hover { border-color: var(--blue-300); }
+.choice-card.on { border-color: var(--blue-500); background: var(--tint-pressed); box-shadow: var(--shadow-focus); }
+.choice-card .cc-ic {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.choice-card.on .cc-ic { background: var(--blue-500); color: #fff; }
+.choice-card .cc-main { flex: 1; min-width: 0; }
+.choice-card .cc-t { display: block; font-size: 14.5px; font-weight: 700; color: var(--navy); }
+.choice-card .cc-s { display: block; font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+.choice-card .cc-radio {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--n-300); flex-shrink: 0;
+  display: grid; place-items: center;
+}
+.choice-card.on .cc-radio { border-color: var(--blue-500); }
+.choice-card.on .cc-radio::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--blue-500); }
+.choice-card .cc-crown { color: var(--amber-500); flex-shrink: 0; }
+.choice-card .cc-crown .icon { fill: var(--amber-500); stroke: var(--amber-700); width: 20px; height: 20px; }
+
+/* Counter stepper (number of guests) */
+.counter-list { display: flex; flex-direction: column; gap: 10px; }
+.counter {
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px 14px; border-radius: var(--r-lg);
+  background: var(--n-0); border: 1px solid var(--border);
+}
+.counter .ct-ic { width: 40px; height: 40px; border-radius: 11px; background: var(--tint-info); color: var(--blue-500); display: grid; place-items: center; flex-shrink: 0; }
+.counter .ct-main { flex: 1; min-width: 0; }
+.counter .ct-t { display: block; font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.counter .ct-s { display: block; font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+.counter .ct-stepper { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.counter .ct-btn {
+  width: 34px; height: 34px; border-radius: 10px;
+  border: 1px solid var(--border-subtle); background: var(--n-0);
+  display: grid; place-items: center; color: var(--navy);
+  box-shadow: var(--shadow-card);
+}
+.counter .ct-btn:hover { border-color: var(--blue-500); color: var(--blue-500); }
+.counter .ct-btn:disabled, .counter .ct-btn.off { opacity: 0.4; pointer-events: none; box-shadow: none; }
+.counter .ct-btn.plus { background: var(--blue-500); color: #fff; border-color: var(--blue-500); box-shadow: var(--shadow-brand); }
+.counter .ct-btn.plus:hover { background: var(--blue-600); }
+.counter .ct-val { font-size: 17px; font-weight: 700; color: var(--navy); min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+.counter-total { display: flex; justify-content: space-between; align-items: center; padding: 4px 4px 0; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.counter-total b { color: var(--navy); }
+
+/* Who's coming — guest checkboxes with avatars */
+.who-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--n-0); overflow: hidden; }
+.who-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; width: 100%; text-align: left; transition: background 0.15s; }
+.who-row + .who-row { border-top: 1px solid var(--border); }
+.who-row:hover { background: var(--n-50); }
+.who-row .wr-av {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--gradient-brand); color: #fff;
+  display: grid; place-items: center; font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+.who-row .wr-av.reg { background: var(--green-50); color: var(--green-700); }
+.who-row .wr-main { flex: 1; min-width: 0; }
+.who-row .wr-name { display: block; font-size: 14px; font-weight: 600; color: var(--navy); }
+.who-row .wr-tag { font-size: 11px; color: var(--text-secondary); margin-top: 1px; display: inline-flex; align-items: center; gap: 5px; }
+.who-row .wr-check {
+  width: 24px; height: 24px; border-radius: 7px;
+  border: 2px solid var(--n-300); flex-shrink: 0;
+  display: grid; place-items: center; color: #fff;
+  transition: background 0.15s, border-color 0.15s;
+}
+.who-row.on .wr-check { background: var(--blue-500); border-color: var(--blue-500); }
+.who-row.locked { opacity: 0.75; }
+.who-row.locked .wr-check { background: var(--green-600); border-color: var(--green-600); }
+.who-row .wr-check .icon { width: 14px; height: 14px; stroke-width: 3; }
+
+/* Agreement clause / contract box */
+.clause { display: flex; gap: 11px; padding: 13px 14px; border-radius: var(--r-lg); background: var(--tint-promo); border: 1px solid var(--n-100); }
+.clause .cl-check {
+  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  border: 2px solid var(--blue-500); background: var(--blue-500); color: #fff;
+  display: grid; place-items: center;
+}
+.clause .cl-check .icon { width: 13px; height: 13px; stroke-width: 3; }
+.clause .cl-txt { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); }
+.clause .cl-txt a { color: var(--blue-500); font-weight: 600; }
+
+/* ============================================================
+   DESKTOP — brand-panel split
+   ============================================================ */
+.auth-split { display: grid; grid-template-columns: 460px minmax(0, 1fr); min-height: 780px; }
+.auth-brandpanel {
+  position: relative; overflow: hidden;
+  background: var(--gradient-hero); color: #fff;
+  padding: 40px 40px 36px;
+  display: flex; flex-direction: column;
+}
+.auth-brandpanel::before, .auth-brandpanel::after { content: ''; position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
+.auth-brandpanel::before { width: 320px; height: 320px; top: -80px; right: -80px; background: #4f6bff; }
+.auth-brandpanel::after { width: 300px; height: 300px; bottom: -60px; left: -70px; background: #35e5bc; }
+.auth-brandpanel > * { position: relative; z-index: 1; }
+.auth-brandpanel .bp-logo { display: flex; align-items: center; gap: 12px; }
+.auth-brandpanel .bp-logo .l { width: 44px; height: 44px; border-radius: 13px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28); display: grid; place-items: center; font-weight: 700; font-size: 17px; }
+.auth-brandpanel .bp-prop { font-size: 15px; font-weight: 700; }
+.auth-brandpanel .bp-ref { font-size: 12px; color: rgba(255,255,255,0.7); }
+.auth-brandpanel .bp-hero { margin-top: auto; }
+.auth-brandpanel .bp-kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
+.auth-brandpanel .bp-title { font-size: 30px; line-height: 36px; font-weight: 700; letter-spacing: -0.02em; margin-top: 8px; }
+.auth-brandpanel .bp-perks { display: flex; flex-direction: column; gap: 14px; margin-top: 26px; }
+.auth-brandpanel .bp-perk { display: flex; align-items: center; gap: 13px; font-size: 13.5px; font-weight: 500; }
+.auth-brandpanel .bp-perk .p-ic { width: 34px; height: 34px; border-radius: 10px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.2); display: grid; place-items: center; flex-shrink: 0; }
+.auth-brandpanel .bp-foot { margin-top: 34px; display: flex; gap: 8px; font-size: 11.5px; color: rgba(255,255,255,0.6); }
+.auth-brandpanel .bp-foot a { color: rgba(255,255,255,0.85); text-decoration: underline; }
+
+.auth-formpanel { background: var(--n-0); display: flex; flex-direction: column; padding: 30px 40px; overflow-y: auto; }
+.auth-formpanel .fp-top { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+.auth-formpanel .fp-lang { height: 34px; padding: 0 13px; border-radius: 99px; border: 1px solid var(--border); background: var(--n-0); font-size: 12.5px; font-weight: 600; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 7px; }
+.auth-formpanel .fp-body { margin: auto; width: 100%; max-width: 380px; padding: 24px 0; display: flex; flex-direction: column; gap: 18px; }
+.auth-formpanel .fp-body.wide { max-width: 460px; }
+.auth-formpanel .auth-head { align-items: flex-start; text-align: left; }
+.auth-formpanel .auth-sub { max-width: none; }
+
+/* Desktop onboarding step rail (dark on light) */
+.onb-rail.dark .or-seg { background: var(--n-200); }
+.onb-rail.dark .or-seg.done, .onb-rail.dark .or-seg.active { background: var(--blue-500); }
+.onb-rail.dark .or-seg.active { background: linear-gradient(90deg, var(--blue-500) 55%, rgba(56,91,248,0.35)); }
+.onb-step.dark { color: var(--navy); }
+.onb-step.dark .os-count { color: var(--text-tertiary); }
+
+/* Guest creation success modal art */
+.gc-art {
+  width: 66px; height: 66px; border-radius: 50%;
+  background: var(--green-50); color: var(--green-700);
+  display: grid; place-items: center; margin: 0 auto 4px;
+}
+.gc-art.load { background: var(--tint-info); color: var(--blue-500); }
+.gc-art .spin { width: 30px; height: 30px; border-radius: 50%; border: 3px solid rgba(56,91,248,0.2); border-top-color: var(--blue-500); animation: spin 0.9s linear infinite; }
+.gc-guests { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.gc-guest { display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 600; color: var(--navy); }
+.gc-guest .g-av { width: 28px; height: 28px; border-radius: 50%; background: var(--gradient-brand); color: #fff; display: grid; place-items: center; font-size: 10.5px; font-weight: 700; flex-shrink: 0; }
+.gc-guest .g-ok { margin-left: auto; color: var(--green-600); }
+
+/* ============================================================
+   "Minimal glass" A/B version (html.glass-lite) — shared glass-toggle.js,
+   the same Full · Minimal switch as Find-booking / Error.
+   Full (default) = the current design: frosted auth card over color orbs.
+   Minimal = flatten the stage orbs and make the reading card a clean
+   solid, keeping only the brand gradient (chrome-only glass per rule 1).
+   ============================================================ */
+html.glass-lite .auth-stage::before,
+html.glass-lite .auth-stage::after,
+html.glass-lite .auth-brandpanel::before,
+html.glass-lite .auth-brandpanel::after { display: none; }
+
+/* Reading card → solid */
+html.glass-lite .auth-card {
+  background: var(--n-0);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  border-color: var(--border);
+  box-shadow: var(--shadow-elev);
+}
+
+/* Brand chips on the gradient → flat translucency, no blur */
+html.glass-lite .auth-top .at-logo,
+html.glass-lite .auth-top .at-lang,
+html.glass-lite .auth-brandpanel .bp-logo .l,
+html.glass-lite .auth-brandpanel .bp-perk .p-ic {
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Solid fallback already covered by shared.css; this variant needs no
+   @supports branch because it removes blur rather than relying on it. */

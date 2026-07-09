@@ -1,0 +1,66 @@
+/* ============================================================
+   Home — STRONG LIQUID-GLASS VARIANT (html.glass-strong)
+   Toggled by home-glass.js; shared by Home V1 (home.html /
+   home-desktop.html) and Home V2 (home-v2.html / home-desktop-v2.html)
+   because both ride the same app shell (.phone .screen / .desk-main).
+
+     Standard = liquid glass on chrome only (top bar, bottom nav, drawer,
+                sidebar); reading surfaces stay solid for contrast.
+     Strong   = those reading surfaces frost over soft color orbs with
+                deeper blur + saturation. Navy chrome stays as-is (same
+                convention as the Check-out and Guidebooks toggles).
+   ============================================================ */
+
+/* 1 — soft color orbs behind the content so the frost has something to
+       refract (mobile scroller + desktop main column; not the navy chrome). */
+html.glass-strong .phone .screen,
+html.glass-strong .desk-main {
+  background:
+    radial-gradient(circle 300px at 8% 3%, rgba(56, 91, 248, 0.20), transparent 60%),
+    radial-gradient(circle 280px at 95% 14%, rgba(53, 229, 188, 0.16), transparent 62%),
+    radial-gradient(circle 340px at 76% 99%, rgba(140, 165, 255, 0.24), transparent 60%),
+    var(--bg-page);
+}
+
+/* 2 — frost the reading surfaces. Deeper blur/saturation than the baseline
+       chrome (blur 18) so the "stronger" step is legible at a glance.
+       Covers V1 (.card, .reco-card, .done-hero) + V2 (.unlock-card). */
+html.glass-strong .card,
+html.glass-strong .reco-card,
+html.glass-strong .unlock-card.ready,
+html.glass-strong .unlock-card.locked,
+html.glass-strong .done-hero {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* 3 — inner dividers lighten so a multi-row card reads as one pane of glass.
+       V2 timeline rows + progress head; V1 task rows + checklist progress. */
+html.glass-strong .timeline .tl-row + .tl-row,
+html.glass-strong .task-row,
+html.glass-strong .task-list .task-row,
+html.glass-strong .cl-progress,
+html.glass-strong .card-header,
+html.glass-strong .card-body { border-color: rgba(255, 255, 255, 0.45); }
+
+/* 4 — the active/next spotlight keeps its brand tint, layered over the frost */
+html.glass-strong .tl-row.is-active,
+html.glass-strong .task-row.is-next {
+  background: linear-gradient(90deg, rgba(56, 91, 248, 0.10), rgba(255, 255, 255, 0.20) 62%);
+}
+
+/* the "live" unlock (keys ready) and branded partner banners keep their own
+   accent fills — like the Check-out transfer gradient — so they stay legible. */
+
+/* Accessibility: no backdrop-filter support → fall back to near-opaque panes
+   so text never loses contrast (Appendix A rule). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html.glass-strong .card,
+  html.glass-strong .reco-card,
+  html.glass-strong .unlock-card.ready,
+  html.glass-strong .unlock-card.locked,
+  html.glass-strong .done-hero { background: rgba(255, 255, 255, 0.96); }
+}

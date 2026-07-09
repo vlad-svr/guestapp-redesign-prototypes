@@ -1,0 +1,1194 @@
+/* ============================================================
+   AI Travel Guide — V2
+   Maps pages/TravelGuideView (TravelGuideStartPage, TravelGuideQuestions,
+   TravelGuideLoading, TravelGuidePlan + components/*).
+
+   Layered on shared.css only. Both form factors load this file.
+   No new colors — everything resolves to shared.css tokens.
+
+   Liquid glass is chrome-only: the sticky phase tabs, the hero scrim and
+   the "Now" card. Reading surfaces (slot cards, question cards) stay solid
+   so long-form text keeps its contrast.
+
+   Surfaces are lit rather than outlined: a two-part shadow (contact + ambient)
+   and a hairline top highlight, defined once as --tg-e1..e3 / --tg-lip. Every
+   state change that a finger causes rides --tg-spring; everything else rides
+   --tg-ease. Both are decoration, and §9 turns all of it off under
+   prefers-reduced-motion — no state is ever carried by motion or colour alone.
+   ============================================================ */
+
+/* ---------- a11y primitives ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Every interactive thing in this flow shows the same focus ring. */
+.tg-scope :focus-visible {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- motion & elevation primitives ----------
+   One easing for everything that settles into place (a light overshoot, so a
+   chip or a card feels picked up rather than switched on) and one for things
+   that only need to get out of the way. Elevation is two shadows: a tight
+   contact shadow that anchors the card to the page, and a wide ambient one.
+   A hairline inset highlight along the top edge catches the "light" and is
+   what separates a 2026 surface from a 2016 one. */
+.tg-scope {
+  --tg-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
+  --tg-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --tg-e1: 0 1px 2px rgba(22, 22, 67, 0.05), 0 2px 8px -2px rgba(22, 22, 67, 0.06);
+  --tg-e2: 0 1px 2px rgba(22, 22, 67, 0.06), 0 8px 24px -6px rgba(22, 22, 67, 0.12);
+  --tg-e3: 0 2px 4px rgba(22, 22, 67, 0.05), 0 18px 44px -12px rgba(22, 22, 67, 0.22);
+  --tg-lip: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Headings stop ragging into orphans; body copy stops leaving one word alone
+   on the last line. Two lines of CSS that do what a copywriter used to. */
+.tg-scope h1, .tg-scope h2, .tg-scope h3, .tg-scope h4 { text-wrap: balance; }
+.tg-scope p { text-wrap: pretty; }
+
+/* Anything you can press acknowledges the press. */
+.tg-scope .btn:active,
+.tg-scope .tg-act:active,
+.tg-scope .tg-tab:active,
+.tg-scope .tg-day:active { transform: scale(0.975); }
+.tg-scope .btn,
+.tg-scope .tg-act,
+.tg-scope .tg-day { transition: transform 0.14s var(--tg-spring), background 0.16s, border-color 0.16s, box-shadow 0.16s; }
+
+/* ============================================================
+   1 · DESTINATION HERO
+   Shipped: <img src={heroImage}> with no fallback — a failed city-image
+   fetch renders a broken box (TravelGuideStartPage.tsx:30).
+   Here the photo is a CSS-painted scene, so the layout never depends on it.
+   ============================================================ */
+.tg-hero {
+  position: relative;
+  min-height: 316px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px 18px 26px;
+  color: #fff;
+  overflow: hidden;
+  isolation: isolate;
+  /* The hero is a card that happens to start at the top of the screen — the
+     page colour cutting in at the corners is what tells you so. */
+  border-radius: 0 0 var(--r-2xl) var(--r-2xl);
+}
+
+/* The painted city: mesh sky → sun → skyline → foreground. */
+.tg-scene { position: absolute; inset: 0; z-index: -2; background: var(--gradient-hero); }
+/* A mesh of overlapping light sources rather than a banded linear ramp: the
+   colour transitions have no straight edges anywhere, which is what makes a
+   painted gradient read as atmosphere instead of as a chart. */
+.tg-scene::before {
+  content: '';
+  position: absolute; inset: -10%;
+  background:
+    radial-gradient(circle 96px at 73% 31%, rgba(255, 220, 158, 0.95), rgba(255, 183, 0, 0) 62%),
+    radial-gradient(ellipse 62% 40% at 76% 36%, rgba(255, 142, 92, 0.62), transparent 70%),
+    /* the horizon glow: the warm light has to sit behind the rooftops, at the
+       height the eye reads as "far away", not float above them */
+    radial-gradient(ellipse 130% 20% at 62% 63%, rgba(255, 158, 108, 0.66), transparent 72%),
+    radial-gradient(ellipse 90% 40% at 14% 86%, rgba(224, 120, 138, 0.5), transparent 74%),
+    radial-gradient(ellipse 80% 58% at 10% 4%, rgba(56, 91, 248, 0.55), transparent 70%),
+    linear-gradient(178deg, #232a72 0%, #4a44a8 38%, #96569f 64%, #d4788a 86%, #e8946f 100%);
+  filter: blur(0.5px);
+}
+/* A low skyline silhouette — a horizon line, not a wall. Softened until it is
+   depth rather than drawing, and it sits under the hero's legibility scrim, so
+   body copy never lands on a hard edge. */
+.tg-scene::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 24%;
+  opacity: 0.34;
+  filter: blur(1.5px);
+  background: linear-gradient(90deg,
+    transparent 0 5%, #1b1740 5% 12%, transparent 12% 18%,
+    #1b1740 18% 23%, transparent 23% 32%,
+    #1b1740 32% 42%, transparent 42% 48%,
+    #1b1740 48% 53%, transparent 53% 60%,
+    #1b1740 60% 72%, transparent 72% 78%,
+    #1b1740 78% 87%, transparent 87% 92%,
+    #1b1740 92% 100%);
+  background-position: 0 100%;
+  background-size: 100% 62%;
+  background-repeat: no-repeat;
+  mask-image: linear-gradient(180deg, transparent, #000 60%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 60%);
+}
+/* Photographic grain — keeps the flat gradients from banding. */
+.tg-grain {
+  position: absolute; inset: 0; z-index: -1;
+  opacity: 0.16;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+/* Legibility scrim — text contrast never depends on the artwork. */
+.tg-hero::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(22, 22, 67, 0.42) 0%, rgba(22, 22, 67, 0) 34%, rgba(22, 22, 67, 0.4) 62%, rgba(22, 22, 67, 0.84) 100%);
+}
+
+.tg-hero-nav {
+  position: absolute; top: 12px; left: 12px; right: 12px;
+  z-index: 3;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tg-hero-back {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: #fff;
+  background: var(--glass-dark-bg);
+  border: 1px solid var(--glass-dark-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  transition: background 0.16s, transform 0.16s var(--tg-spring);
+}
+.tg-hero-back:hover { background: rgba(21, 21, 63, 0.62); }
+.tg-hero-back:active { transform: scale(0.92); }
+
+.tg-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+.tg-hero h1 {
+  /* shared.css sets `.proto-stage h1 { color: var(--navy) }`, which matches this
+     heading with equal specificity — the colour must be declared, not inherited. */
+  color: #fff;
+  font-size: 41px;
+  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.036em;
+  margin-top: 8px;
+  /* The type sits on a painted sky; the shadow is the last 5% of contrast the
+     scrim cannot guarantee under a light patch of the mesh. */
+  text-shadow: 0 1px 24px rgba(22, 22, 67, 0.28);
+}
+.tg-hero p {
+  margin-top: 11px;
+  font-size: 13.5px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 46ch;
+}
+
+/* ============================================================
+   2 · "TUNED FOR" — profile_assumptions, rendered and editable
+   Shipped: TravelGuide.profile_assumptions arrives from the API and is
+   never rendered anywhere. The guest cannot see, let alone change, the
+   profile the plan was built from.
+   ============================================================ */
+.tg-tuned {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.tg-tuned-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.tg-tuned.on-dark .tg-tuned-label { color: rgba(255, 255, 255, 0.72); }
+.tg-assume {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 26px; padding: 0 10px;
+  border-radius: 99px;
+  font-size: 11.5px; font-weight: 600;
+  background: var(--tint-pressed);
+  border: 1px solid var(--n-150);
+  color: var(--navy);
+}
+.tg-tuned.on-dark .tg-assume {
+  background: var(--glass-dark-bg);
+  border-color: var(--glass-dark-border);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.tg-tune-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 26px; padding: 0 11px;
+  border-radius: 99px;
+  font-size: 11.5px; font-weight: 650;
+  color: var(--blue-500);
+  border: 1px dashed var(--blue-300);
+  background: transparent;
+}
+.tg-tune-btn:hover { background: var(--tint-pressed); }
+.tg-tuned.on-dark .tg-tune-btn { color: #fff; border-color: rgba(255, 255, 255, 0.5); }
+.tg-tuned.on-dark .tg-tune-btn:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* ============================================================
+   3 · INTRO
+   ============================================================ */
+.tg-value { display: flex; flex-direction: column; gap: 2px; }
+.tg-value-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tg-value-row:last-child { border-bottom: none; }
+.tg-value-ic {
+  width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 11px;
+  display: grid; place-items: center;
+  background: var(--tint-info);
+  color: var(--blue-500);
+}
+.tg-value-t { font-size: 13.5px; font-weight: 650; color: var(--navy); }
+.tg-value-s { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: 2px; }
+
+/* The honest promise: how long it takes, what it costs, who sees it. */
+.tg-promise {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 2px;
+}
+.tg-promise .badge { font-size: 11px; }
+
+/* The submit is never disabled — a `disabled` button is skipped by screen
+   readers and explains nothing. The state lives in this hint line instead,
+   and pressing an unsatisfied button flags the question that blocks it. */
+.tg-dock-hint {
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 9px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.tg-dock-hint svg { color: var(--text-tertiary); }
+.tg-dock-hint.is-ready { color: var(--green-700); }
+.tg-dock-hint.is-ready svg { color: var(--green-700); }
+
+.tg-skip {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: 10px;
+}
+.tg-skip:hover { color: var(--navy); background: var(--n-75); }
+.tg-skip small { display: block; font-weight: 500; font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+
+/* ============================================================
+   4 · QUESTIONS
+   Shipped: 6 questions on one scroll, a 6-segment bar that fills by COUNT
+   (answer #6 and segment #1 lights up), single-selects that silently empty
+   when you re-tap the chosen chip, and one amber-dot hint at the bottom.
+   Here: required first, optional folded, a counter that counts what is
+   actually required, radio/checkbox semantics, per-question errors.
+   ============================================================ */
+.tg-qhead {
+  position: sticky; top: 0; z-index: 5;
+  padding: 12px 16px 12px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border-bottom: 1px solid var(--border);
+}
+.tg-qhead-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.tg-qhead h2 { font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.tg-qcount { font-size: 11.5px; font-weight: 650; color: var(--text-secondary); white-space: nowrap; }
+.tg-qcount b { color: var(--blue-500); }
+.tg-qcount.is-ready b { color: var(--green-700); }
+
+/* Two-part meter: required (filled) then optional (hatched) — it never
+   pretends an optional answer is progress toward the button. */
+.tg-meter { display: flex; gap: 4px; margin-top: 9px; }
+.tg-meter-seg {
+  height: 5px; flex: 1;
+  border-radius: 99px;
+  background: var(--n-150);
+  transition: background 0.3s var(--tg-ease), box-shadow 0.3s var(--tg-ease);
+}
+.tg-meter-seg.req.on {
+  background: linear-gradient(90deg, var(--blue-500), var(--blue-300));
+  box-shadow: 0 1px 6px -1px rgba(56, 91, 248, 0.55);
+}
+.tg-meter-seg.opt { flex: 0 0 22px; background: repeating-linear-gradient(135deg, var(--n-150) 0 3px, transparent 3px 6px); }
+.tg-meter-seg.opt.on { background: repeating-linear-gradient(135deg, var(--blue-light) 0 3px, transparent 3px 6px); }
+
+.tg-qcard {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--tg-e1), var(--tg-lip);
+  padding: 17px 16px 16px;
+  transition: box-shadow 0.2s var(--tg-ease), border-color 0.2s;
+}
+.tg-qcard.is-error { border-color: var(--red-soft); box-shadow: 0 0 0 3px rgba(248, 75, 122, 0.1); }
+/* legend is the first child of the fieldset — the flag lives inside it, so the
+   "Required" is part of the group's accessible name, not a floating decoration.
+   A bare legend renders straddling the fieldset border; floating it puts it back
+   in normal flow (the next sibling clears). */
+.tg-q-legend { float: left; width: 100%; padding: 0; }
+.tg-q-title {
+  display: block;
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: 650;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.tg-q-sub { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: 4px; clear: both; }
+.tg-q-flag {
+  display: flex; width: fit-content;
+  align-items: center; gap: 4px;
+  height: 20px; padding: 0 8px;
+  border-radius: 99px;
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.tg-q-flag.req { background: var(--tint-info); color: var(--blue-650); }
+.tg-q-flag.opt { background: var(--n-75); color: var(--text-secondary); }
+
+/* Chips are real inputs. Single-select = radio (cannot be emptied by
+   re-tapping). Multi = checkbox (announced as "checked", not "pressed"). */
+.tg-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; clear: both; }
+.tg-chip { position: relative; }
+.tg-chip input {
+  position: absolute; opacity: 0;
+  width: 100%; height: 100%; margin: 0;
+  cursor: pointer;
+}
+.tg-chip span {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 40px; padding: 0 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  box-shadow: var(--tg-e1);
+  font-size: 13px; font-weight: 550;
+  color: var(--navy);
+  transition: border-color 0.16s, background 0.16s, box-shadow 0.2s var(--tg-ease),
+              color 0.16s, transform 0.18s var(--tg-spring);
+}
+.tg-chip span::before {
+  content: '';
+  width: 0; height: 14px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: width 0.2s var(--tg-spring), opacity 0.12s;
+}
+.tg-chip:hover span { border-color: var(--n-300); box-shadow: var(--tg-e2); }
+.tg-chip input:active + span { transform: scale(0.96); }
+.tg-chip input:checked + span {
+  border-color: var(--blue-500);
+  background: var(--tint-pressed);
+  color: var(--blue-650);
+  font-weight: 650;
+  /* A selected chip lifts off the card: a ring for the shape, a coloured glow
+     for the depth. Colour alone never carries the state — see ::before. */
+  box-shadow: 0 0 0 1px var(--blue-500), 0 4px 14px -4px rgba(56, 91, 248, 0.45);
+}
+/* A shape, not only a color: the chosen chip grows a filled bar. */
+.tg-chip input:checked + span::before { width: 4px; opacity: 1; background: var(--blue-500); }
+.tg-chip input:focus-visible + span { outline: 2px solid var(--blue-500); outline-offset: 2px; }
+.tg-chip input:disabled + span { opacity: 0.42; cursor: not-allowed; box-shadow: none; }
+
+/* Soft cap: unlimited multi-select destroys the profile signal. */
+/* Small type never sits on --text-tertiary (≈2.9:1 on white); these lines
+   carry rules and labels, so they use --text-secondary (≈4.9:1). */
+.tg-cap {
+  margin-top: 10px;
+  font-size: 11.5px; font-weight: 550;
+  color: var(--text-secondary);
+}
+.tg-cap.is-full { color: var(--amber-700); font-weight: 650; }
+
+.tg-qerr {
+  display: none;
+  align-items: center; gap: 6px;
+  margin-top: 11px;
+  font-size: 12px; font-weight: 600;
+  color: var(--red-500);
+}
+.tg-qcard.is-error .tg-qerr { display: flex; }
+
+/* Optional block — folded by default, the "sharpen it" tier. */
+.tg-optional {
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--r-2xl);
+  background: var(--tint-promo);
+  overflow: hidden;
+}
+.tg-optional > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 11px;
+  padding: 15px 15px;
+}
+.tg-optional > summary::-webkit-details-marker { display: none; }
+.tg-opt-ic {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  color: var(--blue-500);
+}
+.tg-optional > summary > span:nth-child(2) { min-width: 0; }
+.tg-opt-t { display: block; font-size: 13.5px; font-weight: 650; color: var(--navy); }
+.tg-opt-s { display: block; font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.tg-opt-chev { margin-left: auto; color: var(--text-tertiary); transition: transform 0.2s; }
+.tg-optional[open] .tg-opt-chev { transform: rotate(180deg); }
+.tg-opt-body { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ============================================================
+   5 · BUILDING (generation)
+   Shipped: "This usually takes a few seconds" over a 5.5 s × 4-phase poll,
+   with no timer, no cancel and no timeout; unknown phases clamp to step 1.
+   ============================================================ */
+.tg-build { padding: 30px 20px 24px; display: flex; flex-direction: column; flex: 1; }
+.tg-build-mark {
+  width: 62px; height: 62px;
+  border-radius: 20px;
+  display: grid; place-items: center;
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: 0 8px 28px -6px rgba(56, 91, 248, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  margin-bottom: 20px;
+}
+.tg-build h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
+.tg-build > p { font-size: 13px; line-height: 19px; color: var(--text-secondary); margin-top: 7px; }
+
+/* The honest clock: how long it has taken, how long it usually takes. */
+.tg-clock {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 16px;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.tg-clock b { color: var(--navy); font-variant-numeric: tabular-nums; }
+
+.tg-steps { margin-top: 24px; display: flex; flex-direction: column; }
+.tg-step {
+  display: flex; gap: 13px; align-items: flex-start;
+  padding: 11px 0;
+  position: relative;
+}
+/* The connector is a shape: a line that fills as steps complete. */
+.tg-step::before {
+  content: '';
+  position: absolute; left: 12px; top: 34px; bottom: -3px;
+  width: 2px;
+  background: var(--n-150);
+}
+.tg-step:last-child::before { display: none; }
+.tg-step.done::before { background: var(--green-600); }
+.tg-step-ic {
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--n-100);
+  color: var(--text-tertiary);
+  border: 2px solid transparent;
+  z-index: 1;
+}
+/* Pending and in-progress steps hide the tick; only a finished step earns it. */
+.tg-step-ic svg { display: none; }
+.tg-step.done .tg-step-ic svg { display: block; }
+.tg-step.done .tg-step-ic { background: var(--green-600); color: #fff; }
+.tg-step.now .tg-step-ic {
+  background: var(--n-0);
+  border-color: var(--blue-500);
+  color: var(--blue-500);
+}
+.tg-step.now .tg-step-ic::after {
+  content: '';
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--blue-500);
+  animation: tg-beat 1.5s ease-in-out infinite;
+}
+@keyframes tg-beat { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.6); opacity: 0.55; } }
+.tg-step-t { font-size: 13.5px; font-weight: 600; color: var(--text-tertiary); padding-top: 3px; }
+.tg-step.done .tg-step-t { color: var(--navy); font-weight: 550; }
+.tg-step.now .tg-step-t { color: var(--navy); font-weight: 650; }
+.tg-step-note { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; font-weight: 500; }
+
+/* "You can leave" — the run survives the guest walking away. */
+.tg-leave {
+  margin-top: auto;
+  padding: 13px 14px;
+  border-radius: var(--r-lg);
+  background: var(--n-75);
+  border: 1px solid var(--border);
+  font-size: 12px; line-height: 18px;
+  color: var(--text-secondary);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.tg-leave svg { color: var(--blue-500); margin-top: 1px; }
+.tg-leave b { color: var(--navy); }
+
+/* ============================================================
+   6 · ERROR — three real exits, never a lone sentence
+   ============================================================ */
+.tg-fail { padding: 40px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; }
+.tg-fail-mark {
+  width: 76px; height: 76px;
+  border-radius: var(--r-2xl);
+  display: grid; place-items: center;
+  background: var(--red-100);
+  color: var(--red-500);
+  margin-bottom: 20px;
+}
+.tg-fail h1 { font-size: 20px; font-weight: 700; color: var(--navy); letter-spacing: -0.015em; }
+.tg-fail p { font-size: 13px; line-height: 19px; color: var(--text-secondary); margin-top: 8px; max-width: 40ch; }
+.tg-ref {
+  margin-top: 16px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  background: var(--n-75);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.tg-exits { margin-top: 26px; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+.tg-exits .btn { width: 100%; }
+
+/* ============================================================
+   7 · PLAN
+   ============================================================ */
+.tg-plan-head { padding: 16px 16px 12px; }
+.tg-plan-head h1 { font-size: 23px; font-weight: 700; letter-spacing: -0.025em; color: var(--navy); }
+.tg-plan-head .tg-tuned { margin-top: 11px; }
+
+/* At-a-glance — shipped: `hidden lg:block`, so the phone (the guest's
+   actual device on the street) never gets the trip totals. */
+.tg-glance {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  overflow: hidden;
+  margin-top: 14px;
+}
+.tg-glance div { padding: 11px 12px; border-right: 1px solid var(--border); }
+.tg-glance div:last-child { border-right: none; }
+.tg-glance dt {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.tg-glance dd { font-size: 14px; font-weight: 650; color: var(--navy); margin-top: 3px; }
+
+/* ---- The "Now" card: the plan stops being a document ----
+   Shipped slots carry a time_of_day bucket and nothing else, so nothing
+   in the UI knows what the guest should do next. */
+.tg-now {
+  margin: 14px 16px 0;
+  border-radius: var(--r-2xl);
+  padding: 15px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--navy-950), var(--navy-700) 55%, var(--blue-650));
+  box-shadow: var(--tg-e3), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  position: relative;
+  overflow: hidden;
+}
+/* Two light sources, both blurred into the navy — the card looks lit rather
+   than filled, which is what keeps a dark surface from going flat. */
+.tg-now::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle 150px at 100% -18%, rgba(140, 165, 255, 0.4), transparent 68%),
+    radial-gradient(circle 130px at -8% 118%, rgba(53, 229, 188, 0.16), transparent 70%);
+  pointer-events: none;
+}
+/* The glow is a background layer; every real child sits above it. */
+.tg-now > * { position: relative; z-index: 1; }
+.tg-now-top {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+.tg-now-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-500);
+  box-shadow: 0 0 0 3px rgba(53, 229, 188, 0.22);
+  animation: tg-live 2.4s ease-in-out infinite;
+}
+@keyframes tg-live { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.tg-now-title { font-size: 17px; font-weight: 700; margin-top: 9px; letter-spacing: -0.01em; }
+.tg-now-meta {
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  margin-top: 8px;
+  font-size: 12px; font-weight: 550;
+  color: rgba(255, 255, 255, 0.86);
+}
+.tg-now-meta span { display: inline-flex; align-items: center; gap: 5px; }
+.tg-now-acts { display: flex; gap: 8px; margin-top: 14px; position: relative; z-index: 1; }
+.tg-now-acts .btn { height: 40px; flex: 1; font-size: 12.5px; }
+.tg-now-acts .btn-ghost { color: #fff; background: var(--glass-dark-bg); border: 1px solid var(--glass-dark-border); }
+.tg-now-acts .btn-ghost:hover { background: rgba(255, 255, 255, 0.18); }
+
+/* ---- Phase tabs: a real tablist ----
+   Shipped: <Button aria-pressed> in a scroller — no roving focus, no
+   arrow keys, no panel association (PhaseNav.tsx:88). */
+.tg-tabs {
+  position: sticky; top: 0; z-index: 6;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* The rail scrolls past the viewport on a phone; fade the trailing edge so
+     the cut-off tab reads as "there is more", not as a clipping bug. */
+  mask-image: linear-gradient(90deg, #000 calc(100% - 34px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 34px), transparent);
+}
+.tg-tabs::-webkit-scrollbar { display: none; }
+.tg-tab {
+  flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  position: relative;
+}
+.tg-tab b { font-size: 12.5px; font-weight: 650; letter-spacing: -0.005em; }
+.tg-tab small { font-size: 10.5px; font-weight: 500; margin-top: 1px; opacity: 0.86; }
+.tg-tab:hover { background: var(--n-75); color: var(--navy); }
+.tg-tab[aria-selected='true'] {
+  background: linear-gradient(160deg, var(--navy-700), var(--navy-950));
+  color: #fff;
+  border-color: var(--navy-950);
+  box-shadow: 0 4px 12px -4px rgba(22, 22, 67, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.tg-tab[aria-selected='true'] small { color: rgba(255, 255, 255, 0.74); }
+/* Today gets a marker that survives greyscale. */
+.tg-tab .tg-today {
+  /* The pill is fully round, so the marker moves inboard off the curve. */
+  position: absolute; top: 7px; right: 10px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green-600);
+}
+.tg-tab[aria-selected='true'] .tg-today { background: var(--green-500); }
+
+/* ---- Day sub-tabs ---- */
+.tg-days {
+  display: flex; gap: 7px;
+  padding: 12px 16px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tg-days::-webkit-scrollbar { display: none; }
+.tg-day {
+  flex-shrink: 0;
+  width: 54px; padding: 8px 0;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  box-shadow: var(--tg-e1);
+  color: var(--text-secondary);
+  text-align: center;
+}
+.tg-day em {
+  display: block;
+  font-style: normal;
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.tg-day b { display: block; font-size: 16px; font-weight: 650; margin-top: 2px; color: var(--navy); }
+.tg-day[aria-selected='true'] {
+  border-color: var(--blue-500);
+  background: var(--tint-pressed);
+  box-shadow: 0 0 0 1px var(--blue-500), 0 4px 14px -5px rgba(56, 91, 248, 0.5);
+}
+.tg-day[aria-selected='true'] b, .tg-day[aria-selected='true'] em { color: var(--blue-650); }
+
+.tg-panel { padding: 4px 16px 26px; display: flex; flex-direction: column; gap: 6px; }
+.tg-panel[hidden] { display: none; }
+.tg-theme {
+  font-size: 12.5px; line-height: 18px;
+  color: var(--text-secondary);
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--tint-promo);
+  border: 1px solid var(--border);
+  margin: 8px 0 4px;
+}
+.tg-theme b { color: var(--navy); }
+
+/* ---- Time-of-day group: a real heading, not a <span> ----
+   Shipped: DayTimeline.tsx:42 renders the group label as a plain span, so
+   a screen reader hears the slots as one undifferentiated list. */
+.tg-tod { margin-top: 16px; }
+.tg-tod-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+.tg-tod-ic {
+  width: 26px; height: 26px;
+  border-radius: 9px;
+  display: grid; place-items: center;
+  background: var(--n-100);
+  color: var(--text-secondary);
+}
+.tg-tod.morning .tg-tod-ic { background: var(--amber-50); color: var(--amber-700); }
+.tg-tod.afternoon .tg-tod-ic { background: var(--tint-info); color: var(--blue-650); }
+.tg-tod.evening .tg-tod-ic { background: var(--tint-promo); color: var(--navy-700); }
+.tg-tod-head h3 {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--navy);
+}
+.tg-tod-head .tg-tod-span { font-size: 11px; color: var(--text-secondary); font-weight: 600; margin-left: auto; }
+
+/* ---- The slot card ---- */
+.tg-slots { display: flex; flex-direction: column; gap: 10px; }
+.tg-slot {
+  display: flex; gap: 11px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--tg-e1), var(--tg-lip);
+  padding: 12px;
+  position: relative;
+  transition: box-shadow 0.22s var(--tg-ease), border-color 0.18s, transform 0.22s var(--tg-ease);
+  /* Switching a day tab re-runs this: the cards deal themselves out in reading
+     order, so the eye is told where the list starts instead of having to find it. */
+  animation: tg-deal 0.42s var(--tg-ease) both;
+}
+.tg-slot:nth-child(1) { animation-delay: 0.02s; }
+.tg-slot:nth-child(2) { animation-delay: 0.07s; }
+.tg-slot:nth-child(3) { animation-delay: 0.12s; }
+.tg-slot:nth-child(4) { animation-delay: 0.17s; }
+.tg-slot:nth-child(n + 5) { animation-delay: 0.21s; }
+@keyframes tg-deal { from { opacity: 0; transform: translateY(9px); } }
+.tg-slot:hover { box-shadow: var(--tg-e2), var(--tg-lip); transform: translateY(-1px); }
+.tg-slot.is-next {
+  border-color: var(--blue-300);
+  box-shadow: 0 0 0 3px rgba(56, 91, 248, 0.13), var(--tg-e2);
+}
+
+/* Thumbnails are CSS-painted scenes keyed to the kind of place, so a
+   missing thumbnail_url is a designed state, not an empty box. A square tile:
+   stretching it to the card's height turns the painted scene into a colour bar. */
+.tg-thumb {
+  width: 66px; height: 66px; flex-shrink: 0;
+  align-self: flex-start;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: var(--n-100);
+  transition: transform 0.28s var(--tg-ease);
+}
+.tg-slot:hover .tg-thumb { transform: scale(1.04); }
+.tg-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(22, 22, 67, 0.06);
+  border-radius: inherit;
+}
+.tg-thumb.sea { background: linear-gradient(180deg, #7fb3ff 0 42%, #2f6fd0 42% 66%, #f2dfae 66% 100%); }
+.tg-thumb.gothic { background: linear-gradient(180deg, #c9d6f5 0 46%, #6b6b95 46% 62%, #3a3a63 62% 100%); }
+.tg-thumb.market { background: linear-gradient(140deg, #ffb700 0%, #f84b7a 58%, #b8477f 100%); }
+.tg-thumb.park { background: linear-gradient(180deg, #a5d8c0 0 40%, #2bc29f 40% 70%, #0f9f80 70% 100%); }
+.tg-thumb.night { background: linear-gradient(180deg, #23235d 0 48%, #2e46c8 48% 76%, #8ca5ff 76% 100%); }
+.tg-thumb.food { background: linear-gradient(140deg, #ffcf6b, #ff8a5c 52%, #df0044 100%); }
+.tg-thumb.museum { background: linear-gradient(180deg, #e5e6ee 0 44%, #9696b9 44% 68%, #494970 68% 100%); }
+.tg-thumb.sim { background: linear-gradient(140deg, #385bf8, #8ca5ff); }
+.tg-thumb-ic {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: rgba(255, 255, 255, 0.94);
+  filter: drop-shadow(0 1px 3px rgba(22, 22, 67, 0.4));
+  z-index: 1;
+}
+
+.tg-slot-body { min-width: 0; flex: 1; }
+.tg-slot-top { display: flex; align-items: flex-start; gap: 10px; }
+.tg-slot h4 {
+  font-size: 14.5px; line-height: 19px;
+  font-weight: 650; color: var(--navy);
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.tg-price { font-size: 13px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+.tg-price small { display: block; font-size: 9.5px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+
+.tg-where {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 550;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.tg-desc { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 7px; }
+
+/* ---- Meta row ---- */
+.tg-meta {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 6px 10px;
+  margin-top: 9px;
+}
+.tg-meta-item {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.tg-time-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 9px;
+  border-radius: 999px;
+  background: var(--n-75);
+  border: 1px solid var(--border);
+  font-size: 11px; font-weight: 650;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Cost band: dots + word + a screen-reader sentence ----
+   Shipped: three dots whose fill is colour-only (CostBadge.tsx:26) and a
+   "Free" that is green text and nothing else. */
+.tg-cost { display: inline-flex; align-items: center; gap: 6px; }
+.tg-cost-dots { display: inline-flex; gap: 2px; }
+.tg-cost-dots i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--n-300);
+  display: block;
+}
+.tg-cost-dots i.on { background: var(--navy); }
+.tg-cost-label { font-size: 11.5px; font-weight: 600; color: var(--text-secondary); }
+.tg-cost.free {
+  height: 22px; padding: 0 9px 0 7px;
+  border-radius: 999px;
+  background: var(--green-50);
+  color: var(--green-800);
+}
+.tg-cost.free .tg-cost-label { color: var(--green-800); font-weight: 700; }
+
+/* ---- Why this pick — now carries its sources ---- */
+.tg-why { margin-top: 10px; }
+.tg-why-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; font-weight: 650;
+  color: var(--blue-500);
+  padding: 4px 8px 4px 6px;
+  margin-left: -6px;
+  border-radius: 8px;
+}
+.tg-why-btn:hover { background: var(--tint-pressed); }
+.tg-why-btn svg:last-child { transition: transform 0.18s; }
+.tg-why-btn[aria-expanded='true'] svg:last-child { transform: rotate(180deg); }
+.tg-why-panel {
+  margin-top: 8px;
+  padding: 12px 13px;
+  border-radius: var(--r-lg);
+  background: var(--tint-promo);
+  border: 1px solid var(--n-150);
+  font-size: 12px; line-height: 18px;
+  color: var(--text-secondary);
+}
+.tg-why-panel[hidden] { display: none; }
+.tg-why-panel b { color: var(--navy); }
+/* Provenance: which answer drove it, and where the fact came from. */
+.tg-src {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid var(--n-150);
+}
+.tg-src-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
+.tg-src a, .tg-src span.tg-from {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 22px; padding: 0 9px;
+  border-radius: 999px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  font-size: 10.5px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.tg-src a:hover { border-color: var(--blue-300); color: var(--blue-500); }
+.tg-src span.tg-from { background: var(--tint-info); border-color: transparent; color: var(--blue-650); }
+
+/* ---- Slot actions — every slot leads somewhere ----
+   Shipped: web_search slots render no action at all (useSlotAction.tsx:49),
+   so the most common slot type is a dead end. */
+.tg-acts { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
+/* Sized so two actions sit on one row inside a 390 px phone's slot card. */
+.tg-act {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 34px; padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  font-size: 11px; font-weight: 650;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.tg-act .icon-sm { width: 12px; height: 12px; }
+.tg-act:hover { border-color: var(--n-300); background: var(--n-50); box-shadow: var(--tg-e1); }
+.tg-act.primary {
+  background: linear-gradient(180deg, var(--blue-300), var(--blue-500));
+  border-color: var(--blue-600);
+  color: #fff;
+  box-shadow: 0 4px 12px -3px rgba(56, 91, 248, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+.tg-act.primary:hover { background: linear-gradient(180deg, var(--blue-500), var(--blue-600)); }
+.tg-act.added { background: var(--green-50); border-color: transparent; color: var(--green-800); }
+.tg-act.added:hover { background: var(--green-50); }
+.tg-act[disabled] { cursor: default; }
+
+/* Partner slots are labelled — the guest knows when they leave Chekin. It sits
+   in the meta row, where it cannot land on top of a wrapping title. */
+.tg-partner {
+  display: inline-flex; align-items: center;
+  height: 22px; padding: 0 9px;
+  border-radius: 999px;
+  background: var(--n-75);
+  border: 1px solid var(--border);
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* ---- Check-in card ---- */
+.tg-checkin {
+  border-radius: var(--r-2xl);
+  padding: 16px;
+  background: linear-gradient(135deg, var(--navy-950), var(--navy-700));
+  color: #fff;
+  box-shadow: var(--tg-e3), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  margin-top: 10px;
+}
+.tg-checkin-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--amber-500);
+}
+.tg-checkin h3 { font-size: 16px; font-weight: 700; margin-top: 9px; letter-spacing: -0.01em; }
+.tg-checkin p { font-size: 12.5px; line-height: 18px; color: rgba(255, 255, 255, 0.78); margin-top: 6px; }
+.tg-checkin .btn { margin-top: 14px; width: 100%; background: #fff; color: var(--navy); }
+.tg-checkin .btn:hover { background: rgba(255, 255, 255, 0.9); }
+.tg-checkin-sub { font-size: 11px; color: rgba(255, 255, 255, 0.6); margin-top: 9px; text-align: center; }
+
+/* ---- Day-level actions ---- */
+.tg-day-acts {
+  display: flex; gap: 8px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.tg-day-acts .tg-act { flex: 1; justify-content: center; }
+
+/* ---- Empty states ---- */
+.tg-blank {
+  text-align: center;
+  padding: 36px 20px;
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--r-2xl);
+  background: var(--n-0);
+  margin-top: 14px;
+}
+.tg-blank-ic {
+  width: 48px; height: 48px;
+  margin: 0 auto 14px;
+  border-radius: 15px;
+  display: grid; place-items: center;
+  background: var(--n-75);
+  color: var(--text-tertiary);
+}
+.tg-blank h3 { font-size: 15px; font-weight: 650; color: var(--navy); }
+.tg-blank p { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 6px; }
+.tg-blank .btn { margin-top: 16px; }
+
+/* ---- Offline banner: a saved plan still works on the street ---- */
+.tg-offline {
+  display: flex; align-items: center; gap: 10px;
+  margin: 12px 16px 0;
+  padding: 11px 13px;
+  border-radius: var(--r-lg);
+  background: var(--amber-50);
+  border: 1px solid rgba(184, 106, 0, 0.2);
+  font-size: 12px; line-height: 17px;
+  color: var(--amber-700);
+  font-weight: 550;
+}
+.tg-offline b { display: block; font-weight: 700; }
+
+/* ---- Skeleton (shape-matched, not a spinner) ---- */
+.tg-sk { background: var(--n-100); border-radius: 8px; position: relative; overflow: hidden; }
+.tg-sk::after {
+  content: '';
+  position: absolute; inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.68), transparent);
+  animation: tg-sweep 1.4s infinite;
+}
+@keyframes tg-sweep { 100% { transform: translateX(100%); } }
+.tg-sk-slot {
+  display: flex; gap: 12px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: 12px;
+}
+
+/* ---- Toast (copy / add confirmations) ---- */
+.tg-toast {
+  position: absolute; left: 16px; right: 16px; bottom: 18px;
+  z-index: 40;
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 15px;
+  border-radius: var(--r-lg);
+  background: rgba(22, 22, 67, 0.92);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 12.5px; font-weight: 600;
+  box-shadow: var(--tg-e3);
+  animation: tg-toast-in 0.34s var(--tg-spring) both;
+}
+.tg-toast[hidden] { display: none; }
+.tg-toast svg { color: var(--green-500); }
+@keyframes tg-toast-in { from { transform: translateY(14px) scale(0.96); opacity: 0; } }
+
+/* ---- Refine sheet ---- */
+.tg-refine-note {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin-top: 14px;
+  padding: 11px 12px;
+  border-radius: 11px;
+  background: var(--tint-info);
+  font-size: 11.5px; line-height: 17px;
+  color: var(--blue-650);
+  font-weight: 550;
+}
+.tg-refine-note svg { flex-shrink: 0; margin-top: 1px; }
+.tg-keep {
+  margin-top: 14px;
+  padding: 11px 12px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: var(--n-50);
+  font-size: 11.5px; line-height: 17px;
+  color: var(--text-secondary);
+}
+.tg-keep b { color: var(--navy); }
+
+/* ============================================================
+   8 · DESKTOP
+   The plan becomes a reading column beside a persistent trip rail:
+   at-a-glance, the profile it was tuned for, and where it came from.
+   ============================================================ */
+/* `.flow-screen.active` sets display:flex, which beats shared.css's
+   `.desktop-shell { display: grid }`. As a flex item the content column sizes
+   to its content, so a short screen (error, empty) shrank to ~440px and its
+   "centred" block sat off to the left. It has to claim the free space. */
+.tg-scope .desk-page { flex: 1; }
+
+.tg-desk { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.tg-desk-main { min-width: 0; }
+.tg-rail { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 14px; }
+.tg-rail .card { padding: 15px; }
+.tg-rail h3 {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 11px;
+}
+.tg-rail-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.tg-rail-stat:last-child { border-bottom: none; }
+.tg-rail-stat dt { font-size: 12px; color: var(--text-secondary); font-weight: 550; }
+.tg-rail-stat dd { font-size: 13.5px; font-weight: 650; color: var(--navy); }
+.tg-rail-acts { display: flex; flex-direction: column; gap: 8px; }
+.tg-rail-acts .tg-act { width: 100%; justify-content: flex-start; height: 40px; }
+
+.tg-desk .tg-hero { border-radius: var(--r-2xl); min-height: 260px; }
+/* The intro column sits outside .tg-desk, so it needs the radius spelled out. */
+.tg-desk-intro { max-width: 720px; margin: 0 auto; }
+.tg-desk-intro .tg-hero { border-radius: var(--r-2xl); }
+.tg-desk-q { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+/* No mask on desktop: the rail never overflows, and the mask would eat the border. */
+.tg-desk .tg-tabs {
+  border-radius: 12px; border: 1px solid var(--border); top: 12px;
+  mask-image: none; -webkit-mask-image: none;
+}
+/* Day actions hug their labels instead of stretching across a reading column. */
+.tg-desk .tg-day-acts .tg-act { flex: 0 0 auto; }
+.tg-desk .tg-act { height: 36px; padding: 0 13px; font-size: 12px; }
+.tg-desk .tg-thumb { width: 96px; height: 96px; border-radius: 19px; }
+.tg-desk .tg-panel { padding: 0; }
+.tg-desk .tg-slot { padding: 14px; }
+.tg-desk .tg-plan-head { padding: 0 0 14px; }
+.tg-desk .tg-plan-head h1 { font-size: 27px; }
+.tg-desk .tg-now { margin: 0 0 16px; }
+.tg-desk .tg-days { padding: 14px 0 4px; }
+.tg-desk .tg-glance { display: none; }
+.tg-desk .tg-build, .tg-desk .tg-fail { max-width: 520px; margin: 0 auto; }
+/* The failure screen has no .tg-desk grid around it, so the exits were keyed to
+   a selector that never matched and stacked full-width. Key them to the page. */
+.tg-scope .desk-page .tg-exits { flex-direction: row; }
+/* A short screen in a tall shell: sit it on the optical centre rather than
+   pinning it to the top edge with 700px of nothing underneath. */
+.tg-scope .desk-page > .tg-fail { min-height: 600px; justify-content: center; }
+
+/* The two-column plan collapses on narrow browsers. */
+@media (max-width: 1100px) {
+  .tg-desk { grid-template-columns: minmax(0, 1fr); }
+  .tg-rail { position: static; }
+  .tg-desk .tg-glance { display: grid; }
+}
+
+/* ============================================================
+   9 · MOTION & PRINT
+   shared.css already kills animation under prefers-reduced-motion; these
+   guards cover the properties it cannot reach.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .tg-step.now .tg-step-ic::after,
+  .tg-now-dot { animation: none; }
+  .tg-sk::after { display: none; }
+  /* The deal-in is decoration; the cards must still be there without it. */
+  .tg-slot { animation: none; opacity: 1; transform: none; }
+  .tg-slot:hover,
+  .tg-slot:hover .tg-thumb,
+  .tg-scope .btn:active,
+  .tg-scope .tg-act:active,
+  .tg-scope .tg-tab:active,
+  .tg-scope .tg-day:active,
+  .tg-chip input:active + span,
+  .tg-hero-back:active { transform: none; }
+}
+
+/* A guide you can carry: printing drops the chrome and opens every
+   "Why this pick" panel. */
+@media print {
+  .tg-tabs, .tg-now-acts, .tg-acts, .tg-day-acts, .tg-hero-nav, .cta-dock { display: none !important; }
+  .tg-why-panel[hidden] { display: block !important; }
+  /* A card mid-animation must not print at opacity 0. */
+  .tg-slot { break-inside: avoid; box-shadow: none; animation: none; opacity: 1; }
+}

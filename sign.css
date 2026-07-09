@@ -1,0 +1,145 @@
+/* ============================================================
+   Guest signature — interactive states & the mobile sign sheet
+   Maps to SignatureCanvas (react-signature-canvas) + SignatureModal.
+   Loaded AFTER reg.css (mobile) and after the desktop inline <style>,
+   so these definitions win. Tokens only. Desktop draws inline; mobile taps → sheet.
+   ============================================================ */
+
+/* ---------- The inline signature pad ---------- */
+.sig-pad {
+  position: relative;
+  border: 1.5px dashed var(--n-300);
+  border-radius: var(--r-lg);
+  background: var(--n-50);
+  height: 150px;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  transition: border-color 0.15s, background 0.15s;
+}
+.sig-pad .sig-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  touch-action: none;
+  display: block;
+  cursor: crosshair;
+}
+.sig-pad .sig-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 12px 18px;
+  display: none;
+}
+.sig-pad.inked .sig-img { display: block; }
+
+/* baseline guide + "×" anchor (fades once inked) */
+.sig-pad .sig-line {
+  position: absolute; left: 10%; right: 10%; bottom: 30px;
+  border-bottom: 1.5px solid var(--n-300);
+  transition: opacity 0.15s;
+}
+.sig-pad .sig-xmark {
+  position: absolute; left: 10%; bottom: 33px;
+  font-size: 15px; font-weight: 700; color: var(--n-500);
+  transition: opacity 0.15s;
+}
+.sig-pad.inked .sig-line, .sig-pad.inked .sig-xmark { opacity: 0; }
+
+/* empty placeholder — the call to sign */
+.sig-empty {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 7px; text-align: center;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.sig-empty .se-ic {
+  width: 36px; height: 36px; border-radius: 11px;
+  background: var(--n-100); color: var(--n-500);
+  display: grid; place-items: center;
+}
+.sig-empty .se-main { font-size: 13px; font-weight: 700; color: var(--text-secondary); }
+.sig-empty .se-sub { font-size: 11px; color: var(--text-tertiary); }
+.sig-pad.inked .sig-empty { opacity: 0; }
+
+/* signed confirmation chip */
+.sig-ok {
+  position: absolute; left: 12px; bottom: 11px;
+  display: none; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; color: var(--green-700);
+}
+.sig-ok .icon { width: 14px; height: 14px; stroke-width: 3; }
+.sig-pad.inked .sig-ok { display: inline-flex; }
+
+/* clear / redo tools (disabled until there's ink) */
+.sig-tools { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; z-index: 2; }
+.sig-tool {
+  height: 30px; padding: 0 11px; border-radius: 9px;
+  background: var(--n-0); border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; font-weight: 700; color: var(--n-600);
+  transition: color 0.15s, opacity 0.15s;
+}
+.sig-tool .icon { width: 14px; height: 14px; }
+.sig-tool:hover { color: var(--navy); }
+.sig-pad:not(.inked) .sig-tool { opacity: 0.45; pointer-events: none; }
+
+/* required-but-missing error (submit while empty) */
+.sig-pad.error { border-color: var(--red-soft); background: #fff5f8; }
+.sig-pad.error .se-ic { background: var(--red-100); color: var(--red-500); }
+.sig-pad.error .se-main { color: var(--red-500); }
+.sig-msg {
+  display: none; align-items: center; gap: 6px;
+  margin-top: 7px; font-size: 11.5px; font-weight: 600; color: var(--red-500);
+}
+.sig-msg .icon { width: 13px; height: 13px; }
+.sig-msg.show { display: flex; }
+.sig-hint { font-size: 11px; color: var(--text-tertiary); margin-top: 7px; display: flex; align-items: center; gap: 6px; }
+.sig-hint .icon { width: 12px; height: 12px; }
+
+/* ---------- Mobile: tap-to-sign pad opens the sheet ---------- */
+.sig-tap { cursor: pointer; text-align: left; }
+.sig-tap:hover { border-color: var(--blue-light); background: var(--tint-promo); }
+.sig-tap .se-ic { background: var(--tint-info); color: var(--blue-500); }
+.sig-tap.inked:hover { border-color: var(--n-300); background: var(--n-50); }
+
+/* ---------- The signature sheet (SignatureModal) ---------- */
+.sign-surface {
+  position: relative;
+  height: 215px;
+  border: 1.5px dashed var(--n-300);
+  border-radius: var(--r-lg);
+  background: var(--n-50);
+  overflow: hidden;
+  margin-top: 14px;
+}
+.sign-surface .sig-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  touch-action: none; cursor: crosshair;
+}
+.sign-surface .sig-line { position: absolute; left: 8%; right: 8%; bottom: 42px; border-bottom: 1.5px solid var(--n-300); transition: opacity 0.15s; }
+.sign-surface .sig-xmark { position: absolute; left: 8%; bottom: 45px; font-size: 16px; font-weight: 700; color: var(--n-500); transition: opacity 0.15s; }
+.sign-surface.inked .sig-line, .sign-surface.inked .sig-xmark { opacity: 0; }
+.sign-surface .sig-empty { gap: 8px; }
+.sign-surface.inked .sig-empty { opacity: 0; }
+.sign-surface .se-ic { width: 40px; height: 40px; background: var(--tint-info); color: var(--blue-500); }
+
+/* sheet action row */
+.sign-actions { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+.sign-actions .btn { flex: 1; }
+.sign-clear {
+  height: 44px; padding: 0 16px; border-radius: 12px;
+  background: var(--n-0); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.sign-clear .icon { width: 15px; height: 15px; }
+.sign-clear:hover { color: var(--navy); }
+.sign-clear:disabled, .sign-actions .btn:disabled { opacity: 0.5; pointer-events: none; }
+
+/* pre-rendered cursive sample (for the "already signed" desktop still) */
+.sig-mock { font-family: 'Caveat', cursive; font-size: 46px; color: var(--navy); transform: rotate(-3deg); }
