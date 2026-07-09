@@ -56,6 +56,18 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-travel-guide-v2.html`, `flow-travel-guide-desktop-v2.html`, `travel-guide-v2.css`, `travel-guide-v2.js` | §35 AI Travel Guide (**current**) |
 > | `flow-deposit-mobile.html`, `flow-deposit-desktop.html`, `deposit.css` (+`pay.css`, `payd.css`) | §33 Property protection (standalone `DepositView`) |
 > | `flow-book-experience-mobile.html`, `book.css` (+`pay.css`, `upsell.css`) | §34 Book an experience (+ the `/:slug` deep link) |
+> | `flow-splash-v2.html`, `flow-splash-desktop-v2.html`, `splash-v2.css`, `splash-v2.js`, `splash-toggle.js` | §36 Splash screen (**current**) |
+>
+> Splash screen added (§36) — `components/SplashScreen`, which had no prototype. The
+> splash stops being a timed gate and becomes a **handoff**: held for
+> `max(load, 500 ms)` instead of `load + 5000 ms`, bounded by a 20 s watchdog instead of
+> hanging forever, dissolving into a shape-matched skeleton instead of closing two
+> curtains over its own logo. Ships **two treatments behind a Style switch** — Classic
+> (the refined V1) and Modern (the glass/gradient V2) — which differ only in surface.
+> Documents four confirmed defects in the shipped component
+> (the 5 s tax · the infinite splash · the dead screen between 4.3 s and dismissal ·
+> the two-argument `cubic-bezier` that has never rendered) and adds the error, offline,
+> host-branded and splash-disabled states it has never had.
 >
 > Property protection added (§33) — the standalone `DepositView` at `/deposit`, which
 > only ever existed in the prototype as the payments deposit-chooser (§7 `p-deposit`).
@@ -139,7 +151,7 @@ guidebook available now); the Handpicked upsells are demoted below the core job 
 Same 1:1 component mapping and row targets as V1 (§5.1 unchanged) — no route/hash/CTA
 target in the registries moves.
 
-**Last synced:** 2026-07-09 · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Home (§5.0) and Find booking "the arrival card" (§17.0) are the only proposals** — §5 and §17/§18 stay authoritative for what ships; nav + `index.html` badge those four pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
+**Last synced:** 2026-07-09 · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It renders **beside a faithful V1 replica**, both clocked, on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Home (§5.0) and Find booking "the arrival card" (§17.0) are the only proposals** — §5 and §17/§18 stay authoritative for what ships; nav + `index.html` badge those four pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
 > https://vlad-svr.github.io/guestapp-redesign-prototypes/ · duplicate static galleries
 > (`iv-flow.html`, `iv-flow-desktop.html`, `guest-registration.html`) removed — the
 > interactive flows are now the single source per feature. Payments flows added
@@ -2908,6 +2920,169 @@ Rules:
 `[data-tg-scroll]` · `[data-tg-live]`. Screen activation is observed with a
 `MutationObserver`, so it composes with `flow.js`; the build ladder is a fixed schedule
 (`Math.random` / `Date.now` free) so two runs look identical.
+
+---
+
+## §36 Splash screen — "the arrival moment" (mobile + desktop + SDK + kiosk)
+
+**Real components:** `components/SplashScreen/SplashScreen.tsx` + `styled.ts`, mounted in
+`App.tsx:28` as a sibling *above* `DesignSwitch` · **Reads:** `useBrandingTheme()`
+(`splash_screen_enabled`, `splash_screen_logo`, `splash_screen_background_color`,
+`splash_screen_animation_color`), `useChekinSDK()` (`hasToken`, `isSuccessSDK`,
+`isAuthInitializationError`), `useSummary()` (`summaryStatus`) · **CSS vars:**
+`--splash-bg`, `--splash-animation-color` (injected by `TailwindService` once
+`isTemplateInitialized`) · **Prototypes:** `flow-splash-v2.html` (mobile, beside a
+faithful V1 replica), `flow-splash-desktop-v2.html` (desktop · SDK · kiosk).
+
+### 36.0 Two treatments, one behaviour
+
+Both pages carry a **Style: Classic · Modern** switch (`splash-toggle.js`, flips
+`html.sp-classic`). The two treatments share *every* rule in this section — the timing
+contract, the ladder, the watchdog, the states, the handoff, the accessibility pass.
+Only the surface differs, and either may ship.
+
+| | **Classic** (refined V1) | **Modern** (V2) |
+|---|---|---|
+| Ground | flat `--splash-bg` | branded gradient + colour orbs + film grain |
+| Mark | bare logo, no plate | liquid-glass plate, one slow specular sweep |
+| Loader | the three pulsing dots | the honest progress ring |
+| Chrome | flat text and solid buttons | frosted pills and glass buttons |
+| Curtains | **removed** | never existed |
+
+Both loaders are honest, differently: the dots are indeterminate *by construction* and
+can never imply a percentage, which is why Classic needs no ring. Classic is what V1
+looks like once the four defects in §36.2 are fixed and nothing else is touched.
+
+### 36.1 Screen ids (deep-link hash registry)
+
+| Mobile | Desktop | State |
+|---|---|---|
+| `sp-fast`* | `spd-fast`* | data lands inside `MIN_VISIBLE` — the 90 % case |
+| `sp-slow` | `spd-slow` | stage ladder runs; watchdog armed |
+| `sp-longer` | — | the same screen fast-forwarded past `SLOW` |
+| `sp-error` | `spd-error` | terminal: watchdog fired, or `isAuthInitializationError` |
+| `sp-offline` | — | terminal: `navigator.onLine === false` |
+| `sp-brand` | — | branding resolved to a dark host theme |
+| `sp-off` | — | `splash_screen_enabled === false` — skeleton only |
+| — | `spd-sdk` | SDK embedded in a client website |
+
+`*` = `data-start`. The kiosk screen is static (`.sp-kiosk`), not a flow screen.
+
+### 36.2 The timing contract (THE core rule)
+
+**The splash is a handoff, not a gate.** It is held for `max(load, MIN_VISIBLE)` and
+bounded above by `WATCHDOG`. It must never add a fixed cost to a fast load, and must
+never outlive a broken one.
+
+| Constant | Value | Meaning |
+|---|---|---|
+| `MIN_VISIBLE` | 500 ms | floor — a splash that flashes for 90 ms is worse than none |
+| `QUIET` | 1200 ms | below this, render **no text at all** |
+| `SLOW` | 6000 ms | admit it: elapsed clock + "Try again" + "nothing is lost" |
+| `WATCHDOG` | 20000 ms | stop pretending: render `sp-error` with real exits |
+
+Today's shipped equivalent is one constant, `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000`,
+and its timer **starts only once `hideSplashScreen` is already true**
+(`SplashScreen.tsx:30-35`). Consequences an implementation MUST fix:
+
+1. **The 5 s tax.** Total splash time is `load + 5000 ms` on every cold start.
+2. **The infinite splash.** That timer is the component's only timer and it is gated
+   behind the data having arrived. If auth-init neither resolves nor rejects
+   (offline, captive portal, hung API) while `hasToken === true`, `hideSplashScreen`
+   never flips and the splash never unmounts. **There is no watchdog.**
+3. **The dead screen.** The curtains animate from *mount* over 5 s and are fully
+   closed by 86 % (≈4.3 s), while dismissal waits for `load + 5000 ms`. Everything
+   between is an opaque rectangle of `--splash-animation-color` — no logo, no loader,
+   no text. On a 3 s load that is **3.7 s of nothing**.
+4. **Dead CSS.** `animation-timing-function: cubic-bezier(0, 1.23)` (`styled.ts:135`,
+   `:161`) passes two arguments where CSS requires four. The declaration is dropped and
+   the curtains fall back to `ease`; the intended overshoot has never rendered.
+
+### 36.3 Enter / exit gating
+
+| Condition | Today | Required |
+|---|---|---|
+| first paint, branding unresolved | splash **hidden** (`data` is `{}`) | splash **shown** — it is the default, and branding may only *disable* it |
+| branding resolves `enabled: false` | splash appears **over the already-rendered app** | splash dissolves; skeleton → content |
+| branded logo arrives | swaps `defaultLogo` → host logo, reflowing | cross-fades inside a **reserved 96 px box** |
+| branded colors arrive | repaint under the guest | one cross-fade, same transition |
+| `summaryStatus === 'error'` | masked by `isSuccessSDK` — splash hides onto a broken app | route to `sp-error` |
+| auth-init hangs | splash forever | `WATCHDOG` → `sp-error` |
+
+The `?splash=true` query flag (set by `FindReservationsByNameView.tsx:90`) keeps its
+current meaning: force-enable regardless of `splash_screen_enabled`.
+
+### 36.4 The progress ring is honest
+
+`--sp-p` is `0…1`. It eases toward **0.9** while work is outstanding and reaches `1.0`
+**only on a step that also carries `ready`**. Before the first stage resolves — and again
+once `SLOW` is passed — the ring goes `is-indeterminate`: a stalled 90 % arc reads as
+"broken", a rotating one reads as "working". The ring never claims a completion the
+network has not delivered, and there is no fake progress bar.
+
+### 36.5 The handoff
+
+The splash is `position: absolute; inset: 0` over a **shape-matched skeleton of the
+screen it is about to become** — the home list on mobile, the navy sidebar shell on
+desktop, the widget box under the SDK. On `ready`:
+
+1. the surface fades (320 ms) and the mark **translates + scales to the header logo
+   slot** (mobile `(31, 75)`, desktop the sidebar brand tile);
+2. the skeleton flips to real content in the same frame;
+3. focus moves to the arrived `<h1 tabindex="-1">`.
+
+There is never a blank frame between splash and app. Under `prefers-reduced-motion` the
+mark does not travel (`transform: none`) — the handoff still completes, instantly.
+
+### 36.6 Accessibility
+
+- The loading stage is `role="status" aria-live="polite" aria-busy="true"` — announced,
+  never focus-trapping. Today it is an unlabelled `<div>` with `alt=""` on the logo and
+  a loader invisible to assistive tech.
+- Terminal states (`sp-error`, `sp-offline`) drop `role="status"` and become a real
+  `<h1>` + buttons — a resolved state is not a live-region update.
+- Every screen carries **its own** `[data-sp-live]` region. Writing to
+  `frame.querySelector('[data-sp-live]')` targets the first in the DOM, usually an
+  inactive screen, where nothing is ever read out.
+- `--sp-ink` is **derived from the luminance of the host's background**, so a navy
+  `splash_screen_background_color` can never render navy text. Today both text and the
+  loader take `--splash-animation-color` on `--splash-bg` with no contrast guard, so a
+  host that sets the two to the same value gets an invisible loader.
+- `prefers-reduced-motion` is honoured (today's 3 s fade-in, 2 s dot pulse and 5 s
+  curtains are unconditional).
+
+### 36.7 Copy
+
+| Stage | Line |
+|---|---|
+| `< QUIET` | *(nothing)* |
+| `QUIET` | "Connecting…" |
+| `~2.4 s` | "Loading your check-in" |
+| `~4.2 s` | "Almost ready" |
+| `SLOW` | "This is taking longer than usual" + "Your check-in is safe. Nothing you've already filled in will be lost." |
+| error | "We couldn't load your check-in" / "The link may have expired, or our service is having a moment. Nothing you've filled in is lost." |
+| offline | "You're offline" / "We'll load your check-in the moment you're back on a network." |
+
+Every screen carries the trust footer **"Secure check-in · Powered by Chekin"** — the
+guest arrived from an email about their passport and their money, and the splash is the
+only surface that can name the operator before anything is asked of them.
+
+Error exits, in order: **Try again** (primary — Appendix A rule 2) · **Find my booking**
+(→ §17.0) · **Message your host, {name}** · a copyable error reference (`CHK-8F2A-41D9`).
+Never a bare "Something went wrong".
+
+### 36.8 `splash-v2.js` — prototype-only hooks
+
+`[data-sp-ladder]` (`fast|slow|longer|brand|off|error|offline`) · `[data-sp-watchdog]` ·
+`[data-sp-stage]` · `[data-sp-under]` · `[data-sp-ring]` · `[data-sp-line]` ·
+`[data-sp-elapsed]` · `[data-sp-when="slow"]` · `[data-sp-clock]` +
+`[data-sp-clock-value]` · `[data-sp-focus]` · `[data-sp-retry]` · `[data-sp-copy]` ·
+`[data-sp-live]` · `[data-sp-announce]`. `splash-toggle.js` flips `html.sp-classic`
+(`[data-splash-style]`, persisted as `protoSplashStyle`). The V1 replica uses `[data-v1]` +
+`[data-v1-load]` + `[data-v1-replay]` + `[data-v1-dead]`. Screen activation is observed
+with a `MutationObserver`, so it composes with `flow.js`; every ladder is a fixed
+schedule (`Math.random` / `Date.now` free) so the two phones can be compared frame for
+frame.
 
 ---
 

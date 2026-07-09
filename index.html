@@ -91,6 +91,7 @@
   .tag.glass-t { background: var(--tint-pressed); color: var(--blue-500); }
   .tag.ux-t { background: var(--green-50); color: var(--green-800); }
   .tag.trust-t { background: var(--amber-50); color: var(--amber-700); }
+  .tag.a11y-t { background: var(--tint-info); color: var(--blue-650); }
   .imp h4 { font-size: 14px; font-weight: 700; color: var(--navy); }
   .imp .was { font-size: 12px; line-height: 17px; color: var(--text-tertiary); margin-top: 7px; }
   .imp .was b { color: var(--n-600); font-weight: 600; }
@@ -125,6 +126,22 @@
 
   <h2 class="sec" style="margin-top:36px">Prototypes by feature</h2>
   <p class="sec-sub"><b><span class="tag-proposal" style="margin-left:0">Proposal</span></b> marks a redesign proposal shown beside the <b><span class="tag-current" style="margin-left:0">Current</span></b> shipped variant — proposals are not the main variant. One canonical prototype per feature and form factor. <b>📱 Mobile</b> and <b>🖥 Desktop</b> sit together under each feature. Most are click-through flows (scenario switcher, auto-advancing camera/sync steps, branches follow your choices); a couple are static screen sets, labelled as such.</p>
+
+  <h3 class="feat">Splash screen</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-splash-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Splash screen — mobile</h3>
+      <p>Shown <b>beside today's splash, both clocked</b>. The shipped component holds every guest for <b>load + 5.0 s</b>, closes two curtains over its own logo at 4.3 s, and — if the auth request hangs — <b>never leaves</b>. Here the splash is a <b>handoff, not a gate</b>: it covers a shape-matched skeleton, leaves the instant the data lands (<code>max(load, 500 ms)</code>), stays silent below 1.2 s, admits slowness at 6 s, and hits a <b>watchdog</b> at 20 s. Seven states: fast, slow, taking-longer, can't-load, offline, host-branded and splash-disabled. A <b>Style</b> switch picks between <b>Classic</b> (the refined V1) and <b>Modern</b> (the glass/gradient rebuild) — same behaviour in both.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-splash-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Splash screen — desktop · SDK · kiosk</h3>
+      <p>The same handoff at three sizes. On a laptop it dissolves into the <b>navy-sidebar shell</b> and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b>, never the host's page. On the unattended <b>kiosk</b> the watchdog matters most — today a hung request leaves a lobby screen showing a solid blue rectangle until someone reboots it.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
 
   <h3 class="feat">Home &amp; check-in list</h3>
   <div class="proto-links" style="margin-top:0">
@@ -538,6 +555,64 @@
 
   <h2 class="sec">What changed and why</h2>
   <p class="sec-sub">Each improvement maps to a concrete gap found in the current redesign-2.0 code.</p>
+
+  <h3 class="feat">Splash screen</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag glass-t">Two treatments</span>
+      <h4>Classic and Modern — same component, same behaviour</h4>
+      <p class="was"><b>Now in code:</b> one look, and it is the look that produced the dead screen: a flat background, a logo, three dots, and two curtains closing on a blind five-second clock.</p>
+      <p class="now"><b>Proposed:</b> a <b>Style</b> switch offers two shippable surfaces. <b>Classic</b> is V1 with its four defects fixed and <i>nothing else touched</i> — flat brand ground, bare logo, the three dots, curtains removed. <b>Modern</b> rebuilds the surface in the <b>pre-auth idiom already used by Find booking and Sign-in</b>: branded gradient, colour orbs, film grain, a liquid-glass plate with one slow specular sweep, and the honest ring. The timing contract, the states, the handoff and the whole accessibility pass are <b>identical in both</b> — the choice is purely aesthetic. (The dots are honest too: indeterminate by construction, they can never imply a percentage, which is why Classic needs no ring.)</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Speed</span>
+      <h4>The 5-second tax is deleted</h4>
+      <p class="was"><b>Now in code:</b> <code>SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000</code>, and the timer only <i>starts</i> once <code>hideSplashScreen</code> flips true. Total splash time is <code>load + 5000 ms</code> — a flat five-second toll on every cold start, for every guest, forever.</p>
+      <p class="now"><b>Proposed:</b> the splash is held for <b><code>max(load, 500 ms)</code></b> and not one frame longer. The 500 ms floor exists only so a cached load doesn't strobe. A typical arrival goes from <b>5.7 s</b> to <b>0.7 s</b> — both phones in the prototype are clocked, so you can watch the difference rather than take it on trust.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Reliability</span>
+      <h4>The infinite splash gets a watchdog</h4>
+      <p class="was"><b>Now in code:</b> that 5 s timer is the component's <i>only</i> timer, and it is gated behind the data having already arrived. If auth-init neither resolves nor rejects — offline, captive portal, dead API — <code>hideSplashScreen</code> never flips and <b>the splash never unmounts</b>. No timeout, no error state, no way out.</p>
+      <p class="now"><b>Proposed:</b> a four-rung ladder. Silent below <b>1.2 s</b>; at <b>6 s</b> it says "this is taking longer than usual", reveals an elapsed clock, offers <i>Try again</i> and promises nothing is lost; at <b>20 s</b> a <b>watchdog</b> renders a real error state — <i>Try again</i> · <i>Find my booking</i> · <i>Message your host</i> · a copyable error reference.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Continuity</span>
+      <h4>The curtains close over a dead screen — so they're gone</h4>
+      <p class="was"><b>Now in code:</b> the curtains animate from <i>mount</i> over 5 s and are fully shut by 86 % (≈4.3 s), while dismissal waits for <code>load + 5000 ms</code>. Everything in between is an opaque rectangle of the brand colour — no logo, no loader, no text. On a 3 s load that is <b>3.7 s of nothing</b>. The V1 phone counts it out loud.</p>
+      <p class="now"><b>Proposed:</b> the splash sits <b>on top of a shape-matched skeleton</b> of the screen it is about to become. On ready the surface fades, the mark <b>travels to the header logo slot</b>, and the skeleton flips to content in the same frame. There is never a blank frame between splash and app.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Honesty</span>
+      <h4>A progress ring that can't lie</h4>
+      <p class="was"><b>Now in code:</b> three pulsing dots. They say something is happening, but not what, and not whether it is progressing — they look identical at 300 ms and at 30 s.</p>
+      <p class="now"><b>Proposed:</b> a ring that eases toward <b>90 % and stops</b>, reaching 100 % only when the data actually lands. Past 6 s it drops back to <b>indeterminate</b>: a stalled 90 % arc reads as "broken", a rotating one reads as "working". No fake progress bar, ever.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Branding</span>
+      <h4>The splash stops arriving late, and stops popping</h4>
+      <p class="was"><b>Now in code:</b> <code>isSplashScreenEnabled</code> reads <code>splash_screen_enabled</code> from branding, which resolves <i>after</i> first paint. The app renders, and <i>then</i> the splash slams down on top of it. The logo and brand colours land late too, reflowing and repainting under the guest.</p>
+      <p class="now"><b>Proposed:</b> the splash is the <b>default on first paint</b> — branding may only <i>disable</i> it. The host logo shares a <b>reserved 96 px box</b> with the Chekin mark, so the swap is one deliberate cross-fade, never a reflow. Where branding disables it, the guest still gets a skeleton — never a flash of half-built app.</p>
+    </div>
+    <div class="imp">
+      <span class="tag a11y-t">Accessibility</span>
+      <h4>Announced, contrast-guarded, motion-safe</h4>
+      <p class="was"><b>Now in code:</b> an unlabelled <code>&lt;div&gt;</code> with <code>alt=""</code> on the logo and a loader drawn with <code>box-shadow: 9999px</code> — invisible to assistive tech. Text and loader both take <code>--splash-animation-color</code> on <code>--splash-bg</code> with no contrast guard, so a host that sets both to the same value gets an invisible loader. The 3 s fade, 2 s dot pulse and 5 s curtains all ignore <code>prefers-reduced-motion</code>.</p>
+      <p class="now"><b>Proposed:</b> loading is <code>role="status" aria-live="polite" aria-busy</code>; terminal states drop the live region and become a real <code>&lt;h1&gt;</code> + buttons, with focus moved to the arrived heading. <b><code>--sp-ink</code> is derived from the luminance of the host's background</b>, so navy-on-navy cannot happen. Reduced motion is honoured — the mark doesn't travel, but the handoff still completes.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The one surface that can name the operator</h4>
+      <p class="was"><b>Now in code:</b> a logo and three dots. The guest has just tapped a link from an email about their passport and their card, and nothing on screen says who is asking for them.</p>
+      <p class="now"><b>Proposed:</b> a persistent <b>"Secure check-in · Powered by Chekin"</b> footer beneath the host's mark. It costs nothing, it is on screen exactly when the question is being asked, and it is the cheapest anti-phishing signal in the product.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Defect</span>
+      <h4>A <code>cubic-bezier</code> that has never rendered</h4>
+      <p class="was"><b>Now in code:</b> <code>animation-timing-function: cubic-bezier(0, 1.23)</code> passes <b>two</b> arguments where CSS requires four. The declaration is invalid, browsers drop it, and the curtains silently fall back to <code>ease</code>. The intended overshoot has never once appeared on a guest's screen.</p>
+      <p class="now"><b>Proposed:</b> the curtains are removed entirely, and the bug goes with them. The V1 replica reproduces the <i>fallback</i>, not the intent — because the fallback is what ships.</p>
+    </div>
+  </div>
 
   <h3 class="feat">Home & check-in list</h3>
   <div class="imp-grid" style="margin-bottom:8px">

@@ -8,6 +8,23 @@
     { group: 'Overview', items: [
       { file: 'index.html', label: 'Overview & rationale', icon: '⌂' },
     ]},
+    { group: 'Splash screen', items: [
+      { file: 'flow-splash-v2.html', label: 'Splash screen — mobile', icon: '📱', by: 'opus', subs: [
+        { hash: 'sp-fast', label: 'Fast load (the 90% case)' },
+        { hash: 'sp-slow', label: 'Slow connection' },
+        { hash: 'sp-longer', label: 'Taking longer' },
+        { hash: 'sp-error', label: "Can't load" },
+        { hash: 'sp-offline', label: 'Offline' },
+        { hash: 'sp-brand', label: 'Host-branded' },
+        { hash: 'sp-off', label: 'Splash disabled' },
+      ]},
+      { file: 'flow-splash-desktop-v2.html', label: 'Splash screen — desktop', icon: '🖥', by: 'opus', subs: [
+        { hash: 'spd-fast', label: 'Fast load' },
+        { hash: 'spd-slow', label: 'Slow connection' },
+        { hash: 'spd-error', label: "Can't load" },
+        { hash: 'spd-sdk', label: 'SDK — embedded in a client site' },
+      ]},
+    ]},
     { group: 'Home', items: [
       { file: 'home-v2.html', label: 'Home — mobile', proposal: true, icon: '📱', by: 'opus' },
       { file: 'home-desktop-v2.html', label: 'Home — desktop', proposal: true, icon: '🖥', by: 'opus' },

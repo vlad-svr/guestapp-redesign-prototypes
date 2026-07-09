@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Splash screen — the arrival moment (Desktop · SDK · Kiosk)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="splash-v2.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Splash screen — the arrival moment (Desktop · SDK · Kiosk)</h1>
+  <p class="lede">The same handoff at three sizes. On a laptop the splash dissolves into the <b>navy-sidebar shell</b>, and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b> — it has no business painting over the host's own page. On the kiosk it is read from a metre away, and it has <b>nowhere to fly to</b>, so it simply settles. The <b>Style</b> switch picks between <b>Classic</b> (the refined V1) and <b>Modern</b> (V2) — the behaviour, the states and the accessibility pass are identical in both. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="spd-fast">Fast load</button>
+    <button class="fh-chip" data-scenario="spd-slow">Slow connection</button>
+    <button class="fh-chip" data-scenario="spd-error">Can't load</button>
+    <button class="fh-chip" data-scenario="spd-sdk">SDK — embedded in a client site</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="sp-col" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%">
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="url">
+          <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-lock"/></svg>
+          casa-valencia.chekin.com/a4f21c9b
+        </div>
+      </div>
+
+      <!-- ─────────────── Fast load ─────────────── -->
+      <div class="flow-screen sp-desk-frame" id="spd-fast" data-start
+           data-label="Fast load — the splash dissolves into the app shell"
+           data-sp-ladder="fast">
+
+        <div class="sp-under" data-sp-under>
+          <!-- Skeleton of the exact shell the guest is about to land in. -->
+          <div class="sp-skel-shell sp-skel-stack">
+            <div class="sp-skel-side">
+              <div class="sp-skel-logo" style="width:34px;height:34px">C</div>
+              <div class="sp-skel sp-skel-line w70" style="margin-top:10px"></div>
+              <div class="sp-skel sp-skel-line w55"></div>
+              <div class="sp-skel sp-skel-line w70"></div>
+              <div class="sp-skel sp-skel-line w45"></div>
+            </div>
+            <div class="sp-skel-main">
+              <div class="sp-skel sp-skel-hero"></div>
+              <div class="sp-skel-cols">
+                <div class="sp-skel-row"><span class="sp-skel sp-skel-avatar"></span><div class="sp-skel-lines"><span class="sp-skel sp-skel-line w70"></span><span class="sp-skel sp-skel-line w45"></span></div></div>
+                <div class="sp-skel-row"><span class="sp-skel sp-skel-avatar"></span><div class="sp-skel-lines"><span class="sp-skel sp-skel-line w55"></span><span class="sp-skel sp-skel-line w45"></span></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- The real shell, revealed by the same class flip. -->
+          <div class="sp-skel-shell sp-real-shell">
+            <div class="sp-skel-side">
+              <div class="sd-brand">
+                <span class="sp-skel-logo" style="opacity:1">C</span>
+                Casa Valencia
+              </div>
+              <div class="sd-item on" style="margin-top:14px">Home</div>
+              <div class="sd-item">Guests</div>
+              <div class="sd-item">Payments</div>
+              <div class="sd-item">Virtual keys</div>
+            </div>
+            <div class="sp-skel-main">
+              <h1 tabindex="-1" data-sp-focus style="font-size:26px;font-weight:600;letter-spacing:-0.02em;color:var(--navy);outline:none">Welcome, Marta</h1>
+              <p style="font-size:13px;color:var(--text-secondary);margin-top:-8px">2 of 4 guests registered · Check-in opens in 3 days</p>
+              <div class="sp-real-hero" style="margin-top:4px">
+                <div class="h-k">Next up</div>
+                <div class="h-t">Register your guests</div>
+                <div class="h-s">It takes about 2 minutes each</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
+
+          <span class="sp-grain" aria-hidden="true"></span>
+          <div class="sp-mark">
+            <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
+              <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
+              <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
+            </svg>
+            <div class="sp-plate">
+              <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
+              <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
+            </div>
+          </div>
+          <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <div class="sp-copy">
+            <div class="sp-title">Casa Valencia</div>
+            <p class="sp-stage-line" data-sp-line></p>
+            <span class="sp-elapsed" data-sp-elapsed hidden></span>
+          </div>
+          <div class="sp-trust">
+            <span class="sp-trust-row">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+              Secure check-in
+            </span>
+            <span class="sp-trust-sub">Powered by Chekin</span>
+          </div>
+        </div>
+
+        <p class="sr-only" data-sp-live aria-live="polite"></p>
+      </div>
+
+      <!-- ─────────────── Slow connection ─────────────── -->
+      <div class="flow-screen sp-desk-frame" id="spd-slow"
+           data-label="Slow connection — quiet until 1.2 s, honest at 6 s, watchdog at 20 s"
+           data-sp-ladder="slow" data-sp-watchdog="spd-error">
+
+        <div class="sp-under" data-sp-under>
+          <div class="sp-skel-shell sp-skel-stack">
+            <div class="sp-skel-side">
+              <div class="sp-skel-logo" style="width:34px;height:34px">C</div>
+              <div class="sp-skel sp-skel-line w70" style="margin-top:10px"></div>
+              <div class="sp-skel sp-skel-line w55"></div>
+              <div class="sp-skel sp-skel-line w70"></div>
+            </div>
+            <div class="sp-skel-main">
+              <div class="sp-skel sp-skel-hero"></div>
+            </div>
+          </div>
+          <div class="sp-skel-shell sp-real-shell">
+            <div class="sp-skel-side"><div class="sd-brand"><span class="sp-skel-logo" style="opacity:1">C</span> Casa Valencia</div></div>
+            <div class="sp-skel-main"><h1 tabindex="-1" data-sp-focus style="font-size:26px;font-weight:600;color:var(--navy);outline:none">Welcome, Marta</h1></div>
+          </div>
+        </div>
+
+        <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
+
+          <span class="sp-grain" aria-hidden="true"></span>
+          <div class="sp-mark">
+            <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
+              <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
+              <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
+            </svg>
+            <div class="sp-plate">
+              <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
+              <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
+            </div>
+          </div>
+          <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <div class="sp-copy">
+            <div class="sp-title">Casa Valencia</div>
+            <p class="sp-stage-line" data-sp-line></p>
+            <span class="sp-elapsed" data-sp-elapsed data-sp-when="slow" hidden>0.0s</span>
+          </div>
+          <div class="sp-actions" data-sp-when="slow" hidden>
+            <button class="btn btn-outline btn-block" data-sp-retry="spd-fast">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg>
+              Try again
+            </button>
+            <p class="sp-note">Your check-in is safe. Nothing you've already filled in will be lost.</p>
+          </div>
+          <div class="sp-trust">
+            <span class="sp-trust-row">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+              Secure check-in
+            </span>
+            <span class="sp-trust-sub">Powered by Chekin</span>
+          </div>
+        </div>
+
+        <p class="sr-only" data-sp-live aria-live="polite"></p>
+      </div>
+
+      <!-- ─────────────── Can't load ─────────────── -->
+      <div class="flow-screen sp-desk-frame" id="spd-error"
+           data-label="Can't load — the watchdog lands here, never on a frozen spinner"
+           data-sp-ladder="error"
+           data-sp-announce="We couldn't load your check-in. Three ways to continue are available.">
+
+        <div class="sp-under" data-sp-under></div>
+
+        <div class="sp-stage" data-sp-stage>
+
+          <span class="sp-grain" aria-hidden="true"></span>
+          <div class="sp-mark is-error">
+            <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
+              <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
+              <circle class="sp-ring-arc" cx="55" cy="55" r="50" style="--sp-p:1"/>
+            </svg>
+            <div class="sp-plate"><span class="sp-logo sp-logo-default" aria-hidden="true">C</span></div>
+            <span class="sp-badge err" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg></span>
+          </div>
+          <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <div class="sp-copy">
+            <h1 class="sp-title" tabindex="-1">We couldn't load your check&#8209;in</h1>
+            <p class="sp-stage-line is-shown">The link may have expired, or our service is having a moment. Nothing you've filled in is lost.</p>
+          </div>
+          <div class="sp-actions">
+            <button class="btn btn-primary btn-block" data-sp-retry="spd-fast">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg>
+              Try again
+            </button>
+            <button class="btn btn-outline btn-block">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-search"/></svg>
+              Find my booking
+            </button>
+            <button class="btn btn-ghost">Message your host, Elena</button>
+            <span class="sp-ref">
+              <code>CHK-8F2A-41D9</code>
+              <button data-sp-copy aria-label="Copy error reference CHK-8F2A-41D9">Copy</button>
+            </span>
+          </div>
+          <div class="sp-trust">
+            <span class="sp-trust-row">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+              Secure check-in
+            </span>
+            <span class="sp-trust-sub">Powered by Chekin</span>
+          </div>
+        </div>
+
+        <p class="sr-only" data-sp-live aria-live="polite"></p>
+      </div>
+
+      <!-- ─────────────── SDK, embedded in a client's website ─────────────── -->
+      <div class="flow-screen sp-sdk-screen" id="spd-sdk"
+           data-label="SDK — the splash is scoped to the widget, not the host page"
+           data-sp-ladder="fast">
+
+        <div class="sp-host-site">
+          <div class="sp-host-nav">
+            <span class="brand">Valencia Stays</span>
+            <span>Apartments</span><span>Experiences</span><span>Contact</span>
+          </div>
+          <div class="sp-host-body">
+            <h4>Complete your check-in</h4>
+            <p>Please confirm your details before arrival. This takes about two minutes, and you'll get your door code as soon as it's done.</p>
+
+            <div class="sp-widget">
+              <span class="sp-widget-tag">Chekin SDK</span>
+
+              <div class="sp-under" data-sp-under>
+                <div class="sp-skel-topbar">
+                  <div class="sp-skel-logo">C</div>
+                  <div class="sp-skel-lines" style="max-width:180px">
+                    <div class="sp-skel sp-skel-line w70"></div>
+                    <div class="sp-skel sp-skel-line w45"></div>
+                  </div>
+                </div>
+                <div class="sp-skel-stack sp-skel-body">
+                  <div class="sp-skel sp-skel-hero"></div>
+                  <div class="sp-skel-row"><span class="sp-skel sp-skel-avatar"></span><div class="sp-skel-lines"><span class="sp-skel sp-skel-line w55"></span><span class="sp-skel sp-skel-line w45"></span></div></div>
+                </div>
+                <div class="sp-real">
+                  <h1 tabindex="-1" data-sp-focus>Welcome, Marta</h1>
+                  <p class="sp-real-sub">2 of 4 guests registered</p>
+                  <div class="sp-real-row" style="margin-top:14px">
+                    <span class="r-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
+                    <div><div class="r-t">Guest registration</div><div class="r-s">2 of 4 done</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- position:absolute + inset:0 — bounded by .sp-widget, never the
+                   viewport. Today's ContentWrapper is width/height:100% with
+                   z-index:9999, which only *happens* to be contained. -->
+              <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
+                <span class="sp-grain" aria-hidden="true"></span>
+                <div class="sp-mark">
+                  <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
+                    <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
+                    <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
+                  </svg>
+                  <div class="sp-plate">
+                    <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
+                  </div>
+                </div>
+                <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <div class="sp-copy">
+                  <div class="sp-title">Valencia Stays</div>
+                  <p class="sp-stage-line" data-sp-line></p>
+                </div>
+                <div class="sp-trust">
+                  <span class="sp-trust-row">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+                    Secure check-in
+                  </span>
+                  <span class="sp-trust-sub">Powered by Chekin</span>
+                </div>
+              </div>
+            </div>
+
+            <p style="font-size:11px;color:var(--text-tertiary)">© Valencia Stays 2026 · Privacy · Terms</p>
+          </div>
+        </div>
+
+        <p class="sr-only" data-sp-live aria-live="polite"></p>
+      </div>
+
+    </div>
+
+    <div class="sp-caption">
+      <span class="sp-clock" data-sp-clock><i class="dot"></i> Splash visible <b data-sp-clock-value>0.0s</b></span>
+      <span class="sim-note">held for <b>max(load, 500 ms)</b> · watchdog at 20 s · today: <b>load + 5000 ms</b>, unbounded</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       Kiosk — static screen. One metre of reading distance, 84px targets,
+       and no header logo to fly to, so the mark settles in place instead.
+       ══════════════════════════════════════════════════════════════════ -->
+  <h1 style="margin-top:34px">Kiosk — the lobby terminal</h1>
+  <p class="lede">Same states, one-metre type. A kiosk is unattended, so the <b>watchdog matters most here</b>: today a hung request leaves a lobby screen showing a solid blue rectangle until someone reboots it.</p>
+
+  <div class="sp-kiosk browser" style="width:min(760px,94vw)">
+    <div class="sp-stage" role="status" aria-live="polite" aria-busy="true">
+      <span class="sp-grain" aria-hidden="true"></span>
+      <div class="sp-mark">
+        <svg class="sp-ring" viewBox="0 0 110 110" aria-hidden="true" style="--sp-p:0.62">
+          <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
+          <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
+        </svg>
+        <div class="sp-plate"><span class="sp-logo sp-logo-default" aria-hidden="true">C</span></div>
+      </div>
+      <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div class="sp-copy">
+        <div class="sp-title">Casa Valencia</div>
+        <p class="sp-stage-line is-shown">Loading your check-in</p>
+      </div>
+      <div class="sp-trust">
+        <span class="sp-trust-row">
+          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg>
+          Secure check-in
+        </span>
+        <span class="sp-trust-sub">Powered by Chekin</span>
+      </div>
+    </div>
+  </div>
+  <span class="sim-note" style="margin-top:-14px">static screen · <code>.sp-kiosk</code></span>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- The progress arc's stroke. A gradient reads as light travelling round
+         the mark; a flat stroke reads as a bar bent into a circle. -->
+    <linearGradient id="spRingGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8ca5ff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="spRingGradLight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#385bf8"/>
+      <stop offset="100%" stop-color="#8ca5ff"/>
+    </linearGradient>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-refresh"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-wifi-off"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="splash-v2.js" defer></script>
+<script src="splash-toggle.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>
