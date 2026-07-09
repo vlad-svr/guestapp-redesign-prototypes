@@ -1,0 +1,191 @@
+/* Property protection — the standalone DepositView (`PATHS.deposits`).
+   Layered on shared.css + pay.css: the two protection options reuse `.opt-card`
+   from the payments deposit-chooser, so the screen a guest reaches from Home and
+   the one they reach from the cart are visibly the same object. */
+
+/* ── Checkbox variant (isMultipleDeposits: both options can be taken) ─────────── */
+.opt-card .oc-check {
+  width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+  border: 2px solid var(--n-300); margin-left: auto;
+  display: grid; place-items: center; color: transparent;
+}
+.opt-card.selected .oc-check { border-color: var(--blue-500); background: var(--blue-500); color: #fff; }
+.opt-card .oc-check .icon { width: 14px; height: 14px; stroke-width: 3.2; }
+
+/* the "what leaves your account today" line — the fact both options bury */
+.opt-card .oc-today {
+  display: flex; align-items: center; gap: 7px;
+  margin-top: 2px; padding: 8px 11px; border-radius: 10px;
+  background: var(--n-50); border: 1px solid var(--border-subtle);
+  font-size: 11.5px; font-weight: 600; color: var(--text-secondary);
+}
+.opt-card .oc-today .icon { width: 14px; height: 14px; color: var(--n-500); }
+.opt-card .oc-today b { color: var(--navy); font-variant-numeric: tabular-nums; }
+.opt-card.selected .oc-today { background: var(--tint-info); border-color: rgba(56, 91, 248, 0.18); }
+.opt-card.selected .oc-today .icon { color: var(--blue-500); }
+
+.opt-card .oc-more {
+  margin-left: auto; font-size: 11.5px; font-weight: 600; color: var(--blue-500);
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.opt-card .oc-head { display: flex; align-items: center; gap: 8px; }
+.opt-card .oc-head .oc-kicker {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--text-tertiary);
+}
+
+/* paid / locked (has_insurance_been_paid) */
+.opt-card.locked { border-color: var(--green-600); background: var(--green-50); cursor: default; }
+.opt-card.locked:hover { border-color: var(--green-600); }
+.opt-card.locked .oc-radio { border-color: var(--green-700); background: var(--green-700); }
+.opt-card.locked .oc-radio::after { background: #fff; }
+
+/* ── Payment-type radio (pay online / pay on arrival) ─────────────────────────── */
+.pay-type { display: flex; flex-direction: column; gap: 10px; }
+.pay-type .pt-title { font-size: 13px; font-weight: 700; color: var(--navy); }
+.pay-type .pt-opt {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 13px 14px; border-radius: var(--r-lg);
+  border: 1.5px solid var(--border); background: var(--n-0);
+  text-align: left; width: 100%;
+}
+.pay-type .pt-opt:hover { border-color: var(--blue-300); }
+.pay-type .pt-opt.selected { border-color: var(--blue-500); background: var(--tint-info); }
+.pay-type .pt-radio {
+  width: 19px; height: 19px; border-radius: 50%; border: 2px solid var(--n-300);
+  flex-shrink: 0; margin-top: 1px; display: grid; place-items: center;
+}
+.pay-type .pt-opt.selected .pt-radio { border-color: var(--blue-500); }
+.pay-type .pt-opt.selected .pt-radio::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--blue-500); }
+.pay-type .pt-label { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.pay-type .pt-desc { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.pay-type .pt-opt.selected .pt-desc { color: var(--n-600); }
+
+/* ── The consequence strip above the CTA: what the button will actually do ────── */
+.dp-consequence {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; border-radius: var(--r-lg);
+  background: var(--n-50); border: 1px dashed var(--border);
+  font-size: 12px; line-height: 17px; color: var(--text-secondary);
+}
+.dp-consequence .icon { color: var(--n-500); flex-shrink: 0; margin-top: 1px; }
+.dp-consequence b { color: var(--navy); font-weight: 600; }
+.dp-consequence.hold { background: var(--tint-info); border-color: rgba(56, 91, 248, 0.2); border-style: solid; }
+.dp-consequence.hold .icon { color: var(--blue-500); }
+
+/* ── Info-modal body (SecurityDepositInfoModal / DamageProtectionInfoModal) ───── */
+.dp-info h3 {
+  font-size: 12.5px; font-weight: 700; color: var(--navy);
+  margin: 16px 0 8px; display: flex; align-items: center; gap: 8px;
+}
+.dp-info h3 .icon { width: 15px; height: 15px; color: var(--blue-500); }
+.dp-info p { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); }
+.dp-info ul { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.dp-info li {
+  display: flex; gap: 9px; align-items: flex-start;
+  font-size: 12.5px; line-height: 18px; color: var(--text-secondary);
+}
+.dp-info li .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; margin-top: 2px; }
+.dp-info li b { color: var(--navy); font-weight: 600; }
+.dp-info .dp-timeline {
+  display: flex; flex-direction: column; gap: 0;
+  border-left: 2px solid var(--border); margin: 10px 0 0 7px; padding-left: 16px;
+}
+.dp-info .dp-timeline .tl {
+  position: relative; padding: 0 0 16px;
+  font-size: 12.5px; line-height: 18px; color: var(--text-secondary);
+}
+.dp-info .dp-timeline .tl:last-child { padding-bottom: 0; }
+.dp-info .dp-timeline .tl::before {
+  content: ''; position: absolute; left: -22px; top: 4px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--n-0); border: 2px solid var(--blue-500);
+}
+.dp-info .dp-timeline .tl b { display: block; color: var(--navy); font-weight: 600; }
+.dp-waiver-link {
+  display: flex; align-items: center; gap: 8px; margin-top: 16px;
+  font-size: 12px; font-weight: 600; color: var(--blue-500);
+}
+.dp-waiver-link .icon { width: 14px; height: 14px; }
+.dp-waiver {
+  font-size: 11.5px; line-height: 18px; color: var(--text-secondary);
+  max-height: 260px; overflow-y: auto; padding: 14px;
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--n-50);
+}
+.dp-waiver h4 { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.dp-waiver p + h4 { margin-top: 12px; }
+
+/* ── Skeleton (isFirstLoading on a slow connection) ───────────────────────────── */
+.dp-sk { background: var(--n-75); border-radius: 8px; position: relative; overflow: hidden; }
+.dp-sk::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  animation: dp-sweep 1.4s infinite;
+}
+@keyframes dp-sweep { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+.dp-sk-card { height: 168px; border-radius: var(--r-lg); }
+
+/* ── Desktop: the chooser is a reading column, options side by side ───────────── */
+.dp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.dp-cols .opt-card { height: 100%; }
+
+/* ─────────────────────────────────────────────────────────────
+   A defect the prototype must point at rather than paper over.
+   Same primitive as .hv-bug in housing-iv-v2.css.
+   ───────────────────────────────────────────────────────────── */
+.dp-bug {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 14px;
+  padding: 11px 12px;
+  border-radius: var(--r-lg);
+  background: var(--red-100);
+  border: 1px solid rgba(223, 0, 68, 0.28);
+  font-size: 11.5px;
+  line-height: 17px;
+  color: var(--navy);
+  text-align: left;
+}
+.dp-bug .icon { width: 15px; height: 15px; color: var(--red-500); flex-shrink: 0; margin-top: 1px; }
+.dp-bug b { font-weight: 700; }
+
+/* the two real deposit variants, shown side by side in the info modal */
+.dp-variant {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 12px 13px;
+  margin-top: 10px;
+}
+.dp-variant .dv-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 700; color: var(--navy);
+  margin-bottom: 6px;
+}
+.dp-variant .dv-flag {
+  margin-left: auto;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--text-tertiary);
+}
+.dp-variant.active { border-color: var(--blue-500); background: var(--tint-info); }
+.dp-variant.active .dv-flag { color: var(--blue-500); }
+
+/* ─────────────────────────────────────────────────────────────
+   The protection cards carry an info trigger ("How the deposit
+   works"), so the card itself cannot be a <button> — HTML forbids
+   a button inside a button, and the parser silently ejects the
+   inner one out of the card. They are role="radio" divs instead,
+   which means cursor + focus ring have to be restored by hand.
+   ───────────────────────────────────────────────────────────── */
+.opt-card[role='radio'] { cursor: pointer; }
+.opt-card[role='radio']:focus-visible {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+}
+/* the info trigger is a real button nested in a radio — keep it reachable */
+.opt-card .oc-more { cursor: pointer; }
+.opt-card .oc-more:focus-visible {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

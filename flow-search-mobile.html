@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Booking (interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="search.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Find Your Booking (Mobile)</h1>
+  <p class="lede">The pre-check-in search. The place you're checking into is shown up front, the two search methods are self-explaining cards that advance on one tap, the booking code gets a real "where do I find this?" answer, and a dead-end "not found" becomes a set of next steps. Maps <code>pages/SearchReservation</code>. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="sr-method">▶ Full flow</button>
+    <button class="fh-chip" data-scenario="sr-code">Booking code</button>
+    <button class="fh-chip" data-scenario="sr-date">Date &amp; email</button>
+    <button class="fh-chip" data-scenario="sr-create">Create reservation</button>
+    <button class="fh-chip" data-scenario="sr-searching">Booking found</button>
+    <button class="fh-chip" data-scenario="sr-searching-nf">Not found</button>
+    <button class="fh-chip" data-scenario="sr-direct">Direct link</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="phone" style="height:840px">
+
+    <!-- ═══ sr-method · SearchReservation.tsx — choose a search method ═══ -->
+    <div class="screen flow-screen" id="sr-method" data-start data-label="Choose how to find your booking">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="page-head">
+        <div class="kicker">Check-in</div>
+        <div class="page-title">Find your <span class="hl">booking</span></div>
+        <p class="page-intro">Let's pull up your stay. Pick whichever you have handy.</p>
+      </div>
+      <div class="content">
+        <div class="prop-chip">
+          <span class="pc-thumb"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></span>
+          <span class="pc-main">
+            <span class="pc-name">Casa Marbella · Apt 4B</span>
+            <span class="pc-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Málaga, Spain</span>
+          </span>
+          <span class="pc-verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official</span>
+        </div>
+
+        <div class="method-list">
+          <button class="method-card" data-goto="sr-code">
+            <span class="mc-ic"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-hash"/></svg></span>
+            <span class="mc-main">
+              <span class="mc-title">Booking reference</span>
+              <span class="mc-desc">The code from your confirmation email or booking platform.</span>
+              <span class="mc-need"><svg viewBox="0 0 24 24" class="icon"><use href="#i-mail"/></svg> e.g. HMAK-2931</span>
+            </span>
+            <svg viewBox="0 0 24 24" class="icon mc-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+          <button class="method-card" data-goto="sr-date">
+            <span class="mc-ic"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-calendar"/></svg></span>
+            <span class="mc-main">
+              <span class="mc-title">Check-in date &amp; email</span>
+              <span class="mc-desc">The date you arrive plus the lead guest's email on the booking.</span>
+              <span class="mc-need"><svg viewBox="0 0 24 24" class="icon"><use href="#i-user"/></svg> No code needed</span>
+            </span>
+            <svg viewBox="0 0 24 24" class="icon mc-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+        </div>
+
+        <div class="sr-why">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg>
+          <span>We only use this to <b>locate your reservation</b> — nothing is shared with other guests.</span>
+        </div>
+        <span class="sim-note">the method screen shows only when reservation_search_mode is "both"; a fixed mode skips straight to that method's screen</span>
+      </div>
+    </div>
+
+    <!-- ═══ sr-code · BookingCodeView — enter the reference code ═══ -->
+    <div class="screen flow-screen" id="sr-code" data-label="Enter your booking reference">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="sr-method"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Booking reference</div>
+          <div class="tb-sub">Casa Marbella · Apt 4B</div>
+        </div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Find your booking</div>
+        <div class="page-title">Enter your <span class="hl">code</span></div>
+        <p class="page-intro">The reference assigned to your booking — letters and numbers, any case.</p>
+      </div>
+      <div class="content">
+        <div class="field code-field">
+          <div class="lbl-row"><label>Booking reference code</label>
+            <button class="sr-help-link" data-modal="m-code-help"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg> Where do I find this?</button>
+          </div>
+          <div class="input code">HMAK-2931<span class="caret"></span></div>
+          <span class="hint">Example format — yours may look a little different.</span>
+        </div>
+
+        <div class="sr-why">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-mail"/></svg>
+          <span>It's in the <b>confirmation email</b> from your host and on your booking platform (Airbnb, Booking.com…).</span>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="sr-searching">Confirm <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+        <button class="btn-ghost" data-goto="sr-date">Don't have the code? Use date &amp; email</button>
+      </div>
+    </div>
+
+    <!-- ═══ sr-date · CheckInDateView — check-in date + lead email ═══ -->
+    <div class="screen flow-screen" id="sr-date" data-label="Enter check-in date + lead email">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="sr-method"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Date &amp; email</div>
+          <div class="tb-sub">Casa Marbella · Apt 4B</div>
+        </div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Find your booking</div>
+        <div class="page-title">Your <span class="hl">check-in</span> details</div>
+        <p class="page-intro">We'll match the date you arrive with the lead guest's email.</p>
+      </div>
+      <div class="content">
+        <div class="field">
+          <label>Check-in date</label>
+          <div class="input" style="justify-content:space-between">14 Jul 2026 <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-calendar"/></svg></div>
+        </div>
+        <div class="field">
+          <label>Lead guest email</label>
+          <div class="input">ana.lopez@email.com</div>
+          <span class="hint">The email the booking was made with.</span>
+        </div>
+        <div class="sr-why">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+          <span>Both must match the reservation exactly. Wrong date? <b>Check your confirmation.</b></span>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="sr-searching">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══ sr-searching · SearchingBookingModal (LOADING) ═══ -->
+    <div class="screen flow-screen" id="sr-searching" data-label="Searching booking…" data-autonext="sr-found" data-autodelay="2400">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="sr-state">
+        <div class="sr-radar">
+          <span class="rr"></span><span class="rr"></span><span class="rr"></span>
+          <span class="core"><svg viewBox="0 0 24 24" class="icon"><use href="#i-search"/></svg></span>
+        </div>
+        <div class="ss-title">Searching booking…</div>
+        <div class="ss-sub">Matching your details with the reservation for Casa Marbella.</div>
+      </div>
+    </div>
+
+    <!-- ═══ sr-found · SearchingBookingModal (SUCCESS) → signup form ═══ -->
+    <div class="screen flow-screen" id="sr-found" data-label="Booking found!">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="sr-state">
+        <div class="sr-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></div>
+        <div class="ss-title">Booking found!</div>
+        <div class="ss-sub">Casa Marbella · Apt 4B — 14–18 Jul, 2 guests.</div>
+        <div class="prop-chip compact ss-prop" style="max-width:300px">
+          <span class="pc-thumb"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg></span>
+          <span class="pc-main">
+            <span class="pc-name">Ana López · Lead guest</span>
+            <span class="pc-loc">Reference HMAK-2931</span>
+          </span>
+        </div>
+        <div class="sr-redirect"><span class="spin"></span> Taking you to your check-in…</div>
+      </div>
+      <div class="cta-dock">
+        <a class="btn btn-primary btn-block" href="flow-registration.html#r-hub">Continue to check-in <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+      </div>
+    </div>
+
+    <!-- ═══ sr-direct · DirectReservationView — deep-link auto-search ═══ -->
+    <div class="screen flow-screen" id="sr-direct" data-label="Opened from your booking link" data-autonext="sr-found" data-autodelay="2600">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="sr-state">
+        <div class="sr-radar">
+          <span class="rr"></span><span class="rr"></span><span class="rr"></span>
+          <span class="core"><svg viewBox="0 0 24 24" class="icon"><use href="#i-search"/></svg></span>
+        </div>
+        <div class="ss-title">Opening your booking…</div>
+        <div class="ss-sub">You followed a direct link — no need to type anything, we're finding it for you.</div>
+      </div>
+    </div>
+
+    <!-- ═══ sr-searching-nf · searching that ends not-found ═══ -->
+    <div class="screen flow-screen" id="sr-searching-nf" data-label="Searching…" data-autonext="sr-notfound" data-autodelay="2200">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="sr-state">
+        <div class="sr-radar">
+          <span class="rr"></span><span class="rr"></span><span class="rr"></span>
+          <span class="core"><svg viewBox="0 0 24 24" class="icon"><use href="#i-search"/></svg></span>
+        </div>
+        <div class="ss-title">Searching booking…</div>
+        <div class="ss-sub">Matching your details with the reservation.</div>
+      </div>
+    </div>
+
+    <!-- ═══ sr-notfound · ReservationNotFoundModal — actionable ═══ -->
+    <div class="screen flow-screen" id="sr-notfound" data-label="Not found — next steps">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="sr-state">
+        <div class="sr-warn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-search-x"/></svg></div>
+        <div class="ss-title">No booking matched</div>
+        <div class="ss-sub">We couldn't find a reservation for those details. Here's what usually helps:</div>
+        <div class="sr-actions">
+          <button class="sr-nf-row" data-goto="sr-code">
+            <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-refresh"/></svg></span>
+            <span class="nf-main"><span class="nf-title">Check the code &amp; try again</span><span class="nf-desc">A stray space or an O vs 0 is the usual culprit.</span></span>
+            <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+          <button class="sr-nf-row" data-goto="sr-date">
+            <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg></span>
+            <span class="nf-main"><span class="nf-title">Try date &amp; email instead</span><span class="nf-desc">Search with your check-in date and lead guest email.</span></span>
+            <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+          <button class="sr-nf-row contact" data-modal="m-contact">
+            <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-message"/></svg></span>
+            <span class="nf-main"><span class="nf-title">Contact your host</span><span class="nf-desc">They can resend the booking link directly.</span></span>
+            <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+          </button>
+        </div>
+        <span class="sim-note">when the property allows it (canCreate / property-link), a 4th row "Register a new stay" routes to NewReservationView instead of dead-ending</span>
+      </div>
+    </div>
+
+    <!-- ═══ sr-create · NewReservationView — property link, grouped ═══ -->
+    <div class="screen flow-screen" id="sr-create" data-label="Create reservation (property link)">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="sr-date"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">New registration</div>
+          <div class="tb-sub">Casa Marbella · Apt 4B</div>
+        </div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Property link</div>
+        <div class="page-title">Tell us about your <span class="hl">stay</span></div>
+        <p class="page-intro">No booking on file yet — set it up here and we'll create your registration.</p>
+      </div>
+      <div class="content">
+        <div class="field-group">
+          <div class="fg-label"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Your stay</div>
+          <div class="field">
+            <div class="lbl-row"><label>Check-in date</label><span class="from-search"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill"/></svg> From your search</span></div>
+            <div class="input" style="justify-content:space-between">14 Jul 2026 <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-calendar"/></svg></div>
+          </div>
+          <div class="field">
+            <label>Check-out date</label>
+            <div class="input" style="justify-content:space-between;color:var(--n-500)">DD / MM / YYYY <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-calendar"/></svg></div>
+          </div>
+          <div class="field">
+            <label>Total number of guests</label>
+            <div class="input" style="color:var(--n-500)">2</div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="fg-label"><svg viewBox="0 0 24 24" class="icon"><use href="#i-user"/></svg> Lead guest</div>
+          <div class="field">
+            <label>Lead guest name</label>
+            <div class="input" style="color:var(--n-500)">Full name</div>
+          </div>
+          <div class="field">
+            <div class="lbl-row"><label>Lead guest email</label><span class="from-search"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill"/></svg> From your search</span></div>
+            <div class="input">ana.lopez@email.com</div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-dock">
+        <button class="btn btn-primary btn-block" data-goto="sr-searching">Confirm <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ═══ m-code-help · "Where do I find my code?" sheet ═══ -->
+    <div class="proto-modal sheet" id="m-code-help">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Where's my booking reference?</div>
+        <p class="pm-desc">It's a short code (letters + numbers) tied to your reservation. Two reliable places:</p>
+        <div class="pm-list">
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span>
+            <span><b>Your confirmation email.</b> From the host or platform — near the top, labelled "reference", "confirmation code" or "booking ID".</span>
+          </div>
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-home"/></svg></span>
+            <span><b>Your booking platform.</b> Open the trip in Airbnb, Booking.com or Vrbo — the confirmation code is on the reservation.</span>
+          </div>
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span>
+            <span><b>Can't find it?</b> Switch to <b>date &amp; email</b> — no code required.</span>
+          </div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ m-contact · contact host sheet ═══ -->
+    <div class="proto-modal sheet" id="m-contact">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Contact your host</div>
+        <p class="pm-desc">Ask them to resend your booking link or confirm the reference — then search again.</p>
+        <div class="pm-list">
+          <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span><span><b>host@casamarbella.com</b></span></div>
+          <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg></span><span>Message through your booking platform's inbox.</span></div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-search-x"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-calendar"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-hash"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-refresh"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-message"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></g>
+    <g id="i-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+  </defs>
+</svg>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="glass-toggle.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual Keys Flow (Desktop, interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="pay.css">
+<link rel="stylesheet" href="payd.css">
+<link rel="stylesheet" href="keys.css">
+<style>
+  .flow-screen { flex-direction: column; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Virtual Keys — Interactive Flow (Desktop)</h1>
+  <p class="lede">Your phone is the key. The gate shows the exact checklist that unlocks your keys (each item deep-links to the task that finishes it); once live, every door states whether it opens right now. Slide to open — the rail explains the rest. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="kd-keys">▶ Keys ready</button>
+    <button class="fh-chip" data-scenario="kd-gate">Not available yet</button>
+    <button class="fh-chip" data-scenario="kd-window">Before the window</button>
+    <button class="fh-chip" data-scenario="kd-doors">Building · many doors</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="browser" style="min-height:840px;display:flex;flex-direction:column">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock"/></svg> guest.chekin.com/villa-serena/keys</span>
+      <span style="width:52px"></span>
+    </div>
+
+    <!-- ═══ kd-keys · keys available ═══ -->
+    <div class="flow-screen" id="kd-keys" data-start data-label="Keys ready — slide to open" style="flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
+        <aside class="sidebar">
+          <div class="sb-head">
+            <div class="sb-logo">V</div>
+            <div>
+              <div class="sb-prop">Villa Serena</div>
+              <div class="sb-ref">Booking · CHK-58291</div>
+            </div>
+          </div>
+          <div class="sb-progress">
+            <div class="sp-row"><span>Ready for your stay</span><span>100%</span></div>
+            <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
+          </div>
+          <div class="sb-group">Before you arrive</div>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
+          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
+          <div class="sb-group">Your stay</div>
+          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge teal">Live</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+          <div class="sb-footer">
+            <div class="sb-avatar">MG</div>
+            <div>
+              <div class="sb-user">María García</div>
+              <div class="sb-mail">maria@gmail.com</div>
+            </div>
+            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+          </div>
+        </aside>
+
+        <main class="desk-page">
+          <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
+          <div class="desk-col">
+            <div class="page-head" style="padding:0 0 4px">
+              <div class="kicker">Virtual keys</div>
+              <div class="page-title">You're all set to get <span class="hl">in</span></div>
+              <p class="page-intro">Your phone opens both doors. Follow them in order — street entrance first, then your apartment.</p>
+            </div>
+
+            <details class="instr" style="margin-top:18px">
+              <summary>
+                <span class="in-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg></span>
+                Getting to the apartment
+                <svg viewBox="0 0 24 24" class="icon icon-sm in-chev"><use href="#i-chevron-down"/></svg>
+              </summary>
+              <div class="in-body">
+                The building is at <b>Calle del Mar 14</b>, a blue door beside the bakery. Take the lift to the <b>2nd floor</b> — apartment 3B is on your right. Bins and the bike room are in the courtyard. Full house manual is in your <a href="#">guidebook</a>.
+              </div>
+            </details>
+
+            <div class="pay-sec" style="margin-top:22px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg> Your way in · in order
+            </div>
+            <div class="doors">
+              <div class="door now">
+                <div class="door-top">
+                  <span class="door-ic building"><svg viewBox="0 0 24 24" class="icon"><use href="#i-building"/></svg></span>
+                  <span class="door-main">
+                    <span class="door-name">Street entrance</span>
+                    <span class="door-sub">Calle del Mar 14 · keypad</span>
+                  </span>
+                  <span class="door-state now"><span class="dot"></span> Open now</span>
+                </div>
+                <div class="door-body">
+                  <div class="door-code">
+                    <span>
+                      <span class="dc-label">Entry code</span>
+                      <span class="dc-val">4471#</span>
+                    </span>
+                    <button class="dc-copy" data-copy="Entry code copied" data-copy-label="Copy"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-copy"/></svg><span class="cc-txt">Copy</span></button>
+                  </div>
+                  <div class="door-note"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg> Type the code on the keypad, then press the key symbol. It works for your whole stay.</div>
+                </div>
+              </div>
+
+              <div class="door now">
+                <div class="door-top">
+                  <span class="door-ic unit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home2"/></svg></span>
+                  <span class="door-main">
+                    <span class="door-name">Apartment 3B</span>
+                    <span class="door-sub">2nd floor · smart lock</span>
+                  </span>
+                  <span class="door-state now"><span class="dot"></span> Open now</span>
+                </div>
+                <div class="door-body">
+                  <div class="slide" data-open-door="ok">
+                    <div class="slide-fill"></div>
+                    <div class="slide-label">
+                      <span class="chevs"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg></span>
+                      Slide to open
+                    </div>
+                    <div class="slide-thumb"><svg viewBox="0 0 24 24" class="icon"><use href="#i-unlock"/></svg></div>
+                  </div>
+                  <div class="door-note"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Opens remotely over the internet and re-locks on its own — nothing to lose or hand back.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">A locked door at midnight is nobody's idea of fun — so here's exactly how yours works.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Getting in</div>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg></span>
+              <span><span class="vt-title" style="display:block">When do my keys work?</span><span class="vt-desc">From 15:00 on check-in day to 11:00 at checkout.</span></span>
+            </div>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-unlock"/></svg></span>
+              <span><span class="vt-title" style="display:block">Nothing happens when I slide?</span><span class="vt-desc">Stay near the door and on signal, then slide again — the lock never double-opens.</span></span>
+            </div>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span>
+              <span><span class="vt-title" style="display:block">Do I need to lock up?</span><span class="vt-desc">No — smart locks re-lock themselves. No key to lose or return.</span></span>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Ask Vela</div>
+            <div class="vela-ask" style="margin-top:10px">
+              <div class="ask-input">
+                Ask anything about your keys…
+                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+              </div>
+              <div class="vela-chips">
+                <span class="chip">The code isn't working</span>
+                <span class="chip">Can my partner get in?</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ═══ kd-gate · not available yet (conditions checklist) ═══ -->
+    <div class="flow-screen" id="kd-gate" data-label="Not available yet — what unlocks your keys" style="flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
+        <aside class="sidebar">
+          <div class="sb-head">
+            <div class="sb-logo">V</div>
+            <div>
+              <div class="sb-prop">Villa Serena</div>
+              <div class="sb-ref">Booking · CHK-58291</div>
+            </div>
+          </div>
+          <div class="sb-progress">
+            <div class="sp-row"><span>Check-in progress</span><span>75%</span></div>
+            <div class="sp-track"><div class="sp-fill" style="width:75%"></div></div>
+          </div>
+          <div class="sb-group">Before you arrive</div>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+          <a class="sb-item" href="flow-iv-desktop.html#d-choice"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
+          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
+          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
+          <div class="sb-group">Your stay</div>
+          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge warn">Soon</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+          <div class="sb-footer">
+            <div class="sb-avatar">MG</div>
+            <div>
+              <div class="sb-user">María García</div>
+              <div class="sb-mail">maria@gmail.com</div>
+            </div>
+            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+          </div>
+        </aside>
+
+        <main class="desk-page">
+          <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
+          <div class="desk-col gate-desk">
+            <div class="gate-hero" style="margin-top:16px">
+              <span class="gate-ring"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg></span>
+              <div class="gate-title">Your keys are almost ready</div>
+              <p class="gate-sub">One task left before your phone becomes your key. It unlocks on its own — no need to come back and check.</p>
+            </div>
+
+            <div class="gate-when" style="margin-top:20px">
+              <span class="gw-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg></span>
+              <span>
+                <span class="gw-title">Keys go live on check-in day</span>
+                <span class="gw-sub">Fri 15 Aug · from 15:00 · we'll email and text you</span>
+              </span>
+            </div>
+
+            <div class="pay-sec" style="margin-top:22px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check-circle"/></svg> What unlocks your keys
+            </div>
+            <div class="card" style="padding:2px 18px">
+              <div class="cond-list">
+                <div class="cond done">
+                  <span class="cond-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+                  <span class="cond-main">
+                    <span class="cond-title">Booking paid in full</span>
+                    <span class="cond-meta">€380.00 · paid 12 Aug</span>
+                  </span>
+                  <span class="cond-done-chip">Done</span>
+                </div>
+                <div class="cond done">
+                  <span class="cond-ic"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg></span>
+                  <span class="cond-main">
+                    <span class="cond-title">All guests registered</span>
+                    <span class="cond-meta">3 of 3 guests</span>
+                  </span>
+                  <span class="cond-done-chip">Done</span>
+                </div>
+                <div class="cond active">
+                  <span class="cond-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-loader"/></svg></span>
+                  <span class="cond-main">
+                    <span class="cond-title">Every guest's ID verified</span>
+                    <span class="cond-meta">Carlos's ID is still pending</span>
+                  </span>
+                  <a class="cond-link" href="flow-iv-desktop.html#d-choice">Verify <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-right"/></svg></a>
+                </div>
+                <div class="cond todo">
+                  <span class="cond-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg></span>
+                  <span class="cond-main">
+                    <span class="cond-title">Check-in day arrives</span>
+                    <span class="cond-meta">Fri 15 Aug — happens automatically</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:22px;align-items:center">
+              <a class="btn btn-primary" href="flow-iv-desktop.html#d-choice">Verify Carlos's ID <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+              <a class="btn-ghost" href="home-desktop.html">Back to check-in list</a>
+            </div>
+          </div>
+        </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">Keys don't need a “generate” button — they turn on the moment the checklist is clear.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">The last step</div>
+            <a class="vela-tip clickable" href="flow-iv-desktop.html#d-choice" style="text-decoration:none">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span>
+              <span><span class="vt-title" style="display:block">Verify Carlos's ID</span><span class="vt-desc">The only task you still control — two minutes on his phone or yours.</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+            </a>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg></span>
+              <span><span class="vt-title" style="display:block">Then it's automatic</span><span class="vt-desc">Check-in day flips the last switch — no action from you.</span></span>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Ask Vela</div>
+            <div class="vela-ask" style="margin-top:10px">
+              <div class="ask-input">
+                Ask anything about your keys…
+                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+              </div>
+              <div class="vela-chips">
+                <span class="chip">Why do you need Carlos's ID?</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ═══ kd-window · before the access window ═══ -->
+    <div class="flow-screen" id="kd-window" data-label="Before the window — access opens at 15:00" style="flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
+        <aside class="sidebar">
+          <div class="sb-head">
+            <div class="sb-logo">V</div>
+            <div>
+              <div class="sb-prop">Villa Serena</div>
+              <div class="sb-ref">Booking · CHK-58291</div>
+            </div>
+          </div>
+          <div class="sb-progress">
+            <div class="sp-row"><span>Ready for your stay</span><span>100%</span></div>
+            <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
+          </div>
+          <div class="sb-group">Before you arrive</div>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
+          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
+          <div class="sb-group">Your stay</div>
+          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge warn">15:00</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+          <div class="sb-footer">
+            <div class="sb-avatar">MG</div>
+            <div>
+              <div class="sb-user">María García</div>
+              <div class="sb-mail">maria@gmail.com</div>
+            </div>
+            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+          </div>
+        </aside>
+
+        <main class="desk-page">
+          <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
+          <div class="desk-col">
+            <div class="page-head" style="padding:0 0 4px">
+              <div class="kicker">Virtual keys</div>
+              <div class="page-title">Keys ready — <span class="hl">almost</span> time</div>
+              <p class="page-intro">Everything's set. The property opens access at check-in time — your codes and remote unlock switch on then.</p>
+            </div>
+            <div class="win-note" style="margin-top:18px">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg>
+              <span>Access opens at <b>15:00 today, Fri 15 Aug</b>. Your entry code and remote unlock go live automatically — nothing to do here.</span>
+            </div>
+
+            <div class="pay-sec" style="margin-top:22px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg> Your way in · in order
+            </div>
+            <div class="doors">
+              <div class="door">
+                <div class="door-top">
+                  <span class="door-ic building"><svg viewBox="0 0 24 24" class="icon"><use href="#i-building"/></svg></span>
+                  <span class="door-main">
+                    <span class="door-name">Street entrance</span>
+                    <span class="door-sub">Calle del Mar 14 · keypad</span>
+                  </span>
+                  <span class="door-state wait"><span class="dot"></span> Opens 15:00</span>
+                </div>
+                <div class="door-body">
+                  <div class="win-lock"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Entry code appears at <b>15:00</b></div>
+                </div>
+              </div>
+              <div class="door">
+                <div class="door-top">
+                  <span class="door-ic unit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home2"/></svg></span>
+                  <span class="door-main">
+                    <span class="door-name">Apartment 3B</span>
+                    <span class="door-sub">2nd floor · smart lock</span>
+                  </span>
+                  <span class="door-state wait"><span class="dot"></span> Opens 15:00</span>
+                </div>
+                <div class="door-body">
+                  <div class="slide locked">
+                    <div class="slide-fill" style="width:56px;background:var(--n-200)"></div>
+                    <div class="slide-label">Opens 15:00 · Fri 15 Aug</div>
+                    <div class="slide-thumb"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="door-note" style="margin-top:16px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-bell"/></svg> We'll notify you the moment they're live — feel free to close this tab.</div>
+          </div>
+        </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">The wait is deliberate — access opens exactly at check-in time, not a minute early.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Almost there</div>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg></span>
+              <span><span class="vt-title" style="display:block">Access opens 15:00</span><span class="vt-desc">Codes and remote unlock switch on automatically at check-in time.</span></span>
+            </div>
+            <div class="vela-tip">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-bell"/></svg></span>
+              <span><span class="vt-title" style="display:block">Need in earlier?</span><span class="vt-desc">Early check-in is sometimes possible — ask the property from your extras.</span></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ═══ kd-doors · building with several doors (Salto) ═══ -->
+    <div class="flow-screen" id="kd-doors" data-label="Building with many doors — open each" style="flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
+        <aside class="sidebar">
+          <div class="sb-head">
+            <div class="sb-logo">L</div>
+            <div>
+              <div class="sb-prop">Loft Gràcia</div>
+              <div class="sb-ref">Booking · CHK-64408</div>
+            </div>
+          </div>
+          <div class="sb-progress">
+            <div class="sp-row"><span>Ready for your stay</span><span>100%</span></div>
+            <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
+          </div>
+          <div class="sb-group">Before you arrive</div>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
+          <div class="sb-group">Your stay</div>
+          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge teal">Live</span></a>
+          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
+          <div class="sb-footer">
+            <div class="sb-avatar">MG</div>
+            <div>
+              <div class="sb-user">María García</div>
+              <div class="sb-mail">maria@gmail.com</div>
+            </div>
+            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
+          </div>
+        </aside>
+
+        <main class="desk-page">
+          <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
+          <div class="desk-col">
+            <div class="page-head" style="padding:0 0 4px">
+              <div class="kicker">Virtual keys</div>
+              <div class="page-title">Every door, <span class="hl">one place</span></div>
+              <p class="page-intro">This property has several smart doors. Open the entrance first, then whichever room you need.</p>
+            </div>
+
+            <div class="doors" style="margin-top:20px">
+              <div class="door now">
+                <div class="door-top">
+                  <span class="door-ic building"><svg viewBox="0 0 24 24" class="icon"><use href="#i-building"/></svg></span>
+                  <span class="door-main">
+                    <span class="door-name">Main entrance</span>
+                    <span class="door-sub">Carrer de Verdi 8 · Salto KS</span>
+                  </span>
+                  <span class="door-state now"><span class="dot"></span> Open now</span>
+                </div>
+                <div class="door-body">
+                  <div class="slide" data-open-door="ok">
+                    <div class="slide-fill"></div>
+                    <div class="slide-label">
+                      <span class="chevs"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg></span>
+                      Slide to open
+                    </div>
+                    <div class="slide-thumb"><svg viewBox="0 0 24 24" class="icon"><use href="#i-unlock"/></svg></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <details class="rooms" open style="margin-top:16px">
+              <summary>
+                <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-key"/></svg>
+                Your rooms &amp; spaces
+                <svg viewBox="0 0 24 24" class="icon icon-sm rm-chev"><use href="#i-chevron-down"/></svg>
+              </summary>
+              <div class="room-row">
+                <span class="rr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-home2"/></svg></span>
+                <span class="rr-name">Loft 2A<br><span class="rr-vendor">Salto KS</span></span>
+                <button class="room-open" data-open-door="ok"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-unlock"/></svg> Open</button>
+              </div>
+              <div class="room-row">
+                <span class="rr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg></span>
+                <span class="rr-name">Rooftop terrace<br><span class="rr-vendor">Salto KS</span></span>
+                <button class="room-open" data-open-door="ok"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-unlock"/></svg> Open</button>
+              </div>
+              <div class="room-row">
+                <span class="rr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span>
+                <span class="rr-name">Bike storage<br><span class="rr-vendor" style="color:var(--red-500)">Offline · contact host</span></span>
+                <button class="room-open offline" data-open-door="fail"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg> Retry</button>
+              </div>
+            </details>
+            <div class="door-note" style="margin-top:16px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg> Each door confirms separately — you'll see it open before the next.</div>
+          </div>
+        </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">Big building, many doors — they all live here so you never hunt for the right one.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Door status</div>
+            <div class="vela-tip">
+              <span class="vt-icon" style="background:var(--green-50);color:var(--green-700)"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-unlock"/></svg></span>
+              <span><span class="vt-title" style="display:block">Open now</span><span class="vt-desc">Openable this second — slide or tap Open.</span></span>
+            </div>
+            <div class="vela-tip">
+              <span class="vt-icon" style="background:var(--red-100);color:var(--red-500)"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg></span>
+              <span><span class="vt-title" style="display:block">Offline</span><span class="vt-desc">The lock lost signal. Retry, or contact the host — never left guessing.</span></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ═══ m-opening / m-opened / m-error · OpenLockStatusModal ═══ -->
+    <div class="proto-modal" id="m-opening">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="open-stat">
+          <div class="open-spinner"></div>
+          <div class="os-title">Opening the door…</div>
+          <div class="os-sub">Talking to the lock. Hold tight — this takes a second or two.</div>
+        </div>
+      </div>
+    </div>
+    <div class="proto-modal" id="m-opened">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="open-stat">
+          <div class="open-burst"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></div>
+          <div class="os-title">You're in</div>
+          <div class="os-sub">The door is open. It re-locks on its own behind you — no need to lock up.</div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Done</button>
+        </div>
+      </div>
+    </div>
+    <div class="proto-modal" id="m-error">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="open-stat">
+          <div class="open-fail"><svg viewBox="0 0 24 24" class="icon"><use href="#i-wifi-off"/></svg></div>
+          <div class="os-title">Connection issue</div>
+          <div class="os-sub">The Bike storage door didn't respond just now. It's usually a brief signal drop — try again in a moment.</div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close data-open-door="ok">Try again</button>
+          <button class="btn-ghost" data-modal-close>Contact Loft Gràcia</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></g>
+    <g id="i-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-unlock"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-key"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></g>
+    <g id="i-building"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></g>
+    <g id="i-home2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></g>
+    <g id="i-wifi"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></g>
+    <g id="i-wifi-off"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></g>
+    <g id="i-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.4-5.4 9.3-7.2 10.8a1 1 0 0 1-1.6 0C9.4 19.3 4 14.4 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-loader"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></g>
+  </defs>
+</svg>
+
+<script>
+/* Keys prototype: slide-to-open drag, tap-to-open, copy feedback,
+   and the opening → opened status sequence (OpenLockStatusModal). */
+(function () {
+  function open(id) { var m = document.getElementById(id); if (m) m.classList.add('open'); }
+  function close(id) { var m = document.getElementById(id); if (m) m.classList.remove('open'); }
+  function doorOpen(kind) {
+    if (kind === 'fail') { open('m-error'); return; }
+    open('m-opening');
+    setTimeout(function () { close('m-opening'); open('m-opened'); }, 2200);
+  }
+  function resetSlides() {
+    Array.prototype.forEach.call(document.querySelectorAll('.slide'), function (s) {
+      if (s.classList.contains('locked')) return;
+      s.classList.remove('done', 'armed', 'dragging');
+      s.__x = 0;
+      var t = s.querySelector('.slide-thumb'), f = s.querySelector('.slide-fill');
+      if (t) t.style.left = '5px';
+      if (f) f.style.width = '56px';
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var el;
+    if ((el = e.target.closest('[data-open-door]')) && !el.classList.contains('slide')) {
+      e.preventDefault();
+      doorOpen(el.getAttribute('data-open-door') || 'ok');
+      return;
+    }
+    if ((el = e.target.closest('[data-copy]'))) {
+      e.preventDefault();
+      if (el.classList.contains('done')) return;
+      el.classList.add('done');
+      var txt = el.querySelector('.cc-txt');
+      if (txt) txt.textContent = 'Copied';
+      setTimeout(function () {
+        el.classList.remove('done');
+        if (txt) txt.textContent = el.getAttribute('data-copy-label') || 'Copy';
+      }, 1600);
+      return;
+    }
+    if (e.target.closest('[data-modal-close]') || e.target.closest('[data-scenario]') ||
+        e.target.closest('[data-restart]') || e.target.classList.contains('pm-scrim')) {
+      setTimeout(resetSlides, 20);
+    }
+  });
+  function bindSlide(slide) {
+    var thumb = slide.querySelector('.slide-thumb');
+    var fill = slide.querySelector('.slide-fill');
+    if (!thumb || !fill) return;
+    slide.__x = 0;
+    var startX = 0, moved = false, dragging = false;
+    function maxX() { return slide.clientWidth - thumb.offsetWidth - 10; }
+    function paint(x) {
+      var m = maxX();
+      x = Math.max(0, Math.min(x, m));
+      slide.__x = x;
+      thumb.style.left = (5 + x) + 'px';
+      fill.style.width = (56 + x) + 'px';
+      slide.classList.toggle('armed', x > m * 0.72);
+    }
+    function complete() {
+      var m = maxX();
+      slide.classList.add('done');
+      thumb.style.left = (5 + m) + 'px';
+      fill.style.width = '100%';
+      setTimeout(function () { doorOpen(slide.getAttribute('data-open-door') || 'ok'); }, 260);
+    }
+    thumb.addEventListener('pointerdown', function (e) {
+      if (slide.classList.contains('done')) return;
+      dragging = true; moved = false;
+      startX = e.clientX - slide.__x;
+      slide.classList.add('dragging');
+      try { thumb.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    thumb.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      moved = true;
+      paint(e.clientX - startX);
+    });
+    function end() {
+      if (!dragging) return;
+      dragging = false;
+      slide.classList.remove('dragging');
+      if (slide.__x > maxX() * 0.72 || !moved) complete();
+      else paint(0);
+    }
+    thumb.addEventListener('pointerup', end);
+    thumb.addEventListener('pointercancel', end);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.slide:not(.locked)'), bindSlide);
+})();
+</script>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

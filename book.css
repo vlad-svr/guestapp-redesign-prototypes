@@ -1,0 +1,176 @@
+/* Book an experience — the mobile booking chain behind an offer:
+   BookExperienceView (AddToCartForm) → EnterContactEmailView → CreateDealCompleteModal,
+   plus OfferSlugRedirectView (the /:token/:slug deep link).
+   Layered on shared.css + pay.css + upsell.css — the quantity stepper (.qty-row/.stepper)
+   and the price/lane vocabulary come from upselling and are not redefined here. */
+
+/* ── The form container (real: AddToCartForm > Container) ─────────────────────── */
+.bx-block {
+  background: var(--n-0); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 16px; display: flex; flex-direction: column; gap: 14px;
+}
+.bx-block .bx-head {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 13px; font-weight: 700; color: var(--navy);
+}
+.bx-block .bx-head .icon { width: 18px; height: 18px; color: var(--blue-500); }
+.bx-block .bx-head .bx-sub {
+  margin-left: auto; font-size: 11px; font-weight: 500; color: var(--text-tertiary);
+}
+
+/* ── Named price items (OFFER_PRICE_TYPES.MULTIPLE_PRICE) ─────────────────────── */
+.bx-item { display: flex; align-items: center; gap: 12px; }
+.bx-item + .bx-item { border-top: 1px solid var(--border-subtle); padding-top: 14px; }
+.bx-item .bi-main { flex: 1; min-width: 0; }
+.bx-item .bi-name { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.bx-item .bi-desc { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.bx-item .bi-price {
+  font-size: 13.5px; font-weight: 700; color: var(--navy);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.bx-item .bi-price .per { font-size: 10.5px; font-weight: 500; color: var(--text-secondary); }
+.bx-item.zero .bi-name, .bx-item.zero .bi-price { color: var(--n-600); }
+
+/* ── Time-based radio slots (TimeBasedCounter) ────────────────────────────────── */
+.bx-slots { display: flex; flex-direction: column; gap: 9px; }
+.bx-slot {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 13px 14px; border-radius: var(--r-lg);
+  border: 1.5px solid var(--border); background: var(--n-0);
+}
+.bx-slot:hover { border-color: var(--blue-300); }
+.bx-slot.selected { border-color: var(--blue-500); background: var(--tint-info); }
+.bx-slot .bs-radio {
+  width: 19px; height: 19px; border-radius: 50%; border: 2px solid var(--n-300);
+  flex-shrink: 0; display: grid; place-items: center;
+}
+.bx-slot.selected .bs-radio { border-color: var(--blue-500); }
+.bx-slot.selected .bs-radio::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--blue-500); }
+.bx-slot .bs-time { font-size: 14px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.bx-slot .bs-note { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+.bx-slot .bs-price { margin-left: auto; font-size: 14px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.bx-standard {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11.5px; color: var(--text-secondary);
+}
+.bx-standard .icon { width: 14px; height: 14px; color: var(--n-500); }
+.bx-standard b { color: var(--navy); font-weight: 600; }
+
+/* ── Delivery date + time (DeliveryDateTimePicker) ────────────────────────────── */
+.bx-dates { display: flex; align-items: center; gap: 8px; }
+.bx-dates .bd-arrow {
+  width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+  border: 1px solid var(--border); background: var(--n-0);
+  display: grid; place-items: center; color: var(--n-600);
+}
+.bx-dates .bd-arrow.dis { color: var(--n-300); pointer-events: none; }
+.bx-dates .bd-strip {
+  display: flex; gap: 8px; overflow-x: auto; scroll-behavior: smooth;
+  scrollbar-width: none; padding: 2px 0;
+}
+.bx-dates .bd-strip::-webkit-scrollbar { display: none; }
+.bd-day {
+  flex-shrink: 0; width: 62px; padding: 9px 0 10px; border-radius: 12px;
+  border: 1.5px solid var(--border); background: var(--n-0); text-align: center;
+}
+.bd-day:hover { border-color: var(--blue-300); }
+.bd-day.selected { border-color: var(--blue-500); background: var(--blue-500); color: #fff; }
+.bd-day .bd-dow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); }
+.bd-day.selected .bd-dow { color: rgba(255, 255, 255, 0.75); }
+.bd-day .bd-num { font-size: 17px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; margin-top: 2px; }
+.bd-day.selected .bd-num { color: #fff; }
+.bd-day .bd-mon { font-size: 10px; font-weight: 500; color: var(--text-secondary); }
+.bd-day.selected .bd-mon { color: rgba(255, 255, 255, 0.75); }
+.bd-day.today .bd-dow { color: var(--blue-500); }
+.bd-day.today.selected .bd-dow { color: rgba(255, 255, 255, 0.85); }
+
+.bx-select {
+  display: flex; align-items: center; gap: 10px;
+  height: 46px; padding: 0 14px; width: 100%;
+  border-radius: var(--r-lg); border: 1.5px solid var(--border); background: var(--n-0);
+  font-size: 13.5px; font-weight: 500; color: var(--navy);
+}
+.bx-select.placeholder { color: var(--n-500); }
+.bx-select .icon { color: var(--n-500); }
+.bx-select .bs-chev { margin-left: auto; color: var(--n-500); }
+.bx-select:disabled, .bx-select.dis { background: var(--n-50); color: var(--n-300); pointer-events: none; }
+
+/* ── Total (TotalPriceWrapper) ────────────────────────────────────────────────── */
+.bx-total {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; border-radius: var(--r-lg);
+  background: var(--n-50); border: 1px solid var(--border-subtle);
+}
+.bx-total .bt-label { font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+.bx-total .bt-amount { font-size: 21px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.bx-total.dashed .bt-amount { border-bottom: 2px dashed var(--amber-500); }
+
+.bx-info {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 11.5px; line-height: 16px; color: var(--text-secondary);
+  padding: 11px 13px; border-radius: var(--r-md);
+  background: var(--amber-50);
+}
+.bx-info .icon { width: 15px; height: 15px; color: var(--amber-700); flex-shrink: 0; margin-top: 1px; }
+.bx-info b { color: var(--amber-700); font-weight: 600; }
+.bx-info.plain { background: var(--tint-info); color: var(--text-secondary); }
+.bx-info.plain .icon { color: var(--blue-500); }
+.bx-info.plain b { color: var(--navy); }
+
+/* ── Offer summary strip at the top of the booking form ───────────────────────── */
+.bx-offer { display: flex; align-items: center; gap: 12px; }
+.bx-offer .bo-thumb {
+  width: 56px; height: 56px; border-radius: 12px; flex-shrink: 0;
+  background: linear-gradient(135deg, #b86a00 0%, #ffb700 100%);
+  display: grid; place-items: center; color: #fff;
+}
+.bx-offer .bo-thumb.tour { background: linear-gradient(135deg, #385bf8 0%, #8ca5ff 100%); }
+.bx-offer .bo-thumb.late { background: linear-gradient(135deg, #23235d 0%, #5975f5 100%); }
+.bx-offer .bo-title { font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.bx-offer .bo-meta { font-size: 11.5px; color: var(--text-secondary); margin-top: 3px; }
+
+/* ── Confirm-email step ───────────────────────────────────────────────────────── */
+.bx-why {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 14px; border-radius: var(--r-lg);
+  border: 1px solid var(--border); background: var(--n-0);
+}
+.bx-why .bw-row { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; line-height: 18px; color: var(--text-secondary); }
+.bx-why .bw-row .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; margin-top: 2px; }
+.bx-why .bw-row b { color: var(--navy); font-weight: 600; }
+
+/* ── Deep-link resolver (OfferSlugRedirectView → ViewLoader) ──────────────────── */
+.bx-resolve {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; text-align: center; padding: 40px 30px;
+}
+.bx-resolve .br-spin {
+  width: 74px; height: 74px; border-radius: 50%; position: relative;
+  background: var(--tint-info); display: grid; place-items: center; color: var(--blue-500);
+}
+.bx-resolve .br-spin::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 3px solid transparent; border-top-color: var(--blue-500);
+  animation: br-rot 0.9s linear infinite;
+}
+@keyframes br-rot { to { transform: rotate(360deg); } }
+.bx-resolve .br-title { font-size: 17px; font-weight: 700; color: var(--navy); }
+.bx-resolve .br-text { font-size: 13px; line-height: 19px; color: var(--text-secondary); max-width: 280px; }
+.bx-resolve .br-slug {
+  font-family: ui-monospace, 'SF Mono', monospace; font-size: 11.5px;
+  color: var(--text-tertiary); background: var(--n-50);
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px;
+}
+.bx-resolve.error .br-spin { background: var(--amber-50); color: var(--amber-700); animation: none; }
+.bx-resolve.error .br-spin::after { display: none; }
+
+/* prototype-only toast (real: toastResponseError) */
+.bx-toast {
+  position: absolute; left: 16px; right: 16px; bottom: 22px; z-index: 50;
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 15px; border-radius: 14px;
+  background: var(--navy); color: #fff;
+  font-size: 12.5px; font-weight: 500;
+  box-shadow: 0 12px 30px rgba(22, 22, 67, 0.35);
+}
+.bx-toast .icon { width: 17px; height: 17px; color: #ffcf5a; flex-shrink: 0; }

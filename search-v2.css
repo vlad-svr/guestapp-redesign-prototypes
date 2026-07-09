@@ -1,0 +1,1079 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Find your booking — V2 · "The arrival card"
+   Used by flow-search-v2.html and flow-search-desktop-v2.html.
+
+   The premise: this screen is the first thing a guest ever sees of a property,
+   so the property — not the form — is the hero. A painted photo canvas carries
+   the name, the location and the host; the search itself floats over it on a
+   frosted sheet. Everything below is chrome + surfaces; no reading surface is
+   ever put behind a blur.
+
+   Depends on shared.css for tokens, .phone/.browser, .btn, .field, .icon.
+   Honours the Full · Minimal switch from glass-toggle.js via html.glass-lite.
+   Palette is limited to the tokens already in shared.css. No new hues.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --s2-hero-h: 268px;
+  --s2-hero-slim-h: 132px;
+  --s2-sheet-lift: -34px;
+  --s2-scene: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20280%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22sk%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2315153f%22%2F%3E%3Cstop%20offset%3D%22.34%22%20stop-color%3D%22%232e46c8%22%2F%3E%3Cstop%20offset%3D%22.6%22%20stop-color%3D%22%235975f5%22%2F%3E%3Cstop%20offset%3D%22.8%22%20stop-color%3D%22%238ca5ff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23ffb700%22%2F%3E%3C%2FlinearGradient%3E%3CradialGradient%20id%3D%22gl%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffb700%22%20stop-opacity%3D%22.85%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23ffb700%22%20stop-opacity%3D%220%22%2F%3E%3C%2FradialGradient%3E%3ClinearGradient%20id%3D%22se%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%235975f5%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23161643%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22400%22%20height%3D%22280%22%20fill%3D%22url%28%23sk%29%22%2F%3E%3Ccircle%20cx%3D%22286%22%20cy%3D%22152%22%20r%3D%2262%22%20fill%3D%22url%28%23gl%29%22%2F%3E%3Ccircle%20cx%3D%22286%22%20cy%3D%22152%22%20r%3D%2217%22%20fill%3D%22%23fff%22%20opacity%3D%22.92%22%2F%3E%3Cpath%20d%3D%22M0%20164%20L0%20146%20Q42%20134%2082%20148%20Q112%20158%20148%20164%20Z%22%20fill%3D%22%2315153f%22%20opacity%3D%22.5%22%2F%3E%3Crect%20y%3D%22164%22%20width%3D%22400%22%20height%3D%22116%22%20fill%3D%22url%28%23se%29%22%2F%3E%3Cg%20fill%3D%22%23fff%22%20opacity%3D%22.22%22%3E%3Cellipse%20cx%3D%22286%22%20cy%3D%22172%22%20rx%3D%2215%22%20ry%3D%221.4%22%2F%3E%3Cellipse%20cx%3D%22280%22%20cy%3D%22181%22%20rx%3D%229%22%20ry%3D%221.2%22%2F%3E%3Cellipse%20cx%3D%22292%22%20cy%3D%22190%22%20rx%3D%2213%22%20ry%3D%221.3%22%2F%3E%3Cellipse%20cx%3D%22284%22%20cy%3D%22200%22%20rx%3D%227%22%20ry%3D%221.1%22%2F%3E%3Cellipse%20cx%3D%22290%22%20cy%3D%22211%22%20rx%3D%2211%22%20ry%3D%221.2%22%2F%3E%3C%2Fg%3E%3Cg%20opacity%3D%22.9%22%3E%3Cpath%20d%3D%22M226%20100%20L400%2072%20L400%20100%20Z%22%20fill%3D%22%23b86a00%22%2F%3E%3Crect%20x%3D%22232%22%20y%3D%2298%22%20width%3D%22168%22%20height%3D%22182%22%20fill%3D%22%23f6f7fc%22%2F%3E%3Crect%20x%3D%22232%22%20y%3D%2298%22%20width%3D%2215%22%20height%3D%22182%22%20fill%3D%22%23161643%22%20opacity%3D%22.12%22%2F%3E%3Cg%20fill%3D%22%23161643%22%20opacity%3D%22.1%22%3E%3Crect%20x%3D%22232%22%20y%3D%22142%22%20width%3D%22168%22%20height%3D%221.6%22%2F%3E%3Crect%20x%3D%22232%22%20y%3D%22186%22%20width%3D%22168%22%20height%3D%221.6%22%2F%3E%3Crect%20x%3D%22232%22%20y%3D%22230%22%20width%3D%22168%22%20height%3D%221.6%22%2F%3E%3C%2Fg%3E%3Cg%3E%3Cpath%20d%3D%22M258%20138%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23ffb700%22%20opacity%3D%22.92%22%2F%3E%3Cpath%20d%3D%22M300%20138%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23161643%22%20opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22M342%20138%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23ffb700%22%20opacity%3D%22.7%22%2F%3E%3Cpath%20d%3D%22M258%20182%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23161643%22%20opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22M300%20182%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23ffb700%22%20opacity%3D%22.88%22%2F%3E%3Cpath%20d%3D%22M342%20182%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23ffb700%22%20opacity%3D%22.35%22%2F%3E%3Cpath%20d%3D%22M258%20226%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23ffb700%22%20opacity%3D%22.8%22%2F%3E%3Cpath%20d%3D%22M300%20226%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23161643%22%20opacity%3D%22.28%22%2F%3E%3Cpath%20d%3D%22M342%20226%20v-16%20a11%2011%200%200%201%2022%200%20v16%20z%22%20fill%3D%22%23ffb700%22%20opacity%3D%22.6%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%23161643%22%20stroke-width%3D%221.4%22%20opacity%3D%22.4%22%3E%3Cpath%20d%3D%22M250%20186%20h140%22%2F%3E%3Cpath%20d%3D%22M256%20186%20v9%20M268%20186%20v9%20M280%20186%20v9%20M292%20186%20v9%20M304%20186%20v9%20M316%20186%20v9%20M328%20186%20v9%20M340%20186%20v9%20M352%20186%20v9%20M364%20186%20v9%20M376%20186%20v9%22%2F%3E%3Cpath%20d%3D%22M250%20195%20h140%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%230f2a3d%22%20stroke-width%3D%221%22%20opacity%3D%22.55%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M232%20118%20Q262%20132%20292%20116%20Q322%20130%20352%20114%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22%23ffb700%22%20opacity%3D%22.9%22%3E%3Ccircle%20cx%3D%22247%22%20cy%3D%22125%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%22262%22%20cy%3D%22128%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%22277%22%20cy%3D%22124%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%22292%22%20cy%3D%22116%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%22307%22%20cy%3D%22126%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%22322%22%20cy%3D%22129%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%22337%22%20cy%3D%22123%22%20r%3D%222%22%2F%3E%3C%2Fg%3E%3Cg%20stroke%3D%22%2315153f%22%20stroke-width%3D%225%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.88%22%3E%3Cpath%20d%3D%22M48%20280%20C%2044%20238%2040%20212%2034%20188%22%2F%3E%3Cpath%20d%3D%22M34%20188%20C%2014%20174%20-4%20178%20-12%20190%22%2F%3E%3Cpath%20d%3D%22M34%20188%20C%2016%20166%2030%20150%2046%20148%22%2F%3E%3Cpath%20d%3D%22M34%20188%20C%2054%20168%2078%20172%2090%20184%22%2F%3E%3Cpath%20d%3D%22M34%20188%20C%208%20192%20-4%20206%20-8%20220%22%2F%3E%3Cpath%20d%3D%22M34%20188%20C%2056%20192%2070%20206%2074%20222%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%22150%22%20cy%3D%22278%22%20rx%3D%22120%22%20ry%3D%2216%22%20fill%3D%22%2315153f%22%20opacity%3D%22.35%22%2F%3E%3C%2Fsvg%3E");
+  --s2-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─────────────────────────────────────────────────────────────
+   1 · The painted property photo
+   --s2-scene is an inline SVG: dusk sky, sun over the water, a
+   headland, the white façade with its lit arched windows, terrace
+   railing and string lights, and a palm in the foreground. Painted
+   rather than photographed so it never 404s, weighs ~6 KB, and can
+   be recoloured per brand. In the real app this is the property's
+   own cover image; the scene is the fallback and the mock.
+   ───────────────────────────────────────────────────────────── */
+.s2-photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-image: var(--s2-scene);
+  background-size: cover;
+  background-position: center 62%;
+  background-repeat: no-repeat;
+  background-color: #2e46c8;
+  transform: scale(1.02);
+}
+/* a slow parallax breath, so it feels photographic rather than printed */
+.s2-photo::before {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  background: radial-gradient(200px 200px at 76% 22%, rgba(255, 236, 200, 0.5), transparent 66%);
+  animation: s2-bloom 14s ease-in-out infinite alternate;
+}
+@keyframes s2-bloom {
+  from { transform: translate3d(0, 0, 0) scale(1); opacity: 0.55; }
+  to   { transform: translate3d(-14px, 8px, 0) scale(1.08); opacity: 0.85; }
+}
+
+/* film grain — the single detail that stops the gradient reading as a gradient */
+.s2-grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--s2-grain);
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* legibility scrim — content sits on this, never on the raw photo */
+.s2-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(21, 21, 63, 0.5) 0%, rgba(21, 21, 63, 0) 34%),
+    linear-gradient(0deg, rgba(21, 21, 63, 0.82) 0%, rgba(21, 21, 63, 0.12) 46%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2 · Hero
+   ───────────────────────────────────────────────────────────── */
+.s2-hero {
+  position: relative;
+  flex-shrink: 0;
+  min-height: var(--s2-hero-h);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+}
+.s2-hero > .statusbar,
+.s2-hero > .s2-hero-bar,
+.s2-hero > .s2-hero-meta,
+.s2-hero > .s2-hero-nav { position: relative; z-index: 2; }
+
+.s2-hero.slim { min-height: var(--s2-hero-slim-h); }
+.s2-hero.slim .s2-hero-meta { padding-bottom: 22px; }
+
+.s2-hero-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px 0;
+}
+.s2-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.s2-brand i {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--blue-500);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(22, 22, 67, 0.3);
+}
+.s2-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(14px) saturate(1.6);
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+}
+.s2-lang:hover { background: rgba(255, 255, 255, 0.26); }
+
+/* back row for the slim hero */
+.s2-hero-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 0;
+}
+.s2-hero-nav .s2-back {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.s2-hero-nav .s2-back:hover { background: rgba(255, 255, 255, 0.28); }
+.s2-hero-nav .s2-nav-titles { min-width: 0; }
+.s2-hero-nav .s2-nav-title { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; }
+.s2-hero-nav .s2-nav-sub {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.76);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.s2-hero-meta {
+  margin-top: auto;
+  padding: 0 18px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.s2-seal {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 25px;
+  padding: 0 10px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(53, 229, 188, 0.22);
+  border: 1px solid rgba(53, 229, 188, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.s2-seal .icon { width: 13px; height: 13px; color: var(--green-500); }
+/* .proto-stage h1 (shared.css) is more specific than a bare .s2-prop and would
+   paint the property name navy-on-navy — qualify the selector to beat it. */
+.proto-stage .s2-prop {
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(21, 21, 63, 0.45);
+}
+.proto-stage .s2-hero.slim .s2-prop { font-size: 20px; }
+.s2-loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.86);
+}
+.s2-loc .icon { width: 14px; height: 14px; }
+.s2-loc .dot { opacity: 0.5; }
+
+/* ─────────────────────────────────────────────────────────────
+   3 · The frosted sheet that lifts over the hero
+   ───────────────────────────────────────────────────────────── */
+.s2-body {
+  position: relative;
+  z-index: 3;
+  margin-top: var(--s2-sheet-lift);
+  padding: 0 14px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+.s2-sheet {
+  border-radius: var(--r-2xl);
+  padding: 18px 16px 16px;
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.74));
+  backdrop-filter: blur(40px) saturate(1.9);
+  -webkit-backdrop-filter: blur(40px) saturate(1.9);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), 0 22px 54px rgba(22, 22, 67, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+/* one slow specular sweep — the "liquid" tell */
+.s2-sheet::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: s2-sweep 7s ease-in-out infinite;
+}
+@keyframes s2-sweep {
+  0%, 62% { transform: translateX(0); opacity: 0; }
+  70% { opacity: 1; }
+  100% { transform: translateX(340%); opacity: 0; }
+}
+.s2-sheet > * { position: relative; z-index: 1; }
+
+/* host strip — the "someone is expecting you" line */
+.s2-host {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(22, 22, 67, 0.08);
+}
+.s2-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--gradient-brand);
+  box-shadow: 0 0 0 2px #fff, 0 2px 8px rgba(22, 22, 67, 0.18);
+}
+.s2-host-main { min-width: 0; flex: 1; }
+.s2-host-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+.s2-host-sub {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.s2-host-sub .icon { width: 12px; height: 12px; color: var(--green-700); }
+.s2-stars { display: inline-flex; gap: 2px; color: var(--amber-500); }
+.s2-stars .icon { width: 12px; height: 12px; fill: currentColor; stroke: none; }
+
+.s2-ask {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.s2-ask .hl { color: var(--blue-500); }
+.s2-ask-sub {
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--text-secondary);
+  margin-top: 5px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4 · Method cards — one tap, no Continue gate
+   ───────────────────────────────────────────────────────────── */
+.s2-methods { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.s2-method {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 13px 13px 13px 12px;
+  border-radius: var(--r-xl);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 2px rgba(22, 22, 67, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s, border-color 0.18s;
+}
+.s2-method:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 92, 248, 0.4);
+  box-shadow: 0 12px 26px rgba(22, 22, 67, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.s2-method:active { transform: translateY(0) scale(0.995); }
+.s2-method .m-ic {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: var(--blue-500);
+  background: linear-gradient(150deg, var(--tint-info), var(--tint-pressed));
+  border: 1px solid rgba(56, 92, 248, 0.16);
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.s2-method:hover .m-ic { transform: scale(1.06) rotate(-3deg); }
+.s2-method .m-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.s2-method .m-title { font-size: 14px; font-weight: 600; color: var(--navy); }
+.s2-method .m-desc { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); }
+.s2-method .m-need {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--n-600);
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+.s2-method .m-need .icon { width: 12px; height: 12px; }
+.s2-method .m-chev { color: var(--n-300); transition: transform 0.18s, color 0.18s; }
+.s2-method:hover .m-chev { color: var(--blue-500); transform: translateX(3px); }
+
+/* ─────────────────────────────────────────────────────────────
+   5 · Trust footer + reassurance strip
+   ───────────────────────────────────────────────────────────── */
+.s2-why {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px 13px;
+  border-radius: var(--r-lg);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 11.5px;
+  line-height: 17px;
+  color: var(--text-secondary);
+}
+.s2-why .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; margin-top: 1px; }
+.s2-why b { color: var(--navy); font-weight: 600; }
+
+.s2-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+.s2-trust .icon { width: 13px; height: 13px; }
+
+/* ─────────────────────────────────────────────────────────────
+   6 · Segmented booking-code entry
+   Eight cells instead of one text field: the shape of the answer
+   is visible before you type it, and a typo is locatable.
+   ───────────────────────────────────────────────────────────── */
+.s2-code-wrap { display: flex; flex-direction: column; gap: 10px; }
+.s2-lbl-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.s2-lbl-row label { font-size: 12.5px; font-weight: 600; color: var(--navy); }
+.s2-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--blue-500);
+  cursor: pointer;
+}
+.s2-help:hover { color: var(--blue-600); }
+.s2-help .icon { width: 13px; height: 13px; }
+
+.s2-cells { display: flex; align-items: center; gap: 6px; justify-content: center; }
+.s2-cell {
+  width: 34px;
+  height: 50px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--navy);
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1.5px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.s2-cell.filled { border-color: rgba(56, 92, 248, 0.3); animation: s2-pop 0.22s ease both; }
+.s2-cell.active { border-color: var(--blue-500); box-shadow: var(--shadow-focus); }
+.s2-cell.active::after {
+  content: '';
+  width: 2px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--blue-500);
+  animation: s2-caret 1s steps(2, start) infinite;
+}
+@keyframes s2-pop { from { transform: scale(0.86); } to { transform: scale(1); } }
+@keyframes s2-caret { 50% { opacity: 0; } }
+.s2-dash { width: 10px; height: 2px; border-radius: 2px; background: var(--n-300); flex-shrink: 0; }
+
+.s2-code-aids { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.s2-paste {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--n-600);
+  cursor: pointer;
+}
+.s2-paste:hover { border-color: var(--blue-500); color: var(--blue-500); }
+.s2-paste .icon { width: 13px; height: 13px; }
+.s2-code-hint { font-size: 11px; color: var(--text-tertiary); }
+
+.s2-inline-error {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--red-500);
+}
+.s2-inline-error .icon { width: 14px; height: 14px; }
+.s2-code-wrap.invalid .s2-inline-error { display: flex; }
+.s2-code-wrap.invalid .s2-cell.filled { border-color: var(--red-soft); }
+
+/* ─────────────────────────────────────────────────────────────
+   7 · Field groups (create-reservation)
+   ───────────────────────────────────────────────────────────── */
+.s2-group {
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.s2-group-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.s2-group-label .icon { width: 14px; height: 14px; color: var(--blue-500); }
+.s2-from-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green-700);
+  background: var(--green-50);
+  border: 1px solid rgba(53, 229, 188, 0.4);
+}
+.s2-from-search .icon { width: 11px; height: 11px; fill: currentColor; stroke: none; }
+
+/* ─────────────────────────────────────────────────────────────
+   8 · Searching — the property card gets scanned
+   ───────────────────────────────────────────────────────────── */
+.s2-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 30px 22px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.s2-stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--gradient-page);
+}
+.s2-stage::before,
+.s2-stage::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(58px);
+  pointer-events: none;
+}
+.s2-stage::before {
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, rgba(56, 92, 248, 0.42), transparent 70%);
+  top: -100px; left: -90px;
+}
+.s2-stage::after {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(53, 229, 188, 0.34), transparent 70%);
+  bottom: -110px; right: -80px;
+}
+.s2-stage > * { position: relative; z-index: 1; }
+
+/* the mini property card being matched */
+.s2-scan {
+  width: 250px;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  position: relative;
+  background: var(--n-0);
+  box-shadow: 0 18px 44px rgba(22, 22, 67, 0.2);
+}
+.s2-scan-photo { height: 96px; position: relative; overflow: hidden; }
+.s2-scan-body { padding: 11px 13px; text-align: left; }
+.s2-scan-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+.s2-scan-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+/* the sweep line */
+.s2-scan::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 42%;
+  top: -42%;
+  background: linear-gradient(180deg, transparent, rgba(56, 92, 248, 0.28), rgba(56, 92, 248, 0.9));
+  box-shadow: 0 0 22px 4px rgba(56, 92, 248, 0.55);
+  animation: s2-scanline 1.7s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+@keyframes s2-scanline {
+  0%   { top: -42%; opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* the checklist that makes the wait legible */
+.s2-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 250px;
+  text-align: left;
+}
+.s2-step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+.s2-step .st-dot {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--n-200);
+  background: rgba(255, 255, 255, 0.7);
+}
+.s2-step .st-dot .icon { width: 11px; height: 11px; opacity: 0; }
+.s2-step.done { color: var(--navy); font-weight: 600; }
+.s2-step.done .st-dot { background: var(--green-500); border-color: var(--green-500); color: #fff; }
+.s2-step.done .st-dot .icon { opacity: 1; }
+.s2-step.doing { color: var(--navy); font-weight: 600; }
+.s2-step.doing .st-dot { border-color: var(--blue-500); border-top-color: transparent; animation: s2-spin 0.7s linear infinite; }
+@keyframes s2-spin { to { transform: rotate(360deg); } }
+
+.s2-title { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
+.s2-sub { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); max-width: 280px; }
+
+/* ─────────────────────────────────────────────────────────────
+   9 · Booking found — the boarding pass
+   ───────────────────────────────────────────────────────────── */
+.s2-seal-check {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(150deg, var(--green-500), var(--green-700));
+  box-shadow: 0 10px 26px rgba(15, 159, 128, 0.4);
+  animation: s2-seal-in 0.5s cubic-bezier(0.2, 1.2, 0.3, 1) both;
+  position: relative;
+}
+.s2-seal-check .icon { width: 30px; height: 30px; stroke-width: 2.6; }
+.s2-seal-check::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--green-500);
+  opacity: 0;
+  animation: s2-ping 1.8s ease-out infinite;
+}
+@keyframes s2-seal-in { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes s2-ping { 0% { transform: scale(0.9); opacity: 0.7; } 100% { transform: scale(1.35); opacity: 0; } }
+
+/* The mask below clips box-shadow, so the elevation lives on a shell and is
+   drawn with drop-shadow(), which follows the masked silhouette (notches included). */
+.s2-pass-shell {
+  width: 100%;
+  max-width: 300px;
+  filter: drop-shadow(0 18px 36px rgba(22, 22, 67, 0.2));
+  animation: s2-pass-in 0.45s 0.1s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+.s2-pass {
+  width: 100%;
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  overflow: hidden;
+  text-align: left;
+}
+@keyframes s2-pass-in { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+.s2-pass-top { position: relative; height: 74px; overflow: hidden; display: flex; align-items: flex-end; }
+.s2-pass-top .s2-pass-name {
+  position: relative;
+  z-index: 2;
+  padding: 0 14px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(21, 21, 63, 0.5);
+}
+.s2-pass-mid { display: flex; align-items: stretch; padding: 14px; gap: 10px; }
+.s2-leg { flex: 1; min-width: 0; }
+.s2-leg .lg-k {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.s2-leg .lg-v { font-size: 16px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; margin-top: 2px; }
+.s2-leg .lg-s { font-size: 10.5px; color: var(--text-secondary); }
+.s2-leg.right { text-align: right; }
+.s2-nights {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+.s2-nights .nt-line {
+  width: 44px;
+  height: 1.5px;
+  background: repeating-linear-gradient(90deg, var(--n-300) 0 3px, transparent 3px 6px);
+}
+.s2-nights .nt-n { font-size: 10px; font-weight: 700; color: var(--n-600); white-space: nowrap; }
+
+/* Perforation. The tear notches are masked *out* of the card rather than drawn
+   as circles on top of it, so the card never has to know what colour sits
+   behind it — it reads correctly on the gradient stage and on a flat page.
+   --tear is the distance from the card's top edge down to the dashed rule. */
+.s2-pass {
+  --tear: 152px;
+  -webkit-mask:
+    radial-gradient(circle 8px at 0 var(--tear), transparent 8px, #000 8.5px),
+    radial-gradient(circle 8px at 100% var(--tear), transparent 8px, #000 8.5px);
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle 8px at 0 var(--tear), transparent 8px, #000 8.5px),
+    radial-gradient(circle 8px at 100% var(--tear), transparent 8px, #000 8.5px);
+  mask-composite: intersect;
+}
+.s2-perf {
+  position: relative;
+  height: 1px;
+  margin: 0 18px;
+  background: repeating-linear-gradient(90deg, var(--n-200) 0 5px, transparent 5px 10px);
+}
+
+.s2-pass-foot { display: flex; align-items: center; gap: 10px; padding: 12px 14px 14px; }
+.s2-pass-foot .pf-main { flex: 1; min-width: 0; }
+.s2-pass-foot .pf-ref {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.s2-pass-foot .pf-ref::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1.5px solid var(--n-300);
+  box-shadow: -3px 3px 0 -1.5px var(--n-0), -3px 3px 0 0 var(--n-300);
+}
+.s2-pass-foot .pf-ref:hover { color: var(--blue-500); }
+.s2-pass-foot .pf-ref:hover::after { border-color: var(--blue-500); box-shadow: -3px 3px 0 -1.5px var(--n-0), -3px 3px 0 0 var(--blue-500); }
+.s2-pass-foot .pf-k {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.s2-qr {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background:
+    conic-gradient(from 0deg, var(--navy) 25%, transparent 0 50%, var(--navy) 0 75%, transparent 0) 0 0 / 8px 8px;
+  opacity: 0.82;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px var(--n-200);
+}
+.s2-redirect {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.s2-redirect .spin {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--n-200);
+  border-top-color: var(--blue-500);
+  animation: s2-spin 0.7s linear infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10 · Not found — next steps, never a dead end
+   ───────────────────────────────────────────────────────────── */
+.s2-warn {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--amber-700);
+  background: var(--amber-50);
+  border: 1px solid rgba(255, 183, 0, 0.4);
+}
+.s2-warn .icon { width: 28px; height: 28px; }
+.s2-actions { display: flex; flex-direction: column; gap: 9px; width: 100%; max-width: 320px; }
+.s2-nf {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--r-lg);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.16s, border-color 0.16s, box-shadow 0.16s;
+}
+.s2-nf:hover { transform: translateY(-1px); border-color: var(--blue-500); box-shadow: var(--shadow-elev); }
+.s2-nf .nf-ic {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--blue-500);
+  background: var(--tint-info);
+}
+.s2-nf.contact .nf-ic { color: var(--green-700); background: var(--green-50); }
+/* .nf-title / .nf-desc are inline spans — stack them, or the title runs into
+   its own description on one line. */
+.s2-nf .nf-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.s2-nf .nf-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+.s2-nf .nf-desc { font-size: 11px; line-height: 15px; color: var(--text-secondary); }
+.s2-nf .nf-chev { color: var(--n-300); }
+.s2-nf:hover .nf-chev { color: var(--blue-500); }
+
+/* ─────────────────────────────────────────────────────────────
+   11 · Desktop — the split canvas
+   ───────────────────────────────────────────────────────────── */
+.s2-split {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  background: var(--bg-page);
+}
+.s2-canvas {
+  position: relative;
+  width: 46%;
+  min-width: 380px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+/* the canvas is tall and narrow, so `cover` crops horizontally — bias the crop
+   toward the façade rather than centring on open water */
+.s2-canvas .s2-photo { background-position: 78% 58%; }
+.s2-canvas > .s2-canvas-in {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 30px 34px 30px;
+}
+.s2-canvas .s2-hero-meta { padding: 0 0 4px; }
+.s2-canvas .s2-prop { font-size: 34px; }
+
+.s2-quote {
+  margin-top: auto;
+  padding: 16px 18px;
+  border-radius: var(--r-xl);
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  color: #fff;
+}
+.s2-quote p { font-size: 13.5px; line-height: 20px; font-style: italic; }
+.s2-quote .q-by { display: flex; align-items: center; gap: 9px; margin-top: 12px; }
+.s2-quote .q-by .s2-avatar { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); }
+.s2-quote .q-name { font-size: 12px; font-weight: 600; }
+.s2-quote .q-role { font-size: 11px; color: rgba(255, 255, 255, 0.72); }
+
+.s2-badges { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.s2-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.s2-badge .icon { width: 13px; height: 13px; }
+
+.s2-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 34px;
+  position: relative;
+  overflow: hidden;
+}
+.s2-panel::before {
+  content: '';
+  position: absolute;
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  filter: blur(64px);
+  background: radial-gradient(circle, rgba(56, 92, 248, 0.28), transparent 70%);
+  top: -120px; right: -90px;
+  pointer-events: none;
+}
+.s2-panel::after {
+  content: '';
+  position: absolute;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  filter: blur(64px);
+  background: radial-gradient(circle, rgba(53, 229, 188, 0.26), transparent 70%);
+  bottom: -120px; left: -70px;
+  pointer-events: none;
+}
+.s2-panel > * { position: relative; z-index: 1; }
+
+.s2-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--r-2xl);
+  padding: 26px 26px 22px;
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.72));
+  backdrop-filter: blur(40px) saturate(1.9);
+  -webkit-backdrop-filter: blur(40px) saturate(1.9);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), 0 26px 64px rgba(22, 22, 67, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+.s2-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 45%; height: 100%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: s2-sweep 7s ease-in-out infinite;
+}
+.s2-card > * { position: relative; z-index: 1; }
+.s2-card .s2-ask { font-size: 24px; }
+.s2-card .s2-cell { width: 38px; height: 54px; font-size: 21px; }
+/* .s2-hero-meta already claims the free space above it, so the quote must not */
+.s2-canvas .s2-quote { margin-top: 18px; }
+/* state screens (searching / found / not found) keep the property in view and
+   put the state itself inside the card */
+.s2-card.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 32px 26px 26px;
+}
+.s2-card.center .s2-steps,
+.s2-card.center .s2-actions { width: 100%; max-width: 300px; }
+
+.s2-panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+.s2-panel-foot a { color: var(--text-tertiary); }
+.s2-panel-foot a:hover { color: var(--blue-500); }
+
+.s2-cta-row { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+
+/* ─────────────────────────────────────────────────────────────
+   12 · Minimal glass (html.glass-lite)
+   Same layout, same hierarchy — the depth is dialled out.
+   The hero photo stays: it is content, not chrome.
+   ───────────────────────────────────────────────────────────── */
+html.glass-lite .s2-sheet,
+html.glass-lite .s2-card {
+  background: var(--n-0);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: var(--border);
+  box-shadow: var(--shadow-elev);
+}
+html.glass-lite .s2-sheet::after,
+html.glass-lite .s2-card::after,
+html.glass-lite .s2-photo::before { display: none; }
+html.glass-lite .s2-method,
+html.glass-lite .s2-why,
+html.glass-lite .s2-group,
+html.glass-lite .s2-nf,
+html.glass-lite .s2-cell {
+  background: var(--n-0);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.glass-lite .s2-method { border-color: var(--border); box-shadow: var(--shadow-card); }
+html.glass-lite .s2-method:hover { transform: none; box-shadow: var(--shadow-focus); }
+html.glass-lite .s2-method:hover .m-ic { transform: none; }
+html.glass-lite .s2-nf:hover { transform: none; }
+html.glass-lite .s2-why { border-color: var(--border); }
+html.glass-lite .s2-lang,
+html.glass-lite .s2-hero-nav .s2-back,
+html.glass-lite .s2-seal,
+html.glass-lite .s2-quote {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.glass-lite .s2-lang,
+html.glass-lite .s2-hero-nav .s2-back { background: rgba(21, 21, 63, 0.42); }
+html.glass-lite .s2-seal { background: rgba(15, 159, 128, 0.5); }
+html.glass-lite .s2-quote { background: rgba(21, 21, 63, 0.5); }
+html.glass-lite .s2-grain { opacity: 0.08; }
+html.glass-lite .s2-stage { background: var(--bg-page); }
+html.glass-lite .s2-stage::before,
+html.glass-lite .s2-stage::after,
+html.glass-lite .s2-panel::before,
+html.glass-lite .s2-panel::after { display: none; }
+html.glass-lite .s2-panel { background: var(--bg-page); }
+html.glass-lite .s2-step .st-dot { background: var(--n-0); }
+
+/* ─────────────────────────────────────────────────────────────
+   13 · No backdrop-filter → solid, never transparent-on-transparent
+   ───────────────────────────────────────────────────────────── */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .s2-sheet, .s2-card { background: var(--n-0); box-shadow: var(--shadow-elev); }
+  .s2-method, .s2-why, .s2-group, .s2-nf, .s2-cell { background: var(--n-0); }
+  .s2-lang, .s2-hero-nav .s2-back { background: rgba(21, 21, 63, 0.5); }
+  .s2-seal { background: rgba(15, 159, 128, 0.55); }
+  .s2-quote { background: rgba(21, 21, 63, 0.55); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   14 · Motion opt-out
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .s2-photo::before,
+  .s2-sheet::after,
+  .s2-card::after,
+  .s2-scan::after,
+  .s2-seal-check::after,
+  .s2-cell.active::after { animation: none; }
+  .s2-seal-check, .s2-pass-shell, .s2-cell.filled { animation: none; }
+  .s2-step.doing .st-dot,
+  .s2-redirect .spin { animation-duration: 2.4s; }
+  .s2-method, .s2-nf { transition: none; }
+  .s2-method:hover, .s2-nf:hover { transform: none; }
+}

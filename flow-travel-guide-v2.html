@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Travel Guide V2 — a plan you can change (Mobile)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="travel-guide-v2.css">
+</head>
+<body class="tg-scope">
+<div class="proto-stage">
+  <h1>AI Travel Guide V2 — a plan you can change (Mobile)</h1>
+  <p class="lede">A rebuild of <code>pages/TravelGuideView</code> — <code>TravelGuideStartPage</code>, <code>TravelGuideQuestions</code>, <code>TravelGuideLoading</code>, <code>TravelGuidePlan</code>. Four defects drive the redesign: <b>once a guide exists you can never rebuild it</b> (<code>TravelGuideView.tsx:70</code> force-forwards intro→guide, and no regenerate control exists anywhere); <b>every step is <code>{replace:true}</code></b> so Back exits the feature and drops the answers, which live in an unpersisted <code>useState</code>; <b>the failure state is one sentence with no way out</b>; and the most common slot type, <code>web_search</code>, <b>renders no link, no map and no action</b> — the loading screen promises "Checking opening hours and availability" and the plan then shows neither. Mock data only — no business logic.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="tg-intro">Intro</button>
+    <button class="fh-chip" data-scenario="tg-q">Shape the plan</button>
+    <button class="fh-chip" data-scenario="tg-build">Building</button>
+    <button class="fh-chip" data-scenario="tg-slow">Still working</button>
+    <button class="fh-chip" data-scenario="tg-error">Build failed</button>
+    <button class="fh-chip" data-scenario="tg-plan">The plan</button>
+    <button class="fh-chip" data-scenario="tg-skeleton">Returning (skeleton)</button>
+    <button class="fh-chip" data-scenario="tg-offline">Offline (saved)</button>
+    <button class="fh-chip" data-scenario="tg-empty">Empty guide</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="proto-row">
+    <div class="phone-col">
+    <div class="phone-label">V2 · proposed</div>
+    <div class="phone">
+
+      <!-- Screen-reader announcements for every prototype-only state change. -->
+      <p class="sr-only" role="status" aria-live="polite" data-tg-live></p>
+
+      <!-- ══════════════════ 1 · INTRO ══════════════════
+           Shipped: an <img src={heroImage}> with no fallback, an H1 that is
+           the bare city name, and a pitch that promises "4-5 quick questions"
+           when the form actually asks six. Nothing says how long the build
+           takes, what it costs, or that the answers can be changed later.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-intro" data-start data-label="Intro — nothing generated yet">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+
+        <header class="tg-hero">
+          <div class="tg-scene" aria-hidden="true"></div>
+          <div class="tg-grain" aria-hidden="true"></div>
+          <div class="tg-hero-nav">
+            <button class="tg-hero-back" data-goto="tg-plan" aria-label="Back to check-in">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>
+            </button>
+          </div>
+          <p class="tg-eyebrow">Villa Serena · 12–15 March</p>
+          <h1>Three days in<br>Valencia</h1>
+          <p>Tell us how you like to travel and we'll shape a day-by-day plan around your check-in, your check-out and the streets you're actually staying on.</p>
+        </header>
+
+        <div class="content">
+          <!-- The three things the shipped intro never says. -->
+          <div class="tg-promise">
+            <span class="badge badge-neutral"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> 3 questions · under a minute</span>
+            <span class="badge badge-success"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg> Free</span>
+            <span class="badge badge-info"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg> Change it any time</span>
+          </div>
+
+          <section class="card" aria-labelledby="tg-what">
+            <div class="card-body" style="padding:4px 15px">
+              <h2 id="tg-what" class="sr-only">What you get</h2>
+              <div class="tg-value">
+                <div class="tg-value-row">
+                  <span class="tg-value-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span>
+                  <div>
+                    <div class="tg-value-t">Built around your actual dates</div>
+                    <div class="tg-value-s">Arrival afternoon starts after your 15:00 check-in. Departure morning ends before you hand back the keys.</div>
+                  </div>
+                </div>
+                <div class="tg-value-row">
+                  <span class="tg-value-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg></span>
+                  <div>
+                    <div class="tg-value-t">Walking distance from Villa Serena</div>
+                    <div class="tg-value-s">Every stop carries directions, a duration and what it costs — nothing you have to look up again.</div>
+                  </div>
+                </div>
+                <div class="tg-value-row">
+                  <span class="tg-value-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sparkles"/></svg></span>
+                  <div>
+                    <div class="tg-value-t">You can see why each pick was made</div>
+                    <div class="tg-value-s">And which of your answers put it there. Disagree with one, change the answer, rebuild.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="cta-dock">
+          <button class="btn btn-primary btn-block" data-goto="tg-q">
+            Shape my plan
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </button>
+          <!-- Skip stays, but it now says what it costs you. -->
+          <button class="tg-skip" data-goto="tg-build" data-tg-skip>
+            Skip — build it from my booking alone
+            <small>Uses your city, dates and length of stay. No preferences.</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 2 · SHAPE THE PLAN ══════════════════
+           Shipped: six questions on one scroll; a six-segment bar that fills
+           by COUNT (answering #6 lights segment #1); required and optional
+           look identical; single-selects silently empty when you re-tap the
+           chosen chip; one amber-dot hint at the very bottom.
+           Here: three required questions, three folded optional ones, real
+           radio/checkbox semantics, a meter that measures what gates the
+           button, and the error on the question that caused it.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-q" data-label="Shape the plan — 3 required, 3 optional">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="tg-intro" aria-label="Back to intro"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Shape your plan</div></div>
+        </div>
+
+        <div class="tg-qhead">
+          <div class="tg-qhead-row">
+            <h2>Three things we need</h2>
+            <span class="tg-qcount" data-tg-count><b>0</b> of 3 answered</span>
+          </div>
+          <!-- Required segments fill solid. Optional segments are hatched and
+               sit apart, so an optional answer never reads as progress. -->
+          <div class="tg-meter" aria-hidden="true">
+            <span class="tg-meter-seg req" data-tg-seg="vacationStyle"></span>
+            <span class="tg-meter-seg req" data-tg-seg="budget"></span>
+            <span class="tg-meter-seg req" data-tg-seg="pace"></span>
+            <span class="tg-meter-seg opt" data-tg-seg="interests"></span>
+            <span class="tg-meter-seg opt" data-tg-seg="placeVibe"></span>
+            <span class="tg-meter-seg opt" data-tg-seg="avoid"></span>
+          </div>
+        </div>
+
+        <div class="content" style="gap:14px">
+
+          <!-- Q1 · vacationStyle — required, multi, soft cap 3 -->
+          <fieldset class="tg-qcard" data-tg-q="vacationStyle" data-tg-required data-tg-max="3">
+            <legend class="tg-q-legend">
+              <span class="tg-q-flag req"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-asterisk"/></svg> Required</span>
+              <span class="tg-q-title">What kind of trip is this?</span>
+            </legend>
+            <p class="tg-q-sub">Sets the tone of everything below.</p>
+            <div class="tg-chips">
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Relaxation"><span>Relaxation</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Culture"><span>Culture</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Beaches"><span>Beaches</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Romantic"><span>Romantic</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Family"><span>Family</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Adventure"><span>Adventure</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="City exploring"><span>City exploring</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Nature"><span>Nature</span></label>
+              <label class="tg-chip"><input type="checkbox" name="vacationStyle" value="Local life"><span>Local life</span></label>
+            </div>
+            <!-- Shipped: maxSelected exists in the hook and no question sets it,
+                 so "select everything" is allowed — and tells the model nothing. -->
+            <p class="tg-cap" data-tg-cap>Pick up to 3 — a narrower answer makes a sharper plan.</p>
+            <p class="tg-qerr"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-alert"/></svg> Pick at least one to continue.</p>
+          </fieldset>
+
+          <!-- Q2 · budget — required, single (radio: cannot be emptied) -->
+          <fieldset class="tg-qcard" data-tg-q="budget" data-tg-required data-tg-single>
+            <legend class="tg-q-legend">
+              <span class="tg-q-flag req"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-asterisk"/></svg> Required</span>
+              <span class="tg-q-title">What budget should we plan to?</span>
+            </legend>
+            <p class="tg-q-sub">This changes almost every recommendation.</p>
+            <div class="tg-chips">
+              <label class="tg-chip"><input type="radio" name="budget" value="Free or low-cost"><span>Free or low-cost</span></label>
+              <label class="tg-chip"><input type="radio" name="budget" value="Budget"><span>Budget</span></label>
+              <label class="tg-chip"><input type="radio" name="budget" value="Mid-range"><span>Mid-range</span></label>
+              <label class="tg-chip"><input type="radio" name="budget" value="Premium"><span>Premium</span></label>
+              <label class="tg-chip"><input type="radio" name="budget" value="Luxury"><span>Luxury</span></label>
+              <label class="tg-chip"><input type="radio" name="budget" value="Splurge on food"><span>Splurge on food</span></label>
+            </div>
+            <p class="tg-qerr"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-alert"/></svg> Choose one to continue.</p>
+          </fieldset>
+
+          <!-- Q3 · pace — required, single -->
+          <fieldset class="tg-qcard" data-tg-q="pace" data-tg-required data-tg-single>
+            <legend class="tg-q-legend">
+              <span class="tg-q-flag req"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-asterisk"/></svg> Required</span>
+              <span class="tg-q-title">How full should the days be?</span>
+            </legend>
+            <p class="tg-q-sub">Two stops a day, or six.</p>
+            <div class="tg-chips">
+              <label class="tg-chip"><input type="radio" name="pace" value="Slow"><span>Slow</span></label>
+              <label class="tg-chip"><input type="radio" name="pace" value="Balanced"><span>Balanced</span></label>
+              <label class="tg-chip"><input type="radio" name="pace" value="Packed"><span>Packed</span></label>
+              <label class="tg-chip"><input type="radio" name="pace" value="Relaxed mornings"><span>Relaxed mornings</span></label>
+              <label class="tg-chip"><input type="radio" name="pace" value="Evening exploring"><span>Evening exploring</span></label>
+            </div>
+            <p class="tg-qerr"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-alert"/></svg> Choose one to continue.</p>
+          </fieldset>
+
+          <!-- The optional tier, folded. Shipped: identical to the required
+               three, four scroll-lengths below the fold. -->
+          <details class="tg-optional">
+            <summary>
+              <span class="tg-opt-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sliders"/></svg></span>
+              <span>
+                <span class="tg-opt-t">Sharpen it <span style="font-weight:500;color:var(--text-secondary)">— optional</span></span>
+                <span class="tg-opt-s">Interests, the kind of places you like, and what to avoid</span>
+              </span>
+              <svg viewBox="0 0 24 24" class="icon tg-opt-chev" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+            </summary>
+
+            <div class="tg-opt-body">
+              <fieldset class="tg-qcard" data-tg-q="interests" data-tg-max="5">
+                <legend class="tg-q-legend">
+                  <span class="tg-q-flag opt">Optional</span>
+                  <span class="tg-q-title">What are you most interested in?</span>
+                </legend>
+                <div class="tg-chips">
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Food"><span>Food</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="History"><span>History</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Art"><span>Art</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Architecture"><span>Architecture</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Nightlife"><span>Nightlife</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Shopping"><span>Shopping</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Nature"><span>Nature</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="interests" value="Hidden gems"><span>Hidden gems</span></label>
+                </div>
+                <p class="tg-cap" data-tg-cap>Pick up to 5.</p>
+              </fieldset>
+
+              <fieldset class="tg-qcard" data-tg-q="placeVibe" data-tg-max="4">
+                <legend class="tg-q-legend">
+                  <span class="tg-q-flag opt">Optional</span>
+                  <span class="tg-q-title">What kind of places do you prefer?</span>
+                </legend>
+                <div class="tg-chips">
+                  <label class="tg-chip"><input type="checkbox" name="placeVibe" value="Iconic"><span>Iconic</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="placeVibe" value="Authentic"><span>Authentic</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="placeVibe" value="Trendy"><span>Trendy</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="placeVibe" value="Quiet"><span>Quiet</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="placeVibe" value="Offbeat"><span>Offbeat</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="placeVibe" value="Local favorites"><span>Local favorites</span></label>
+                </div>
+                <p class="tg-cap" data-tg-cap>Pick up to 4.</p>
+              </fieldset>
+
+              <fieldset class="tg-qcard" data-tg-q="avoid">
+                <legend class="tg-q-legend">
+                  <span class="tg-q-flag opt">Optional</span>
+                  <span class="tg-q-title">Anything we should avoid?</span>
+                </legend>
+                <p class="tg-q-sub">The strongest signal you can give us.</p>
+                <div class="tg-chips">
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Tourist traps"><span>Tourist traps</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Crowded places"><span>Crowded places</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Packaged tours"><span>Packaged tours</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Long walks"><span>Long walks</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Early mornings"><span>Early mornings</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Nightclubs"><span>Nightclubs</span></label>
+                  <label class="tg-chip"><input type="checkbox" name="avoid" value="Meat-heavy places"><span>Meat-heavy places</span></label>
+                </div>
+              </fieldset>
+            </div>
+          </details>
+        </div>
+
+        <div class="cta-dock">
+          <!-- Disabled until the three required answers exist; pressing it while
+               disabled scrolls to and flags the first unanswered question rather
+               than doing nothing. -->
+          <!-- Never disabled. A disabled submit is unreachable to a screen
+               reader and explains nothing; this one always responds, and when
+               something is missing it says which question and moves you there. -->
+          <p class="tg-dock-hint" data-tg-hint>
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>3 answers still needed</span>
+          </p>
+          <button class="btn btn-primary btn-block" data-tg-generate aria-describedby="tg-gen-note">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-sparkles"/></svg>
+            Build my plan
+          </button>
+          <p id="tg-gen-note" class="sr-only" data-tg-gen-note>Answer the three required questions first.</p>
+          <button class="tg-skip" data-goto="tg-build" data-tg-skip>Skip — build from my booking alone</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 3 · BUILDING ══════════════════
+           Shipped: "This usually takes a few seconds" above a checklist driven
+           by a 5.5 s poll across four phases — so the honest number is closer
+           to a minute. No elapsed time, no cancel, no timeout. An unknown
+           phase (START, AWAIT_PREFERENCES) clamps the checklist to step 1,
+           which then sits there looking stuck.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-build" data-label="Building the guide" data-autonext="tg-plan" data-autodelay="9200">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+
+        <div class="tg-build" data-tg-build>
+          <span class="tg-build-mark" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkles"/></svg></span>
+          <h1>Building your Valencia plan</h1>
+          <p>Reading your three answers against 4 days, 47 places and today's opening hours.</p>
+
+          <p class="tg-clock">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg>
+            <b data-tg-elapsed>0:00</b> elapsed · usually 40–60 seconds
+          </p>
+
+          <ol class="tg-steps" data-tg-steps aria-label="Build progress">
+            <li class="tg-step now" data-tg-step="0">
+              <span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div>
+                <div class="tg-step-t">Reading your preferences</div>
+                <div class="tg-step-note">Authentic places · Mid-range · Balanced</div>
+              </div>
+            </li>
+            <li class="tg-step" data-tg-step="1">
+              <span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div><div class="tg-step-t">Mapping Valencia around Villa Serena</div></div>
+            </li>
+            <li class="tg-step" data-tg-step="2">
+              <span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div><div class="tg-step-t">Checking opening hours and availability</div></div>
+            </li>
+            <li class="tg-step" data-tg-step="3">
+              <span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div><div class="tg-step-t">Balancing big mornings with slow afternoons</div></div>
+            </li>
+          </ol>
+
+          <!-- The run lives on the server. Say so, instead of trapping the guest. -->
+          <div class="tg-leave">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span><b>You can leave this page.</b> The plan keeps building and will be waiting under <i>Travel Guide</i> when you come back.</span>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn btn-ghost" style="flex:1" data-goto="tg-q">Cancel</button>
+            <button class="btn btn-outline" style="flex:1" data-goto="tg-plan">Leave it running</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 4 · STILL WORKING ══════════════════
+           There is no timeout in the shipped hook, so a stalled run shows a
+           pulsing dot for ever. Past 90 s, say so and offer the cheap path.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-slow" data-label="Still working — past the usual time">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+
+        <div class="tg-build">
+          <span class="tg-build-mark" style="background:var(--amber-50);color:var(--amber-700);box-shadow:none" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-clock"/></svg></span>
+          <h1>This one's taking longer</h1>
+          <p>Valencia has a lot going on this weekend — we're still checking which of it is actually open while you're here. Nothing is lost.</p>
+
+          <p class="tg-clock">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg>
+            <b>1:47</b> elapsed · usually 40–60 seconds
+          </p>
+
+          <ol class="tg-steps" aria-label="Build progress">
+            <li class="tg-step done"><span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span><div><div class="tg-step-t">Reading your preferences</div></div></li>
+            <li class="tg-step done"><span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span><div><div class="tg-step-t">Mapping Valencia around Villa Serena</div></div></li>
+            <li class="tg-step now"><span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span><div><div class="tg-step-t">Checking opening hours and availability</div><div class="tg-step-note">31 of 47 places checked</div></div></li>
+            <li class="tg-step"><span class="tg-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span><div><div class="tg-step-t">Balancing big mornings with slow afternoons</div></div></li>
+          </ol>
+
+          <div class="tg-leave">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span><b>We'll notify you</b> the moment it's ready. You don't have to sit here.</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+            <button class="btn btn-primary btn-block" data-goto="tg-plan">Keep waiting</button>
+            <button class="btn btn-outline btn-block" data-goto="tg-plan">Build the quick version instead</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 5 · BUILD FAILED ══════════════════
+           Shipped: a centered <p> reading "We couldn't build your guide right
+           now." and nothing else. Three real exits instead — and the answers
+           survive, so "Back to my answers" is not a lie.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-error" data-label="Build failed — three ways out">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="tg-intro" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+        </div>
+
+        <div class="tg-fail">
+          <span class="tg-fail-mark" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-alert"/></svg></span>
+          <h1>We couldn't finish your plan</h1>
+          <p>The build stopped while checking opening hours. This is on us, not on your answers — <b style="color:var(--navy)">they're still saved</b>.</p>
+          <code class="tg-ref">run_8f21c4 · 12 Mar 09:41</code>
+
+          <div class="tg-exits">
+            <button class="btn btn-primary" data-goto="tg-build">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg>
+              Try again
+            </button>
+            <button class="btn btn-outline" data-goto="tg-q">Back to my answers</button>
+            <button class="btn btn-ghost" data-goto="tg-build">Build without preferences</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 6 · THE PLAN ══════════════════
+           Shipped: PhaseNav / DaySubTabs are aria-pressed buttons in a
+           scroller — no roving focus, no arrow keys, no panel association;
+           the time-of-day label is a plain <span>, so the day's structure is
+           invisible to a screen reader; TripGlance is `hidden lg:block`, so
+           the phone never gets the trip totals; profile_assumptions and
+           source_urls arrive in the payload and are never rendered.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-plan" data-label="The plan — today is arrival day">
+        <div class="statusbar"><span>16:20</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="tg-intro" aria-label="Back to check-in"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="tb-action" data-modal="m-tg-save" aria-label="Save or share this plan">
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-share"/></svg>
+          </button>
+        </div>
+
+        <div class="tg-plan-head">
+          <h1>Your Valencia plan</h1>
+          <!-- profile_assumptions, finally visible — and the way back into the
+               questions the shipped app makes unreachable for ever. -->
+          <div class="tg-tuned">
+            <span class="tg-tuned-label" id="tg-tuned-l">Tuned for</span>
+            <span class="tg-assume">Culture · Local life</span>
+            <span class="tg-assume">Mid-range</span>
+            <span class="tg-assume">Balanced</span>
+            <span class="tg-assume"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-x"/></svg> Tourist traps</span>
+            <button class="tg-tune-btn" data-modal="m-tg-refine">
+              <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-sliders"/></svg>
+              Refine
+            </button>
+          </div>
+
+          <dl class="tg-glance">
+            <div><dt>Dates</dt><dd>12–15 Mar</dd></div>
+            <div><dt>Days</dt><dd>4</dd></div>
+            <div><dt>Stops</dt><dd>11</dd></div>
+          </dl>
+        </div>
+
+        <!-- The plan becomes a companion: what to do next, from where you are. -->
+        <section class="tg-now" aria-labelledby="tg-now-t">
+          <p class="tg-now-top"><span class="tg-now-dot" aria-hidden="true"></span> Right now · 16:20</p>
+          <h2 class="tg-now-title" id="tg-now-t">Drop your bags, then walk El Carmen</h2>
+          <p class="tg-now-meta">
+            <span><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-map-pin"/></svg> 8 min walk from Villa Serena</span>
+            <span><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> 1 h 30</span>
+          </p>
+          <div class="tg-now-acts">
+            <button class="btn btn-primary" data-modal="m-tg-directions">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+              Directions
+            </button>
+            <button class="btn btn-ghost" data-tg-scroll="tg-slot-carmen">See the stop</button>
+          </div>
+        </section>
+
+        <!-- Real tabs: role=tablist, roving tabindex, ←/→ move, panels linked. -->
+        <div class="tg-tabs" role="tablist" aria-label="Trip phase" data-tg-tabs>
+          <button class="tg-tab" role="tab" id="tg-t-pre" aria-controls="tg-p-pre" aria-selected="false" tabindex="-1">
+            <b>Before you go</b><small>1 thing left</small>
+          </button>
+          <button class="tg-tab" role="tab" id="tg-t-arr" aria-controls="tg-p-arr" aria-selected="true" tabindex="0">
+            <span class="tg-today" aria-hidden="true"></span>
+            <b>Arrival</b><small>Today · Sat 12</small>
+          </button>
+          <button class="tg-tab" role="tab" id="tg-t-stay" aria-controls="tg-p-stay" aria-selected="false" tabindex="-1">
+            <b>Your stay</b><small>Sun–Mon</small>
+          </button>
+          <button class="tg-tab" role="tab" id="tg-t-dep" aria-controls="tg-p-dep" aria-selected="false" tabindex="-1">
+            <b>Departure</b><small>Wed 15</small>
+          </button>
+        </div>
+
+        <!-- ---------- Panel: BEFORE YOU GO ---------- -->
+        <div class="tg-panel" role="tabpanel" id="tg-p-pre" aria-labelledby="tg-t-pre" tabindex="0" hidden>
+          <!-- Shipped CheckInCard says "Start check-in · about 2 min" and then
+               navigates to PATHS.home. Name the task and land on it. -->
+          <div class="tg-checkin">
+            <p class="tg-checkin-eyebrow"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-shield"/></svg> Required before arrival</p>
+            <h3>Marc still needs to verify his ID</h3>
+            <p>Two of three guests are registered. Until Marc finishes, the door code stays locked and we can't put the arrival evening in your hands.</p>
+            <button class="btn">Verify Marc's ID · about 2 min</button>
+            <p class="tg-checkin-sub">Takes you straight to Marc's verification, not the home screen.</p>
+          </div>
+
+          <section class="tg-tod" aria-labelledby="tg-tod-flex">
+            <div class="tg-tod-head">
+              <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-compass"/></svg></span>
+              <h3 id="tg-tod-flex">Any time before you land</h3>
+            </div>
+            <div class="tg-slots">
+              <article class="tg-slot">
+                <div class="tg-thumb sim"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-signal"/></svg></span></div>
+                <div class="tg-slot-body">
+                  <div class="tg-slot-top">
+                    <h4>Spain eSIM, working the second you land</h4>
+                  </div>
+                  <p class="tg-desc">Maps, bookings and directions from the runway. No shop, no roaming bill.</p>
+                  <div class="tg-meta">
+                    <span class="tg-partner">Airalo</span>
+                    <span class="tg-cost">
+                      <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                      <span class="tg-cost-label">Low cost</span>
+                      <span class="sr-only">Cost: low, 1 out of 3.</span>
+                    </span>
+                    <span class="tg-meta-item">From €4.50</span>
+                  </div>
+                  <div class="tg-why">
+                    <button class="tg-why-btn" aria-expanded="false" aria-controls="tg-w-esim">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-sparkles"/></svg>
+                      Why this pick
+                      <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                    </button>
+                    <div class="tg-why-panel" id="tg-w-esim" hidden>
+                      Half of this plan is walking directions. Without data you'd be screenshotting maps in the airport.
+                      <div class="tg-src">
+                        <span class="tg-src-label">From</span>
+                        <span class="tg-from">Your booking · Spain</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tg-acts">
+                    <button class="tg-act primary" data-tg-add>
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg>
+                      Add to stay
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- ---------- Panel: ARRIVAL (today) ---------- -->
+        <div class="tg-panel" role="tabpanel" id="tg-p-arr" aria-labelledby="tg-t-arr" tabindex="0">
+          <p class="tg-theme"><b>Saturday 12 March · Settle in.</b> Check-in from 15:00, then nothing further than a fifteen-minute walk.</p>
+
+          <!-- Time-of-day is an <h3>, not a <span>: the day now has structure. -->
+          <section class="tg-tod afternoon" aria-labelledby="tg-tod-aft">
+            <div class="tg-tod-head">
+              <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span>
+              <h3 id="tg-tod-aft">Afternoon</h3>
+              <span class="tg-tod-span">16:00 – 18:00</span>
+            </div>
+            <div class="tg-slots">
+              <article class="tg-slot is-next" id="tg-slot-carmen">
+                <div class="tg-thumb gothic"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-landmark"/></svg></span></div>
+                <div class="tg-slot-body">
+                  <div class="tg-slot-top"><h4>El Carmen, on foot</h4></div>
+                  <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Ciutat Vella · 8 min walk</p>
+                  <p class="tg-desc">Medieval lanes, the Torres de Serranos, and a square that fills with locals at exactly this hour.</p>
+                  <div class="tg-meta">
+                    <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 16:30</span>
+                    <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 1 h 30</span>
+                    <span class="tg-cost free">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                      <span class="tg-cost-label">Free</span>
+                    </span>
+                  </div>
+                  <div class="tg-why">
+                    <button class="tg-why-btn" aria-expanded="false" aria-controls="tg-w-carmen">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-sparkles"/></svg>
+                      Why this pick
+                      <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                    </button>
+                    <!-- Provenance: which answer drove it, and where the fact came
+                         from. source_urls exists in the payload today, unrendered. -->
+                    <div class="tg-why-panel" id="tg-w-carmen" hidden>
+                      You land at 15:00 and you asked for a <b>balanced</b> pace — so day one is one thing, close by, that needs no ticket.
+                      <div class="tg-src">
+                        <span class="tg-src-label">From</span>
+                        <span class="tg-from">Your answer · Local life</span>
+                        <a href="#" onclick="return false">
+                          <svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-external"/></svg>
+                          visitvalencia.com
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Shipped: a web_search slot renders no action at all. -->
+                  <div class="tg-acts">
+                    <button class="tg-act primary" data-modal="m-tg-directions">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                    <a class="tg-act" href="#" onclick="return false">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-external"/></svg>
+                      Opening hours
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tg-tod evening" aria-labelledby="tg-tod-eve">
+            <div class="tg-tod-head">
+              <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-moon"/></svg></span>
+              <h3 id="tg-tod-eve">Evening</h3>
+              <span class="tg-tod-span">19:00 – 22:00</span>
+            </div>
+            <div class="tg-slots">
+              <article class="tg-slot">
+                <div class="tg-thumb night"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-footprints"/></svg></span></div>
+                <div class="tg-slot-body">
+                  <div class="tg-slot-top"><h4>Ciutat Vella walking tour</h4></div>
+                  <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Plaça de la Reina · 11 min walk</p>
+                  <p class="tg-desc">Two hours with a local guide. Tip what you think it was worth at the end.</p>
+                  <div class="tg-meta">
+                    <span class="tg-partner">GuruWalk</span>
+                    <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 19:00</span>
+                    <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 2 h</span>
+                    <span class="tg-cost free">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                      <span class="tg-cost-label">Free tour</span>
+                    </span>
+                  </div>
+                  <div class="tg-why">
+                    <button class="tg-why-btn" aria-expanded="false" aria-controls="tg-w-tour">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-sparkles"/></svg>
+                      Why this pick
+                      <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                    </button>
+                    <div class="tg-why-panel" id="tg-w-tour" hidden>
+                      You said no <b>packaged tours</b> — this is a tip-based local, not a coach. It also gets you oriented on night one.
+                      <div class="tg-src">
+                        <span class="tg-src-label">From</span>
+                        <span class="tg-from">Your answer · No tourist traps</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tg-acts">
+                    <a class="tg-act primary" href="#" onclick="return false">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+                      Book on GuruWalk
+                    </a>
+                    <button class="tg-act" data-modal="m-tg-directions">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                  <p style="font-size:10.5px;color:var(--text-secondary);margin-top:8px;font-weight:550">Books on guruwalk.com · you'll leave Chekin</p>
+                </div>
+              </article>
+
+              <article class="tg-slot">
+                <div class="tg-thumb food"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-utensils"/></svg></span></div>
+                <div class="tg-slot-body">
+                  <div class="tg-slot-top"><h4>Horchata &amp; fartons, Santa Catalina</h4></div>
+                  <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Plaça de Santa Caterina · 12 min walk</p>
+                  <p class="tg-desc">The Valencian thing to do at the end of a first evening. Open until 21:30 tonight.</p>
+                  <div class="tg-meta">
+                    <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 21:00</span>
+                    <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 30 min</span>
+                    <span class="tg-cost">
+                      <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                      <span class="tg-cost-label">Low cost</span>
+                      <span class="sr-only">Cost: low, 1 out of 3.</span>
+                    </span>
+                  </div>
+                  <div class="tg-acts">
+                    <button class="tg-act primary" data-modal="m-tg-directions">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <div class="tg-day-acts">
+            <button class="tg-act" data-tg-toast="Saturday added to your calendar">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg>
+              Add day to calendar
+            </button>
+            <button class="tg-act" data-modal="m-tg-save">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-share"/></svg>
+              Share day
+            </button>
+          </div>
+        </div>
+
+        <!-- ---------- Panel: YOUR STAY ---------- -->
+        <div class="tg-panel" role="tabpanel" id="tg-p-stay" aria-labelledby="tg-t-stay" tabindex="0" hidden>
+          <div class="tg-days" role="tablist" aria-label="Day of your stay" data-tg-days>
+            <button class="tg-day" role="tab" id="tg-dt-1" aria-controls="tg-d-1" aria-selected="true" tabindex="0">
+              <em>Sun</em><b>13</b>
+            </button>
+            <button class="tg-day" role="tab" id="tg-dt-2" aria-controls="tg-d-2" aria-selected="false" tabindex="-1">
+              <em>Mon</em><b>14</b>
+            </button>
+          </div>
+
+          <div role="tabpanel" id="tg-d-1" aria-labelledby="tg-dt-1" tabindex="0">
+            <p class="tg-theme"><b>Modernism and the market.</b> One ticketed thing in the morning, one long lunch, one sunset.</p>
+
+            <section class="tg-tod morning" aria-labelledby="tg-tod-m1">
+              <div class="tg-tod-head">
+                <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sunrise"/></svg></span>
+                <h3 id="tg-tod-m1">Morning</h3>
+                <span class="tg-tod-span">09:30 – 12:30</span>
+              </div>
+              <div class="tg-slots">
+                <article class="tg-slot">
+                  <div class="tg-thumb market"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-basket"/></svg></span></div>
+                  <div class="tg-slot-body">
+                    <div class="tg-slot-top"><h4>Mercat Central at opening</h4></div>
+                    <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Plaça de la Ciutat de Bruges · 10 min walk</p>
+                    <p class="tg-desc">Europe's largest fresh-produce market, in a modernist iron hall. Go at 09:30, before the tour groups.</p>
+                    <div class="tg-meta">
+                      <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 09:30</span>
+                      <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 1 h</span>
+                      <span class="tg-cost free">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                        <span class="tg-cost-label">Free</span>
+                      </span>
+                    </div>
+                    <div class="tg-why">
+                      <button class="tg-why-btn" aria-expanded="false" aria-controls="tg-w-market">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-sparkles"/></svg>
+                        Why this pick
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                      </button>
+                      <div class="tg-why-panel" id="tg-w-market" hidden>
+                        Free, ten minutes away, and it answers both <b>Culture</b> and <b>Local life</b>. The 09:30 slot is chosen to dodge the crowds you asked to avoid.
+                        <div class="tg-src">
+                          <span class="tg-src-label">From</span>
+                          <span class="tg-from">Your answer · Crowded places</span>
+                          <a href="#" onclick="return false"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-external"/></svg> mercatcentralvalencia.es</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tg-acts">
+                      <button class="tg-act primary" data-modal="m-tg-directions">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                        Directions
+                      </button>
+                      <a class="tg-act" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-external"/></svg>
+                        Opening hours
+                      </a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="tg-slot">
+                  <div class="tg-thumb museum"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-landmark"/></svg></span></div>
+                  <div class="tg-slot-body">
+                    <div class="tg-slot-top"><h4>La Lonja de la Seda</h4></div>
+                    <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Across the square from the market</p>
+                    <p class="tg-desc">The silk exchange, and the reason UNESCO cares about this street. Twenty minutes is enough.</p>
+                    <div class="tg-meta">
+                      <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 11:00</span>
+                      <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 45 min</span>
+                      <span class="tg-cost">
+                        <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                        <span class="tg-cost-label">Low cost</span>
+                        <span class="sr-only">Cost: low, 1 out of 3.</span>
+                      </span>
+                    </div>
+                    <div class="tg-acts">
+                      <button class="tg-act primary" data-modal="m-tg-directions">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                        Directions
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="tg-tod afternoon" aria-labelledby="tg-tod-a1">
+              <div class="tg-tod-head">
+                <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span>
+                <h3 id="tg-tod-a1">Afternoon</h3>
+                <span class="tg-tod-span">13:30 – 17:30</span>
+              </div>
+              <div class="tg-slots">
+                <!-- An upsell offer. Priced, added to the same cart as everything
+                     else, and never disguised as a neutral recommendation. -->
+                <article class="tg-slot">
+                  <div class="tg-thumb food"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-ticket"/></svg></span></div>
+                  <div class="tg-slot-body">
+                    <div class="tg-slot-top">
+                      <h4>Paella class in the Albufera</h4>
+                      <span class="tg-price">€58<small>per person</small></span>
+                    </div>
+                    <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> El Palmar · shuttle from your door</p>
+                    <p class="tg-desc">Cook it over orange wood in the rice fields it comes from, then eat it by the lagoon. Your host runs this one.</p>
+                    <div class="tg-meta">
+                      <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 13:30</span>
+                      <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 4 h</span>
+                      <span class="tg-cost">
+                        <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span>
+                        <span class="tg-cost-label">Mid range</span>
+                        <span class="sr-only">Cost: mid range, 2 out of 3.</span>
+                      </span>
+                    </div>
+                    <div class="tg-why">
+                      <button class="tg-why-btn" aria-expanded="false" aria-controls="tg-w-paella">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-sparkles"/></svg>
+                        Why this pick
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                      </button>
+                      <div class="tg-why-panel" id="tg-w-paella" hidden>
+                        It is the one <b>mid-range</b> spend in the plan, and it lands on your only full day with no ticketed morning. Cancel free until 24 h before.
+                        <div class="tg-src">
+                          <span class="tg-src-label">From</span>
+                          <span class="tg-from">Your answer · Mid-range</span>
+                          <span class="tg-from">Offered by your host</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tg-acts">
+                      <button class="tg-act primary" data-tg-add>
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg>
+                        Add to stay
+                      </button>
+                      <button class="tg-act" data-modal="m-tg-directions">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                        Directions
+                      </button>
+                    </div>
+                    <p style="font-size:10.5px;color:var(--text-secondary);margin-top:8px;font-weight:550">Nothing is charged until you check out</p>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="tg-tod evening" aria-labelledby="tg-tod-e1">
+              <div class="tg-tod-head">
+                <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-moon"/></svg></span>
+                <h3 id="tg-tod-e1">Evening</h3>
+                <span class="tg-tod-span">19:30 – 21:00</span>
+              </div>
+              <div class="tg-slots">
+                <article class="tg-slot">
+                  <div class="tg-thumb park"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-tree"/></svg></span></div>
+                  <div class="tg-slot-body">
+                    <div class="tg-slot-top"><h4>Turia Gardens at sunset</h4></div>
+                    <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Pont de les Flors entrance · 6 min walk</p>
+                    <p class="tg-desc">A riverbed turned into nine kilometres of park. Sunset is 19:52 tonight.</p>
+                    <div class="tg-meta">
+                      <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 19:30</span>
+                      <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 1 h</span>
+                      <span class="tg-cost free">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                        <span class="tg-cost-label">Free</span>
+                      </span>
+                    </div>
+                    <div class="tg-acts">
+                      <button class="tg-act primary" data-modal="m-tg-directions">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                        Directions
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <div class="tg-day-acts">
+              <button class="tg-act" data-tg-toast="Sunday added to your calendar">
+                <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg>
+                Add day to calendar
+              </button>
+              <button class="tg-act" data-modal="m-tg-save">
+                <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-share"/></svg>
+                Share day
+              </button>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="tg-d-2" aria-labelledby="tg-dt-2" tabindex="0" hidden>
+            <p class="tg-theme"><b>The beach and the future.</b> One long morning at the science park, one long afternoon in the sand.</p>
+
+            <section class="tg-tod morning" aria-labelledby="tg-tod-m2">
+              <div class="tg-tod-head">
+                <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sunrise"/></svg></span>
+                <h3 id="tg-tod-m2">Morning</h3>
+                <span class="tg-tod-span">10:00 – 13:00</span>
+              </div>
+              <div class="tg-slots">
+                <article class="tg-slot">
+                  <div class="tg-thumb museum"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-landmark"/></svg></span></div>
+                  <div class="tg-slot-body">
+                    <div class="tg-slot-top"><h4>City of Arts and Sciences</h4></div>
+                    <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Av. del Professor López Piñero · 22 min along the park</p>
+                    <p class="tg-desc">Calatrava's white ribs and reflecting pools. Walk it from the outside for free, or take the aquarium.</p>
+                    <div class="tg-meta">
+                      <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 10:00</span>
+                      <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 3 h</span>
+                      <span class="tg-cost">
+                        <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>
+                        <span class="tg-cost-label">Premium</span>
+                        <span class="sr-only">Cost: premium, 3 out of 3.</span>
+                      </span>
+                    </div>
+                    <div class="tg-why">
+                      <button class="tg-why-btn" aria-expanded="false" aria-controls="tg-w-cac">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-sparkles"/></svg>
+                        Why this pick
+                        <svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+                      </button>
+                      <div class="tg-why-panel" id="tg-w-cac" hidden>
+                        The one <b>premium</b> ticket we've suggested. If that's not your day, the outside is free and the walk there follows the park you liked yesterday.
+                        <div class="tg-src">
+                          <span class="tg-src-label">From</span>
+                          <span class="tg-from">Your answer · Culture</span>
+                          <a href="#" onclick="return false"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-external"/></svg> cac.es</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tg-acts">
+                      <button class="tg-act primary" data-modal="m-tg-directions">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                        Directions
+                      </button>
+                      <a class="tg-act" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-external"/></svg>
+                        Tickets &amp; hours
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="tg-tod afternoon" aria-labelledby="tg-tod-a2">
+              <div class="tg-tod-head">
+                <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span>
+                <h3 id="tg-tod-a2">Afternoon</h3>
+                <span class="tg-tod-span">14:00 – 18:00</span>
+              </div>
+              <div class="tg-slots">
+                <article class="tg-slot">
+                  <div class="tg-thumb sea"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-waves"/></svg></span></div>
+                  <div class="tg-slot-body">
+                    <div class="tg-slot-top"><h4>Malvarrosa beach, and lunch at Casa Carmela</h4></div>
+                    <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Platja de la Malva-rosa · tram, 18 min</p>
+                    <p class="tg-desc">The paella locals argue about, cooked over wood since 1922. Book ahead — they fill by 14:30.</p>
+                    <div class="tg-meta">
+                      <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 14:00</span>
+                      <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 4 h</span>
+                      <span class="tg-cost">
+                        <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span>
+                        <span class="tg-cost-label">Mid range</span>
+                        <span class="sr-only">Cost: mid range, 2 out of 3.</span>
+                      </span>
+                    </div>
+                    <div class="tg-acts">
+                      <button class="tg-act primary" data-modal="m-tg-directions">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                        Directions
+                      </button>
+                      <a class="tg-act" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-external"/></svg>
+                        Reserve a table
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <div class="tg-day-acts">
+              <button class="tg-act" data-tg-toast="Monday added to your calendar">
+                <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg>
+                Add day to calendar
+              </button>
+              <button class="tg-act" data-modal="m-tg-save">
+                <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-share"/></svg>
+                Share day
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Panel: DEPARTURE ---------- -->
+        <div class="tg-panel" role="tabpanel" id="tg-p-dep" aria-labelledby="tg-t-dep" tabindex="0" hidden>
+          <p class="tg-theme"><b>Wednesday 15 March · Check-out is 11:00.</b> One slow breakfast, and bags stay at the flat until 18:00.</p>
+
+          <section class="tg-tod morning" aria-labelledby="tg-tod-m3">
+            <div class="tg-tod-head">
+              <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sunrise"/></svg></span>
+              <h3 id="tg-tod-m3">Morning</h3>
+              <span class="tg-tod-span">08:30 – 10:30</span>
+            </div>
+            <div class="tg-slots">
+              <article class="tg-slot">
+                <div class="tg-thumb market"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-utensils"/></svg></span></div>
+                <div class="tg-slot-body">
+                  <div class="tg-slot-top"><h4>Breakfast at Mercat de Colón</h4></div>
+                  <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Carrer de Jorge Juan · 9 min walk</p>
+                  <p class="tg-desc">Coffee under the glass roof, forty minutes from your door and back before check-out.</p>
+                  <div class="tg-meta">
+                    <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 08:45</span>
+                    <span class="tg-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 45 min</span>
+                    <span class="tg-cost">
+                      <span class="tg-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                      <span class="tg-cost-label">Low cost</span>
+                      <span class="sr-only">Cost: low, 1 out of 3.</span>
+                    </span>
+                  </div>
+                  <div class="tg-acts">
+                    <button class="tg-act primary" data-modal="m-tg-directions">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <!-- The plan knows the check-out flow exists. It hands over cleanly. -->
+          <div class="tg-checkin" style="margin-top:18px">
+            <p class="tg-checkin-eyebrow" style="color:var(--green-500)"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check-circle"/></svg> Last day</p>
+            <h3>Late check-out until 18:00?</h3>
+            <p>Your flight is at 21:40. Four extra hours with the flat, and your bags never leave it.</p>
+            <button class="btn">See late check-out · €25</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 7 · RETURNING (SKELETON) ══════════════════
+           Shipped: a centered "Preparing your itinerary…" sentence. A
+           shape-matched skeleton tells the guest what is about to arrive.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-skeleton" data-label="Returning guest — fetching the saved plan" data-autonext="tg-plan" data-autodelay="2400">
+        <div class="statusbar"><span>16:20</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <span class="back-btn" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></span>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+        </div>
+        <div class="content" aria-busy="true" aria-label="Loading your plan">
+          <div class="tg-sk" style="height:28px;width:62%"></div>
+          <div style="display:flex;gap:7px">
+            <div class="tg-sk" style="height:26px;width:96px;border-radius:99px"></div>
+            <div class="tg-sk" style="height:26px;width:76px;border-radius:99px"></div>
+            <div class="tg-sk" style="height:26px;width:84px;border-radius:99px"></div>
+          </div>
+          <div class="tg-sk" style="height:66px;border-radius:14px"></div>
+          <div class="tg-sk" style="height:112px;border-radius:18px"></div>
+          <div style="display:flex;gap:7px">
+            <div class="tg-sk" style="height:44px;width:104px;border-radius:11px"></div>
+            <div class="tg-sk" style="height:44px;width:96px;border-radius:11px"></div>
+            <div class="tg-sk" style="height:44px;width:92px;border-radius:11px"></div>
+          </div>
+          <div class="tg-sk-slot">
+            <div class="tg-sk" style="width:74px;height:74px;border-radius:13px;flex-shrink:0"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+              <div class="tg-sk" style="height:15px;width:72%"></div>
+              <div class="tg-sk" style="height:12px;width:52%"></div>
+              <div class="tg-sk" style="height:12px;width:88%"></div>
+            </div>
+          </div>
+          <div class="tg-sk-slot">
+            <div class="tg-sk" style="width:74px;height:74px;border-radius:13px;flex-shrink:0"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+              <div class="tg-sk" style="height:15px;width:58%"></div>
+              <div class="tg-sk" style="height:12px;width:64%"></div>
+              <div class="tg-sk" style="height:12px;width:80%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 8 · OFFLINE ══════════════════
+           An itinerary is used on the street, where the data runs out.
+           Shipped: no offline handling of any kind.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-offline" data-label="Offline — the saved plan still works">
+        <div class="statusbar"><span>11:04</span><span class="sb-icons">✕ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="tg-plan" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+        </div>
+
+        <div class="tg-offline" role="status">
+          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-wifi-off"/></svg>
+          <span><b>You're offline.</b> Showing the plan saved at 09:12. Directions still open in your maps app.</span>
+        </div>
+
+        <div class="tg-plan-head" style="padding-top:14px">
+          <h1>Your Valencia plan</h1>
+        </div>
+
+        <div class="tg-panel">
+          <section class="tg-tod morning" aria-labelledby="tg-tod-off">
+            <div class="tg-tod-head">
+              <span class="tg-tod-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sunrise"/></svg></span>
+              <h3 id="tg-tod-off">Morning</h3>
+              <span class="tg-tod-span">09:30 – 12:30</span>
+            </div>
+            <div class="tg-slots">
+              <article class="tg-slot">
+                <div class="tg-thumb market"><span class="tg-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-basket"/></svg></span></div>
+                <div class="tg-slot-body">
+                  <div class="tg-slot-top"><h4>Mercat Central at opening</h4></div>
+                  <p class="tg-where"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg> Plaça de la Ciutat de Bruges · 10 min walk</p>
+                  <div class="tg-meta">
+                    <span class="tg-time-chip"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-clock"/></svg> 09:30</span>
+                    <span class="tg-cost free"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg><span class="tg-cost-label">Free</span></span>
+                  </div>
+                  <div class="tg-acts">
+                    <button class="tg-act primary" data-modal="m-tg-directions">
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                    <!-- Honest about what the network took away. -->
+                    <button class="tg-act" disabled>
+                      <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-external"/></svg>
+                      Opening hours · needs data
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 9 · EMPTY GUIDE ══════════════════
+           Shipped: "Your guide is empty for now." — and no way to act on it.
+           ═══════════════════════════════════════════════════════════════ -->
+      <div class="screen flow-screen" id="tg-empty" data-label="Empty guide — nothing to show">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="tg-intro" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+        </div>
+        <div class="content">
+          <div class="tg-blank">
+            <span class="tg-blank-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-compass"/></svg></span>
+            <h3>We came back with nothing</h3>
+            <p>Your answers ruled out almost everything in walking distance — <b style="color:var(--navy)">no packaged tours, no crowds, no long walks, free only</b>. Loosen one and we'll try again.</p>
+            <button class="btn btn-primary" data-goto="tg-q">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-sliders"/></svg>
+              Change my answers
+            </button>
+          </div>
+          <button class="tg-skip" data-goto="tg-plan">Or ask your host for their own recommendations</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ MODALS ══════════════════ -->
+
+      <!-- Refine — the door back into the questions the shipped app closes. -->
+      <div class="proto-modal sheet" id="m-tg-refine" role="dialog" aria-modal="true" aria-labelledby="tg-refine-t">
+        <div class="pm-scrim"></div>
+        <div class="pm-card">
+          <div class="pm-grabber"></div>
+          <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+          <div class="pm-title" id="tg-refine-t">Refine your plan</div>
+          <div class="pm-desc">Change an answer and we'll rebuild around it. Takes about a minute.</div>
+
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+            <button class="tg-act" style="width:100%;justify-content:space-between;height:46px" data-goto="tg-q" data-modal-close>
+              <span style="display:flex;align-items:center;gap:9px"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-compass"/></svg> Trip style<b style="font-weight:600;color:var(--text-secondary)">Culture · Local life</b></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="tg-act" style="width:100%;justify-content:space-between;height:46px" data-goto="tg-q" data-modal-close>
+              <span style="display:flex;align-items:center;gap:9px"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-coins"/></svg> Budget<b style="font-weight:600;color:var(--text-secondary)">Mid-range</b></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="tg-act" style="width:100%;justify-content:space-between;height:46px" data-goto="tg-q" data-modal-close>
+              <span style="display:flex;align-items:center;gap:9px"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> Pace<b style="font-weight:600;color:var(--text-secondary)">Balanced</b></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+            </button>
+          </div>
+
+          <!-- Rebuilding is destructive. Say exactly what survives. -->
+          <div class="tg-keep">
+            <b>What survives a rebuild:</b> the paella class you added to your stay, and anything already paid for. Only the recommendations change.
+          </div>
+
+          <div class="pm-actions">
+            <button class="btn btn-primary" data-goto="tg-build" data-modal-close>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg>
+              Rebuild the plan
+            </button>
+            <button class="btn btn-ghost" data-modal-close>Keep it as it is</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Directions — the choice the shipped app never offers. -->
+      <div class="proto-modal sheet" id="m-tg-directions" role="dialog" aria-modal="true" aria-labelledby="tg-dir-t">
+        <div class="pm-scrim"></div>
+        <div class="pm-card">
+          <div class="pm-grabber"></div>
+          <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+          <div class="pm-title" id="tg-dir-t">El Carmen, on foot</div>
+          <div class="pm-desc">Carrer dels Cavallers, 46001 València · 8 minutes on foot from Villa Serena</div>
+
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+              Open in Google Maps
+              <svg viewBox="0 0 24 24" class="icon icon-sm" style="margin-left:auto" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+            </button>
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-navigation"/></svg>
+              Open in Apple Maps
+              <svg viewBox="0 0 24 24" class="icon icon-sm" style="margin-left:auto" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+            </button>
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start" data-tg-copy="Carrer dels Cavallers, 46001 València">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-copy"/></svg>
+              <span data-tg-copy-label>Copy the address</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save & share — a plan that can leave the browser. -->
+      <div class="proto-modal sheet" id="m-tg-save" role="dialog" aria-modal="true" aria-labelledby="tg-save-t">
+        <div class="pm-scrim"></div>
+        <div class="pm-card">
+          <div class="pm-grabber"></div>
+          <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+          <div class="pm-title" id="tg-save-t">Take it with you</div>
+          <div class="pm-desc">The plan is saved to your booking. These get it onto the device you'll actually be holding.</div>
+
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start" data-tg-toast="All 4 days added to your calendar" data-modal-close>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg>
+              Add all 4 days to my calendar
+            </button>
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start" data-tg-toast="Plan sent to Ana and Marc" data-modal-close>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-users"/></svg>
+              Send to Ana and Marc
+            </button>
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start" data-tg-copy="https://guest.chekin.com/villa-serena/travel-guide">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-copy"/></svg>
+              <span data-tg-copy-label>Copy the link</span>
+            </button>
+            <button class="tg-act" style="width:100%;height:46px;justify-content:flex-start" data-modal-close>
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-printer"/></svg>
+              Print or save as PDF
+            </button>
+          </div>
+
+          <div class="tg-refine-note">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>Opened once, the plan keeps working with no signal. Directions hand off to your maps app.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tg-toast" data-tg-toast-el hidden role="status">
+        <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-check-circle"/></svg>
+        <span data-tg-toast-text></span>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Icon sprite (lucide geometry, inlined — the prototype ships no build)
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-asterisk"><path d="M12 6v12"/><path d="m17.196 9-10.392 6"/><path d="m6.804 9 10.392 6"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g>
+    <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-navigation"><path d="M3 11l19-9-9 19-2-8-8-2z"/></g>
+    <g id="i-compass"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></g>
+    <g id="i-sparkles"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/></g>
+    <g id="i-sunrise"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m17.66 12.34 1.41-1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></g>
+    <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></g>
+    <g id="i-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"/></g>
+    <g id="i-refresh"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
+    <g id="i-sliders"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></g>
+    <g id="i-external"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-printer"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></g>
+    <g id="i-wifi-off"><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 5.17-2.69"/><path d="M19 12.86a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-signal"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></g>
+    <g id="i-ticket"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></g>
+    <g id="i-footprints"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0"/><path d="M16 17h4"/><path d="M4 13h4"/></g>
+    <g id="i-landmark"><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M6 18v-7"/><path d="m12 2 8 6H4z"/><path d="M3 22h18"/><path d="M4 18h16"/></g>
+    <g id="i-basket"><path d="m5 11 4-7"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.6-7.4"/><path d="m9 11 1 9"/><path d="m15 11-1 9"/></g>
+    <g id="i-utensils"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></g>
+    <g id="i-tree"><path d="M12 2 6 10h3l-4 6h5v6h4v-6h5l-4-6h3z"/></g>
+    <g id="i-waves"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 1.3 0 1.9-.5 2.5-1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 1.3 0 1.9-.5 2.5-1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 1.3 0 1.9-.5 2.5-1"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></g>
+    <g id="i-book"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-card-sim"><path d="M12 14v4"/><path d="M14.172 2a2 2 0 0 1 1.414.586l3.828 3.828A2 2 0 0 1 20 7.828V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M8 14h8"/><rect x="8" y="10" width="8" height="8" rx="1"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="modals.js" defer></script>
+<script src="travel-guide-v2.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

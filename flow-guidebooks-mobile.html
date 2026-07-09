@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guidebooks (interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="guide.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Guidebooks — Interactive Flow (Mobile)</h1>
+  <p class="lede">The flat icon-row list becomes browsable cards that preview what's inside and declare their type; long guidebooks get a sticky "In this guide" chapter rail; and the things guests actually hunt for — the Wi-Fi password, a map with directions, real place recommendations — are surfaced instead of buried. Covers a rich EDITOR guide, recommendations, a PDF and an HTML guidebook, plus the unavailable and empty states. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="g-list">▶ Guidebooks list</button>
+    <button class="fh-chip" data-scenario="g-search">Search with matches</button>
+    <button class="fh-chip" data-scenario="g-guide">House manual (rich guide)</button>
+    <button class="fh-chip" data-scenario="g-recos">Local recommendations</button>
+    <button class="fh-chip" data-scenario="g-pdf">PDF guidebook</button>
+    <button class="fh-chip" data-scenario="g-html">Web (HTML) guidebook</button>
+    <button class="fh-chip" data-scenario="g-unavailable">Not available yet</button>
+    <button class="fh-chip" data-scenario="g-empty">No guidebooks</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="phone" style="height:860px">
+
+    <!-- ═══ g-list · GuidebooksListView ═══ -->
+    <div class="screen flow-screen" id="g-list" data-start data-label="Guidebooks — browsable cards that preview what's inside">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="tb-titles">
+          <div class="tb-title">Guidebooks</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="tb-icon" title="Language"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Your stay</div>
+        <div class="page-title">Your <span class="hl">guidebooks</span></div>
+        <p class="page-intro">Everything the host prepared for Villa Serena — how the home works, how to get around, and where the locals actually go.</p>
+      </div>
+      <div class="content">
+        <button class="gb-search" data-goto="g-search">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg>
+          <span class="gs-ph">Search all guidebooks</span>
+        </button>
+        <div class="gb-count"><b>5</b> guidebooks</div>
+
+        <div class="gb-list">
+          <button class="gb-card" data-goto="g-guide">
+            <div class="gc-cover cover-home">
+              <span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-book-open"/></svg> Guide</span>
+              <span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-marked"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title">Welcome &amp; House Manual <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">Everything about your home for the week — check-in, Wi-Fi, appliances and house rules.</div>
+              <div class="gc-chips">
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-wifi"/></svg> Wi-Fi</span>
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Check-in</span>
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Map</span>
+                <span class="gc-chip">+ house rules</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="gb-card" data-goto="g-recos">
+            <div class="gc-cover cover-food">
+              <span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-book-open"/></svg> Guide</span>
+              <span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title">Local Recommendations <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">Hand-picked restaurants, cafés and sights within walking distance — the host's own list.</div>
+              <div class="gc-chips">
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg> 6 places</span>
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> On a map</span>
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-navigation"/></svg> Directions</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="gb-card" data-goto="g-html">
+            <div class="gc-cover cover-city">
+              <span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-globe"/></svg> Web</span>
+              <span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-landmark"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title">Getting Around Málaga <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">Airport transfers, buses, the metro and parking — provided by the host as a web page.</div>
+              <div class="gc-chips">
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg> Transport</span>
+                <span class="gc-chip auto"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Auto-translated</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="gb-card" data-goto="g-pdf">
+            <div class="gc-cover cover-beach">
+              <span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-file-text"/></svg> PDF</span>
+              <span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-waves"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title">Beaches &amp; Day Trips <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">The host's printable guide to the best beaches and coastal towns near Marbella.</div>
+              <div class="gc-chips">
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg> 6 pages</span>
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-download"/></svg> Downloadable</span>
+              </div>
+            </div>
+          </button>
+
+          <button class="gb-card" data-goto="g-unavailable">
+            <div class="gc-cover cover-spa">
+              <span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-clock"/></svg> Soon</span>
+              <span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-waves"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title">Pool &amp; Spa Access <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">Unlocks once check-in is complete and your stay begins.</div>
+              <div class="gc-chips">
+                <span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> Available at check-in</span>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div class="gb-offline">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-download"/></svg>
+          <span><b>Saved for offline.</b> Once opened, your guidebooks stay readable even if the villa's Wi-Fi drops.</span>
+        </div>
+
+        <span class="sim-note">list = GuidebooksListView; each card's type (Guide / Web / PDF) is the guidebook's content_type; "Auto-translated" = is_auto_translated</span>
+      </div>
+    </div>
+
+    <!-- ═══ g-search · GuidebooksListView with query ═══ -->
+    <div class="screen flow-screen" id="g-search" data-label="Search — across every guidebook, matches highlighted">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="tb-titles">
+          <div class="tb-title">Guidebooks</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+        <button class="tb-icon" title="Language"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Your stay</div>
+        <div class="page-title">Your <span class="hl">guidebooks</span></div>
+      </div>
+      <div class="content">
+        <div class="gb-search">
+          <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg>
+          <span class="gs-q">parking<span class="caret"></span></span>
+          <button class="gs-x" data-goto="g-list" title="Clear search"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        </div>
+        <div class="gb-count"><b>2</b> matches · in 2 guidebooks</div>
+
+        <div class="gb-list">
+          <button class="gb-card" data-goto="g-guide">
+            <div class="gc-cover cover-home" style="height:64px">
+              <span class="gc-ic" style="width:34px;height:34px"><svg viewBox="0 0 24 24" class="icon" style="width:18px;height:18px"><use href="#i-book-marked"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title" style="font-size:14px">Welcome &amp; House Manual <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">…private <mark class="hlq">parking</mark> space <strong>#12</strong> in the garage — the remote is on the key hook by the door.</div>
+            </div>
+          </button>
+          <button class="gb-card" data-goto="g-html">
+            <div class="gc-cover cover-city" style="height:64px">
+              <span class="gc-ic" style="width:34px;height:34px"><svg viewBox="0 0 24 24" class="icon" style="width:18px;height:18px"><use href="#i-landmark"/></svg></span>
+            </div>
+            <div class="gc-body">
+              <div class="gc-title" style="font-size:14px">Getting Around Málaga <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+              <div class="gc-desc">Street <mark class="hlq">parking</mark> is blue-zone (paid 9:00–20:00); the SMASSA car park on Calle Larios is nearest.</div>
+            </div>
+          </button>
+        </div>
+        <span class="sim-note">proposed: search spans EDITOR block text across guidebooks (title + body), not just the guidebook name — the current app has no guidebook search at all</span>
+      </div>
+    </div>
+
+    <!-- ═══ g-guide · GuidebookView (EDITOR) — the rich one ═══ -->
+    <div class="screen flow-screen" id="g-guide" data-label="House manual — hero, chapter rail, Wi-Fi surfaced, map with directions">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="g-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">House Manual</div>
+          <div class="tb-sub">Villa Serena</div>
+        </div>
+        <button class="tb-icon" data-modal="m-jump" title="All guidebooks"><svg viewBox="0 0 24 24" class="icon"><use href="#i-menu"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+
+      <div class="gb-hero cover-home">
+        <div class="gh-meta">Welcome guide <span class="dot"></span> Updated 2 Jul <span class="dot"></span> 5 min read</div>
+        <div class="gh-title">Welcome &amp; House Manual</div>
+        <div class="gh-desc">We're so glad you're here. Everything you need for a smooth stay at Villa Serena is below.</div>
+        <div class="gh-tags">
+          <span class="gh-tag"><svg viewBox="0 0 24 24" class="icon"><use href="#i-download"/></svg> Offline-ready</span>
+          <span class="gh-tag"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> English</span>
+        </div>
+      </div>
+
+      <div class="gb-toc">
+        <span class="tc-label">In this guide</span>
+        <button class="tc on">Welcome</button>
+        <button class="tc">Check-in</button>
+        <button class="tc">Wi-Fi</button>
+        <button class="tc">Appliances</button>
+        <button class="tc">Getting here</button>
+        <button class="tc">House rules</button>
+      </div>
+
+      <div class="gb-content">
+        <div class="gb-sec">
+          <p class="lead">Villa Serena is a quiet three-bedroom home a short walk from the old town. Make yourself at home — here's how everything works.</p>
+        </div>
+
+        <div class="gb-divider"></div>
+
+        <div class="gb-sec">
+          <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span> Check-in &amp; keys</div>
+          <div class="gb-rows">
+            <div class="gb-row">
+              <span class="gr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-log-in"/></svg></span>
+              <div><div class="gr-k">Check-in from</div><div class="gr-v">15:00</div></div>
+            </div>
+            <div class="gb-row">
+              <span class="gr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-log-out"/></svg></span>
+              <div><div class="gr-k">Check-out before</div><div class="gr-v">11:00</div></div>
+            </div>
+            <div class="gb-row">
+              <span class="gr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span>
+              <div><div class="gr-k">Your keys</div><div class="gr-v">Smart lock — code in Virtual keys</div></div>
+              <a class="gr-act" href="flow-remote-access-mobile.html#k-keys"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-right"/></svg></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="gb-sec">
+          <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg></span> Wi-Fi</div>
+          <div class="gb-wifi">
+            <div class="gw-head"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg> Connect in seconds</div>
+            <div class="gw-row">
+              <div><div class="gw-k">Network</div><div class="gw-v">VillaSerena_5G</div></div>
+              <button class="gw-copy" data-copy><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-copy"/></svg> Copy</button>
+            </div>
+            <div class="gw-row">
+              <div><div class="gw-k">Password</div><div class="gw-v">serena·2024·sun</div></div>
+              <button class="gw-copy" data-copy><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-copy"/></svg> Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="gb-sec">
+          <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-home"/></svg></span> In the home</div>
+          <div class="gb-amenities">
+            <div class="gb-amenity"><span class="am-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wind"/></svg></span> Air conditioning</div>
+            <div class="gb-amenity"><span class="am-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-tv"/></svg></span> Smart TV</div>
+            <div class="gb-amenity"><span class="am-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-coffee"/></svg></span> Nespresso</div>
+            <div class="gb-amenity"><span class="am-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-washer"/></svg></span> Washer</div>
+            <div class="gb-amenity"><span class="am-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-waves"/></svg></span> Shared pool</div>
+            <div class="gb-amenity"><span class="am-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-car"/></svg></span> Parking #12</div>
+          </div>
+          <p>The A/C remotes are on each bedside table. Please switch units off when you head out — the villa runs on solar and it keeps the shared bills down.</p>
+        </div>
+
+        <div class="gb-sec">
+          <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg></span> Getting here</div>
+          <div class="gb-map">
+            <div class="gm-canvas">
+              <span class="gm-road r1"></span><span class="gm-road r2"></span><span class="gm-road r3"></span>
+              <span class="gm-park"></span>
+              <span class="gm-pin"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin-fill"/></svg></span>
+            </div>
+            <div class="gm-foot">
+              <div class="gmf-txt">
+                <div class="gmf-name">Villa Serena</div>
+                <div class="gmf-addr">Calle del Mar 14, 29601 Marbella</div>
+              </div>
+              <button class="gmf-btn" data-modal="m-dir"><svg viewBox="0 0 24 24" class="icon" style="width:14px;height:14px"><use href="#i-navigation"/></svg> Directions</button>
+            </div>
+          </div>
+          <p>By car, exit the AP-7 at junction 181 and follow signs to the centre — the garage entrance is on the left just before the plaza. From the airport, a taxi is about 40 minutes.</p>
+        </div>
+
+        <div class="gb-sec">
+          <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-play-circle"/></svg></span> Two-minute tour</div>
+          <div class="gb-video">
+            <div class="gv-play"><svg viewBox="0 0 24 24" class="icon"><use href="#i-play"/></svg></div>
+            <div class="gv-cap">Villa Serena — a quick walkthrough</div>
+          </div>
+        </div>
+
+        <div class="gb-sec">
+          <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span> House rules</div>
+          <p>Please treat the villa as your own: <strong>no smoking indoors</strong>, quiet hours after <strong>23:00</strong>, and no parties. Sort recycling into the bins under the sink. Full details are in the welcome pack.</p>
+          <div class="gb-file">
+            <span class="gf-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg></span>
+            <div><div class="gf-name">Welcome pack &amp; emergency numbers.pdf</div><div class="gf-sub">PDF · 240 KB</div></div>
+            <span class="gf-dl"><svg viewBox="0 0 24 24" class="icon"><use href="#i-download"/></svg></span>
+          </div>
+        </div>
+
+        <span class="sim-note">EDITOR blocks: heading / paragraph (level 1–2) / amenities / mapBlock / videoBlock / fileUpload / horizontalRule. Wi-Fi card + chapter rail + Directions sheet are the proposed additions on top of GuidebookContent</span>
+      </div>
+    </div>
+
+    <!-- ═══ g-recos · GuidebookView (EDITOR w/ place cards) ═══ -->
+    <div class="screen flow-screen" id="g-recos" data-label="Local recommendations — real place cards on a map, with directions">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="g-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Recommendations</div>
+          <div class="tb-sub">Villa Serena</div>
+        </div>
+        <button class="tb-icon" data-modal="m-jump" title="All guidebooks"><svg viewBox="0 0 24 24" class="icon"><use href="#i-menu"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+
+      <div class="gb-hero cover-food">
+        <div class="gh-meta">Host's picks <span class="dot"></span> 6 places <span class="dot"></span> all walkable</div>
+        <div class="gh-title">Local Recommendations</div>
+        <div class="gh-desc">The places we send our own friends to — no tourist traps, all within 15 minutes on foot.</div>
+      </div>
+
+      <div class="gb-toc">
+        <span class="tc-label">Filter</span>
+        <button class="tc on">All</button>
+        <button class="tc"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-utensils"/></svg> Eat</button>
+        <button class="tc"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-coffee"/></svg> Coffee</button>
+        <button class="tc"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-landmark"/></svg> See</button>
+      </div>
+
+      <div class="gb-content">
+        <div class="gb-map">
+          <div class="gm-canvas" style="height:132px">
+            <span class="gm-road r1"></span><span class="gm-road r2"></span><span class="gm-road r3"></span>
+            <span class="gm-park"></span>
+            <span class="gm-pin" style="left:30%;top:40%"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin-fill"/></svg></span>
+            <span class="gm-pin" style="left:58%;top:56%"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin-fill"/></svg></span>
+            <span class="gm-pin" style="left:70%;top:30%"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin-fill"/></svg></span>
+          </div>
+          <div class="gm-foot">
+            <div class="gmf-txt"><div class="gmf-name">6 spots near Villa Serena</div><div class="gmf-addr">Tap a pin to open it</div></div>
+            <button class="gmf-btn" data-modal="m-dir"><svg viewBox="0 0 24 24" class="icon" style="width:14px;height:14px"><use href="#i-map-pin"/></svg> Full map</button>
+          </div>
+        </div>
+
+        <div class="gb-sec" style="gap:12px">
+          <div class="gb-place">
+            <div class="gp-img cover-food"><span class="gp-rank">1</span>🥘</div>
+            <div class="gp-body">
+              <div class="gp-name">El Rincón de María</div>
+              <div class="gp-meta">Spanish · Paella <span class="dot"></span> <span class="star"><svg viewBox="0 0 24 24" class="icon"><use href="#i-star-fill"/></svg> 4.8</span> <span class="dot"></span> 4 min walk</div>
+              <div class="gp-desc">Family-run, the seafood paella is unreal. Book ahead on weekends — the host can call for you.</div>
+              <div class="gp-actions">
+                <button class="gp-btn pri" data-modal="m-dir"><svg viewBox="0 0 24 24" class="icon"><use href="#i-navigation"/></svg> Directions</button>
+                <a class="gp-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external-link"/></svg> Website</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="gb-place">
+            <div class="gp-img cover-map"><span class="gp-rank">2</span>☕</div>
+            <div class="gp-body">
+              <div class="gp-name">Café Central</div>
+              <div class="gp-meta">Coffee · Breakfast <span class="dot"></span> <span class="star"><svg viewBox="0 0 24 24" class="icon"><use href="#i-star-fill"/></svg> 4.6</span> <span class="dot"></span> 2 min walk</div>
+              <div class="gp-desc">Best flat white in the old town and a sunny terrace. Get there before 10 for a table.</div>
+              <div class="gp-actions">
+                <button class="gp-btn pri" data-modal="m-dir"><svg viewBox="0 0 24 24" class="icon"><use href="#i-navigation"/></svg> Directions</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gb-place">
+            <div class="gp-img cover-city"><span class="gp-rank">3</span>🏛️</div>
+            <div class="gp-body">
+              <div class="gp-name">Plaza de los Naranjos</div>
+              <div class="gp-meta">Landmark <span class="dot"></span> <span class="star"><svg viewBox="0 0 24 24" class="icon"><use href="#i-star-fill"/></svg> 4.9</span> <span class="dot"></span> 6 min walk</div>
+              <div class="gp-desc">The orange-tree square at the heart of the old town — beautiful at golden hour.</div>
+              <div class="gp-actions">
+                <button class="gp-btn pri" data-modal="m-dir"><svg viewBox="0 0 24 24" class="icon"><use href="#i-navigation"/></svg> Directions</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="sim-note">recommendations are EDITOR content today (imageBlock + text + mapBlock). Proposed: a place-card block so each spot gets its distance, rating and a Directions deep-link</span>
+      </div>
+    </div>
+
+    <!-- ═══ g-html · GuidebookHtmlView ═══ -->
+    <div class="screen flow-screen" id="g-html" data-label="Web guidebook — HTML content in a real reader, not a bare iframe">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="g-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Getting Around</div>
+          <div class="tb-sub">Villa Serena</div>
+        </div>
+        <button class="tb-icon" data-modal="m-jump" title="All guidebooks"><svg viewBox="0 0 24 24" class="icon"><use href="#i-menu"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="gb-html-frame">
+        <span class="gb-html-badge"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-globe"/></svg> Web page · auto-translated to English</span>
+        <h2>Getting Around Málaga</h2>
+        <p>Málaga is compact and very walkable, but here's how to reach everything else from Villa Serena.</p>
+        <h3>From the airport (AGP)</h3>
+        <p>The <a>C1 Cercanías train</a> runs to María Zambrano station every 20 minutes (€2.30, 12 min). Taxis are a flat €25 to the centre. Uber and Cabify both work here.</p>
+        <h3>Buses &amp; metro</h3>
+        <ul>
+          <li>Single bus ticket €1.40, buy from the driver.</li>
+          <li>The metro (lines 1 &amp; 2) is handy for the university and stadium.</li>
+          <li>Download the <a>EMT Málaga</a> app for live times.</li>
+        </ul>
+        <h3>Parking</h3>
+        <p>Street parking is blue-zone (paid 9:00–20:00, free Sundays). The nearest car park is <strong>SMASSA Calle Larios</strong>, two minutes from the villa.</p>
+        <h3>Bikes &amp; scooters</h3>
+        <p>The seafront cycle path is flat and gorgeous. Málagabici docks are dotted along the promenade.</p>
+        <span class="sim-note">GuidebookHtmlView renders html_content in a sandboxed iframe with injected reset CSS. Proposed: consistent app chrome + a "web page / auto-translated" badge so it doesn't feel like a broken embed</span>
+      </div>
+    </div>
+
+    <!-- ═══ g-pdf · GuidebookPdfView ═══ -->
+    <div class="screen flow-screen" id="g-pdf" data-label="PDF guidebook — a proper reader with page count and download">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="g-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Beaches &amp; Day Trips</div>
+          <div class="tb-sub">Villa Serena</div>
+        </div>
+        <button class="tb-icon" data-modal="m-jump" title="All guidebooks"><svg viewBox="0 0 24 24" class="icon"><use href="#i-menu"/></svg></button>
+      </div>
+      <div class="gb-doc">
+        <div class="gd-bar">
+          <span class="gd-page"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file-text"/></svg> Page 1 of 6</span>
+          <div class="gd-tools">
+            <button class="gd-tool" title="Download"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-download"/></svg></button>
+            <button class="gd-tool" title="Open full screen"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-external-link"/></svg></button>
+          </div>
+        </div>
+        <div class="gd-scroll">
+          <div class="gd-sheet">
+            <div class="gs-h" style="width:70%"></div>
+            <div class="gs-img cover-beach"></div>
+            <div class="gs-l w9"></div><div class="gs-l w9"></div><div class="gs-l w7"></div>
+            <div class="gs-cols">
+              <div><div class="gs-l" style="margin-bottom:6px"></div><div class="gs-l w7"></div></div>
+              <div><div class="gs-l" style="margin-bottom:6px"></div><div class="gs-l w5"></div></div>
+            </div>
+            <div class="gs-l w9" style="margin-top:6px"></div><div class="gs-l w5"></div>
+          </div>
+          <div class="gd-sheet">
+            <div class="gs-h" style="width:50%"></div>
+            <div class="gs-l w9"></div><div class="gs-l w7"></div>
+            <div class="gs-img cover-map"></div>
+            <div class="gs-l w9"></div><div class="gs-l w9"></div><div class="gs-l w5"></div>
+          </div>
+        </div>
+      </div>
+      <span class="sim-note" style="padding:10px">GuidebookPdfView uses react-pdf with IntersectionObserver page lazy-loading. Proposed: a sticky doc toolbar (page count · download · full screen) so a PDF reads like a document, not a blank scroll</span>
+    </div>
+
+    <!-- ═══ g-unavailable · UnavailableFeature ═══ -->
+    <div class="screen flow-screen" id="g-unavailable" data-label="Not available yet — honest reason + the task that unlocks it">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <button class="back-btn" data-goto="g-list"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <div class="tb-titles">
+          <div class="tb-title">Pool &amp; Spa Access</div>
+          <div class="tb-sub">Villa Serena</div>
+        </div>
+      </div>
+      <div class="gb-state warn">
+        <span class="st-ring"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-clock"/></svg></span>
+        <div class="st-title">Not available just yet</div>
+        <p class="st-sub">This guidebook unlocks once your check-in is complete and your stay has started.</p>
+        <div class="gb-reasons">
+          <div class="gb-reason"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> Finish guest registration for everyone in your party.</div>
+          <div class="gb-reason"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> Opens on your arrival date — 12 July, from 15:00.</div>
+        </div>
+        <div class="st-actions">
+          <a class="btn btn-primary btn-sm" href="flow-registration.html#r-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg> Finish registration</a>
+          <button class="btn-ghost" data-goto="g-list">Back to guidebooks</button>
+        </div>
+      </div>
+      <span class="sim-note" style="padding:10px">UnavailableFeature shows title + subtitle + reasons from error.detail. Proposed: turn each reason into a next step (deep-link the blocking task) — same pattern as the virtual-keys gate</span>
+    </div>
+
+    <!-- ═══ g-empty · GuidebooksListView empty ═══ -->
+    <div class="screen flow-screen" id="g-empty" data-label="No guidebooks — a calm empty state, not a blank card">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="topbar">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="tb-titles">
+          <div class="tb-title">Guidebooks</div>
+          <div class="tb-sub">Villa Serena · CHK-58291</div>
+        </div>
+      </div>
+      <div class="page-head">
+        <div class="kicker">Your stay</div>
+        <div class="page-title">Your <span class="hl">guidebooks</span></div>
+      </div>
+      <div class="gb-state">
+        <span class="st-ring"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></span>
+        <div class="st-title">No guidebooks yet</div>
+        <p class="st-sub">Your host hasn't published any guidebooks for this stay. If you need something, just ask — Vela can answer most questions about the villa.</p>
+        <div class="st-actions">
+          <button class="btn btn-primary btn-sm" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon icon-sm" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg> Ask Vela</button>
+          <a class="btn-ghost" href="flow-faq-mobile.html#h-faq">Browse the FAQ</a>
+        </div>
+      </div>
+      <span class="sim-note" style="padding:10px">GuidebooksListView empty state (no_guidebooks_title / subtitle). Proposed: give it a way forward (Ask Vela / FAQ) rather than a dead card</span>
+    </div>
+
+    <!-- ═══ Shared overlays (direct children of .phone so they work on every screen) ═══ -->
+    <!-- Jump-to-guidebook drawer (maps the housing nav drawer) -->
+    <div class="proto-modal right" id="m-jump">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        <div class="pm-title">All guidebooks</div>
+        <p class="pm-desc">Villa Serena · CHK-58291</p>
+        <div class="gb-jump-list">
+          <button class="gb-jump" data-modal-close data-goto="g-guide"><span class="gj-ic cover-home"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-marked"/></svg></span><span class="gj-main"><span class="gj-title">Welcome &amp; House Manual</span><span class="gj-type">Guide</span></span><svg viewBox="0 0 24 24" class="icon icon-sm gj-chev"><use href="#i-chevron-right"/></svg></button>
+          <button class="gb-jump" data-modal-close data-goto="g-recos"><span class="gj-ic cover-food"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg></span><span class="gj-main"><span class="gj-title">Local Recommendations</span><span class="gj-type">Guide · 6 places</span></span><svg viewBox="0 0 24 24" class="icon icon-sm gj-chev"><use href="#i-chevron-right"/></svg></button>
+          <button class="gb-jump" data-modal-close data-goto="g-html"><span class="gj-ic cover-city"><svg viewBox="0 0 24 24" class="icon"><use href="#i-landmark"/></svg></span><span class="gj-main"><span class="gj-title">Getting Around Málaga</span><span class="gj-type">Web page</span></span><svg viewBox="0 0 24 24" class="icon icon-sm gj-chev"><use href="#i-chevron-right"/></svg></button>
+          <button class="gb-jump" data-modal-close data-goto="g-pdf"><span class="gj-ic cover-beach"><svg viewBox="0 0 24 24" class="icon"><use href="#i-waves"/></svg></span><span class="gj-main"><span class="gj-title">Beaches &amp; Day Trips</span><span class="gj-type">PDF · 6 pages</span></span><svg viewBox="0 0 24 24" class="icon icon-sm gj-chev"><use href="#i-chevron-right"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Directions sheet (from any map block) -->
+    <div class="proto-modal sheet" id="m-dir">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Get directions</div>
+        <p class="pm-desc">Villa Serena · Calle del Mar 14, 29601 Marbella</p>
+        <div class="pm-actions">
+          <a class="btn btn-primary"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-navigation"/></svg> Open in Google Maps</a>
+          <a class="btn btn-outline"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg> Open in Apple Maps</a>
+          <button class="btn-ghost" data-modal-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vela help sheet -->
+    <div class="proto-modal right" id="m-vela">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        <div class="vela-head" style="border:none;padding-bottom:0">
+          <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+          <div>
+            <div class="vela-name">Vela</div>
+            <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+          </div>
+        </div>
+        <p class="vela-intro">Ask me anything about the villa — I read the same guidebooks and answer in your language.</p>
+        <div class="vela-section">
+          <div class="vela-eyebrow">Jump to a guidebook</div>
+          <div class="vela-guide" style="margin-top:8px">
+            <button class="vg-row" data-modal-close data-goto="g-guide"><span class="vg-emoji">📖</span> Welcome &amp; House Manual <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+            <button class="vg-row" data-modal-close data-goto="g-recos"><span class="vg-emoji">🍽️</span> Local Recommendations <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+            <button class="vg-row" data-modal-close data-goto="g-pdf"><span class="vg-emoji">🏖️</span> Beaches &amp; Day Trips <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
+          </div>
+        </div>
+        <div class="vela-section">
+          <div class="vela-eyebrow">Ask Vela</div>
+          <div class="vela-ask" style="margin-top:10px">
+            <div class="ask-input">What's the Wi-Fi password?<span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span></div>
+            <div class="vela-chips">
+              <span class="chip">Where do I park?</span>
+              <span class="chip">Best paella nearby?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-copy"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-menu"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-book-marked"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.4-8 12-8 12s-8-7.6-8-12a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-map-pin-fill"><path d="M20 10c0 4.4-8 12-8 12s-8-7.6-8-12a8 8 0 0 1 16 0" fill="currentColor" stroke="none"/><circle cx="12" cy="10" r="3" fill="#fff" stroke="none"/></g>
+    <g id="i-navigation"><path d="M3 11l19-9-9 19-2-8-8-2z"/></g>
+    <g id="i-utensils"><path d="M3 2v7a3 3 0 0 0 3 3 3 3 0 0 0 3-3V2"/><path d="M6 2v20"/><path d="M18 2v20"/><path d="M18 9c1.5 0 3-1.5 3-4s-1.5-3-3-3"/></g>
+    <g id="i-coffee"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M6 2v2M10 2v2M14 2v2"/></g>
+    <g id="i-car"><path d="M19 17h2v-4l-2-5H5L3 13v4h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></g>
+    <g id="i-wifi"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L21 5"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></g>
+    <g id="i-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-star-fill"><path d="M11.5 2.6a.5.5 0 0 1 .9 0l2.4 5 5.4.8a.5.5 0 0 1 .3.9l-3.9 3.8.9 5.4a.5.5 0 0 1-.7.5L12 17l-4.8 2.5a.5.5 0 0 1-.7-.5l.9-5.4-3.9-3.8a.5.5 0 0 1 .3-.9l5.4-.8z"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-home"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/></g>
+    <g id="i-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></g>
+    <g id="i-image"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></g>
+    <g id="i-play"><path d="m6 3 14 9-14 9z"/></g>
+    <g id="i-play-circle"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></g>
+    <g id="i-landmark"><path d="M3 22h18"/><path d="M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="m12 2 9 5H3z"/></g>
+    <g id="i-waves"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></g>
+    <g id="i-wind"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></g>
+    <g id="i-tv"><rect x="2" y="7" width="20" height="13" rx="2"/><path d="m17 2-5 5-5-5"/></g>
+    <g id="i-washer"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M6 5h.01M10 5h.01"/><circle cx="12" cy="13" r="5"/><path d="M9.5 13a2.5 2.5 0 0 1 5 0"/></g>
+    <g id="i-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></g>
+    <g id="i-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></g>
+  </defs>
+</svg>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+<script src="guide-toggle.js" defer></script>
+<script>
+/* tiny copy-button affordance for the Wi-Fi card (prototype-only) */
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-copy]');
+  if (!b) return;
+  var prev = b.innerHTML;
+  b.classList.add('copied');
+  b.innerHTML = '<svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px;stroke-width:3"><use href="#i-check"/></svg> Copied';
+  setTimeout(function () { b.classList.remove('copied'); b.innerHTML = prev; }, 1600);
+});
+</script>
+</body>
+</html>

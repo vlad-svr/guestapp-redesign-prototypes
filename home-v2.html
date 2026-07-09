@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home V2 — Check-in Cockpit (Mobile)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="upsell.css">
+<link rel="stylesheet" href="home-v2.css">
+<link rel="stylesheet" href="home-glass.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Home V2 — the Check-in Cockpit (Mobile)</h1>
+  <p class="lede">A rebuild that turns Home from a dashboard you read into a mission you complete: one command surface fuses greeting, progress, the single next action and the reward it unlocks — then an honest timeline, an "unlocks when you're done" strip, and clearly-optional extras. Mock data only.</p>
+
+  <div class="proto-row">
+
+    <!-- ══════════ 1 · IN PROGRESS — the cockpit ══════════ -->
+    <div class="phone-col">
+      <div class="phone-label">1 · Home — check-in in progress</div>
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <header class="home-topbar">
+            <button class="menu-btn" aria-label="Open menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+            <div class="prop">
+              <div class="prop-logo" aria-hidden="true">V</div>
+              <div>
+                <div class="prop-name">Villa Serena</div>
+                <div class="prop-addr">Carrer de Mallorca 21, Barcelona</div>
+              </div>
+            </div>
+            <button class="avatar" aria-label="Your account">MG</button>
+          </header>
+
+          <div class="home-content">
+
+            <!-- CommandHero -->
+            <section class="cockpit fade-up" aria-labelledby="ck-h">
+              <div class="ck-top">
+                <div>
+                  <p class="ck-greet">Welcome back, María</p>
+                  <h1 class="ck-headline" id="ck-h">You're halfway to your keys</h1>
+                </div>
+                <span class="ck-badge"><span class="tdot" aria-hidden="true"></span> In 3 days</span>
+              </div>
+
+              <div class="ck-progress">
+                <div class="cp-row">
+                  <span class="cp-label">Check-in progress</span>
+                  <span class="cp-meta">2 of 4 done · ~3 min left</span>
+                </div>
+                <div class="ck-track" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="Check-in progress: 50 percent">
+                  <div class="ck-fill" style="width:50%"></div>
+                </div>
+              </div>
+
+              <!-- NextActionCard: the ONE thing to do now -->
+              <a class="next-action" href="flow-payments-mobile.html#p-deposit">
+                <span class="na-icon"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+                <span class="na-body">
+                  <span class="na-eyebrow">Next step · 1 min</span>
+                  <span class="na-title">Choose your property protection</span>
+                  <span class="na-sub">A refundable deposit or premium cover</span>
+                </span>
+                <span class="na-go" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></span>
+              </a>
+
+              <p class="ck-reward">
+                <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-key"/></svg>
+                <span>Finish check-in to <b>unlock your keys</b> the moment you arrive.</span>
+              </p>
+
+              <div class="ck-arrival">
+                <span class="ca-item"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg> <b>Fri 10 Jul</b>, 15:00</span>
+                <span class="ca-sep" aria-hidden="true"></span>
+                <span class="ca-item"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-moon"/></svg> <b>4</b> nights</span>
+                <span class="ca-sep" aria-hidden="true"></span>
+                <span class="ca-item"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-map-pin"/></svg> Barcelona</span>
+              </div>
+            </section>
+
+            <!-- ChecklistTimeline -->
+            <section class="fade-up d2" aria-labelledby="tl-h">
+              <div class="v2-sec-head">
+                <h2 id="tl-h">Your check-in steps</h2>
+                <span class="sh-note">2 of 4 done</span>
+              </div>
+              <div class="card">
+                <div class="timeline">
+                  <div class="tl-row done">
+                    <span class="tl-node done"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+                    <span class="tl-main">
+                      <span class="tl-title">Register guests</span>
+                      <span class="tl-sub">2 of 2 guests verified &amp; registered</span>
+                    </span>
+                    <span class="tl-right"><span class="tl-chip done"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check"/></svg> Done</span></span>
+                  </div>
+
+                  <div class="tl-row done">
+                    <span class="tl-node done"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check"/></svg></span>
+                    <span class="tl-main">
+                      <span class="tl-title">Booking payment</span>
+                      <span class="tl-sub">€380.00 paid · receipt sent</span>
+                    </span>
+                    <span class="tl-right"><span class="tl-chip done"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check"/></svg> Done</span></span>
+                  </div>
+
+                  <a class="tl-row is-active clickable" href="flow-payments-mobile.html#p-deposit" aria-current="step">
+                    <span class="tl-node active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+                    <span class="tl-main">
+                      <span class="tl-title">Property protection</span>
+                      <span class="tl-sub">Choose a deposit or premium cover · ~1 min</span>
+                    </span>
+                    <span class="tl-right"><span class="tl-cta">Continue <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></span>
+                  </a>
+
+                  <a class="tl-row clickable" href="flow-taxes-mobile.html#t-setup">
+                    <span class="tl-node todo"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg></span>
+                    <span class="tl-main">
+                      <span class="tl-title">Tourist taxes</span>
+                      <span class="tl-sub">€8.80 for 2 guests · 4 nights</span>
+                    </span>
+                    <span class="tl-right"><span class="tl-chip todo">To do</span><svg viewBox="0 0 24 24" class="icon tl-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+                  </a>
+                </div>
+              </div>
+            </section>
+
+            <!-- UnlockStrip -->
+            <section class="fade-up d3" aria-labelledby="uk-h">
+              <div class="v2-sec-head">
+                <h2 id="uk-h">Unlocks when you're done</h2>
+              </div>
+              <div class="unlocks">
+                <a class="unlock-card locked" href="flow-remote-access-mobile.html#k-gate">
+                  <span class="uk-icon"><svg viewBox="0 0 24 24" class="icon icon-lg" aria-hidden="true"><use href="#i-key"/></svg></span>
+                  <span class="uk-body">
+                    <span class="uk-title">Virtual keys</span>
+                    <span class="uk-sub">Main door &amp; apartment 2B</span>
+                  </span>
+                  <span class="uk-right"><span class="unlock-lock"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg> 2 steps left</span></span>
+                </a>
+                <a class="unlock-card ready" href="flow-guidebooks-mobile.html#g-list">
+                  <span class="uk-icon"><svg viewBox="0 0 24 24" class="icon icon-lg" aria-hidden="true"><use href="#i-book-open"/></svg></span>
+                  <span class="uk-body">
+                    <span class="uk-title">Guidebook <span class="uk-badge-now">Available now</span></span>
+                    <span class="uk-sub">Wi-Fi, house rules &amp; local tips</span>
+                  </span>
+                  <span class="uk-right"><svg viewBox="0 0 24 24" class="icon tl-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+                </a>
+              </div>
+            </section>
+
+            <!-- Optional extras (Handpicked) — demoted below the core job -->
+            <section class="fade-up d4" aria-labelledby="ex-h">
+              <div class="v2-sec-head">
+                <div>
+                  <span class="v2-sec-eyebrow">Optional</span>
+                  <h2 id="ex-h">✨ Handpicked for your trip</h2>
+                </div>
+                <a class="sh-link" href="flow-upselling-mobile.html">See all <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+              <div class="home-reco">
+                <a class="reco-card tap" href="flow-upselling-mobile.html#u-detail">
+                  <span class="reco-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+                    <span class="reco-chip">Food &amp; drinks</span>
+                  </span>
+                  <span class="reco-body">
+                    <span class="reco-title">Breakfast basket</span>
+                    <span class="reco-desc">Pastries, juice &amp; coffee at your door on your first morning.</span>
+                    <span class="reco-foot"><span class="reco-price">€12.50</span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Add</span></span>
+                  </span>
+                </a>
+                <a class="reco-card tap" href="flow-upselling-mobile.html#u-request">
+                  <span class="reco-photo" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+                    <span class="reco-chip">Check-in &amp; out</span>
+                  </span>
+                  <span class="reco-body">
+                    <span class="reco-title">Early check-in</span>
+                    <span class="reco-desc">Get into the apartment from 12:00 instead of 15:00.</span>
+                    <span class="reco-foot"><span class="reco-price">€20.00</span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg> View</span></span>
+                  </span>
+                </a>
+
+                <a class="mozio-banner col-full" href="flow-upselling-mobile.html#u-list">
+                  <span class="mz-head">
+                    <span class="mz-icon"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-car"/></svg></span>
+                    <span class="mz-titles">
+                      <span class="mz-title">Airport &amp; City Transfers <span class="mozio-tag">🔥 Hot deal</span></span>
+                      <span class="mz-partner"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-external"/></svg> Powered by Mozio · books on the partner site</span>
+                    </span>
+                  </span>
+                  <span class="mz-sub">Prebook airport shuttles, taxis, buses &amp; private transfers — anytime, everywhere.</span>
+                  <span class="mz-accent">✨ Discover unbeatable rates</span>
+                  <span class="mz-pills">
+                    <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Free cancellation</span>
+                    <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-clock"/></svg> 24/7 support</span>
+                    <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-zap"/></svg> Instant confirmation</span>
+                  </span>
+                  <span class="mz-cta">Book a transfer <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-external"/></svg></span>
+                </a>
+
+                <a class="airalo-banner col-full" href="flow-upselling-mobile.html#u-list">
+                  <span class="ai-mark">📶</span>
+                  <span class="ai-main">
+                    <span class="ai-brand"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-external"/></svg> Airalo eSIM</span>
+                    <span class="ai-title">Activate your eSIM instantly and forget about roaming.</span>
+                  </span>
+                  <span class="ai-side">
+                    <span class="ai-price">€4.00<span class="from">Starting from</span></span>
+                    <span class="ai-link">View plans <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+                  </span>
+                </a>
+
+                <a class="reco-card tap" href="flow-upselling-mobile.html#u-list">
+                  <span class="reco-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+                    <span class="reco-chip free"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-gift"/></svg> Free</span>
+                  </span>
+                  <span class="reco-body">
+                    <span class="reco-title">Gothic Quarter walking tour</span>
+                    <span class="reco-desc">2 hours through medieval Barcelona · by GuruWalk.</span>
+                    <span class="reco-foot"><span class="reco-rating"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-star"/></svg> 4.9 <span class="rc-count">(326)</span></span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-external"/></svg> Book</span></span>
+                  </span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <a class="free-fab" href="flow-upselling-mobile.html#u-list">
+            <svg viewBox="0 0 24 24" class="icon" style="fill:none" aria-hidden="true"><use href="#i-gift"/></svg> Free offers
+            <span class="ff-x" role="button" aria-label="Dismiss free offers"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>
+          </a>
+
+          <nav class="bottom-nav" aria-label="Primary">
+            <a class="nav-item active" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg> Check-in <span class="nbadge" aria-label="2 tasks left">2</span></a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-compass"/></svg> Discover</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Keys</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ 2 · ALL DONE — ready ══════════ -->
+    <div class="phone-col">
+      <div class="phone-label">2 · Home — check-in complete</div>
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <header class="home-topbar">
+            <button class="menu-btn" aria-label="Open menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+            <div class="prop">
+              <div class="prop-logo" aria-hidden="true">V</div>
+              <div>
+                <div class="prop-name">Villa Serena</div>
+                <div class="prop-addr">Carrer de Mallorca 21, Barcelona</div>
+              </div>
+            </div>
+            <button class="avatar" aria-label="Your account">MG</button>
+          </header>
+
+          <div class="home-content">
+            <section class="cockpit ready fade-up" aria-labelledby="ck-h2">
+              <div class="ck-top">
+                <div>
+                  <p class="ck-greet">You're all set, María 🎉</p>
+                  <h1 class="ck-headline" id="ck-h2">Check-in complete</h1>
+                </div>
+                <span class="ck-badge"><span class="tdot" aria-hidden="true"></span> Ready</span>
+              </div>
+
+              <div class="ck-progress">
+                <div class="cp-row">
+                  <span class="cp-label">All steps done</span>
+                  <span class="cp-meta">4 of 4 · nothing left to do</span>
+                </div>
+                <div class="ck-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Check-in progress: 100 percent">
+                  <div class="ck-fill" style="width:100%"></div>
+                </div>
+              </div>
+
+              <a class="ck-open" href="flow-remote-access-mobile.html#k-keys">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Open your door
+              </a>
+
+              <div class="ck-arrival">
+                <span class="ca-item"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-calendar"/></svg> <b>Fri 10 Jul</b>, 15:00</span>
+                <span class="ca-sep" aria-hidden="true"></span>
+                <span class="ca-item"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-moon"/></svg> <b>4</b> nights</span>
+                <span class="ca-sep" aria-hidden="true"></span>
+                <span class="ca-item"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-map-pin"/></svg> Barcelona</span>
+              </div>
+            </section>
+
+            <section class="fade-up d2" aria-labelledby="uk-h2">
+              <div class="v2-sec-head"><h2 id="uk-h2">Your stay</h2></div>
+              <div class="unlocks">
+                <a class="unlock-card live" href="flow-remote-access-mobile.html#k-keys">
+                  <span class="uk-icon"><svg viewBox="0 0 24 24" class="icon icon-lg" aria-hidden="true"><use href="#i-key"/></svg></span>
+                  <span class="uk-body">
+                    <span class="uk-title">Virtual keys <span class="uk-badge-now">Unlocked</span></span>
+                    <span class="uk-sub">Main door &amp; apartment 2B</span>
+                  </span>
+                  <span class="uk-right"><span class="tl-cta">Open <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></span></span>
+                </a>
+                <a class="unlock-card ready" href="flow-guidebooks-mobile.html#g-list">
+                  <span class="uk-icon"><svg viewBox="0 0 24 24" class="icon icon-lg" aria-hidden="true"><use href="#i-book-open"/></svg></span>
+                  <span class="uk-body">
+                    <span class="uk-title">Guidebook</span>
+                    <span class="uk-sub">Wi-Fi, house rules &amp; local tips</span>
+                  </span>
+                  <span class="uk-right"><svg viewBox="0 0 24 24" class="icon tl-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+                </a>
+                <a class="unlock-card ready" href="flow-guidebooks-mobile.html#g-guide">
+                  <span class="uk-icon"><svg viewBox="0 0 24 24" class="icon icon-lg" aria-hidden="true"><use href="#i-wifi"/></svg></span>
+                  <span class="uk-body">
+                    <span class="uk-title">Wi-Fi &amp; access</span>
+                    <span class="uk-sub">VillaSerena_5G · tap to copy</span>
+                  </span>
+                  <span class="uk-right"><svg viewBox="0 0 24 24" class="icon tl-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+                </a>
+              </div>
+            </section>
+
+            <section class="fade-up d3" aria-labelledby="ex-h2">
+              <div class="v2-sec-head">
+                <div>
+                  <span class="v2-sec-eyebrow">Optional</span>
+                  <h2 id="ex-h2">✨ Handpicked for your trip</h2>
+                </div>
+                <a class="sh-link" href="flow-upselling-mobile.html">See all <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+              </div>
+              <div class="home-reco">
+                <a class="reco-card tap" href="flow-upselling-mobile.html#u-detail">
+                  <span class="reco-photo" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇
+                    <span class="reco-chip">Check-in &amp; out</span>
+                  </span>
+                  <span class="reco-body">
+                    <span class="reco-title">Late check-out until 14:00</span>
+                    <span class="reco-desc">Sleep in on your last day — keep the keys longer.</span>
+                    <span class="reco-foot"><span class="reco-price">€15.00</span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Add</span></span>
+                  </span>
+                </a>
+                <a class="reco-card tap" href="flow-upselling-mobile.html#u-list">
+                  <span class="reco-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+                    <span class="reco-chip free"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-gift"/></svg> Free</span>
+                  </span>
+                  <span class="reco-body">
+                    <span class="reco-title">Gothic Quarter walking tour</span>
+                    <span class="reco-desc">2 hours through medieval Barcelona · by GuruWalk.</span>
+                    <span class="reco-foot"><span class="reco-rating"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-star"/></svg> 4.9 <span class="rc-count">(326)</span></span><span class="reco-add"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-external"/></svg> Book</span></span>
+                  </span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <a class="free-fab" href="flow-upselling-mobile.html#u-list">
+            <svg viewBox="0 0 24 24" class="icon" style="fill:none" aria-hidden="true"><use href="#i-gift"/></svg> Free offers
+            <span class="ff-x" role="button" aria-label="Dismiss free offers"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>
+          </a>
+
+          <nav class="bottom-nav" aria-label="Primary">
+            <a class="nav-item active" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg> Check-in</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-compass"/></svg> Discover</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Keys</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ 3 · LOADING — skeleton ══════════ -->
+    <div class="phone-col">
+      <div class="phone-label">3 · Home — loading (skeleton)</div>
+      <div class="phone">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <header class="home-topbar">
+            <span class="menu-btn skeleton" style="border-radius:10px"></span>
+            <div class="prop" style="justify-content:flex-start;padding-left:6px">
+              <span class="skeleton sk-circle" style="width:28px;height:28px;border-radius:8px"></span>
+              <span style="display:flex;flex-direction:column;gap:5px">
+                <span class="skeleton sk-line" style="width:96px;height:11px"></span>
+                <span class="skeleton sk-line" style="width:130px;height:9px"></span>
+              </span>
+            </div>
+            <span class="avatar skeleton" style="border-radius:50%"></span>
+          </header>
+
+          <div class="home-content" aria-busy="true" aria-label="Loading your check-in">
+            <div class="skeleton sk-hero"></div>
+
+            <div>
+              <div class="v2-sec-head"><span class="skeleton sk-line" style="width:150px;height:15px"></span></div>
+              <div class="card">
+                <div class="timeline">
+                  <div class="tl-row">
+                    <span class="skeleton sk-circle"></span>
+                    <span class="tl-main" style="display:flex;flex-direction:column;gap:7px">
+                      <span class="skeleton sk-line" style="width:60%"></span>
+                      <span class="skeleton sk-line" style="width:80%;height:9px"></span>
+                    </span>
+                  </div>
+                  <div class="tl-row">
+                    <span class="skeleton sk-circle"></span>
+                    <span class="tl-main" style="display:flex;flex-direction:column;gap:7px">
+                      <span class="skeleton sk-line" style="width:52%"></span>
+                      <span class="skeleton sk-line" style="width:70%;height:9px"></span>
+                    </span>
+                  </div>
+                  <div class="tl-row">
+                    <span class="skeleton sk-circle"></span>
+                    <span class="tl-main" style="display:flex;flex-direction:column;gap:7px">
+                      <span class="skeleton sk-line" style="width:64%"></span>
+                      <span class="skeleton sk-line" style="width:75%;height:9px"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="v2-sec-head"><span class="skeleton sk-line" style="width:180px;height:15px"></span></div>
+              <div class="unlocks">
+                <span class="skeleton sk-card"></span>
+                <span class="skeleton sk-card"></span>
+              </div>
+            </div>
+          </div>
+
+          <nav class="bottom-nav" aria-label="Primary">
+            <a class="nav-item active" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg> Check-in</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-compass"/></svg> Discover</a>
+            <a class="nav-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Keys</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ 4 · MENU DRAWER ══════════ -->
+    <div class="phone-col">
+      <div class="phone-label">4 · Menu drawer open</div>
+      <div class="phone">
+        <div class="screen" style="position:relative">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <header class="home-topbar">
+            <button class="menu-btn" aria-label="Close menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+            <div class="prop">
+              <div class="prop-logo" aria-hidden="true">V</div>
+              <div>
+                <div class="prop-name">Villa Serena</div>
+                <div class="prop-addr">Carrer de Mallorca 21, Barcelona</div>
+              </div>
+            </div>
+            <button class="avatar" aria-label="Your account">MG</button>
+          </header>
+          <div class="home-content">
+            <section class="cockpit">
+              <div class="ck-top">
+                <div>
+                  <p class="ck-greet">Welcome back, María</p>
+                  <h1 class="ck-headline">You're halfway to your keys</h1>
+                </div>
+              </div>
+              <div class="ck-progress">
+                <div class="cp-row"><span class="cp-label">Check-in progress</span><span class="cp-meta">2 of 4 · ~3 min left</span></div>
+                <div class="ck-track"><div class="ck-fill" style="width:50%"></div></div>
+              </div>
+            </section>
+            <div class="card" style="height:150px;opacity:0.45"></div>
+          </div>
+
+          <div class="drawer-scrim"></div>
+          <aside class="sidebar mobile-drawer" aria-label="Menu">
+            <button class="drawer-close" aria-label="Close menu"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-x"/></svg></button>
+            <div class="sb-head">
+              <div class="sb-logo" aria-hidden="true">V</div>
+              <div>
+                <div class="sb-prop">Villa Serena</div>
+                <div class="sb-ref">Booking · CHK-58291</div>
+              </div>
+            </div>
+            <div class="sb-progress">
+              <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
+              <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
+            </div>
+            <div class="sb-group">Before you arrive</div>
+            <a class="sb-item active" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
+            <div class="sb-group">Your stay</div>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book-open"/></svg> Guidebooks</a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-compass"/></svg> Experiences</a>
+            <div class="sb-group">Help</div>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-message"/></svg> Chat with host</a>
+            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-help"/></svg> FAQ &amp; support</a>
+            <div class="sb-footer">
+              <div class="sb-avatar" aria-hidden="true">MG</div>
+              <div>
+                <div class="sb-user">María García</div>
+                <div class="sb-mail">maria@gmail.com</div>
+              </div>
+              <button class="sb-logout" aria-label="Log out"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-log-out"/></svg></button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-menu"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-clipboard"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></g>
+    <g id="i-compass"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-external"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></g>
+    <g id="i-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></g>
+    <g id="i-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></g>
+    <g id="i-gift"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></g>
+    <g id="i-car"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></g>
+    <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
+    <g id="i-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></g>
+    <g id="i-wifi"><path d="M12 20h.01"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.859a10 10 0 0 1 14 0"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+<script src="home-glass.js" defer></script>
+</body>
+</html>

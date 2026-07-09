@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Housing guidebooks (Desktop, interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="guide.css">
+<link rel="stylesheet" href="hguide.css">
+<style>
+  .flow-screen { flex-direction: column; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Housing guidebooks — Interactive Flow (Desktop)</h1>
+  <p class="lede">The property link on a laptop: a persistent <b>284px nav</b> that lists every guidebook the home has, so the whole property is one click deep from anywhere. The sidebar is the host's, not the booking's — no progress ring, no check-in tasks, no reservation reference. PDF and Web guidebooks read <b>inside</b> the shell rather than navigating away from it, and the language fallback is stated instead of silently applied. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="hgd-list">▶ Guidebooks for this home</button>
+    <button class="fh-chip" data-scenario="hgd-guide">House manual (rich guide)</button>
+    <button class="fh-chip" data-scenario="hgd-web">Web (HTML) guidebook</button>
+    <button class="fh-chip" data-scenario="hgd-pdf">PDF guidebook</button>
+    <button class="fh-chip" data-scenario="hgd-loading">Loading (skeleton)</button>
+    <button class="fh-chip" data-scenario="hgd-empty">No guidebooks</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="browser" style="min-height:840px;display:flex;flex-direction:column">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock"/></svg> guest.chekin.com/villa-serena/housing-guidebooks</span>
+      <span style="width:52px"></span>
+    </div>
+
+    <!-- ═══ hgd-list · HousingGuidebooksView (index) ═══ -->
+    <div class="flow-screen" id="hgd-list" data-start data-label="Every guidebook of the home, listed in a persistent nav" style="flex:1">
+      <div class="hg-shell">
+        <aside class="sidebar" id="hgd-sidebar"></aside>
+        <main class="hg-main">
+          <div class="greet">
+            <h1>Villa Serena</h1>
+            <p>Guidebooks for this home, published by Marbella Stays.</p>
+          </div>
+
+          <div class="pl-nores" style="margin-top:20px;max-width:620px">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+            <span>You're reading this home's guidebooks. <b>No booking needed.</b></span>
+            <a href="flow-search-desktop-v2.html">Find my booking</a>
+          </div>
+
+          <div class="gb-grid">
+            <button class="gb-card" data-goto="hgd-guide">
+              <div class="gc-cover cover-home"><span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-book-open"/></svg> Guide</span><span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-marked"/></svg></span></div>
+              <div class="gc-body">
+                <div class="gc-title">Welcome &amp; House Manual <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+                <div class="gc-desc">How the home works — Wi-Fi, appliances, house rules and the way in.</div>
+                <div class="gc-chips"><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-wifi"/></svg> Wi-Fi</span><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Getting in</span><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Map</span></div>
+              </div>
+            </button>
+            <button class="gb-card" data-goto="hgd-guide">
+              <div class="gc-cover cover-food"><span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-book-open"/></svg> Guide</span><span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg></span></div>
+              <div class="gc-body">
+                <div class="gc-title">Local Recommendations <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+                <div class="gc-desc">Restaurants, cafés and sights within walking distance.</div>
+                <div class="gc-chips"><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg> 6 places</span><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> On a map</span></div>
+              </div>
+            </button>
+            <button class="gb-card" data-goto="hgd-web">
+              <div class="gc-cover cover-city"><span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-globe"/></svg> Web</span><span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-landmark"/></svg></span></div>
+              <div class="gc-body">
+                <div class="gc-title">Getting Around Málaga <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+                <div class="gc-desc">Airport transfers, buses, the metro and parking.</div>
+                <div class="gc-chips"><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg> Transport</span><span class="gc-chip auto"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Auto-translated</span></div>
+              </div>
+            </button>
+            <button class="gb-card" data-goto="hgd-pdf">
+              <div class="gc-cover cover-beach"><span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-file-text"/></svg> PDF</span><span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-waves"/></svg></span></div>
+              <div class="gc-body">
+                <div class="gc-title">Beaches &amp; Day Trips <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
+                <div class="gc-desc">The host's printable guide to the coast near Marbella.</div>
+                <div class="gc-chips"><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg> 6 pages</span><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-download"/></svg> Downloadable</span></div>
+              </div>
+            </button>
+          </div>
+
+          <div class="gb-offline" style="margin-top:18px;max-width:620px">
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-download"/></svg>
+            <span><b>Saved for offline.</b> Once opened, a guidebook stays readable even without signal.</span>
+          </div>
+          <span class="sim-note" style="text-align:left;margin-top:16px">layout = HousingGuidebooksLayout (<code>grid lg:grid-cols-[284px_auto]</code>) · nav items = Home + <code>useFetchGuidebooksByHousing</code> · footer = Language / FAQs / Privacy</span>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ hgd-guide · GuidebookView (EDITOR) ═══ -->
+    <div class="flow-screen" id="hgd-guide" data-label="Reading a guide — 94px title header, nav stays put" style="flex:1">
+      <div class="hg-shell">
+        <aside class="sidebar" id="hgd-sidebar2"></aside>
+        <div style="min-width:0;display:flex;flex-direction:column">
+          <div class="hg-doc-head">
+            <h1>Welcome &amp; House Manual</h1>
+            <span class="hd-type"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
+          </div>
+          <div class="hg-doc-body">
+            <button class="back-pill" data-goto="hgd-list"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back</button>
+
+            <div class="hg-locale" style="margin:18px 0 22px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg>
+              <span>Shown in <b>English</b> — the host's default. This guide also exists in Español.</span>
+              <button>Change language</button>
+            </div>
+
+            <div class="gb-sec">
+              <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span> Getting in</div>
+              <p class="lead">The street door takes the keypad code; the apartment door has a lockbox to its right.</p>
+              <p>Check-in is from <strong>15:00</strong> and check-out is by <strong>11:00</strong>. If you arrive earlier, leave your bags with the concierge at number 12 — they're expecting guests of the villa.</p>
+            </div>
+
+            <div class="gb-divider" style="margin:22px 0"></div>
+
+            <div class="gb-sec">
+              <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg></span> Wi-Fi</div>
+              <div class="gb-wifi">
+                <div class="gw-head"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg> Villa Serena network</div>
+                <div class="gw-row">
+                  <div><div class="gw-k">Network</div><div class="gw-v">VillaSerena_5G</div></div>
+                  <button class="gw-copy" data-copy><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-copy"/></svg> Copy</button>
+                </div>
+                <div class="gw-row">
+                  <div><div class="gw-k">Password</div><div class="gw-v">serena·2024·sun</div></div>
+                  <button class="gw-copy" data-copy><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-copy"/></svg> Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="gb-divider" style="margin:22px 0"></div>
+
+            <div class="gb-sec">
+              <div class="gs-head"><span class="gs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg></span> Where it is</div>
+              <div class="gb-rows">
+                <div class="gb-row">
+                  <span class="gr-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg></span>
+                  <div><div class="gr-k">Address</div><div class="gr-v">Calle del Mar 14, 29601 Marbella</div></div>
+                  <button class="gr-act"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-navigation"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <span class="sim-note" style="display:block;text-align:left;margin-top:20px">the mobile header's title comes from the same <code>contentTitle</code> the desktop prints in this 94px header (GuidebooksLayoutContext)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ hgd-web · GuidebookHtmlView inside the shell ═══ -->
+    <div class="flow-screen" id="hgd-web" data-label="Web guidebook — read inside the property shell" style="flex:1">
+      <div class="hg-shell">
+        <aside class="sidebar" id="hgd-sidebar3"></aside>
+        <div style="min-width:0;display:flex;flex-direction:column">
+          <div class="hg-doc-head">
+            <h1>Getting Around Málaga</h1>
+            <span class="hd-type"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Web</span>
+          </div>
+          <div class="hg-doc-body">
+            <button class="back-pill" data-goto="hgd-list"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back</button>
+            <div class="gb-html-frame" style="padding:20px 0 0">
+              <span class="gb-html-badge"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-globe"/></svg> Web page · written by the host · sandboxed</span>
+              <div class="hg-locale" style="margin-bottom:18px">
+                <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg>
+                <span>This page was <b>auto-translated</b> from Spanish.</span>
+              </div>
+              <h2>Getting around Málaga</h2>
+              <p>Everything below assumes you're arriving at Málaga–Costa del Sol airport (AGP) and heading for the villa.</p>
+              <h3>From the airport to Marbella</h3>
+              <ul>
+                <li>The <a href="#">direct bus (line M-220)</a> leaves every 90 minutes from terminal T3 — about 50 minutes. Tickets from the driver, cash only.</li>
+                <li>Taxis are a fixed <b>€75</b> to Marbella old town.</li>
+                <li>Ride-hailing works at the airport but not in the town centre.</li>
+              </ul>
+              <h3>Parking near the villa</h3>
+              <p>Blue lines are paid 09:00–20:00. The underground car park on Calle Ancha is <b>€18/day</b> and two minutes' walk away.</p>
+            </div>
+            <span class="sim-note" style="display:block;text-align:left;margin-top:18px">today <code>useGuidebookNavigate</code> sends HTML/PDF to <code>/guidebook-html/:id</code> and <code>/guidebook-pdf/:id</code> — routes outside HousingGuidebooksLayout, so the nav disappears and "Back" lands on the reservation home</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ hgd-pdf · GuidebookPdfView inside the shell ═══ -->
+    <div class="flow-screen" id="hgd-pdf" data-label="PDF guidebook — doc toolbar, nav stays put" style="flex:1">
+      <div class="hg-shell">
+        <aside class="sidebar" id="hgd-sidebar4"></aside>
+        <div style="min-width:0;display:flex;flex-direction:column">
+          <div class="hg-doc-head">
+            <h1>Beaches &amp; Day Trips</h1>
+            <span class="hd-type"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg> PDF</span>
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-download"/></svg> Download</button>
+            </div>
+          </div>
+          <div class="gb-doc" style="flex:1">
+            <div class="gd-bar" style="top:0">
+              <span class="gd-page"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file-text"/></svg> Page 1 of 6</span>
+              <div class="gd-tools">
+                <button class="gd-tool" title="Previous"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg></button>
+                <button class="gd-tool" title="Next"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-right"/></svg></button>
+              </div>
+            </div>
+            <div class="gd-scroll" style="align-items:center">
+              <div class="gd-sheet" style="width:min(460px,100%)">
+                <div class="gs-h"></div>
+                <div class="gs-img cover-beach"></div>
+                <div class="gs-l w9"></div><div class="gs-l w7"></div><div class="gs-l w9"></div><div class="gs-l w5"></div>
+                <div class="gs-cols"><div class="gs-img cover-city" style="height:52px"></div><div class="gs-img cover-food" style="height:52px"></div></div>
+                <div class="gs-l w7"></div><div class="gs-l w9"></div>
+              </div>
+              <span class="sim-note">react-pdf reader; the property nav is never lost</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ hgd-loading · skeleton ═══ -->
+    <div class="flow-screen" id="hgd-loading" data-autonext="hgd-list" data-autodelay="2200" data-label="Loading — the nav needs the guidebooks, the header needs the brand" style="flex:1">
+      <div class="hg-shell">
+        <aside class="sidebar">
+          <div class="sb-head">
+            <div class="sk" style="width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,0.12)"></div>
+            <div style="flex:1"><div class="sk" style="width:70%;height:11px;background:rgba(255,255,255,0.12)"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding:10px 8px">
+            <div class="sk" style="height:12px;width:52%;background:rgba(255,255,255,0.1)"></div>
+            <div class="sk" style="height:12px;width:78%;background:rgba(255,255,255,0.1)"></div>
+            <div class="sk" style="height:12px;width:66%;background:rgba(255,255,255,0.1)"></div>
+            <div class="sk" style="height:12px;width:72%;background:rgba(255,255,255,0.1)"></div>
+          </div>
+        </aside>
+        <main class="hg-main">
+          <div class="sk sk-line" style="width:280px;height:24px"></div>
+          <div class="sk sk-line" style="width:420px;margin-top:12px"></div>
+          <div class="sk-grid">
+            <div class="sk-card"><div class="sk sk-cover"></div><div class="sk-body"><div class="sk sk-line" style="width:64%;height:13px"></div><div class="sk sk-line" style="width:92%"></div><div class="sk sk-line" style="width:44%"></div></div></div>
+            <div class="sk-card"><div class="sk sk-cover"></div><div class="sk-body"><div class="sk sk-line" style="width:56%;height:13px"></div><div class="sk sk-line" style="width:88%"></div><div class="sk sk-line" style="width:40%"></div></div></div>
+          </div>
+          <span class="sim-note" style="text-align:left;margin-top:18px">GuidebooksListSkeleton; auto-advances to the loaded list</span>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ hgd-empty · no_guidebooks_available ═══ -->
+    <div class="flow-screen" id="hgd-empty" data-label="No guidebooks — the nav collapses to Home, the page offers an exit" style="flex:1">
+      <div class="hg-shell">
+        <aside class="sidebar" id="hgd-sidebar5"></aside>
+        <main class="hg-main">
+          <div class="greet">
+            <h1>Villa Serena</h1>
+            <p>Guidebooks for this home, published by Marbella Stays.</p>
+          </div>
+          <div class="hg-empty">
+            <div class="he-mark"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg></div>
+            <h3>No guidebooks yet</h3>
+            <p>The host hasn't published anything for this home. If you have a booking, your check-in details are still waiting for you.</p>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <a class="btn btn-primary" href="flow-search-desktop-v2.html">Find my booking</a>
+              <button class="btn btn-outline">Contact the host</button>
+            </div>
+          </div>
+          <span class="sim-note" style="text-align:left">real copy key: <code>no_guidebooks_available</code></span>
+        </main>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- shared property nav, cloned into every screen -->
+<template id="hgd-sidebar-tpl">
+  <div class="sb-head">
+    <div class="sb-logo" style="background:linear-gradient(135deg,#fff 0%,#dfe4ff 100%);color:var(--navy)">MS</div>
+    <div>
+      <div class="sb-prop">Marbella Stays</div>
+      <div class="sb-ref">Villa Serena</div>
+    </div>
+  </div>
+  <div class="sb-group">Guidebooks</div>
+  <button class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</button>
+  <button class="sb-item" data-goto="hgd-guide"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-marked"/></svg> Welcome &amp; House Manual</button>
+  <button class="sb-item" data-goto="hgd-guide"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg> Local Recommendations</button>
+  <button class="sb-item" data-goto="hgd-web"><svg viewBox="0 0 24 24" class="icon"><use href="#i-landmark"/></svg> Getting Around <span class="sb-type">Web</span></button>
+  <button class="sb-item" data-goto="hgd-pdf"><svg viewBox="0 0 24 24" class="icon"><use href="#i-waves"/></svg> Beaches &amp; Day Trips <span class="sb-type">PDF</span></button>
+  <div class="sb-footer" style="margin-top:auto">
+    <div style="display:flex;flex-direction:column;gap:2px;width:100%">
+      <button class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Language <span class="sb-type">English</span></button>
+      <button class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help-circle"/></svg> FAQs</button>
+      <button class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock-keyhole"/></svg> Privacy policy</button>
+    </div>
+  </div>
+</template>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-copy"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-help-circle"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-lock-keyhole"><circle cx="12" cy="16" r="1"/><rect x="3" y="10" width="18" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-book-marked"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.4-8 12-8 12s-8-7.6-8-12a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-navigation"><path d="M3 11l19-9-9 19-2-8-8-2z"/></g>
+    <g id="i-utensils"><path d="M3 2v7a3 3 0 0 0 3 3 3 3 0 0 0 3-3V2"/><path d="M6 2v20"/><path d="M18 2v20"/><path d="M18 9c1.5 0 3-1.5 3-4s-1.5-3-3-3"/></g>
+    <g id="i-car"><path d="M19 17h2v-4l-2-5H5L3 13v4h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></g>
+    <g id="i-wifi"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L21 5"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></g>
+    <g id="i-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-home"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/></g>
+    <g id="i-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></g>
+    <g id="i-landmark"><path d="M3 22h18"/><path d="M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="m12 2 9 5H3z"/></g>
+    <g id="i-waves"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></g>
+    <g id="i-lock"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+  </defs>
+</svg>
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+<script>
+/* clone the shared property nav into every screen's <aside id="hgd-sidebar*">,
+   then mark the active item for the screen it lives in */
+(function () {
+  var tpl = document.getElementById('hgd-sidebar-tpl');
+  document.querySelectorAll('.sidebar[id^="hgd-sidebar"]').forEach(function (s) {
+    s.appendChild(tpl.content.cloneNode(true));
+  });
+  var ACTIVE = { 'hgd-guide': 2, 'hgd-web': 3, 'hgd-pdf': 4 };
+  Object.keys(ACTIVE).forEach(function (screenId) {
+    var screen = document.getElementById(screenId);
+    if (!screen) return;
+    var items = screen.querySelectorAll('.sidebar .sb-item');
+    items[0].classList.remove('active');
+    items[ACTIVE[screenId]].classList.add('active');
+  });
+  /* copy affordance for the Wi-Fi card */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-copy]');
+    if (!b) return;
+    var prev = b.innerHTML;
+    b.classList.add('copied');
+    b.innerHTML = '<svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px;stroke-width:3"><use href="#i-check"/></svg> Copied';
+    setTimeout(function () { b.classList.remove('copied'); b.innerHTML = prev; }, 1600);
+  });
+})();
+</script>
+</body>
+</html>

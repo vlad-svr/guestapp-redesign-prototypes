@@ -1,0 +1,398 @@
+/* ============================================================
+   Checkout — Redesign 2.0 prototype
+   The last screen of the stay: settle any balance, add a
+   final service, rate the stay, say goodbye.
+   Reuses shared.css primitives + pay.css (ledger, receipt,
+   done-stage, hold-card). Only checkout-specific pieces live here.
+   ============================================================ */
+
+/* ---------- Check-out-by countdown pill ---------- */
+/* Calm, not alarmist: it orients the guest ("today, by 11:00")
+   without a red ticking-clock panic. */
+.co-when {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  height: 30px;
+  padding: 0 13px 0 10px;
+  border-radius: 99px;
+  background: var(--tint-info);
+  color: var(--blue-500);
+  font-size: 12px;
+  font-weight: 600;
+}
+.co-when .icon { width: 15px; height: 15px; }
+.co-when.soon { background: var(--amber-50); color: var(--amber-700); }
+.co-when b { font-variant-numeric: tabular-nums; }
+
+/* ---------- "You're all set" leaving checklist ---------- */
+/* Reassurance before the ask: shows the stay is already in order,
+   so the guest reads the payment step as a small formality, not a wall. */
+.settled {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.settled .st-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+}
+.settled .st-row + .st-row { border-top: 1px solid var(--border); }
+.settled .st-check {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--green-50); color: var(--green-700);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.settled .st-check.todo { background: var(--amber-50); color: var(--amber-700); }
+.settled .st-main { min-width: 0; display: flex; flex-direction: column; }
+.settled .st-title { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.settled .st-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+.settled .st-action {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 12px; font-weight: 600; color: var(--blue-500);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.settled .st-action:hover { color: var(--blue-600); }
+
+/* ---------- Optional last-minute add-ons ---------- */
+/* Activates the "before you leave — select additional services"
+   intent the app shipped copy for but never built a surface for. */
+.addon {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.addon + .addon { margin-top: 10px; }
+.addon.on { border-color: var(--blue-300); box-shadow: 0 0 0 1px rgba(56, 91, 248, 0.28), var(--shadow-card); }
+.addon .ad-emoji {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--tint-promo);
+  display: grid; place-items: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.addon .ad-main { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.addon .ad-title { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.addon .ad-desc { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.addon .ad-price { font-size: 12px; font-weight: 700; color: var(--navy); margin-top: 4px; }
+.addon .ad-price .free { color: var(--green-700); }
+.addon .ad-toggle {
+  flex-shrink: 0;
+  height: 34px; padding: 0 15px;
+  border-radius: 99px;
+  border: 1px solid var(--blue-500);
+  color: var(--blue-500);
+  background: var(--n-0);
+  font-size: 12.5px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+.addon .ad-toggle:hover { background: var(--tint-pressed); }
+.addon.on .ad-toggle {
+  background: var(--green-600); border-color: var(--green-600); color: #fff;
+}
+.addon .ad-toggle .ic-plus { display: inline-flex; }
+.addon .ad-toggle .ic-check { display: none; }
+.addon.on .ad-toggle .ic-plus { display: none; }
+.addon.on .ad-toggle .ic-check { display: inline-flex; }
+
+/* ---------- Rate your stay — interactive stars ---------- */
+.rate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.stars {
+  display: inline-flex;
+  gap: 8px;
+  margin: 6px 0 2px;
+}
+.stars .star {
+  width: 44px; height: 44px;
+  color: var(--n-300);
+  display: grid; place-items: center;
+  transition: transform 0.12s, color 0.12s;
+  cursor: pointer;
+}
+.stars .star svg { width: 38px; height: 38px; fill: currentColor; stroke: none; }
+.stars .star:hover { transform: scale(1.12); }
+.stars .star.on { color: var(--amber-500); }
+.stars .star:focus-visible { outline: none; border-radius: 10px; box-shadow: var(--shadow-focus); }
+/* the emotive read-out under the stars */
+.rate-verdict {
+  min-height: 24px;
+  font-size: 15px; font-weight: 700; color: var(--navy);
+  display: flex; align-items: center; gap: 7px;
+}
+.rate-verdict .rv-emoji { font-size: 19px; }
+.rate-verdict .rv-placeholder { color: var(--text-tertiary); font-weight: 500; font-size: 13px; }
+
+/* ---------- Public-review platform buttons (high rating) ---------- */
+.review-plat {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.12s, box-shadow 0.15s;
+}
+.review-plat + .review-plat { margin-top: 10px; }
+.review-plat:hover { transform: translateY(-1px); box-shadow: var(--shadow-elev); }
+.review-plat .rp-logo {
+  width: 40px; height: 40px; border-radius: 11px;
+  display: grid; place-items: center;
+  font-size: 17px; font-weight: 800;
+  flex-shrink: 0;
+}
+.review-plat .rp-logo.google { background: #fff; border: 1px solid var(--border); }
+.review-plat .rp-logo.booking { background: #003580; color: #fff; }
+.review-plat .rp-main { text-align: left; min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.review-plat .rp-title { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.review-plat .rp-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+.review-plat .rp-ext { color: var(--n-500); flex-shrink: 0; }
+
+/* ---------- Service recovery (low rating — replaces the dead end) ---------- */
+/* A ≤3 rating used to hit a blank thanks screen. Now it opens a real
+   repair path: apologise, offer the host + a callback, never public reviews. */
+.recovery {
+  border: 1px solid var(--amber-500);
+  border-radius: var(--r-xl);
+  background: linear-gradient(180deg, var(--amber-50), var(--n-0) 70%);
+  padding: 20px 18px;
+  text-align: center;
+}
+.recovery .rec-icon {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: #fff; border: 1px solid var(--amber-500);
+  color: var(--amber-700);
+  display: grid; place-items: center;
+  margin: 0 auto 12px;
+  box-shadow: var(--shadow-card);
+}
+.recovery .rec-title { font-size: 17px; font-weight: 700; color: var(--navy); }
+.recovery .rec-desc { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 7px; max-width: 320px; margin-inline: auto; }
+.recovery .rec-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+/* ---------- Airport transfer upsell (Mozio "ready for your trip back?") ---------- */
+.transfer {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.transfer .tr-art {
+  height: 96px;
+  background: var(--gradient-hero);
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: 12px 16px;
+}
+.transfer .tr-art::after {
+  /* subtle plane-window streak */
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle 120px at 82% 24%, rgba(140,165,255,0.4), transparent 70%);
+}
+.transfer .tr-art .tr-tag {
+  position: relative; z-index: 1;
+  height: 22px; padding: 0 9px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.24);
+  backdrop-filter: blur(8px);
+  color: #fff; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.transfer .tr-body { padding: 14px 16px 16px; }
+.transfer .tr-title { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+.transfer .tr-desc { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: 3px; }
+.transfer .tr-foot {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 14px;
+}
+.transfer .tr-price { font-size: 12px; color: var(--text-secondary); }
+.transfer .tr-price b { color: var(--navy); font-size: 14px; }
+.transfer .tr-foot .btn { margin-left: auto; }
+
+/* ---------- Thank-you celebration ---------- */
+.co-celebrate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 8px 0 4px;
+}
+.co-ring {
+  width: 108px; height: 108px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, var(--green-50), #fff);
+  border: 1px solid var(--green-600);
+  display: grid; place-items: center;
+  color: var(--green-700);
+  margin-bottom: 8px;
+  position: relative;
+  animation: co-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+.co-ring svg { width: 46px; height: 46px; stroke-width: 2.4; }
+.co-ring::after {
+  content: '';
+  position: absolute; inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--green-600);
+  opacity: 0;
+  animation: co-halo 0.9s ease 0.15s both;
+}
+@keyframes co-pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes co-halo { 0% { transform: scale(0.85); opacity: 0.5; } 100% { transform: scale(1.25); opacity: 0; } }
+.co-celebrate .cc-title { font-size: 21px; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); }
+.co-celebrate .cc-sub { font-size: 13px; line-height: 19px; color: var(--text-secondary); max-width: 320px; }
+
+/* Section eyebrow inside the thanks screen */
+.co-eyebrow {
+  align-self: stretch;
+  font-size: 10.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.11em;
+  color: var(--text-secondary);
+  margin: 4px 0 -4px;
+}
+
+/* ---------- Final checkout summary (completed state) ---------- */
+.co-summary {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  padding: 6px 16px;
+}
+.co-summary .cs-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0;
+  font-size: 13px; color: var(--text-secondary);
+}
+.co-summary .cs-row + .cs-row { border-top: 1px solid var(--border); }
+.co-summary .cs-row .icon { color: var(--green-700); flex-shrink: 0; }
+.co-summary .cs-row b { color: var(--navy); font-weight: 600; margin-left: auto; }
+
+/* ---------- Confetti (thanks) — cheap, decorative, motion-safe ---------- */
+.confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 5; }
+.confetti i {
+  position: absolute; top: -12px;
+  width: 7px; height: 11px; border-radius: 2px;
+  opacity: 0.9;
+  animation: confetti-fall 2.6s linear both;
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(760px) rotate(560deg); opacity: 0; }
+}
+
+/* ---------- Desktop: two-column checkout (summary + sticky action rail) ---------- */
+.co-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+  align-items: start;
+}
+.co-grid .ledger { position: sticky; top: 24px; }
+@media (max-width: 900px) {
+  .co-grid { grid-template-columns: 1fr; }
+}
+
+/* pay.css sets .lg-row{display:flex}, which beats the plain [hidden]
+   attribute — so hidden add-on / fee lines must be re-hidden explicitly. */
+.ledger .lg-row[hidden] { display: none; }
+
+/* Match the shared vela-tip convention (title stacks above desc). */
+.vela-tip .vt-title { display: block; }
+
+/* ============================================================
+   STRONG LIQUID-GLASS VARIANT  (html.glass-strong — checkout-toggle.js)
+   Standard = glass on chrome only, reading surfaces solid.
+   Strong   = the same reading surfaces frost over soft color orbs with
+              deeper blur + saturation. Navy sidebar + Vela rail stay as-is
+              (same convention as the Guidebooks Classic ↔ Liquid-glass toggle).
+   ============================================================ */
+
+/* 1 — lay soft color orbs behind the content so the frost has something to
+       refract. Mobile scroller + desktop content column (not the navy chrome). */
+html.glass-strong .phone .screen,
+html.glass-strong .desk-page {
+  background:
+    radial-gradient(circle 300px at 10% 4%, rgba(56, 91, 248, 0.20), transparent 60%),
+    radial-gradient(circle 280px at 94% 16%, rgba(53, 229, 188, 0.17), transparent 62%),
+    radial-gradient(circle 340px at 74% 98%, rgba(140, 165, 255, 0.24), transparent 60%),
+    var(--bg-page);
+}
+
+/* 2 — frost the reading surfaces. Deeper blur/saturation than the baseline
+       chrome (blur 18) so the "stronger" step is legible at a glance. */
+html.glass-strong .settled,
+html.glass-strong .addon,
+html.glass-strong .hold-card,
+html.glass-strong .ledger,
+html.glass-strong .card,
+html.glass-strong .card.glass,
+html.glass-strong .review-plat,
+html.glass-strong .transfer,
+html.glass-strong .co-summary,
+html.glass-strong .settled .st-check {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* inner dividers get lighter so the frost reads as one pane of glass */
+html.glass-strong .settled .st-row + .st-row,
+html.glass-strong .co-summary .cs-row + .cs-row { border-color: rgba(255, 255, 255, 0.45); }
+
+/* the transfer art keeps its gradient but rides a touch higher above the frost */
+html.glass-strong .transfer { overflow: hidden; }
+html.glass-strong .transfer .tr-body { background: rgba(255, 255, 255, 0.35); }
+
+/* the deposit hold stays visually hollow — dashed border, just frosted fill */
+html.glass-strong .hold-card { border-style: dashed; }
+
+/* added add-on keeps its blue ring, layered over the frost */
+html.glass-strong .addon.on {
+  box-shadow: 0 0 0 1px rgba(56, 91, 248, 0.4), var(--glass-shadow);
+}
+
+/* Accessibility: no backdrop-filter support → fall back to near-opaque panes
+   so text never loses contrast (Appendix A rule). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html.glass-strong .settled,
+  html.glass-strong .addon,
+  html.glass-strong .hold-card,
+  html.glass-strong .ledger,
+  html.glass-strong .card,
+  html.glass-strong .review-plat,
+  html.glass-strong .transfer,
+  html.glass-strong .co-summary { background: rgba(255, 255, 255, 0.96); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-ring, .co-ring::after, .confetti i { animation: none !important; }
+  .confetti { display: none; }
+}

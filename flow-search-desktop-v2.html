@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Booking V2 — the arrival card (Desktop)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="search-v2.css">
+<style>
+  /* the flow engine shows screens with display:flex — give them the frame's height */
+  .browser { display: flex; flex-direction: column; min-height: 780px; }
+  .flow-screen { flex: 1; flex-direction: column; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Find Your Booking V2 — the arrival card (Desktop)</h1>
+  <p class="lede">The desktop half of the V2 arrival screen. The property holds a <b>full-height canvas</b> on the left — photo, host, a line from a past guest, the trust badges — and the search lives on a frosted card to the right. The canvas never leaves: the guest can see where they're going while they search, while they wait, and when it's found. Maps <code>pages/SearchReservation</code>. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="sd2-method">▶ Full flow</button>
+    <button class="fh-chip" data-scenario="sd2-code">Booking code</button>
+    <button class="fh-chip" data-scenario="sd2-date">Date &amp; email</button>
+    <button class="fh-chip" data-scenario="sd2-create">Create reservation</button>
+    <button class="fh-chip" data-scenario="sd2-searching">Booking found</button>
+    <button class="fh-chip" data-scenario="sd2-searching-nf">Not found</button>
+    <button class="fh-chip" data-scenario="sd2-direct">Direct link</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-lock"/></svg> guest.chekin.com/casa-marbella/find-booking</span>
+      <span style="width:52px"></span>
+    </div>
+
+    <!-- ═══ sd2-method · SearchReservation.tsx — the arrival screen ═══ -->
+    <div class="flow-screen" id="sd2-method" data-start data-label="Arrival — choose how to find your booking">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+              <button class="s2-lang"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-globe"/></svg> English</button>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+            <div class="s2-quote">
+              <p>“The terrace at sunset is exactly what the photos promise. Elena left us a bottle of local wine and a map she'd drawn herself.”</p>
+              <div class="q-by">
+                <span class="s2-avatar">JT</span>
+                <span>
+                  <span class="q-name">Julia T.</span><br>
+                  <span class="q-role">stayed in June 2026</span>
+                </span>
+              </div>
+            </div>
+            <div class="s2-badges">
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secured by Chekin</span>
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> GDPR compliant</span>
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Police-registered</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card">
+            <div class="s2-host">
+              <span class="s2-avatar">EM</span>
+              <span class="s2-host-main">
+                <span class="s2-host-name">Hosted by Elena M.</span>
+                <span class="s2-host-sub">
+                  <span class="s2-stars">
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+                  </span>
+                  4.9 · 214 stays
+                </span>
+              </span>
+              <svg viewBox="0 0 24 24" class="icon" style="color:var(--green-700)"><use href="#i-check-circle"/></svg>
+            </div>
+
+            <div class="s2-ask">Let's find your <span class="hl">booking</span></div>
+            <p class="s2-ask-sub">Elena is expecting you on <b>14 July</b>. Pick whichever you have to hand — either one gets you in.</p>
+
+            <div class="s2-methods">
+              <button class="s2-method" data-goto="sd2-code">
+                <span class="m-ic"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-hash"/></svg></span>
+                <span class="m-main">
+                  <span class="m-title">Booking reference</span>
+                  <span class="m-desc">The code from your confirmation email or booking platform.</span>
+                  <span class="m-need"><svg viewBox="0 0 24 24" class="icon"><use href="#i-mail"/></svg> HMAK-2931</span>
+                </span>
+                <svg viewBox="0 0 24 24" class="icon m-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="s2-method" data-goto="sd2-date">
+                <span class="m-ic"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-calendar"/></svg></span>
+                <span class="m-main">
+                  <span class="m-title">Check-in date &amp; email</span>
+                  <span class="m-desc">The date you arrive plus the lead guest's email on the booking.</span>
+                  <span class="m-need"><svg viewBox="0 0 24 24" class="icon"><use href="#i-user"/></svg> No code needed</span>
+                </span>
+                <svg viewBox="0 0 24 24" class="icon m-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+
+            <div class="s2-why" style="margin-top:16px">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg>
+              <span>We only use this to <b>locate your reservation</b> — nothing is shared with other guests.</span>
+            </div>
+          </div>
+
+          <div class="s2-panel-foot">
+            <span>© 2026 Chekin</span>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Help</a>
+          </div>
+          <span class="sim-note" style="margin-top:10px">the method screen shows only when reservation_search_mode is "both"</span>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-code · BookingCodeView — segmented reference entry ═══ -->
+    <div class="flow-screen" id="sd2-code" data-label="Enter your booking reference" data-s2-type>
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+              <button class="s2-lang"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-globe"/></svg> English</button>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+            <div class="s2-badges">
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secured by Chekin</span>
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> GDPR compliant</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card">
+            <button class="btn-ghost" data-goto="sd2-method" style="padding:0 0 12px;display:inline-flex;align-items:center;gap:6px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> All search methods
+            </button>
+            <div class="s2-ask">Enter your <span class="hl">code</span></div>
+            <p class="s2-ask-sub">Eight characters, letters and numbers. Case doesn't matter.</p>
+
+            <div class="s2-code-wrap" style="margin-top:20px">
+              <div class="s2-lbl-row">
+                <label>Booking reference code</label>
+                <button class="s2-help" data-modal="md2-code-help"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg> Where's my code?</button>
+              </div>
+              <div class="s2-cells">
+                <span class="s2-cell active" data-char="H"></span>
+                <span class="s2-cell" data-char="M"></span>
+                <span class="s2-cell" data-char="A"></span>
+                <span class="s2-cell" data-char="K"></span>
+                <span class="s2-dash"></span>
+                <span class="s2-cell" data-char="2"></span>
+                <span class="s2-cell" data-char="9"></span>
+                <span class="s2-cell" data-char="3"></span>
+                <span class="s2-cell" data-char="1"></span>
+              </div>
+              <div class="s2-code-aids">
+                <button class="s2-paste" data-s2-paste><svg viewBox="0 0 24 24" class="icon"><use href="#i-copy"/></svg> Paste</button>
+                <span class="s2-code-hint">Letters and digits only</span>
+              </div>
+            </div>
+
+            <div class="s2-why" style="margin-top:16px">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-mail"/></svg>
+              <span>It's in the <b>confirmation email</b> from your host, and on your booking platform (Airbnb, Booking.com…).</span>
+            </div>
+
+            <div class="s2-cta-row">
+              <button class="btn btn-primary btn-block" data-s2-submit data-goto="sd2-searching" style="max-width:none">Find my booking <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+              <button class="btn-ghost" data-goto="sd2-date">Don't have the code? Use date &amp; email</button>
+            </div>
+          </div>
+          <span class="sim-note" style="margin-top:12px">the cells auto-type on entry — click Paste to fill them at once</span>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-date · CheckInDateView ═══ -->
+    <div class="flow-screen" id="sd2-date" data-label="Enter check-in date + lead email">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+              <button class="s2-lang"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-globe"/></svg> English</button>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+            <div class="s2-badges">
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secured by Chekin</span>
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> GDPR compliant</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card">
+            <button class="btn-ghost" data-goto="sd2-method" style="padding:0 0 12px;display:inline-flex;align-items:center;gap:6px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> All search methods
+            </button>
+            <div class="s2-ask">Your <span class="hl">check-in</span> details</div>
+            <p class="s2-ask-sub">We'll match the day you arrive with the lead guest's email.</p>
+
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:20px">
+              <div class="field">
+                <label>Check-in date</label>
+                <div class="input" style="justify-content:space-between">14 Jul 2026 <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-calendar"/></svg></div>
+                <span class="hint">Earliest allowed for this property is 12 Jul 2026.</span>
+              </div>
+              <div class="field">
+                <label>Lead guest email</label>
+                <div class="input">ana.lopez@email.com</div>
+                <span class="hint">The email the booking was made with.</span>
+              </div>
+            </div>
+
+            <div class="s2-why" style="margin-top:16px">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+              <span>Both must match the reservation exactly. Wrong date? <b>Check your confirmation.</b></span>
+            </div>
+
+            <div class="s2-cta-row">
+              <button class="btn btn-primary btn-block" data-goto="sd2-searching" style="max-width:none">Find my booking <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+              <button class="btn-ghost" data-goto="sd2-code">Have the reference code instead?</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-searching · SearchingBookingModal (LOADING) ═══ -->
+    <div class="flow-screen" id="sd2-searching" data-label="Searching booking…" data-s2-steps data-autonext="sd2-found" data-autodelay="2900">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card center">
+            <div class="s2-scan">
+              <div class="s2-scan-photo">
+                <div class="s2-photo"></div>
+                <div class="s2-grain"></div>
+              </div>
+              <div class="s2-scan-body">
+                <div class="s2-scan-name">Casa Marbella · Apt 4B</div>
+                <div class="s2-scan-sub">Málaga, Spain</div>
+              </div>
+            </div>
+            <div class="s2-title">Finding your booking…</div>
+            <div class="s2-steps">
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Reading your reference</div>
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Matching the reservation</div>
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Preparing your check-in</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-found · SearchingBookingModal (SUCCESS) — the boarding pass ═══ -->
+    <div class="flow-screen" id="sd2-found" data-label="Booking found!">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Booking confirmed</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+            <div class="s2-quote">
+              <p>“Welcome, Ana. Your keys and the door code appear here once check-in is complete — see you on the 14th.”</p>
+              <div class="q-by">
+                <span class="s2-avatar">EM</span>
+                <span>
+                  <span class="q-name">Elena M.</span><br>
+                  <span class="q-role">your host</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card center">
+            <div class="s2-seal-check"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></div>
+            <div>
+              <div class="s2-title">Booking found</div>
+              <p class="s2-sub" style="margin-top:4px">Welcome, Ana. Here's the stay we matched.</p>
+            </div>
+
+            <div class="s2-pass-shell">
+              <div class="s2-pass">
+                <div class="s2-pass-top">
+                  <div class="s2-photo"></div>
+                  <div class="s2-grain"></div>
+                  <div class="s2-scrim"></div>
+                  <div class="s2-pass-name">Casa Marbella · Apt 4B</div>
+                </div>
+                <div class="s2-pass-mid">
+                  <div class="s2-leg">
+                    <div class="lg-k">Check in</div>
+                    <div class="lg-v">14 Jul</div>
+                    <div class="lg-s">Tue · from 15:00</div>
+                  </div>
+                  <div class="s2-nights">
+                    <span class="nt-line"></span>
+                    <span class="nt-n">4 nights</span>
+                    <span class="nt-line"></span>
+                  </div>
+                  <div class="s2-leg right">
+                    <div class="lg-k">Check out</div>
+                    <div class="lg-v">18 Jul</div>
+                    <div class="lg-s">Sat · by 11:00</div>
+                  </div>
+                </div>
+                <div class="s2-perf"></div>
+                <div class="s2-pass-foot">
+                  <div class="pf-main">
+                    <div class="pf-k">Reference</div>
+                    <button class="pf-ref" data-s2-copy><span data-s2-copy-label>HMAK-2931</span></button>
+                    <div class="lg-s" style="margin-top:3px">Ana López · lead guest · 2 guests</div>
+                  </div>
+                  <span class="s2-qr" aria-hidden="true"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="s2-redirect"><span class="spin"></span> Taking you to your check-in…</div>
+            <a class="btn btn-primary btn-block" href="flow-registration.html#r-hub" style="max-width:none">Continue to check-in <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-direct · DirectReservationView — deep link ═══ -->
+    <div class="flow-screen" id="sd2-direct" data-label="Opened from your booking link" data-s2-steps data-autonext="sd2-found" data-autodelay="2900">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card center">
+            <div class="s2-scan">
+              <div class="s2-scan-photo">
+                <div class="s2-photo"></div>
+                <div class="s2-grain"></div>
+              </div>
+              <div class="s2-scan-body">
+                <div class="s2-scan-name">Casa Marbella · Apt 4B</div>
+                <div class="s2-scan-sub">Opened from your host's link</div>
+              </div>
+            </div>
+            <div>
+              <div class="s2-title">Opening your booking…</div>
+              <p class="s2-sub" style="margin-top:4px">You followed a direct link — nothing to type, we're finding it for you.</p>
+            </div>
+            <div class="s2-steps">
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Reading the link</div>
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Matching the reservation</div>
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Preparing your check-in</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-searching-nf · a search that ends not-found ═══ -->
+    <div class="flow-screen" id="sd2-searching-nf" data-label="Searching…" data-s2-steps data-autonext="sd2-notfound" data-autodelay="2400">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card center">
+            <div class="s2-scan">
+              <div class="s2-scan-photo">
+                <div class="s2-photo"></div>
+                <div class="s2-grain"></div>
+              </div>
+              <div class="s2-scan-body">
+                <div class="s2-scan-name">Casa Marbella · Apt 4B</div>
+                <div class="s2-scan-sub">Málaga, Spain</div>
+              </div>
+            </div>
+            <div class="s2-title">Finding your booking…</div>
+            <div class="s2-steps">
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Reading your reference</div>
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Matching the reservation</div>
+              <div class="s2-step"><span class="st-dot"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span> Preparing your check-in</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-notfound · ReservationNotFoundModal — next steps ═══ -->
+    <div class="flow-screen" id="sd2-notfound" data-label="Not found — next steps">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Official check-in</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+            <div class="s2-quote">
+              <p>“If the code won't match, message me — I'll resend your booking link straight away.”</p>
+              <div class="q-by">
+                <span class="s2-avatar">EM</span>
+                <span>
+                  <span class="q-name">Elena M.</span><br>
+                  <span class="q-role">your host · replies within an hour</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card center">
+            <div class="s2-warn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-search-x"/></svg></div>
+            <div>
+              <div class="s2-title">No booking matched</div>
+              <p class="s2-sub" style="margin-top:4px">We couldn't find a reservation for <b>HMAK-2931</b> at Casa Marbella. Here's what usually helps:</p>
+            </div>
+            <div class="s2-actions">
+              <button class="s2-nf" data-goto="sd2-code">
+                <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg></span>
+                <span class="nf-main"><span class="nf-title">Check the code &amp; try again</span><span class="nf-desc">A stray space or an O vs 0 is the usual culprit.</span></span>
+                <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="s2-nf" data-goto="sd2-date">
+                <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span>
+                <span class="nf-main"><span class="nf-title">Try date &amp; email instead</span><span class="nf-desc">Search with your check-in date and lead guest email.</span></span>
+                <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="s2-nf" data-goto="sd2-create">
+                <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sparkle-fill"/></svg></span>
+                <span class="nf-main"><span class="nf-title">Register a new stay</span><span class="nf-desc">No booking on file? Set one up for this property.</span></span>
+                <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+              <button class="s2-nf contact" data-modal="md2-contact">
+                <span class="nf-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg></span>
+                <span class="nf-main"><span class="nf-title">Contact Elena, your host</span><span class="nf-desc">She can resend the booking link directly.</span></span>
+                <svg viewBox="0 0 24 24" class="icon nf-chev"><use href="#i-chevron-right"/></svg>
+              </button>
+            </div>
+            <span class="sim-note">"Register a new stay" only appears when canCreate is true</span>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ sd2-create · NewReservationView ═══ -->
+    <div class="flow-screen" id="sd2-create" data-label="Create reservation (property link)">
+      <div class="s2-split">
+        <aside class="s2-canvas">
+          <div class="s2-photo"></div>
+          <div class="s2-grain"></div>
+          <div class="s2-scrim"></div>
+          <div class="s2-canvas-in">
+            <div class="s2-hero-bar" style="padding:0">
+              <span class="s2-brand"><i>C</i> chekin</span>
+              <button class="s2-lang"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-globe"/></svg> English</button>
+            </div>
+            <div class="s2-hero-meta">
+              <span class="s2-seal"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill"/></svg> Property link</span>
+              <h1 class="s2-prop">Casa Marbella</h1>
+              <div class="s2-loc"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> Apt 4B, Málaga <span class="dot">·</span> Spain</div>
+            </div>
+            <div class="s2-badges">
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secured by Chekin</span>
+              <span class="s2-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> GDPR compliant</span>
+            </div>
+          </div>
+        </aside>
+
+        <main class="s2-panel">
+          <div class="s2-card">
+            <button class="btn-ghost" data-back style="padding:0 0 12px;display:inline-flex;align-items:center;gap:6px">
+              <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back
+            </button>
+            <div class="s2-ask">Tell us about your <span class="hl">stay</span></div>
+            <p class="s2-ask-sub">No booking on file yet — set it up here and we'll create your registration.</p>
+
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px">
+              <div class="s2-group">
+                <div class="s2-group-label"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Your stay</div>
+                <div style="display:flex;gap:12px">
+                  <div class="field" style="flex:1">
+                    <div class="s2-lbl-row">
+                      <label>Check-in</label>
+                      <span class="s2-from-search"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill"/></svg> From search</span>
+                    </div>
+                    <div class="input" style="justify-content:space-between">14 Jul 2026 <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-calendar"/></svg></div>
+                  </div>
+                  <div class="field" style="flex:1">
+                    <label>Check-out</label>
+                    <div class="input" style="justify-content:space-between;color:var(--n-500)">DD/MM/YYYY <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-calendar"/></svg></div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Total number of guests</label>
+                  <div class="input" style="justify-content:space-between">2 <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-users"/></svg></div>
+                </div>
+              </div>
+
+              <div class="s2-group">
+                <div class="s2-group-label"><svg viewBox="0 0 24 24" class="icon"><use href="#i-user"/></svg> Lead guest</div>
+                <div class="field">
+                  <label>Lead guest name</label>
+                  <div class="input" style="color:var(--n-500)">Full name</div>
+                </div>
+                <div class="field">
+                  <div class="s2-lbl-row">
+                    <label>Lead guest email</label>
+                    <span class="s2-from-search"><svg viewBox="0 0 24 24" class="icon"><use href="#i-sparkle-fill"/></svg> From search</span>
+                  </div>
+                  <div class="input">ana.lopez@email.com</div>
+                  <span class="hint">Your check-in link is sent here.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="s2-cta-row">
+              <button class="btn btn-primary btn-block" data-goto="sd2-searching" style="max-width:none">Create my registration <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
+            </div>
+          </div>
+          <span class="sim-note" style="margin-top:12px">"type of registration" appears only for AT / UAE / IT properties</span>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ md2-code-help ═══ -->
+    <div class="proto-modal" id="md2-code-help">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        <div class="pm-title">Where's my booking reference?</div>
+        <p class="pm-desc">A short code (letters + numbers) tied to your reservation. Two reliable places:</p>
+        <div class="pm-list">
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span>
+            <span><b>Your confirmation email.</b> From Elena or the platform — near the top, labelled "reference", "confirmation code" or "booking ID".</span>
+          </div>
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-home"/></svg></span>
+            <span><b>Your booking platform.</b> Open the trip in Airbnb, Booking.com or Vrbo — the confirmation code is on the reservation.</span>
+          </div>
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span>
+            <span><b>Still can't find it?</b> Use <b>check-in date &amp; email</b> instead — no code needed.</span>
+          </div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close data-goto="sd2-date">Use date &amp; email instead</button>
+          <button class="btn btn-outline" data-modal-close>Back to the code</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ md2-contact ═══ -->
+    <div class="proto-modal" id="md2-contact">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+        <div class="pm-title">Contact Elena</div>
+        <p class="pm-desc">She's the host of Casa Marbella and can resend your booking link or confirm the reference.</p>
+        <div class="pm-list">
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span>
+            <span><b>elena@casamarbella.es</b><br>Usually replies within an hour.</span>
+          </div>
+          <div class="pl-row">
+            <span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg></span>
+            <span><b>+34 600 000 000</b><br>WhatsApp, 9:00–21:00 CET.</span>
+          </div>
+        </div>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Send a message</button>
+          <button class="btn btn-outline" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-search-x"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-calendar"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-hash"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-refresh"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-message"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></g>
+    <g id="i-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></g>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-star"><path d="M11.5 2.9a.55.55 0 0 1 1 0l2.4 4.86 5.37.78a.55.55 0 0 1 .3.94l-3.88 3.78.92 5.35a.55.55 0 0 1-.8.58L12 16.66l-4.8 2.53a.55.55 0 0 1-.8-.58l.91-5.35-3.88-3.78a.55.55 0 0 1 .3-.94l5.37-.78z"/></g>
+  </defs>
+</svg>
+
+<script src="modals.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="search-v2.js" defer></script>
+<script src="glass-toggle.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

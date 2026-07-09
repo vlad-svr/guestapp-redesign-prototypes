@@ -1,0 +1,511 @@
+/* ============================================================
+   Guests summary V2 — "the roster"
+   Layered on shared.css only. Both form factors load this file.
+   All classes namespaced `gv-` so nothing collides with reg.css.
+
+   Deliberately close to the shipped GuestsPanel: one progress line,
+   one row per guest, name + status. The redesign is in the *states*
+   and the *affordances*, not in extra chrome.
+
+   State vocabulary (never colour-only — every state carries an
+   icon, a word and a rail shape):
+     .is-done    green   · check  · solid rail   · "Registered"
+     .is-verify  amber   · shield · solid rail   · "Verify ID"
+     .is-details blue    · pencil · solid rail   · "Add details"
+     .is-empty   neutral · plus   · dashed rail  · "Not started"
+   ============================================================ */
+
+/* Screen-reader-only text (status announcements) */
+.gv-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Progress: one line, one meter ---------- */
+.gv-crew {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.gv-crew-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.gv-crew-count {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+.gv-edit-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue-500);
+  border-radius: 8px;
+  padding: 5px 7px;
+  margin: -5px -7px;
+  flex-shrink: 0;
+}
+.gv-edit-group:hover { background: var(--tint-pressed); }
+
+/* One segment per guest, coloured by that guest's state.
+   The rows below are the legend — there is no second counter to disagree with. */
+.gv-meter { display: flex; gap: 4px; }
+.gv-meter .seg {
+  height: 6px;
+  flex: 1;
+  border-radius: 99px;
+  background: var(--n-150);
+  position: relative;
+  overflow: hidden;
+}
+.gv-meter .seg.done { background: var(--green-700); }
+.gv-meter .seg.verify { background: var(--amber-500); }
+.gv-meter .seg.details { background: var(--blue-500); }
+.gv-meter .seg.empty { background: transparent; box-shadow: inset 0 0 0 1.5px var(--n-200); }
+/* a skeleton standing in for a segment keeps the shimmer, not the flat fill */
+.gv-meter .seg.gv-skel {
+  background: linear-gradient(90deg, var(--n-100) 25%, var(--n-75) 37%, var(--n-100) 63%);
+  background-size: 400% 100%;
+}
+
+/* ---------- Section label ---------- */
+.gv-sec { display: flex; align-items: center; gap: 8px; padding: 0 4px 9px; }
+.gv-sec-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-secondary);
+}
+.gv-sec .icon { color: var(--n-500); width: 15px; height: 15px; }
+
+/* ---------- Guest row ---------- */
+.gv-list { display: flex; flex-direction: column; }
+.gv-list > * + * { border-top: 1px solid var(--border); }
+
+.gv-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 12px 12px 18px;
+  text-align: left;
+  background: var(--n-0);
+  transition: background 0.15s;
+}
+.gv-row:hover { background: var(--n-50); }
+.gv-row:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--blue-500);
+  border-radius: 2px;
+}
+/* State rail — a shape, not just a colour */
+.gv-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 3px;
+  border-radius: 0 99px 99px 0;
+}
+.gv-row.is-done::before { background: var(--green-700); }
+.gv-row.is-verify::before { background: var(--amber-500); }
+.gv-row.is-details::before { background: var(--blue-500); }
+.gv-row.is-empty::before {
+  background: repeating-linear-gradient(to bottom, var(--n-300) 0 3px, transparent 3px 6px);
+}
+
+/* The row the docked CTA acts on. A soft wash — no extra chip needed. */
+.gv-row.is-next { background: var(--tint-pressed); }
+.gv-row.is-next:hover { background: #e8ecff; }
+
+.gv-avatar {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--gradient-brand);
+  position: relative;
+}
+.gv-avatar.tone-b { background: linear-gradient(135deg, #0f9f80, #35e5bc); }
+.gv-avatar.tone-c { background: linear-gradient(135deg, #23235d, #5975f5); }
+.gv-avatar.tone-d { background: linear-gradient(135deg, #b86a00, #ffb700); }
+.gv-avatar.is-empty {
+  background: var(--n-50);
+  color: var(--n-500);
+  box-shadow: inset 0 0 0 1.5px var(--n-200);
+}
+.gv-avatar.is-empty.dashed { box-shadow: none; border: 1.5px dashed var(--n-300); }
+/* lead-guest crown */
+.gv-avatar .gv-crown {
+  position: absolute;
+  top: -6px; right: -6px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--amber-500);
+  color: #5c3a00;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 2px var(--n-0);
+}
+.gv-avatar .gv-crown .icon { width: 10px; height: 10px; stroke-width: 2.6; }
+
+.gv-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.gv-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.005em;
+  line-height: 19px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gv-name.placeholder { color: var(--text-secondary); font-weight: 500; font-style: italic; }
+/* Used sparingly — only where it says something the status pill can't. */
+.gv-meta {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 16px;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status pill: icon + word. Never colour alone. */
+.gv-state {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 25px;
+  padding: 0 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.gv-state .icon { width: 13px; height: 13px; stroke-width: 2.4; }
+.is-done .gv-state { background: var(--green-50); color: #0b7c64; }
+.is-verify .gv-state { background: var(--amber-50); color: var(--amber-700); }
+.is-details .gv-state { background: var(--tint-pressed); color: var(--blue-650); }
+.is-empty .gv-state { background: var(--n-75); color: var(--n-600); }
+
+.gv-chev { flex-shrink: 0; color: var(--n-500); transition: transform 0.15s; }
+.gv-row:hover .gv-chev { transform: translateX(2px); color: var(--navy); }
+.gv-row.is-done .gv-chev { color: var(--n-300); }
+
+/* Kebab lives OUTSIDE the row link — never a button inside a button */
+.gv-row-wrap { position: relative; display: flex; align-items: stretch; background: var(--n-0); }
+.gv-row-wrap:has(.gv-row.is-next) { background: var(--tint-pressed); }
+.gv-row-wrap .gv-row { width: auto; flex: 1; padding-right: 4px; }
+/* On mobile a row with a kebab already reads as interactive; the chevron beside it
+   is a second affordance competing for the width the name needs. */
+.phone .gv-row-wrap .gv-chev { display: none; }
+
+.gv-kebab {
+  flex-shrink: 0;
+  width: 38px;
+  display: grid;
+  place-items: center;
+  color: var(--n-500);
+  border-radius: 10px;
+  margin: 8px 8px 8px 0;
+}
+.gv-kebab:hover { background: var(--n-100); color: var(--navy); }
+.gv-kebab:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 1px; }
+
+/* ---------- Add-a-minor affordance ---------- */
+.gv-add {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 18px;
+  background: rgba(244, 246, 251, 0.6);
+  text-align: left;
+}
+.gv-add:hover { background: var(--tint-pressed); }
+.gv-add:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--blue-500); }
+.gv-add .gv-plus {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: var(--tint-info);
+  color: var(--blue-500);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.gv-add-label { font-size: 13px; font-weight: 600; color: var(--blue-500); display: block; }
+.gv-add-sub { font-size: 11px; font-weight: 500; color: var(--text-secondary); display: block; margin-top: 1px; }
+
+/* ---------- Docked CTA ---------- */
+.gv-dock {
+  position: sticky;
+  bottom: 0;
+  margin-top: auto;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 8px));
+  background: linear-gradient(to top, rgba(246, 247, 252, 0.97) 60%, rgba(246, 247, 252, 0));
+}
+.gv-dock .btn { width: 100%; }
+
+/* ---------- All-done celebration ---------- */
+.gv-celebrate {
+  border-radius: var(--r-xl);
+  border: 1px solid rgba(15, 159, 128, 0.28);
+  background: linear-gradient(135deg, var(--green-50), var(--n-0) 70%);
+  padding: 20px 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.gv-celebrate .gv-seal {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: #fff;
+  display: grid; place-items: center;
+  box-shadow: 0 6px 18px rgba(15, 159, 128, 0.32);
+  animation: gv-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes gv-pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.gv-celebrate h3 { font-size: 17px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.gv-celebrate p { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); max-width: 300px; }
+
+/* ---------- Skeletons (shape-matched, not generic bars) ---------- */
+.gv-skel {
+  background: linear-gradient(90deg, var(--n-100) 25%, var(--n-75) 37%, var(--n-100) 63%);
+  background-size: 400% 100%;
+  animation: gv-shimmer 1.35s ease infinite;
+  border-radius: 8px;
+}
+@keyframes gv-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+.gv-skel-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; }
+.gv-skel-row + .gv-skel-row { border-top: 1px solid var(--border); }
+
+/* Background refetch: a hairline bar, never a 50%-opacity list */
+.gv-syncing { position: relative; overflow: hidden; }
+.gv-syncing::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 2px; width: 38%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, var(--blue-500), transparent);
+  animation: gv-sweep 1.25s ease-in-out infinite;
+}
+@keyframes gv-sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(360%); } }
+.gv-sync-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  padding: 0 4px;
+}
+
+/* ---------- Undo toast (destructive actions are reversible) ---------- */
+.gv-toast {
+  position: absolute;
+  left: 16px; right: 16px;
+  bottom: 88px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px 12px 15px;
+  border-radius: 14px;
+  background: rgba(21, 21, 63, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  box-shadow: var(--shadow-elev);
+  animation: gv-toast-in 0.28s ease both;
+}
+@keyframes gv-toast-in { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+.gv-toast-text { flex: 1; font-size: 12.5px; font-weight: 500; line-height: 17px; }
+.gv-toast-text b { font-weight: 700; }
+.gv-toast-undo {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.gv-toast-undo:hover { background: rgba(255, 255, 255, 0.24); }
+
+/* ---------- Delete confirm ---------- */
+.gv-danger-ic {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  background: var(--red-100);
+  color: var(--red-500);
+  display: grid; place-items: center;
+  margin-bottom: 14px;
+}
+.btn-danger { background: var(--red-500); color: #fff; }
+.btn-danger:hover { background: #c40039; }
+.gv-consequence {
+  margin-top: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--n-50);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.gv-consequence li {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--text-secondary);
+}
+.gv-consequence li .icon { width: 14px; height: 14px; color: var(--n-500); flex-shrink: 0; margin-top: 2px; }
+
+/* Row-actions sheet */
+.gv-menu { display: flex; flex-direction: column; margin-top: 6px; }
+.gv-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy);
+  text-align: left;
+  border-radius: 10px;
+}
+.gv-menu button:hover { background: var(--n-50); }
+.gv-menu button + button { border-top: 1px solid var(--border); border-radius: 0; }
+.gv-menu button.danger { color: var(--red-500); }
+.gv-menu .icon { color: var(--n-500); }
+.gv-menu button.danger .icon { color: var(--red-500); }
+
+/* ---------- Group-settings sheet ---------- */
+.gv-stepper { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; }
+.gv-stepper + .gv-stepper { border-top: 1px solid var(--border); }
+.gv-stepper-label { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.gv-stepper-sub { font-size: 11.5px; font-weight: 500; color: var(--text-secondary); margin-top: 1px; }
+.gv-counter { display: flex; align-items: center; gap: 4px; }
+.gv-counter button {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  color: var(--navy);
+  display: grid; place-items: center;
+}
+.gv-counter button:hover:not(:disabled) { border-color: var(--blue-500); color: var(--blue-500); }
+.gv-counter button:disabled { opacity: 0.35; cursor: not-allowed; }
+.gv-counter output {
+  min-width: 34px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+.gv-warn {
+  margin-top: 12px;
+  font-size: 11.5px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--amber-700);
+  background: var(--amber-50);
+  border-radius: 10px;
+  padding: 9px 11px;
+  display: flex;
+  gap: 7px;
+}
+.gv-warn .icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+
+/* ---------- Desktop ---------- */
+/* flow.js sets `.flow-screen.active{display:flex !important}` — the desktop
+   screens ARE the app shell, which must stay a grid. Higher specificity wins. */
+.browser > .desktop-shell.flow-screen.active { display: grid !important; }
+
+.gv-desk-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 26px;
+  align-items: start;
+  margin-top: 22px;
+}
+.gv-desk-grid .gv-row { padding-left: 20px; }
+.gv-desk-grid .gv-crew { padding: 16px 20px; }
+
+/* Sticky action ledger — the desktop equivalent of the mobile dock */
+.gv-ledger {
+  position: sticky;
+  top: 22px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.gv-ledger-eyebrow {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-secondary);
+}
+.gv-ledger-title { font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 1.3; margin-top: 7px; }
+.gv-ledger-sub { font-size: 12px; font-weight: 500; color: var(--text-secondary); line-height: 17px; margin-top: 4px; }
+.gv-ledger .btn { width: 100%; }
+.gv-ledger-split { height: 1px; background: var(--border); }
+.gv-ledger-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 17px;
+}
+.gv-ledger-note .icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: var(--blue-500); }
+.gv-ledger-note b { font-weight: 600; color: var(--navy); }
+
+@media (max-width: 1100px) {
+  .gv-desk-grid { grid-template-columns: minmax(0, 1fr); }
+  .gv-ledger { position: static; }
+}
+
+/* ---------- Motion respects the OS setting ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .gv-skel, .gv-syncing::after { animation: none; }
+  .gv-skel { background: var(--n-100); }
+  .gv-celebrate .gv-seal, .gv-toast { animation: none; }
+  .gv-row:hover .gv-chev { transform: none; }
+}

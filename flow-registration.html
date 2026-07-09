@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <link rel="stylesheet" href="reg.css">
+<link rel="stylesheet" href="sign.css">
 </head>
 <body>
 <div class="proto-stage">
@@ -16,7 +17,7 @@
 
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="r-hub">▶ Full flow</button>
-    <button class="fh-chip" data-scenario="r-review">Review &amp; sign only</button>
+    <button class="fh-chip" data-scenario="r-review">Review &amp; sign</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
     <span class="fh-label"></span>
   </div>
@@ -262,12 +263,20 @@
 
           <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Signature <span class="divider"></span></div>
           <div>
-            <div class="sig-pad">
-              <span class="sig-line"></span>
-              <span class="sig-mock">Ana López</span>
-              <button class="sig-clear"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eraser"/></svg></button>
-            </div>
-            <div class="sig-hint"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-info"/></svg> Sign with your finger — required by local regulations</div>
+            <!-- Mobile: the inline pad is a tappable button that opens the sign sheet
+                 (maps to SignatureCanvas placeholder → SignatureModal). Once signed it
+                 shows an <img> preview. -->
+            <button class="sig-pad sig-tap" id="sig-review" data-sign-open>
+              <span class="sig-empty">
+                <span class="se-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-signature"/></svg></span>
+                <span class="se-main">Tap to open the signature form</span>
+                <span class="se-sub">Required by local regulations</span>
+              </span>
+              <span class="sig-ok"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> Signed</span>
+              <span class="sig-tools"><span class="sig-tool" data-sign-clear><svg viewBox="0 0 24 24" class="icon"><use href="#i-eraser"/></svg> Clear</span></span>
+            </button>
+            <div class="sig-msg"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg> The signature is required</div>
+            <div class="sig-hint"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg> Sign with your finger — required by local regulations.</div>
           </div>
 
           <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Agreements <span class="divider"></span></div>
@@ -290,8 +299,8 @@
         </div>
       </div>
       <div class="cta-dock">
-        <a class="btn btn-primary btn-block" style="max-width:100%" href="flow-registered-modal.html">Complete registration <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></a>
-        <span style="font-size:11px;color:var(--text-tertiary)">Opens the “guest registered” modal with offers</span>
+        <a class="btn btn-primary btn-block" style="max-width:100%" href="#" data-sign-submit data-sign-target="#sig-review" data-href="flow-registered-modal.html">Complete registration <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></a>
+        <span style="font-size:11px;color:var(--text-tertiary)">Sign first — then it opens the “guest registered” modal</span>
       </div>
     </div>
 
@@ -359,6 +368,28 @@
       </div>
     </div>
 
+    <!-- ═══ m-sign · SignatureModal (mobile bottom sheet) ═══ -->
+    <div class="proto-modal sheet" id="m-sign">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <div class="pm-grabber"></div>
+        <div class="pm-title">Draw your signature</div>
+        <p class="pm-desc">There's no need to make it perfect — a clear sign is enough.</p>
+        <div class="sign-surface">
+          <canvas class="sig-canvas"></canvas>
+          <span class="sig-empty">
+            <span class="se-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-signature"/></svg></span>
+            <span class="se-main">Draw here with your finger</span>
+          </span>
+          <span class="sig-tools"><span class="sig-tool" data-sign-clear><svg viewBox="0 0 24 24" class="icon"><use href="#i-eraser"/></svg> Clear</span></span>
+        </div>
+        <div class="sign-actions">
+          <button class="sign-clear" data-sign-cancel>Cancel</button>
+          <button class="btn btn-primary" data-sign-confirm disabled>Confirm signature <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></button>
+        </div>
+      </div>
+    </div>
+
 <div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><div class="vela-section"><div class="vela-eyebrow">Your progress</div><div class="vela-progress" style="margin-top:10px"><div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">1 of 2 guests</span></div><div class="vp-track"><div class="vp-fill" style="width:50%"></div></div><div class="vp-hint">Finish the pending registrations so your guests can check in without waiting.</div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><button class="vela-action" data-modal-close data-modal="m-share"><span class="va-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></span><span>Share booking link<span class="va-sub">Let co-travellers register themselves</span></span></button><button class="vela-action"><span class="va-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host</span></button></div></div><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M14 9h5"/><path d="M14 13h4"/></svg></span><span><span class="vt-title" style="display:block">Minors skip verification</span><span class="vt-desc">Guests under 18 only fill the form — no ID photos needed.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Ask Vela</div><div class="vela-ask" style="margin-top:10px"><div class="ask-input">Ask anything…<span class="send" style="display:grid;place-items:center;color:#fff">↑</span></div><div class="vela-chips"><span class="chip">Can guests register later?</span><span class="chip">Is my data safe?</span></div></div></div></div></div>
 <div class="proto-modal sheet" id="m-share"><div class="pm-scrim"></div><div class="pm-card"><div class="pm-grabber"></div><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Share booking link</div><div class="pm-desc">Anyone with this link can register guests for booking <b style="color:var(--navy)">CHK-58291</b>. It stops working after check-in.</div><div class="pm-link">guest.chekin.com/r/chk-58291<button class="pm-copy"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy</button></div><div class="pm-share-grid"><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span> WhatsApp</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span> Email</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></span> More</button></div></div></div>
   </div>
@@ -380,6 +411,8 @@
     <g id="i-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></g>
     <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></g>
     <g id="i-pen"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></g>
+    <g id="i-signature"><path d="M3 16c2.5 0 3-6 5-6s1.6 4 3.5 4S14 9 16 9s2 3 3.5 3"/><path d="M3 20h18"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
     <g id="i-eraser"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></g>
     <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
     <g id="i-scan"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect width="10" height="8" x="7" y="8" rx="1"/></g>
@@ -388,6 +421,7 @@
   </defs>
 </svg>
 <script src="modals.js" defer></script>
+<script src="sign.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="nav.js" defer></script>
 </body>

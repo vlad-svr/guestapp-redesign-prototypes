@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guests summary V2 — the roster (Desktop)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- reg.css powers the V1 comparison frame only (the hub from guest-registration-desktop.html) -->
+<link rel="stylesheet" href="reg.css">
+<link rel="stylesheet" href="guests-v2.css">
+</head>
+<body>
+
+
+
+
+<div class="proto-stage">
+  <h1>Guests summary V2 — the roster (Desktop)</h1>
+  <p class="lede">The same roster as the <b>“Guests”</b> sidebar destination: progress line, meter and guest list in a reading column, and the mobile CTA dock reborn as a small <b>action ledger</b> that names the next guest and the next task. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="gd2-hub">Partial — 2 of 4</button>
+    <button class="fh-chip" data-scenario="gd2-none">Nobody registered</button>
+    <button class="fh-chip" data-scenario="gd2-done">Everyone registered</button>
+    <button class="fh-chip" data-scenario="gd2-loading">Loading</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       V1 — today's desktop hub, lifted from guest-registration-desktop.html.
+       Static and inert: the scenario chips above drive the V2 frame only.
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="phone-label" style="margin-bottom:0">V1 · today</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-lock"/></svg> guest.chekin.com/villa-serena/registration</span>
+      <span style="width:52px"></span>
+    </div>
+    <div class="desktop-shell">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
+          <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
+        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Tourist tax</span>
+        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <span class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back to home</span>
+        <div class="desk-col">
+          <div class="page-head" style="padding:0 0 4px">
+            <div class="kicker">Guest summary</div>
+            <div class="page-title">Who are we <span class="hl">registering</span>?</div>
+            <p class="page-intro">Register yourself or everyone in your group — each guest takes about 2 minutes.</p>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:18px;margin-top:22px">
+            <div class="card glass">
+              <div class="guests-summary">
+                <div class="gs-ring">
+                  <svg width="56" height="56" viewBox="0 0 56 56">
+                    <defs>
+                      <linearGradient id="gsGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#385bf8"/>
+                        <stop offset="100%" stop-color="#6b8cff"/>
+                      </linearGradient>
+                    </defs>
+                    <circle class="track" cx="28" cy="28" r="24"/>
+                    <circle class="arc" cx="28" cy="28" r="24"/>
+                  </svg>
+                  <span class="pct">1/3</span>
+                </div>
+                <div>
+                  <div class="gs-title">Two guests to go</div>
+                  <div class="gs-sub">1 registered · 1 needs ID verification · 1 missing details · due Friday 10 July</div>
+                </div>
+                <span class="btn btn-primary btn-sm" style="margin-left:auto">Register second guest <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+              </div>
+            </div>
+
+            <div>
+              <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-star"/></svg> Responsible for booking</div>
+              <div class="card">
+                <span class="guest-row complete" style="display:flex">
+                  <span class="g-avatar">MG</span>
+                  <span>
+                    <span class="g-name" style="display:block">María García</span>
+                    <span class="g-sub">You · primary guest · ID verified with passport</span>
+                  </span>
+                  <span class="g-status">
+                    <span class="st-label">Complete</span>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg>
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> Other guests</div>
+              <div class="card">
+                <span class="guest-row iv-pending" style="display:flex">
+                  <span class="g-avatar">CR</span>
+                  <span>
+                    <span class="g-name" style="display:block">Carlos Ruiz</span>
+                    <span class="g-sub">Details saved · identity verification pending</span>
+                  </span>
+                  <span class="g-status">
+                    <span class="st-label">Verify ID</span>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg>
+                  </span>
+                </span>
+                <span class="guest-row pending" style="display:flex">
+                  <span class="g-avatar">3</span>
+                  <span>
+                    <span class="g-name" style="display:block">Second guest</span>
+                    <span class="g-sub">Waiting for details · takes about 2 minutes</span>
+                  </span>
+                  <span class="g-status">
+                    <span class="st-label">Add details</span>
+                    <svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-right"/></svg>
+                  </span>
+                </span>
+                <span class="add-row" style="display:flex">
+                  <span class="plus-badge"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                  <span>
+                    <span class="a-label" style="display:block">Add a minor under 18</span>
+                    <span class="a-sub">No ID verification needed</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <div class="register-all">
+              <svg viewBox="0 0 24 24" class="icon" style="color:var(--blue-500)"><use href="#i-share"/></svg>
+              <p class="ra-text"><b>Not together right now?</b> Share a link so the second guest can register from their own phone — you'll see their status update here live.</p>
+              <span class="btn btn-outline btn-sm" style="flex-shrink:0"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-copy"/></svg> Copy link</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <p class="sim-note" style="margin-top:-16px">Static reference — the scenario chips above drive the V2 frame below.</p>
+
+  <!-- ══════════════════════════════════════════════════════════════════
+       V2 — the roster (proposal)
+       ══════════════════════════════════════════════════════════════════ -->
+  <div class="phone-label" style="margin-bottom:0">V2 · proposed</div>
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-lock"/></svg> guest.chekin.com/villa-serena/guests</span>
+      <span style="width:52px"></span>
+    </div>
+
+    <!-- ══════════════════ 1 · PARTIAL ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="gd2-hub" data-start data-label="Roster — 2 of 4 registered">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head">
+          <div class="sb-logo" aria-hidden="true">V</div>
+          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
+        </div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
+          <div class="sp-track" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="Check-in progress: 50 percent"><div class="sp-fill" style="width:50%"></div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <a class="sb-item" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</a>
+        <a class="sb-item active" href="#gd2-hub" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests <span class="sb-badge warn">2</span></a>
+        <a class="sb-item" href="flow-taxes-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Tourist tax</a>
+        <a class="sb-item" href="flow-payments-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</a>
+        <div class="sb-group">Your stay</div>
+        <a class="sb-item" href="flow-remote-access-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item" href="flow-guidebooks-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book-open"/></svg> Guidebooks</a>
+        <a class="sb-item" href="flow-faq-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-help"/></svg> FAQ &amp; support</a>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+          <button class="sb-logout" aria-label="Log out"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-log-out"/></svg></button>
+        </div>
+      </aside>
+
+      <main class="desk-page">
+        <a class="back-pill" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg> Back to check-in</a>
+
+        <div style="max-width:980px;margin:22px auto 0">
+          <div class="kicker">Guest summary</div>
+          <h1 class="page-title" style="font-size:27px;line-height:32px">Who's <span class="hl">checking in</span>?</h1>
+          <p class="page-intro" style="font-size:14px;line-height:21px">Register one guest or everyone in this same session.</p>
+
+          <div class="gv-desk-grid">
+            <div style="display:flex;flex-direction:column;gap:20px">
+
+              <section class="gv-crew" aria-label="Registration progress">
+                <div class="gv-crew-head">
+                  <span class="gv-crew-count">2 of 4 registered</span>
+                  <button class="gv-edit-group" data-modal="m-gvd-group"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-sliders"/></svg> Edit group</button>
+                </div>
+                <div class="gv-meter" role="img" aria-label="María registered, Carlos needs ID verification, Sofía needs details, one guest not started.">
+                  <span class="seg done"></span><span class="seg verify"></span><span class="seg details"></span><span class="seg empty"></span>
+                </div>
+              </section>
+
+              <section aria-labelledby="gd-sec-lead">
+                <div class="gv-sec">
+                  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-crown"/></svg>
+                  <h2 class="gv-sec-label" id="gd-sec-lead">Responsible for booking</h2>
+                </div>
+                <div class="card">
+                  <div class="gv-list">
+                    <div class="gv-row-wrap">
+                      <a class="gv-row is-done" href="#gd2-hub" aria-describedby="gd-st-1">
+                        <span class="gv-avatar" aria-hidden="true">MG<span class="gv-crown"><svg viewBox="0 0 24 24" class="icon"><use href="#i-crown"/></svg></span></span>
+                        <span class="gv-body"><span class="gv-name">María García</span><span class="gv-meta">You · primary guest</span></span>
+                        <span class="gv-state" id="gd-st-1"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Registered</span>
+                        <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                      </a>
+                      <button class="gv-kebab" data-modal="m-gvd-actions" aria-label="Actions for María García" aria-haspopup="menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section aria-labelledby="gd-sec-others">
+                <div class="gv-sec">
+                  <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg>
+                  <h2 class="gv-sec-label" id="gd-sec-others">Other guests</h2>
+                </div>
+                <div class="card">
+                  <div class="gv-list">
+                    <div class="gv-row-wrap" data-gv-row="carlos" data-gv-name="Carlos Ruiz">
+                      <a class="gv-row is-verify is-next" href="flow-iv-desktop.html" aria-describedby="gd-st-2">
+                        <span class="gv-avatar tone-c" aria-hidden="true">CR</span>
+                        <span class="gv-body"><span class="gv-name">Carlos Ruiz</span></span>
+                        <span class="gv-state" id="gd-st-2"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Verify ID</span>
+                        <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                      </a>
+                      <button class="gv-kebab" data-modal="m-gvd-actions" aria-label="Actions for Carlos Ruiz" aria-haspopup="menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+                    </div>
+                    <div class="gv-row-wrap" data-gv-row="sofia" data-gv-name="Sofía Núñez">
+                      <a class="gv-row is-details" href="guest-registration-desktop.html" aria-describedby="gd-st-3">
+                        <span class="gv-avatar tone-b" aria-hidden="true">SN</span>
+                        <span class="gv-body"><span class="gv-name">Sofía Núñez</span></span>
+                        <span class="gv-state" id="gd-st-3"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-pencil"/></svg> Add details</span>
+                        <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                      </a>
+                      <button class="gv-kebab" data-modal="m-gvd-actions" aria-label="Actions for Sofía Núñez" aria-haspopup="menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+                    </div>
+                    <a class="gv-row is-empty" href="guest-registration-desktop.html" aria-describedby="gd-st-4">
+                      <span class="gv-avatar is-empty dashed" aria-hidden="true">4</span>
+                      <span class="gv-body"><span class="gv-name placeholder">Fourth guest</span></span>
+                      <span class="gv-state" id="gd-st-4"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Not started</span>
+                      <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                    </a>
+                    <button class="gv-add">
+                      <span class="gv-plus" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                      <span><span class="gv-add-label">Add a minor under 18</span><span class="gv-add-sub">No ID verification needed</span></span>
+                    </button>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <!-- Action ledger — the desktop dock -->
+            <aside class="gv-ledger" aria-label="Next action">
+              <div>
+                <div class="gv-ledger-eyebrow">Your next step</div>
+                <div class="gv-ledger-title">Verify Carlos's ID</div>
+                <div class="gv-ledger-sub">A photo of his passport and a selfie.</div>
+              </div>
+              <a class="btn btn-primary" href="flow-iv-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Verify now</a>
+              <button class="btn btn-outline btn-sm" data-modal="m-gvd-share" style="height:40px"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-share"/></svg> Share the link instead</button>
+              <div class="gv-ledger-split"></div>
+              <p class="gv-ledger-note">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg>
+                <span>When everyone is registered, your <b>virtual keys</b> unlock automatically.</span>
+              </p>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 2 · NOBODY REGISTERED ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="gd2-none" data-label="Roster — nobody registered yet">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head"><div class="sb-logo" aria-hidden="true">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>0%</span></div>
+          <div class="sp-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Check-in progress: 0 percent"><div class="sp-fill" style="width:0%"></div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <a class="sb-item" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</a>
+        <a class="sb-item active" href="#gd2-none" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests <span class="sb-badge warn">3</span></a>
+        <a class="sb-item" href="flow-taxes-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Tourist tax</a>
+        <a class="sb-item" href="flow-payments-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</a>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+      <main class="desk-page">
+        <a class="back-pill" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg> Back to check-in</a>
+        <div style="max-width:980px;margin:22px auto 0">
+          <div class="kicker">Guest summary</div>
+          <h1 class="page-title" style="font-size:27px;line-height:32px">Who's <span class="hl">checking in</span>?</h1>
+          <p class="page-intro" style="font-size:14px;line-height:21px">Start with yourself. You can add the others now or share a link later.</p>
+
+          <div class="gv-desk-grid">
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <section class="gv-crew" aria-label="Registration progress">
+                <div class="gv-crew-head">
+                  <span class="gv-crew-count">0 of 3 registered</span>
+                  <button class="gv-edit-group" data-modal="m-gvd-group"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-sliders"/></svg> Edit group</button>
+                </div>
+                <div class="gv-meter" role="img" aria-label="Nobody registered yet, 3 guests remaining.">
+                  <span class="seg empty"></span><span class="seg empty"></span><span class="seg empty"></span>
+                </div>
+              </section>
+
+              <section aria-labelledby="gd-sec-lead2">
+                <div class="gv-sec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-crown"/></svg><h2 class="gv-sec-label" id="gd-sec-lead2">Responsible for booking</h2></div>
+                <div class="card">
+                  <div class="gv-list">
+                    <a class="gv-row is-empty is-next" href="guest-registration-desktop.html">
+                      <span class="gv-avatar is-empty dashed" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg></span>
+                      <span class="gv-body"><span class="gv-name">Register yourself</span><span class="gv-meta">You · primary guest</span></span>
+                      <span class="gv-state"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Not started</span>
+                      <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                    </a>
+                  </div>
+                </div>
+              </section>
+
+              <section aria-labelledby="gd-sec-others2">
+                <div class="gv-sec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg><h2 class="gv-sec-label" id="gd-sec-others2">Other guests</h2></div>
+                <div class="card">
+                  <div class="gv-list">
+                    <a class="gv-row is-empty" href="guest-registration-desktop.html">
+                      <span class="gv-avatar is-empty dashed" aria-hidden="true">2</span>
+                      <span class="gv-body"><span class="gv-name placeholder">Second guest</span></span>
+                      <span class="gv-state"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Not started</span>
+                      <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                    </a>
+                    <a class="gv-row is-empty" href="guest-registration-desktop.html">
+                      <span class="gv-avatar is-empty dashed" aria-hidden="true">3</span>
+                      <span class="gv-body"><span class="gv-name placeholder">Third guest</span></span>
+                      <span class="gv-state"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg> Not started</span>
+                      <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                    </a>
+                    <button class="gv-add">
+                      <span class="gv-plus" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                      <span><span class="gv-add-label">Add a minor under 18</span><span class="gv-add-sub">No ID verification needed</span></span>
+                    </button>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="gv-ledger" aria-label="Next action">
+              <div>
+                <div class="gv-ledger-eyebrow">Your next step</div>
+                <div class="gv-ledger-title">Register yourself</div>
+                <div class="gv-ledger-sub">The lead guest goes first — the rest can follow in any order.</div>
+              </div>
+              <a class="btn btn-primary" href="guest-registration-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-user"/></svg> Start</a>
+              <button class="btn btn-outline btn-sm" data-modal="m-gvd-share" style="height:40px"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-share"/></svg> Share the link</button>
+              <div class="gv-ledger-split"></div>
+              <p class="gv-ledger-note">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg>
+                <span>When everyone is registered, your <b>virtual keys</b> unlock automatically.</span>
+              </p>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 3 · EVERYONE REGISTERED ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="gd2-done" data-label="Roster — everyone registered">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head"><div class="sb-logo" aria-hidden="true">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
+        <div class="sb-progress">
+          <div class="sp-row"><span>Check-in progress</span><span>75%</span></div>
+          <div class="sp-track" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="Check-in progress: 75 percent"><div class="sp-fill" style="width:75%"></div></div>
+        </div>
+        <div class="sb-group">Check-in</div>
+        <a class="sb-item" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</a>
+        <a class="sb-item active" href="#gd2-done" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests <span class="sb-badge teal">✓</span></a>
+        <a class="sb-item" href="flow-taxes-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Tourist tax <span class="sb-badge warn">1</span></a>
+        <a class="sb-item" href="flow-payments-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</a>
+        <div class="sb-footer">
+          <div class="sb-avatar" aria-hidden="true">MG</div>
+          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
+        </div>
+      </aside>
+      <main class="desk-page">
+        <a class="back-pill" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg> Back to check-in</a>
+        <div style="max-width:980px;margin:22px auto 0">
+          <div class="kicker">Guest summary</div>
+          <h1 class="page-title" style="font-size:27px;line-height:32px">Your group is <span class="hl">all set</span></h1>
+
+          <div class="gv-desk-grid">
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <section class="gv-celebrate">
+                <span class="gv-seal" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-check"/></svg></span>
+                <h3>All 3 guests registered</h3>
+                <p>Nothing left to do here. Your host has everything they need.</p>
+              </section>
+              <section aria-labelledby="gd-sec-done">
+                <div class="gv-sec"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg><h2 class="gv-sec-label" id="gd-sec-done">Your group</h2></div>
+                <div class="card">
+                  <div class="gv-list">
+                    <div class="gv-row-wrap">
+                      <a class="gv-row is-done" href="#gd2-done">
+                        <span class="gv-avatar" aria-hidden="true">MG<span class="gv-crown"><svg viewBox="0 0 24 24" class="icon"><use href="#i-crown"/></svg></span></span>
+                        <span class="gv-body"><span class="gv-name">María García</span><span class="gv-meta">You · primary guest</span></span>
+                        <span class="gv-state"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Registered</span>
+                        <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                      </a>
+                      <button class="gv-kebab" data-modal="m-gvd-actions" aria-label="Actions for María García" aria-haspopup="menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+                    </div>
+                    <div class="gv-row-wrap">
+                      <a class="gv-row is-done" href="#gd2-done">
+                        <span class="gv-avatar tone-c" aria-hidden="true">CR</span>
+                        <span class="gv-body"><span class="gv-name">Carlos Ruiz</span></span>
+                        <span class="gv-state"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Registered</span>
+                        <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                      </a>
+                      <button class="gv-kebab" data-modal="m-gvd-actions" aria-label="Actions for Carlos Ruiz" aria-haspopup="menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+                    </div>
+                    <div class="gv-row-wrap">
+                      <a class="gv-row is-done" href="#gd2-done">
+                        <span class="gv-avatar tone-d" aria-hidden="true">LG</span>
+                        <span class="gv-body"><span class="gv-name">Lucía García</span><span class="gv-meta">Minor</span></span>
+                        <span class="gv-state"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg> Registered</span>
+                        <svg viewBox="0 0 24 24" class="icon gv-chev" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+                      </a>
+                      <button class="gv-kebab" data-modal="m-gvd-actions" aria-label="Actions for Lucía García" aria-haspopup="menu"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="gv-ledger" aria-label="Next action">
+              <div>
+                <div class="gv-ledger-eyebrow">Next in your check-in</div>
+                <div class="gv-ledger-title">Tourist tax — €18.00</div>
+                <div class="gv-ledger-sub">3 guests × 2 taxed nights.</div>
+              </div>
+              <a class="btn btn-primary" href="flow-taxes-desktop.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-coins"/></svg> Review tourist tax</a>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══════════════════ 4 · LOADING ══════════════════ -->
+    <div class="desktop-shell flow-screen" id="gd2-loading" data-label="Loading — shape-matched skeleton" data-autonext="gd2-hub" data-autodelay="2200">
+      <aside class="sidebar" aria-label="Sections">
+        <div class="sb-head"><div class="sb-logo" aria-hidden="true">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
+        <div class="sb-group">Check-in</div>
+        <a class="sb-item" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</a>
+        <a class="sb-item active" href="#gd2-loading" aria-current="page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</a>
+      </aside>
+      <main class="desk-page" aria-busy="true">
+        <a class="back-pill" href="home-desktop-v2.html"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg> Back to check-in</a>
+        <div style="max-width:980px;margin:22px auto 0">
+          <div class="kicker">Guest summary</div>
+          <h1 class="page-title" style="font-size:27px;line-height:32px">Who's <span class="hl">checking in</span>?</h1>
+          <div class="gv-desk-grid">
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <section class="gv-crew">
+                <div class="gv-crew-head">
+                  <span class="gv-skel" style="width:140px;height:15px"></span>
+                  <span class="gv-skel" style="width:78px;height:14px"></span>
+                </div>
+                <div class="gv-meter"><span class="gv-skel seg"></span><span class="gv-skel seg"></span><span class="gv-skel seg"></span><span class="gv-skel seg"></span></div>
+              </section>
+              <div class="card">
+                <div class="gv-skel-row">
+                  <span class="gv-skel" style="width:38px;height:38px;border-radius:12px;flex-shrink:0"></span>
+                  <span style="flex:1;display:flex;flex-direction:column;gap:6px"><span class="gv-skel" style="width:32%;height:13px"></span><span class="gv-skel" style="width:22%;height:10px"></span></span>
+                  <span class="gv-skel" style="width:88px;height:25px;border-radius:99px"></span>
+                </div>
+                <div class="gv-skel-row">
+                  <span class="gv-skel" style="width:38px;height:38px;border-radius:12px;flex-shrink:0"></span>
+                  <span style="flex:1"><span class="gv-skel" style="display:block;width:28%;height:13px"></span></span>
+                  <span class="gv-skel" style="width:80px;height:25px;border-radius:99px"></span>
+                </div>
+                <div class="gv-skel-row">
+                  <span class="gv-skel" style="width:38px;height:38px;border-radius:12px;flex-shrink:0"></span>
+                  <span style="flex:1"><span class="gv-skel" style="display:block;width:36%;height:13px"></span></span>
+                  <span class="gv-skel" style="width:80px;height:25px;border-radius:99px"></span>
+                </div>
+              </div>
+              <p class="sim-note">Auto-advances to the loaded roster…</p>
+            </div>
+            <aside class="gv-ledger">
+              <span class="gv-skel" style="width:70%;height:12px"></span>
+              <span class="gv-skel" style="width:90%;height:18px"></span>
+              <span class="gv-skel" style="width:100%;height:48px;border-radius:12px"></span>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Undo toast + live region -->
+    <div class="gv-toast" data-gv-toast hidden style="left:auto;right:28px;bottom:28px;width:360px">
+      <svg viewBox="0 0 24 24" class="icon" style="color:#8ca5ff" aria-hidden="true"><use href="#i-trash"/></svg>
+      <span class="gv-toast-text"><b data-gv-toast-name>Guest</b> removed from this booking.</span>
+      <button class="gv-toast-undo" data-gv-undo>Undo</button>
+    </div>
+    <p class="gv-sr" role="status" aria-live="polite" data-gv-live></p>
+
+    <!-- ══════════════════ MODALS ══════════════════ -->
+    <div class="proto-modal" id="m-gvd-actions" role="dialog" aria-modal="true" aria-label="Guest actions">
+      <div class="pm-scrim"></div>
+      <div class="pm-card" style="width:min(360px,calc(100% - 44px))">
+        <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+        <div class="pm-title">Carlos Ruiz</div>
+        <div class="pm-desc">Details saved · ID verification pending</div>
+        <div class="gv-menu" role="menu">
+          <button role="menuitem" data-modal-close><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Verify ID now</button>
+          <button role="menuitem" data-modal-close><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-pencil"/></svg> Edit details</button>
+          <button role="menuitem" class="danger" data-modal-close data-modal="m-gvd-delete"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-trash"/></svg> Remove from booking</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-modal" id="m-gvd-delete" role="alertdialog" aria-modal="true" aria-labelledby="gvd-del-t" aria-describedby="gvd-del-d">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Cancel">✕</button>
+        <span class="gv-danger-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-trash"/></svg></span>
+        <div class="pm-title" id="gvd-del-t">Remove Carlos Ruiz?</div>
+        <div class="pm-desc" id="gvd-del-d">He'll be taken off this booking and will need to register again from scratch.</div>
+        <ul class="gv-consequence">
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-x"/></svg> His saved details and ID photos are deleted.</li>
+          <li><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-clock"/></svg> You can undo this for 10 seconds.</li>
+        </ul>
+        <div class="pm-actions">
+          <button class="btn btn-danger" data-gv-delete="carlos">Remove Carlos</button>
+          <button class="btn btn-outline" data-modal-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-modal" id="m-gvd-share" role="dialog" aria-modal="true" aria-labelledby="gvd-share-t">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+        <div class="pm-title" id="gvd-share-t">Share the registration link</div>
+        <div class="pm-desc">Anyone with this link can add their own details to booking <b style="color:var(--navy)">CHK-58291</b>. It stops working after check-in.</div>
+        <div class="pm-link">guest.chekin.com/r/chk-58291<button class="pm-copy" data-gv-copy><svg viewBox="0 0 24 24" width="13" height="13" class="icon" aria-hidden="true"><use href="#i-copy"/></svg> Copy</button></div>
+        <div class="pm-share-grid">
+          <button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-message"/></svg></span> WhatsApp</button>
+          <button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span> Email</button>
+          <button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-share"/></svg></span> More</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-modal" id="m-gvd-group" role="dialog" aria-modal="true" aria-labelledby="gvd-group-t">
+      <div class="pm-scrim"></div>
+      <div class="pm-card">
+        <button class="pm-close" data-modal-close aria-label="Close">✕</button>
+        <div class="pm-title" id="gvd-group-t">Edit your group</div>
+        <div class="pm-desc">Registered guests are never removed by lowering the count.</div>
+        <div style="margin-top:14px">
+          <div class="gv-stepper">
+            <div><div class="gv-stepper-label">Adults</div><div class="gv-stepper-sub">18 years or older</div></div>
+            <div class="gv-counter">
+              <button data-gv-step="-1" aria-label="One adult fewer"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+              <output data-min="1" data-max="12" aria-label="Adults">3</output>
+              <button data-gv-step="1" aria-label="One adult more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+          <div class="gv-stepper">
+            <div><div class="gv-stepper-label">Children</div><div class="gv-stepper-sub">Under 18 — no ID verification</div></div>
+            <div class="gv-counter">
+              <button data-gv-step="-1" aria-label="One child fewer"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+              <output data-min="0" data-max="8" aria-label="Children">1</output>
+              <button data-gv-step="1" aria-label="One child more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+          <div class="gv-stepper">
+            <div><div class="gv-stepper-label">Pets</div><div class="gv-stepper-sub">A €25 pet fee applies</div></div>
+            <div class="gv-counter">
+              <button data-gv-step="-1" aria-label="One pet fewer" disabled><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+              <output data-min="0" data-max="3" aria-label="Pets">0</output>
+              <button data-gv-step="1" aria-label="One pet more"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <p class="gv-warn"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-info"/></svg> <span>Adding a pet adds <b>€25.00</b> to your payment total.</span></p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close>Save group</button>
+          <button class="btn btn-ghost" data-modal-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-star"><path d="M11.5 3.4a.53.53 0 0 1 1 0l2.1 5.1a.53.53 0 0 0 .44.32l5.51.44c.46.04.64.6.29.9l-4.2 3.6a.53.53 0 0 0-.17.52l1.28 5.37a.53.53 0 0 1-.79.58L12.28 17a.53.53 0 0 0-.56 0l-4.7 2.87a.53.53 0 0 1-.79-.58l1.28-5.37a.53.53 0 0 0-.17-.52l-4.2-3.6a.53.53 0 0 1 .3-.9l5.5-.44a.53.53 0 0 0 .44-.32z"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g>
+    <g id="i-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-minus"><path d="M5 12h14"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></g>
+    <g id="i-crown"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></g>
+    <g id="i-more"><circle cx="12" cy="5" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="none"/></g>
+    <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-trash"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-sliders"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></g>
+    <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-coins"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></g>
+    <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
+    <g id="i-key"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></g>
+    <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="modals.js" defer></script>
+<script src="guests-v2.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

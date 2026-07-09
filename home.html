@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <link rel="stylesheet" href="upsell.css">
+<link rel="stylesheet" href="home-glass.css">
 <style>
   /* ---------- Home-specific ---------- */
 
@@ -405,7 +406,7 @@
                   <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
                   <div class="sc-title">Virtual keys</div>
                   <div class="sc-desc">Unlocks after check-in is complete</div>
-                  <button class="btn btn-outline btn-sm" disabled style="opacity:0.55"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> Locked</button>
+                  <a class="btn btn-outline btn-sm" href="flow-remote-access-mobile.html#k-gate"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> Why locked?</a>
                 </div>
                 <div class="card stay-card">
                   <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
@@ -579,7 +580,7 @@
                   <div class="sc-icon" style="background:var(--blue-500);color:#fff;box-shadow:var(--shadow-brand)"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
                   <div class="sc-title">Virtual keys</div>
                   <div class="sc-desc">Main door &amp; apartment 2B</div>
-                  <button class="btn btn-primary btn-sm">Open door</button>
+                  <a class="btn btn-primary btn-sm" href="flow-remote-access-mobile.html#k-keys">Open door</a>
                 </div>
                 <div class="card stay-card">
                   <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
@@ -776,5 +777,6 @@
   </defs>
 </svg>
 <script src="nav.js" defer></script>
+<script src="home-glass.js" defer></script>
 </body>
 </html>

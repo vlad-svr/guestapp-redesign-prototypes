@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Key cards — kiosk (interactive) — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="keycards.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Key cards — Interactive Flow (Kiosk)</h1>
+  <p class="lede">The <code>/remote-keys</code> route is <b>not</b> virtual keys — it drives the physical card dispenser under the kiosk screen. The redesign makes the printing job legible from a metre away: an abstract progress bar becomes a <b>stack of real cards</b> (printed = solid, remaining = dashed ghosts), and every screen that expects the guest to reach for something <b>points at the slot it will come out of</b>. Covers the auto-opening registration reminder, the print → dispense loop, both PrintedCards outcomes, the dispenser failure and the no-room-assigned gate. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip on" data-scenario="kc-guests">▶ Arrive (guests still pending)</button>
+    <button class="fh-chip" data-scenario="kc-main">Key cards — 1 of 3 printed</button>
+    <button class="fh-chip" data-scenario="kc-printing">Print → dispense</button>
+    <button class="fh-chip" data-scenario="kc-complete">Last card printed</button>
+    <button class="fh-chip" data-scenario="kc-error">Dispenser failed</button>
+    <button class="fh-chip" data-scenario="kc-noroom">No room assigned</button>
+    <button class="fh-restart" data-restart>↺ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="kiosk">
+
+    <!-- ═══ kc-guests · RegisteredGuestsInfoModal (auto-opens when pendingGuests > 0) ═══ -->
+    <div class="flow-screen" id="kc-guests" data-start data-label="Cards are ready, but a guest isn't registered — the reminder opens itself">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+        <button class="k-exit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Exit reservation</button>
+      </div>
+
+      <div class="k-body" style="filter:blur(2px);opacity:0.6">
+        <div class="k-h1">My key cards</div>
+        <div class="k-panel">
+          <div class="k-cards">
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg><div class="kc-name">Not printed</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg><div class="kc-name">Not printed</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="k-sheet-wrap">
+        <div class="k-sheet-scrim"></div>
+        <div class="k-sheet">
+          <div class="k-prog">
+            <div class="kp-row">
+              <span class="kp-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg></span>
+              <span class="kp-title">Registered guests</span>
+              <span class="kp-count">2/3</span>
+            </div>
+            <div class="kp-track"><div class="kp-fill" style="width:66.6%"></div></div>
+          </div>
+
+          <div class="k-tally">
+            <div class="kt-row">
+              <span class="kt-ic ok"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+              <span><b>2 guests</b> registered successfully</span>
+            </div>
+            <div class="kt-row">
+              <span class="kt-ic wait"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help-circle"/></svg></span>
+              <span><b>1 guest</b> pending registration</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <button class="k-btn k-btn-primary"><svg viewBox="0 0 24 24" class="icon"><use href="#i-user-plus"/></svg> Register next guest</button>
+            <button class="k-btn k-btn-outline" data-goto="kc-main">Go to home</button>
+            <button class="k-share"><svg viewBox="0 0 24 24" class="icon"><use href="#i-share"/></svg> Send the registration link to their phone</button>
+          </div>
+          <span class="sim-note">RegisteredGuestsInfoModal · opened by <code>useLayoutEffect</code> when <code>known_number_of_guests − added_number_of_guests &gt; 0</code> · closable only because someone is registered</span>
+        </div>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Card dispenser</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-main · RemoteKeys ═══ -->
+    <div class="flow-screen" id="kc-main" data-label="Key cards — the stack says what exists and what's still owed">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+        <button class="k-exit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Exit reservation</button>
+      </div>
+
+      <div class="k-body">
+        <div>
+          <div class="k-h1">My key cards</div>
+          <p class="k-lede">Each keycard opens your room and the areas assigned to your stay.</p>
+        </div>
+
+        <div class="k-panel">
+          <div class="k-cards">
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg><div class="kc-name">Not printed</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg><div class="kc-name">Not printed</div></div>
+          </div>
+
+          <div class="k-prog">
+            <div class="kp-row">
+              <span class="kp-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg></span>
+              <span class="kp-title">Printed keycards</span>
+              <span class="kp-count">1/3</span>
+            </div>
+            <div class="kp-track"><div class="kp-fill" style="width:33.3%"></div></div>
+            <div class="kp-note"><b>1 of 3 printed</b> · 2 remaining for Ana and Carlos</div>
+          </div>
+        </div>
+
+        <div class="k-alert info">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+          <span>Keep your cards safe. If one is lost or stops working, the front desk can reissue it.</span>
+        </div>
+
+        <button class="k-btn k-btn-primary" data-goto="kc-printing"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Print new keycard</button>
+        <span class="sim-note">RemoteKeys inside InternalRemoteAccess · <code>printCard({room_number, guest_name})</code> over the kiosk websocket · the print button only exists while <code>pending &gt; 0</code></span>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Card dispenser</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-printing · StatusModal LOADING ═══ -->
+    <div class="flow-screen" id="kc-printing" data-autonext="kc-ready" data-autodelay="2600" data-label="Printing — the wait names what's happening and what comes next">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+      </div>
+      <div class="k-status loading">
+        <div class="k-spin"><svg viewBox="0 0 24 24" class="icon" style="width:56px;height:56px;color:var(--blue-500)"><use href="#i-credit-card"/></svg></div>
+        <div class="ks-title">Printing your keycard</div>
+        <div class="ks-text">This takes about ten seconds. Please don't leave the kiosk — the card comes out of the slot below.</div>
+        <div class="k-cards" style="margin-top:16px">
+          <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+          <div class="kc printing"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg><div class="kc-name">Printing…</div></div>
+          <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg><div class="kc-name">Not printed</div></div>
+        </div>
+        <span class="sim-note">real title: "Printing keys..." — renamed; the guest is printing one card, not "keys"</span>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Card dispenser</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-ready · StatusModal SUCCESS → PrintedCardsModal after 3s ═══ -->
+    <div class="flow-screen" id="kc-ready" data-autonext="kc-cards" data-autodelay="3000" data-label="Dispensed — the screen points at the slot the card is in">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+      </div>
+      <div class="k-status success">
+        <div class="ks-mark"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></div>
+        <div class="ks-title">Your keycard is ready</div>
+        <div class="k-dispense" style="margin-top:8px;min-width:440px">
+          <div class="kd-text">Take your card from the dispenser below the screen</div>
+          <div class="kd-arrow"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-down"/></svg></div>
+        </div>
+        <span class="sim-note">real: <code>your_keys_are_ready</code> + <code>take_your_card_from_the_dispenser_below_the_screen</code>, then <code>TimeoutFinishProcess</code> (3 s) opens PrintedCardsModal</span>
+      </div>
+      <div class="kiosk-dispenser live"><span class="kd-label">Card ready</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-cards · PrintedCardsModal — incomplete (pending > 0) ═══ -->
+    <div class="flow-screen" id="kc-cards" data-label="More cards owed — print the next one, or later at the front desk">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+      </div>
+      <div class="k-body" style="filter:blur(2px);opacity:0.6">
+        <div class="k-h1">My key cards</div>
+      </div>
+      <div class="k-sheet-wrap">
+        <div class="k-sheet-scrim"></div>
+        <div class="k-sheet">
+          <div class="k-prog">
+            <div class="kp-row">
+              <span class="kp-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg></span>
+              <span class="kp-title">Printed keycards</span>
+              <span class="kp-count">2/3</span>
+            </div>
+            <div class="kp-track"><div class="kp-fill" style="width:66.6%"></div></div>
+          </div>
+
+          <div class="k-cards">
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg><div class="kc-name">Not printed</div></div>
+          </div>
+
+          <div>
+            <div class="ks-h">Print another keycard?</div>
+            <div class="ks-sub">You can print <b>1 more</b> — one per registered guest.</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <button class="k-btn k-btn-primary" data-goto="kc-printing-last"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Print new keycard</button>
+            <button class="k-btn k-btn-outline" data-goto="kc-main">Maybe later</button>
+          </div>
+          <span class="sim-note">IncompletePrintedCardContent · real copy "Do you want to print more keycards?" + "You can print up to {{pending}} keycards."</span>
+        </div>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Card dispenser</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-printing-last (loops into the complete outcome) ═══ -->
+    <div class="flow-screen" id="kc-printing-last" data-autonext="kc-complete" data-autodelay="2600" data-label="Printing the last card">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+      </div>
+      <div class="k-status loading">
+        <div class="k-spin"><svg viewBox="0 0 24 24" class="icon" style="width:56px;height:56px;color:var(--blue-500)"><use href="#i-credit-card"/></svg></div>
+        <div class="ks-title">Printing your keycard</div>
+        <div class="ks-text">This takes about ten seconds. Please don't leave the kiosk — the card comes out of the slot below.</div>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Card dispenser</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-complete · PrintedCardsModal — complete (pending === 0) ═══ -->
+    <div class="flow-screen" id="kc-complete" data-label="All cards printed — the sheet proposes the next thing, not just an exit">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+      </div>
+      <div class="k-body" style="filter:blur(2px);opacity:0.6">
+        <div class="k-h1">My key cards</div>
+      </div>
+      <div class="k-sheet-wrap">
+        <div class="k-sheet-scrim"></div>
+        <div class="k-sheet">
+          <div class="k-prog">
+            <div class="kp-row">
+              <span class="kp-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg></span>
+              <span class="kp-title">Printed keycards</span>
+              <span class="kp-count">3/3</span>
+            </div>
+            <div class="kp-track"><div class="kp-fill" style="width:100%"></div></div>
+          </div>
+
+          <div class="k-cards">
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+            <div class="kc done"><div class="kc-chip"></div><div class="kc-name">ROOM 2001</div></div>
+          </div>
+
+          <div>
+            <div class="ks-h">Your keys are ready</div>
+            <div class="ks-sub">Three cards, one for each guest. Room <b>2001</b>, second floor — the lift is behind you.</div>
+          </div>
+
+          <div class="k-dispense">
+            <div class="kd-text">Take the last card from the dispenser below</div>
+            <div class="kd-arrow"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-down"/></svg></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <button class="k-btn k-btn-primary" data-goto="kc-main">Go to home</button>
+            <button class="k-btn k-btn-outline" data-goto="kc-main">Back to key cards</button>
+          </div>
+          <span class="sim-note">CompletePrintedCardContent · today both buttons are outline (no primary) and the room number is never repeated back</span>
+        </div>
+      </div>
+      <div class="kiosk-dispenser live"><span class="kd-label">Card ready</span><span class="kd-slot"></span></div>
+    </div>
+
+    <!-- ═══ kc-error · StatusModal ERROR ═══ -->
+    <div class="flow-screen" id="kc-error" data-label="Dispenser failed — a person, not a retry button">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">Room 2001 · 3 guests</div>
+        </div>
+      </div>
+      <div class="k-status error">
+        <div class="ks-mark"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert-triangle"/></svg></div>
+        <div class="ks-title">Your keycard could not be dispensed</div>
+        <div class="ks-text">Something is stuck in the card dispenser. The front desk can hand you a card right now — nothing about your check-in is lost.</div>
+        <div class="k-alert info" style="max-width:520px;margin-top:8px">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+          <span>Front desk is <b>10 metres to your left</b>, open 24 h. Quote room <b>2001</b>.</span>
+        </div>
+        <button class="k-btn k-btn-primary" style="margin-top:14px" data-goto="kc-main"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Go back to home</button>
+        <span class="sim-note">real copy: "There was an issue with the card dispenser. Please visit the front desk for assistance." · recovery button stays primary blue (Appendix A rule 2)</span>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Dispenser jammed</span><span class="kd-slot" style="background:#5c1f36"></span></div>
+    </div>
+
+    <!-- ═══ kc-noroom · print_card_unavailable (hasRooms === false) ═══ -->
+    <div class="flow-screen" id="kc-noroom" data-label="No room assigned — the button is disabled and the screen says who can fix it">
+      <div class="k-top">
+        <div>
+          <div class="k-prop">Hotel Marbella Stays</div>
+          <div class="k-room">No room assigned yet</div>
+        </div>
+        <button class="k-exit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Exit reservation</button>
+      </div>
+
+      <div class="k-body">
+        <div>
+          <div class="k-h1">My key cards</div>
+          <p class="k-lede">Cards are printed once a room is assigned to your booking.</p>
+        </div>
+
+        <div class="k-panel">
+          <div class="k-cards">
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg><div class="kc-name">Awaiting room</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg><div class="kc-name">Awaiting room</div></div>
+            <div class="kc pending"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg><div class="kc-name">Awaiting room</div></div>
+          </div>
+          <div class="k-alert warn">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-alert-triangle"/></svg>
+            <span>Your booking has <b>no room number yet</b>, so the dispenser has nothing to encode. The front desk can assign one in a moment — your check-in is already complete.</span>
+          </div>
+        </div>
+
+        <button class="k-btn k-btn-primary disabled" disabled><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Print new keycard</button>
+        <button class="k-btn k-btn-outline" data-goto="kc-main">Go to home</button>
+        <span class="sim-note">real: <code>hasRooms = reservation.rooms[0].external_name</code> — today the button is merely disabled with no explanation above it, and the copy blames the guest ("Please contact the host")</span>
+      </div>
+      <div class="kiosk-dispenser"><span class="kd-label">Card dispenser · idle</span><span class="kd-slot"></span></div>
+    </div>
+
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-plus"><path d="M12 5v14"/><path d="M5 12h14"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-help-circle"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-alert-triangle"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-arrow-down"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></g>
+    <g id="i-credit-card"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></g>
+    <g id="i-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></g>
+    <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></g>
+    <g id="i-home"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/></g>
+    <g id="i-lock"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></g>
+  </defs>
+</svg>
+<script src="flow.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

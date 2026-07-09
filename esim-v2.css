@@ -1,0 +1,1263 @@
+/* ============================================================
+   Travel eSIM V2 — "buy once, install right now"
+   Layered on shared.css only. Both form factors load this file.
+   All classes namespaced `es-` so nothing collides.
+
+   The three shipped views are re-cast, not re-skinned:
+
+     ManageEsimView  → a destination card that already knows whether
+                       you own an eSIM. (Shipped: a definition of the
+                       word "eSIM" above two buttons.)
+     ChoosePlanView  → one-tap radio plans behind a duration rail,
+                       priced per GB, stay-matched group preselected.
+                       (Shipped: every package_days group stacked as
+                       checkboxes, counters in a far-away panel.)
+     MyEsimsView     → an install ladder in the order that actually
+                       works on the phone in the guest's hand:
+                       direct install → manual codes → QR (for a
+                       second device) → APN (troubleshooting).
+                       (Shipped: an 80px QR you cannot scan, first.)
+
+   Status vocabulary — icon + word + rail shape, never colour alone:
+     .is-pending  neutral · plus-circle · dashed rail · "Not installed"
+     .is-ready    blue    · check       · solid rail  · "Installed"
+     .is-live     green   · signal      · solid rail  · "Connected"
+   ============================================================ */
+
+/* Screen-reader-only (copy confirmations, status announcements) */
+.es-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Section label (matches the rest of the prototype's section headers) */
+.es-sec { display: flex; align-items: center; gap: 8px; padding: 0 4px 9px; }
+.es-sec-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   1 · DESTINATION HERO  (replaces the "What's an eSIM?" card)
+   The guest's country is the subject of this screen, not the
+   technology. Content, so it keeps full contrast — no glass.
+   ============================================================ */
+.es-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-2xl);
+  background: var(--gradient-hero);
+  color: #fff;
+  padding: 20px 18px 18px;
+  box-shadow: var(--shadow-elev);
+}
+.es-hero::after {
+  content: '';
+  position: absolute;
+  top: -70px; right: -50px;
+  width: 190px; height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(140, 165, 255, 0.55), transparent 68%);
+  pointer-events: none;
+}
+.es-hero-top { display: flex; align-items: center; gap: 10px; position: relative; }
+.es-flag {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+.es-hero-kicker {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: rgba(255, 255, 255, 0.62);
+}
+.es-hero h1 {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-top: 12px;
+  position: relative;
+  /* `.proto-stage h1` sets an explicit navy — an explicit colour beats the
+     white this element would otherwise inherit from .es-hero. */
+  color: #fff;
+}
+.es-hero h1 .hl { color: #8ca5ff; }
+.es-hero p {
+  font-size: 12.5px;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 6px;
+  position: relative;
+}
+/* Price anchoring: the shipped hub hides every price one screen deeper. */
+.es-hero-facts {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  position: relative;
+  flex-wrap: wrap;
+}
+.es-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+.es-fact .icon { width: 13px; height: 13px; opacity: 0.8; }
+.es-fact b { font-weight: 700; color: #fff; }
+
+/* ============================================================
+   2 · VALUE PROPS  (kept from EsimInfoCard — retuned)
+   ============================================================ */
+.es-values { display: flex; flex-direction: column; gap: 2px; }
+.es-value {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  padding: 11px 4px;
+}
+.es-value + .es-value { border-top: 1px solid var(--border); }
+.es-value .es-val-ic {
+  width: 34px; height: 34px;
+  border-radius: 11px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: var(--tint-info);
+  color: var(--blue-500);
+}
+.es-value h3 { font-size: 13.5px; font-weight: 650; color: var(--navy); line-height: 19px; }
+.es-value p { font-size: 12px; font-weight: 500; line-height: 17px; color: var(--text-secondary); margin-top: 1px; }
+
+/* ============================================================
+   3 · COMPATIBILITY STRIP
+   Shipped: a ghost link buried under the plan-list heading, on the
+   screen *after* the guest has committed to buying. Moved up here,
+   and it answers with the guest's own device instead of a search box.
+   ============================================================ */
+.es-compat {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+}
+.es-compat:hover { border-color: var(--blue-500); background: var(--tint-pressed); }
+.es-compat:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 2px; }
+.es-compat .es-compat-ic {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  background: var(--green-50);
+  color: var(--green-700);
+}
+.es-compat.unknown .es-compat-ic { background: var(--n-75); color: var(--n-600); }
+.es-compat-body { flex: 1; min-width: 0; }
+.es-compat-title { display: block; font-size: 12.5px; font-weight: 650; color: var(--navy); line-height: 17px; }
+.es-compat-title b { font-weight: 700; }
+.es-compat-sub { display: block; font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-top: 1px; }
+.es-compat .icon.es-chev { color: var(--n-500); flex-shrink: 0; }
+
+/* Conditions checklist inside the compatibility sheet — the real answer.
+   Shipped: an infinite scrolling list of device names, first. */
+.es-checklist { display: flex; flex-direction: column; gap: 2px; margin-top: 14px; }
+.es-check {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 11px 2px;
+  font-size: 12.5px;
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+.es-check + .es-check { border-top: 1px solid var(--border); }
+.es-check b { color: var(--navy); font-weight: 650; }
+.es-check .es-check-ic {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: var(--green-50);
+  color: var(--green-700);
+}
+.es-check .es-check-ic .icon { width: 13px; height: 13px; stroke-width: 3; }
+
+/* device search + list (kept, demoted below the checklist) */
+.es-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  color: var(--text-tertiary);
+  font-size: 12.5px;
+  margin-top: 12px;
+}
+.es-search .icon { color: var(--n-500); }
+.es-devices {
+  margin-top: 10px;
+  max-height: 160px;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--n-50);
+  padding: 4px;
+}
+.es-devices li {
+  list-style: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 7px 10px;
+  border-radius: 8px;
+}
+.es-devices li + li { border-top: 1px solid var(--border); }
+
+/* ============================================================
+   4 · OWNED-ESIM STATUS CARD (hub, after purchase)
+   The handoff the shipped flow never makes: buying navigates into
+   Payments and nothing ever says "come back and install it".
+   ============================================================ */
+.es-owned {
+  border-radius: var(--r-xl);
+  border: 1px solid rgba(56, 91, 248, 0.28);
+  background: linear-gradient(135deg, var(--tint-pressed), var(--n-0) 62%);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  box-shadow: var(--shadow-card);
+}
+.es-owned.is-live { border-color: rgba(15, 159, 128, 0.3); background: linear-gradient(135deg, var(--green-50), var(--n-0) 62%); }
+.es-owned-head { display: flex; align-items: center; gap: 11px; }
+.es-owned-ic {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  background: var(--blue-500);
+  color: #fff;
+  box-shadow: var(--shadow-brand);
+}
+.es-owned.is-live .es-owned-ic { background: var(--green-700); box-shadow: 0 3px 10px rgba(15, 159, 128, 0.3); }
+.es-owned-title { font-size: 14.5px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 1.3; }
+.es-owned-sub { font-size: 11.5px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; }
+.es-owned .btn { width: 100%; }
+
+/* ============================================================
+   5 · "WHAT'S AN eSIM?" — demoted to an opt-in explainer.
+   It is the answer to a question most guests never ask, and in the
+   shipped hub it sits above the reasons to want one.
+   ============================================================ */
+.es-explain {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+}
+.es-explain > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--navy);
+}
+.es-explain > summary::-webkit-details-marker { display: none; }
+.es-explain > summary:focus-visible { outline: 2px solid var(--blue-500); outline-offset: -2px; border-radius: var(--r-lg); }
+.es-explain > summary .icon:first-child { color: var(--blue-500); }
+.es-explain > summary .es-mark { margin-left: auto; color: var(--n-500); transition: transform 0.18s; }
+.es-explain[open] > summary .es-mark { transform: rotate(180deg); }
+.es-explain-body {
+  padding: 0 14px 14px 46px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   6 · DURATION RAIL  (the stay-matched picker)
+   Shipped: one <fieldset> per package_days value, all stacked, so a
+   country with 5 durations × 4 packages is a 20-checkbox wall.
+   ============================================================ */
+.es-dur {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding: 3px 0 5px;
+  scrollbar-width: none;
+}
+.es-dur::-webkit-scrollbar { display: none; }
+.es-dur-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end; /* chips without a "covers your stay" line align on the baseline */
+  min-height: 58px;
+  gap: 1px;
+  padding: 8px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.es-dur-chip:hover { border-color: var(--blue-300); }
+.es-dur-chip:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 1px; }
+.es-dur-chip .d-len { font-size: 12.5px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+.es-dur-chip .d-from { font-size: 10px; font-weight: 600; color: var(--text-tertiary); white-space: nowrap; }
+.es-dur-chip[aria-selected='true'] {
+  border-color: var(--blue-500);
+  background: var(--tint-pressed);
+  box-shadow: inset 0 0 0 1px var(--blue-500);
+}
+.es-dur-chip[aria-selected='true'] .d-from { color: var(--blue-650); }
+/* the group that covers the guest's actual stay */
+.es-dur-chip .d-match {
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--green-700);
+}
+
+/* The one sentence that makes the rail make sense. */
+.es-stay {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--green-50);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #0b6d58;
+}
+.es-stay .icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+.es-stay b { font-weight: 700; }
+
+/* ============================================================
+   7 · PLAN CARD  (radio, not checkbox)
+   Shipped: <Checkbox> per package. Multi-plan survives here as an
+   explicit "Add another plan" — see .es-addplan — so the 95 % path
+   is one tap and the 5 % path is still reachable.
+   ============================================================ */
+.es-groups { display: flex; flex-direction: column; gap: 18px; }
+/* a real <fieldset> so the duration + package radios share one accessible
+   grouping — with the UA border, padding and margin reset away */
+.es-group {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.es-group-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 2px; }
+.es-group-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-secondary);
+}
+.es-removeplan {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red-500);
+  cursor: pointer;
+  padding: 4px 7px;
+  margin: -4px -7px;
+  border-radius: 8px;
+  background: transparent;
+}
+.es-removeplan:hover { background: var(--red-100); }
+.es-removeplan:focus-visible { outline: 2px solid var(--red-500); outline-offset: 1px; }
+
+.es-plans { display: flex; flex-direction: column; gap: 10px; }
+
+/* A <div>, not a <label> — the quantity stepper below lives inside this card,
+   and a <button> nested in a <label> toggles the label's control on click. */
+.es-plan {
+  position: relative;
+  display: block;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.es-plan:hover { border-color: var(--blue-300); }
+.es-plan input { position: absolute; opacity: 0; width: 0; height: 0; }
+.es-plan:focus-within { box-shadow: var(--shadow-focus); border-color: var(--blue-500); }
+.es-plan.is-selected {
+  border-color: var(--blue-500);
+  box-shadow: inset 0 0 0 1px var(--blue-500);
+  background: linear-gradient(180deg, var(--tint-pressed), var(--n-0) 70%);
+}
+
+/* the label is the whole top row — a 44 px+ tap target that carries the input */
+.es-plan-main { display: flex; align-items: center; gap: 12px; padding: 13px 14px; cursor: pointer; }
+
+/* The radio dot is drawn, not native — but the native input keeps focus + keys. */
+.es-radio {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid var(--n-300);
+  background: var(--n-0);
+  display: grid; place-items: center;
+  transition: border-color 0.15s;
+}
+.es-plan.is-selected .es-radio { border-color: var(--blue-500); border-width: 6px; }
+
+.es-plan-body { flex: 1; min-width: 0; }
+.es-plan-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 20px;
+}
+/* Calls / SMS were concatenated into the title with stray spaces —
+   "1 GB  / 100min / 50SMS ". They are secondary facts; label them. */
+.es-plan-specs { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+.es-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: var(--n-75);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--n-600);
+  white-space: nowrap;
+}
+.es-spec .icon { width: 11px; height: 11px; }
+
+.es-plan-price { text-align: right; flex-shrink: 0; }
+.es-plan-price .p-amt {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+/* The comparison the shipped list never lets you make. */
+.es-plan-price .p-unit {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Badges. "Best value" is computed as the lowest price per GB in the
+   group — the shipped code pins it to package_is_unlimited, which is
+   a different claim entirely, and usually the most expensive card. */
+.es-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 19px;
+  padding: 0 7px;
+  border-radius: 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.es-tag .icon { width: 11px; height: 11px; stroke-width: 2.6; }
+.es-tag-value { background: var(--green-50); color: #0b7c64; }
+.es-tag-unlimited { background: var(--tint-pressed); color: var(--blue-650); }
+
+/* Quantity lives INSIDE the card it belongs to. Shipped: the counter
+   sits in the summary panel, and dropping it to 0 silently unchecks
+   a checkbox the guest is not looking at. */
+.es-plan-extra {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 14px;
+  padding: 11px 0 13px;
+  border-top: 1px dashed var(--border-subtle);
+}
+.es-plan.is-selected .es-plan-extra { display: flex; }
+.es-plan-extra-label { font-size: 12px; font-weight: 600; color: var(--navy); }
+.es-plan-extra-sub { font-size: 10.5px; font-weight: 500; color: var(--text-secondary); margin-top: 1px; }
+
+.es-counter { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.es-counter button {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  color: var(--navy);
+  display: grid; place-items: center;
+  cursor: pointer;
+}
+.es-counter button:hover:not(:disabled) { border-color: var(--blue-500); color: var(--blue-500); }
+.es-counter button:disabled { opacity: 0.35; cursor: not-allowed; }
+.es-counter button:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 1px; }
+.es-counter output {
+  min-width: 30px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.es-addplan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--r-lg);
+  border: 1.5px dashed var(--n-300);
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--blue-500);
+  cursor: pointer;
+}
+.es-addplan:hover { border-color: var(--blue-500); background: var(--tint-pressed); }
+.es-addplan:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 2px; }
+.es-addplan[hidden] { display: none; }
+
+/* ============================================================
+   8 · SUMMARY  (one component; mobile dock ↔ desktop ledger)
+   Shipped: TotalToPayForm and MobileTotalToPayForm are two files
+   with the same markup pasted twice.
+   ============================================================ */
+.es-dock {
+  position: sticky;
+  bottom: 0;
+  margin-top: auto;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 8px));
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@supports not (backdrop-filter: blur(2px)) { .es-dock { background: rgba(255, 255, 255, 0.98); } }
+
+.es-sum-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.es-sum-what { font-size: 12px; font-weight: 500; color: var(--text-secondary); min-width: 0; }
+.es-sum-what b { display: block; font-size: 13px; font-weight: 650; color: var(--navy); }
+.es-sum-total { font-size: 19px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.es-dock .btn { width: 100%; }
+
+/* "Buy now" navigates to a payment page. It does not buy anything.
+   Say so, once, right where the thumb is. */
+.es-reassure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+.es-reassure .icon { width: 12px; height: 12px; }
+
+/* ============================================================
+   9 · PURCHASED eSIM CARD + INSTALL LADDER
+   ============================================================ */
+.es-esim {
+  position: relative;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+/* State rail — a shape, not just a colour */
+.es-esim::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.es-esim.is-pending::before { background: repeating-linear-gradient(to bottom, var(--n-300) 0 3px, transparent 3px 6px); }
+.es-esim.is-ready::before { background: var(--blue-500); }
+.es-esim.is-live::before { background: var(--green-700); }
+
+.es-esim-head { display: flex; align-items: flex-start; gap: 12px; padding: 15px 16px 15px 18px; }
+.es-op {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: var(--n-50);
+  border: 1px solid var(--border);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--n-600);
+  text-align: center;
+  line-height: 1.15;
+  padding: 4px;
+  /* Square and letterboxed. The shipped card crops the operator logo with
+     `object-cover` on an 11/7 box, so wordmarks lose their edges. */
+}
+.es-esim-titles { flex: 1; min-width: 0; }
+.es-esim-name { font-size: 14.5px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; line-height: 20px; }
+.es-esim-meta { font-size: 11.5px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; }
+
+.es-status {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 25px;
+  padding: 0 9px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.es-status .icon { width: 13px; height: 13px; stroke-width: 2.5; }
+.is-pending .es-status { background: var(--n-75); color: var(--n-600); }
+.is-ready .es-status { background: var(--tint-pressed); color: var(--blue-650); }
+.is-live .es-status { background: var(--green-50); color: #0b7c64; }
+
+/* Facts strip: data · validity · ICCID */
+.es-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--n-50);
+}
+.es-facts > div { padding: 10px 12px; min-width: 0; }
+.es-facts > div + div { border-left: 1px solid var(--border); }
+.es-fact-k {
+  display: block;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+}
+.es-fact-v {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--navy);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.es-esim-body { padding: 15px 16px 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+
+/* Activation truth, stated once and early. */
+.es-activate {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: var(--tint-info);
+  font-size: 11.5px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--blue-650);
+}
+.es-activate .icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+.es-activate b { font-weight: 700; }
+
+/* ---------- Platform segmented control ----------
+   Shipped: a <Select> mixing "iOS 17.4" and "Android Option 1" into
+   one unlabelled dropdown. Two platforms is a segmented control. */
+.es-seg {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 11px;
+  background: var(--n-75);
+}
+.es-seg button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.es-seg button:hover { color: var(--navy); }
+.es-seg button:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 1px; }
+.es-seg button[aria-selected='true'] {
+  background: var(--n-0);
+  color: var(--navy);
+  box-shadow: var(--shadow-card), inset 0 0 0 1px var(--border);
+}
+.es-seg .es-detected {
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--green-700);
+  background: var(--green-50);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+/* ---------- Install ladder ---------- */
+.es-ladder { display: flex; flex-direction: column; gap: 10px; }
+
+.es-rung {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  overflow: hidden;
+}
+.es-rung.primary { border-color: var(--blue-500); box-shadow: inset 0 0 0 1px var(--blue-500); }
+
+.es-rung-head { display: flex; align-items: center; gap: 11px; padding: 12px 13px; }
+.es-rung-n {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: var(--n-75);
+  color: var(--n-600);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.es-rung.primary .es-rung-n { background: var(--blue-500); color: #fff; }
+.es-rung-titles { flex: 1; min-width: 0; }
+.es-rung-title { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 18px; }
+.es-rung-sub { font-size: 11px; font-weight: 500; color: var(--text-secondary); line-height: 16px; margin-top: 1px; }
+.es-rung-body { padding: 0 13px 14px 48px; display: flex; flex-direction: column; gap: 12px; }
+
+/* Collapsible rungs (2, 3, 4) use <details> so keys + SR work for free */
+details.es-rung > summary { list-style: none; cursor: pointer; }
+details.es-rung > summary::-webkit-details-marker { display: none; }
+details.es-rung > summary:focus-visible { outline: 2px solid var(--blue-500); outline-offset: -2px; border-radius: var(--r-lg); }
+details.es-rung .es-mark { color: var(--n-500); flex-shrink: 0; transition: transform 0.18s; }
+details.es-rung[open] .es-mark { transform: rotate(180deg); }
+
+/* the one-tap install button — the only method that works on THIS phone */
+.es-install {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--blue-500);
+  color: #fff;
+  box-shadow: var(--shadow-brand);
+  text-align: left;
+  text-decoration: none;
+}
+.es-install:hover { background: var(--blue-600); }
+.es-install:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.es-install .icon { flex-shrink: 0; }
+.es-install-t { display: block; font-size: 13.5px; font-weight: 700; line-height: 18px; }
+.es-install-s { display: block; font-size: 11px; font-weight: 500; opacity: 0.82; margin-top: 1px; }
+
+/* ---------- Copyable code row ----------
+   Shipped: copyToClipboard() with no confirmation of any kind. */
+.es-code { display: flex; flex-direction: column; gap: 6px; }
+.es-code-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.es-code-label { font-size: 11.5px; font-weight: 700; color: var(--navy); }
+.es-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--blue-500);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.es-copy:hover { background: var(--tint-pressed); border-color: var(--blue-500); }
+.es-copy:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 1px; }
+.es-copy.copied { color: var(--green-700); border-color: var(--green-600); background: var(--green-50); }
+.es-code-val {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 19px;
+  color: var(--navy);
+  background: var(--n-50);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 11px;
+  word-break: break-all;
+  user-select: all;
+}
+
+/* ---------- Numbered steps ---------- */
+.es-steps { counter-reset: es-step; }
+/* The li must stay a block: its content is a text run with inline <b>s, and a
+   flex li would promote every <b> to a sibling flex item and shred the line. */
+.es-steps li {
+  list-style: none;
+  counter-increment: es-step;
+  position: relative;
+  padding: 8px 0 8px 31px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+.es-steps li::before {
+  content: counter(es-step);
+  position: absolute;
+  left: 0; top: 8px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--n-75);
+  color: var(--n-600);
+  font-size: 10px;
+  font-weight: 800;
+  display: grid; place-items: center;
+}
+/* the rail that ties the steps together */
+.es-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 9.25px; top: 32px; bottom: 2px;
+  width: 1.5px;
+  background: var(--border);
+}
+.es-steps b { color: var(--navy); font-weight: 650; }
+
+/* ---------- QR — for a SECOND device, and big enough to scan ----------
+   Shipped: 80×80 px, first in the tab order, told to be scanned with
+   the phone that is displaying it. */
+.es-qr-block {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--n-50);
+  border: 1px solid var(--border);
+}
+.es-qr-frame {
+  flex-shrink: 0;
+  padding: 8px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-card);
+  display: grid;
+  place-items: center;
+}
+.es-qr-cells {
+  display: grid;
+  grid-template-columns: repeat(21, 5px);
+  grid-template-rows: repeat(21, 5px);
+  gap: 0;
+}
+.es-qr-cells i { background: var(--navy); }
+.es-qr-cells i.off { background: transparent; }
+.es-qr-note { font-size: 11.5px; line-height: 17px; color: var(--text-secondary); font-weight: 500; }
+.es-qr-note b { color: var(--navy); font-weight: 650; display: block; margin-bottom: 3px; }
+/* flex, not inline-flex — inside the note's text run it would otherwise
+   trail off the end of the last sentence instead of taking its own line */
+.es-qr-expand {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--blue-500);
+  cursor: pointer;
+}
+.es-qr-expand:hover { text-decoration: underline; }
+/* the full-screen version in the modal */
+.es-qr-big { display: grid; place-items: center; padding: 18px 0 6px; }
+.es-qr-big .es-qr-cells { grid-template-columns: repeat(21, 10px); grid-template-rows: repeat(21, 10px); }
+.es-qr-big .es-qr-frame { padding: 14px; }
+
+/* ---------- "I've installed it" — the state the API cannot tell us ---------- */
+.es-confirm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--n-0);
+  text-align: left;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--navy);
+}
+.es-confirm:hover { border-color: var(--green-600); background: var(--green-50); }
+.es-confirm:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 2px; }
+.es-confirm .es-confirm-box {
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  border: 1.5px solid var(--n-300);
+  display: grid; place-items: center;
+  color: transparent;
+  flex-shrink: 0;
+}
+.es-confirm .es-confirm-sub { display: block; font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-top: 1px; }
+
+/* ---------- Troubleshooting (APN lives here, not in a numbered step) ---------- */
+.es-trouble summary .es-rung-n { background: var(--amber-50); color: var(--amber-700); }
+
+/* ============================================================
+   10 · DATA USAGE — an honest pointer, not an invented meter.
+   The Esim payload carries no usage figures. Drawing a progress bar
+   here would be a lie the guest would plan their week around.
+   ============================================================ */
+.es-usage {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 12px 13px;
+  border-radius: var(--r-lg);
+  border: 1px dashed var(--border-subtle);
+  background: var(--n-50);
+  text-align: left;
+}
+.es-usage .es-usage-ic {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  color: var(--n-600);
+}
+.es-usage-t { display: block; font-size: 12.5px; font-weight: 650; color: var(--navy); }
+.es-usage-s { display: block; font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-top: 1px; }
+
+/* ============================================================
+   11 · HELP  (the "help" tab, folded back into the page)
+   ============================================================ */
+.es-help {
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.es-help-head { display: flex; align-items: flex-start; gap: 12px; padding: 15px 16px; }
+.es-help-ic {
+  width: 34px; height: 34px;
+  border-radius: 11px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  background: var(--tint-info);
+  color: var(--blue-500);
+}
+.es-help h2 { font-size: 14.5px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.es-help-desc { font-size: 12px; line-height: 18px; color: var(--text-secondary); margin-top: 3px; }
+.es-help-desc a { color: var(--blue-500); font-weight: 600; text-decoration: underline; }
+
+/* Common issues become links to the fix, not a bullet list of symptoms. */
+.es-issues { border-top: 1px solid var(--border); display: flex; flex-direction: column; }
+.es-issue {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 16px;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+.es-issue + .es-issue { border-top: 1px solid var(--border); }
+.es-issue:hover { background: var(--n-50); }
+.es-issue:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--blue-500); }
+.es-issue .es-issue-ic { width: 30px; height: 30px; border-radius: 9px; background: var(--amber-50); color: var(--amber-700); display: grid; place-items: center; flex-shrink: 0; }
+.es-issue-t { display: block; font-size: 12.5px; font-weight: 650; color: var(--navy); line-height: 17px; }
+.es-issue-s { display: block; font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-top: 1px; }
+.es-issue .es-chev { margin-left: auto; color: var(--n-500); flex-shrink: 0; }
+
+/* FAQ — closed by default. Shipped: useState(true) on every item, so
+   the accordion opens fully expanded and buys nothing. */
+.es-faq { display: flex; flex-direction: column; }
+.es-faq details { border-radius: 12px; }
+.es-faq details + details { border-top: 1px solid var(--border); }
+.es-faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 4px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--navy);
+  line-height: 19px;
+}
+.es-faq summary::-webkit-details-marker { display: none; }
+.es-faq summary:focus-visible { outline: 2px solid var(--blue-500); outline-offset: -2px; border-radius: 8px; }
+.es-faq summary .es-mark { margin-left: auto; color: var(--n-500); flex-shrink: 0; transition: transform 0.18s; }
+.es-faq details[open] summary .es-mark { transform: rotate(45deg); }
+.es-faq .es-faq-a { padding: 0 4px 14px 4px; font-size: 12px; line-height: 18px; color: var(--text-secondary); }
+
+/* ============================================================
+   12 · EMPTY + SKELETON + LOADING
+   ============================================================ */
+.es-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 9px;
+  padding: 30px 20px;
+  border-radius: var(--r-xl);
+  border: 1px dashed var(--border-subtle);
+  background: var(--n-0);
+}
+.es-empty-ic {
+  width: 54px; height: 54px;
+  border-radius: 16px;
+  display: grid; place-items: center;
+  background: var(--n-50);
+  color: var(--n-500);
+  border: 1px solid var(--border);
+}
+.es-empty h3 { font-size: 15.5px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.es-empty p { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); max-width: 300px; }
+.es-empty .btn { margin-top: 5px; }
+
+.es-skel {
+  background: linear-gradient(90deg, var(--n-100) 25%, var(--n-75) 37%, var(--n-100) 63%);
+  background-size: 400% 100%;
+  animation: es-shimmer 1.35s ease infinite;
+  border-radius: 8px;
+}
+@keyframes es-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+/* shape-matched to .es-plan-main so nothing jumps when data lands */
+.es-skel-plan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+}
+
+/* Reserving the order (the websocket wait in useEsimPaymentsCreatedListener,
+   which today shows a bare spinner inside the button and no explanation). */
+.es-reserving {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 40px 22px;
+  margin: auto 0;
+}
+.es-reserving-ring {
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  border: 3px solid var(--n-100);
+  border-top-color: var(--blue-500);
+  animation: es-spin 0.9s linear infinite;
+}
+@keyframes es-spin { to { transform: rotate(360deg); } }
+.es-reserving h2 { font-size: 17px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
+.es-reserving p { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); max-width: 290px; }
+.es-reserving-steps { margin-top: 4px; display: flex; flex-direction: column; gap: 9px; width: 100%; max-width: 280px; }
+.es-reserving-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-align: left;
+}
+.es-reserving-step .es-tick {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--n-200);
+  display: grid; place-items: center;
+  color: transparent;
+  flex-shrink: 0;
+}
+.es-reserving-step.done { color: var(--navy); }
+.es-reserving-step.done .es-tick { background: var(--green-700); border-color: var(--green-700); color: #fff; }
+.es-reserving-step.done .es-tick .icon { width: 11px; height: 11px; stroke-width: 3.4; }
+
+/* ============================================================
+   13 · COPY TOAST (feedback the shipped copy button never gives)
+   ============================================================ */
+.es-toast {
+  position: absolute;
+  left: 16px; right: 16px;
+  bottom: 22px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 13px;
+  background: rgba(21, 21, 63, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  box-shadow: var(--shadow-elev);
+  font-size: 12.5px;
+  font-weight: 600;
+  animation: es-toast-in 0.24s ease both;
+}
+@keyframes es-toast-in { from { transform: translateY(12px); opacity: 0; } to { transform: none; opacity: 1; } }
+.es-toast .icon { color: var(--green-500); flex-shrink: 0; }
+
+/* ============================================================
+   14 · DESKTOP
+   flow.js forces .flow-screen.active{display:flex} — the desktop
+   screens ARE the app shell, which must stay a grid.
+   ============================================================ */
+.browser > .desktop-shell.flow-screen.active { display: grid !important; }
+
+.es-desk-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 26px;
+  align-items: start;
+  margin-top: 22px;
+}
+/* the mobile dock, reborn as a sticky ledger */
+.es-ledger {
+  position: sticky;
+  top: 22px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  box-shadow: var(--shadow-card);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.es-ledger-eyebrow {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text-secondary);
+}
+.es-ledger-rows { display: flex; flex-direction: column; gap: 9px; }
+.es-ledger-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 12.5px; }
+.es-ledger-row .k { color: var(--text-secondary); font-weight: 500; min-width: 0; }
+.es-ledger-row .k b { display: block; color: var(--navy); font-weight: 650; }
+.es-ledger-row .v { font-weight: 650; color: var(--navy); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.es-ledger-split { height: 1px; background: var(--border); }
+.es-ledger-total { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.es-ledger-total .k { font-size: 13px; font-weight: 700; color: var(--navy); }
+.es-ledger-total .v { font-size: 21px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.es-ledger .btn { width: 100%; }
+.es-ledger-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 16px;
+}
+.es-ledger-note .icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; color: var(--blue-500); }
+.es-ledger-note b { font-weight: 650; color: var(--navy); }
+
+/* the desktop hero is wider — let it breathe */
+.es-desk-hero { padding: 26px 26px 24px; }
+.es-desk-hero h1 { font-size: 26px; }
+.es-desk-hero p { font-size: 13.5px; line-height: 20px; max-width: 460px; }
+
+/* desktop plan rows can afford a horizontal spec layout */
+.es-desk-grid .es-plan-main { padding: 15px 16px; }
+.es-desk-grid .es-plan-title { font-size: 16px; }
+.es-desk-grid .es-plan-price .p-amt { font-size: 18px; }
+
+@media (max-width: 1180px) {
+  .es-desk-grid { grid-template-columns: minmax(0, 1fr); }
+  .es-ledger { position: static; }
+}
+
+/* ============================================================
+   15 · MOTION RESPECTS THE OS SETTING
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .es-skel { animation: none; background: var(--n-100); }
+  .es-reserving-ring { animation: none; border-top-color: var(--blue-500); }
+  .es-toast { animation: none; }
+  .es-explain > summary .es-mark,
+  details.es-rung .es-mark,
+  .es-faq summary .es-mark { transition: none; }
+}

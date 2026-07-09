@@ -1,0 +1,416 @@
+/* ============================================================
+   Home — Redesign 2.0 · V2 "Check-in cockpit"
+   Layers on shared.css tokens + upsell.css (reco/partner banners).
+   New reusable primitives: CommandHero, NextActionCard,
+   ChecklistTimeline/Row, UnlockStrip, SkeletonBlock.
+   Pure CSS, no build step.
+   ============================================================ */
+
+/* ---------- Mobile chrome: glass top bar ---------- */
+.home-topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  border-bottom: 1px solid rgba(229, 230, 238, 0.7);
+}
+.home-topbar .menu-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--n-50); display: grid; place-items: center; color: var(--navy);
+  transition: background 0.15s;
+}
+.home-topbar .menu-btn:hover { background: var(--n-100); }
+.home-topbar .prop { flex: 1; display: flex; align-items: center; gap: 9px; justify-content: center; min-width: 0; }
+.home-topbar .prop-logo {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--gradient-brand);
+  display: grid; place-items: center;
+  color: #fff; font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.home-topbar .prop-name { font-size: 13.5px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.home-topbar .prop-addr { font-size: 11px; color: var(--text-secondary); }
+.home-topbar .avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--tint-pressed); color: var(--blue-500);
+  display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+
+.home-content { padding: 16px 16px 96px; display: flex; flex-direction: column; gap: 22px; }
+
+/* ============================================================
+   CommandHero — greeting + progress + next action + reward,
+   fused into one top-of-screen command surface.
+   ============================================================ */
+.cockpit {
+  border-radius: var(--r-2xl);
+  background: var(--gradient-hero);
+  color: #fff;
+  padding: 20px 20px 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-elev);
+}
+.cockpit::before {
+  content: ''; position: absolute; top: -60px; right: -40px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(107, 224, 168, 0.28), transparent 62%);
+  pointer-events: none;
+}
+.cockpit::after {
+  content: ''; position: absolute; bottom: -90px; left: 8%;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(140, 165, 255, 0.34), transparent 65%);
+  pointer-events: none;
+}
+.cockpit > * { position: relative; z-index: 1; }
+
+/* Row 1 — greeting + arrival badge */
+.ck-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.ck-greet { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: #c9d0ff; }
+/* beat the descendant `.proto-stage h1` (navy) that would otherwise hide it */
+.cockpit .ck-headline {
+  font-size: 21px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;
+  margin-top: 3px; color: #fff;
+}
+.ck-badge {
+  display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+  height: 28px; padding: 0 12px; border-radius: 99px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+.ck-badge .tdot { width: 7px; height: 7px; border-radius: 50%; background: #7be3b0; box-shadow: 0 0 8px rgba(123,227,176,0.9); }
+
+/* Row 2 — progress meter */
+.ck-progress { margin-top: 16px; }
+.ck-progress .cp-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin-bottom: 8px;
+}
+.ck-progress .cp-label { font-size: 13px; font-weight: 600; }
+.ck-progress .cp-meta { font-size: 11.5px; font-weight: 500; color: rgba(255,255,255,0.72); font-variant-numeric: tabular-nums; }
+.ck-track {
+  height: 8px; border-radius: 99px;
+  background: rgba(255,255,255,0.16);
+  overflow: hidden;
+  position: relative;
+}
+.ck-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, #6be0a8, #8ca5ff);
+  box-shadow: 0 0 12px rgba(140,165,255,0.55);
+  position: relative;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* subtle shimmer sweeping the filled portion */
+.ck-fill::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: translateX(-100%);
+  animation: ck-shimmer 2.6s ease-in-out infinite;
+}
+@keyframes ck-shimmer { 0% { transform: translateX(-100%); } 60%,100% { transform: translateX(220%); } }
+
+/* Row 3 — the ONE next action (NextActionCard) */
+.next-action {
+  display: flex; align-items: center; gap: 13px;
+  margin-top: 16px;
+  padding: 13px 14px;
+  border-radius: var(--r-lg);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  width: 100%; text-align: left;
+  transition: background 0.15s, transform 0.12s;
+}
+.next-action:hover { background: rgba(255,255,255,0.16); }
+.next-action:active { transform: scale(0.99); }
+.next-action .na-icon {
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+  background: rgba(255,255,255,0.16);
+  display: grid; place-items: center; color: #fff;
+}
+.next-action .na-body { flex: 1; min-width: 0; }
+.next-action .na-eyebrow {
+  display: block;
+  font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+  color: #a9e6c8;
+}
+.next-action .na-title { display: block; font-size: 15px; font-weight: 600; line-height: 1.25; margin-top: 2px; }
+.next-action .na-sub { display: block; font-size: 11.5px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.next-action .na-go {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: #fff; color: var(--blue-500);
+  display: grid; place-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+/* Row 4 — reward line (effort → what it unlocks) */
+.ck-reward {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 14px; padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 11.5px; font-weight: 500; color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+}
+.ck-reward > .icon { color: #8ca5ff; flex-shrink: 0; }
+.ck-reward b { color: #fff; font-weight: 600; }
+
+/* Compact arrival strip inside the hero */
+.ck-arrival {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 14px;
+}
+.ck-arrival .ca-item {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.85);
+}
+.ck-arrival .ca-item b { font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+.ck-arrival .ca-item .icon { color: #8ca5ff; }
+.ck-arrival .ca-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+
+/* Ready (all-done) hero variant */
+.cockpit.ready { background: linear-gradient(135deg, #0f9f80 0%, #23235d 62%, #2e46c8 100%); }
+.cockpit.ready::before { background: radial-gradient(circle, rgba(123,227,176,0.4), transparent 62%); }
+.cockpit .ck-open {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  margin-top: 16px; width: 100%;
+  height: 50px; border-radius: 14px;
+  background: #fff; color: var(--blue-650);
+  font-size: 15px; font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  transition: transform 0.12s;
+}
+.cockpit .ck-open:active { transform: scale(0.98); }
+
+/* ============================================================
+   Section headers
+   ============================================================ */
+.v2-sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.v2-sec-head h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.005em; color: var(--navy); }
+.v2-sec-head .sh-note { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+.v2-sec-head .sh-link { font-size: 12.5px; font-weight: 600; color: var(--blue-500); display: inline-flex; align-items: center; gap: 3px; }
+.v2-sec-head .sh-link:hover { color: var(--blue-600); }
+.v2-sec-eyebrow {
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   ChecklistTimeline + TimelineRow
+   ============================================================ */
+.timeline { position: relative; padding: 4px 0; }
+/* connector spine behind the node column */
+.timeline::before {
+  content: ''; position: absolute; left: 35px; top: 26px; bottom: 26px;
+  width: 2px; background: var(--n-200);
+}
+.tl-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px;
+  width: 100%; text-align: left;
+  position: relative;
+  transition: background 0.15s;
+}
+.tl-row + .tl-row { border-top: 1px solid var(--border); }
+.tl-row.clickable { cursor: pointer; }
+.tl-row.clickable:hover { background: #fbfbfe; }
+.tl-node {
+  width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+  display: grid; place-items: center;
+  border: 3px solid var(--n-0); position: relative; z-index: 1;
+}
+.tl-node.done { background: var(--green-50); color: var(--green-700); }
+.tl-node.active { background: var(--blue-500); color: #fff; box-shadow: 0 0 0 4px rgba(56,92,248,0.14); animation: pulse-ring 2.4s infinite; }
+.tl-node.todo { background: var(--tint-pressed); color: var(--n-600); }
+.tl-node.locked { background: var(--n-50); color: var(--n-500); }
+.tl-main { flex: 1; min-width: 0; }
+.tl-title { display: block; font-size: 14.5px; font-weight: 600; color: var(--navy); }
+.tl-row.done .tl-title { color: var(--n-600); }
+.tl-sub { display: block; font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+.tl-right { margin-left: auto; display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.tl-chev { color: var(--n-500); transition: transform 0.15s, color 0.15s; }
+.tl-row.clickable:hover .tl-chev { transform: translateX(3px); color: var(--blue-500); }
+
+/* active row is the spotlight — brand wash + rail + inline CTA */
+.tl-row.is-active { background: linear-gradient(90deg, rgba(56,91,248,0.055), transparent 62%); }
+.tl-row.is-active::before {
+  content: ''; position: absolute; left: 0; top: 8px; bottom: 8px;
+  width: 3.5px; border-radius: 0 4px 4px 0; background: var(--blue-500);
+}
+.tl-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 34px; padding: 0 14px; border-radius: 10px;
+  background: var(--blue-500); color: #fff;
+  font-size: 12.5px; font-weight: 600;
+  box-shadow: var(--shadow-brand);
+}
+.tl-cta:hover { background: var(--blue-600); }
+
+/* status chip (text + icon; never color-only) */
+.tl-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 22px; padding: 0 9px 0 7px; border-radius: 99px;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.tl-chip .icon { width: 12px; height: 12px; stroke-width: 2.6; }
+.tl-chip.done { background: var(--green-50); color: var(--green-800); }
+.tl-chip.todo { background: var(--n-75); color: var(--n-600); }
+.tl-chip.locked { background: var(--n-50); color: var(--n-500); }
+
+/* ============================================================
+   UnlockStrip — what finishing check-in unlocks
+   ============================================================ */
+.unlocks { display: flex; flex-direction: column; gap: 10px; }
+.unlock-card {
+  display: flex; align-items: center; gap: 13px;
+  padding: 14px; border-radius: var(--r-lg);
+}
+.unlock-card .uk-icon {
+  width: 44px; height: 44px; border-radius: 13px; flex-shrink: 0;
+  display: grid; place-items: center;
+}
+.unlock-card .uk-body { flex: 1; min-width: 0; }
+.unlock-card .uk-title { font-size: 14px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.unlock-card .uk-sub { display: block; font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.unlock-card .uk-right { margin-left: auto; flex-shrink: 0; }
+
+/* locked (gated until check-in done) */
+.unlock-card.locked { background: var(--n-50); border: 1px solid var(--border); }
+.unlock-card.locked .uk-icon { background: var(--n-100); color: var(--n-500); }
+.unlock-card.locked .uk-title { color: var(--n-600); }
+.unlock-lock {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 24px; padding: 0 10px; border-radius: 99px;
+  background: var(--n-100); color: var(--n-600);
+  font-size: 10.5px; font-weight: 700;
+}
+.unlock-lock .icon { width: 12px; height: 12px; }
+
+/* available now */
+.unlock-card.ready { background: var(--n-0); border: 1px solid var(--border); box-shadow: var(--shadow-card); transition: transform 0.15s, box-shadow 0.15s; }
+.unlock-card.ready:hover { transform: translateY(-2px); box-shadow: var(--shadow-elev); }
+.unlock-card.ready .uk-icon { background: var(--tint-pressed); color: var(--blue-500); }
+/* live (keys unlocked in all-done state) */
+.unlock-card.live { background: linear-gradient(120deg, #eef2ff, #f6f8ff); border: 1px solid rgba(56,91,248,0.35); }
+.unlock-card.live .uk-icon { background: var(--blue-500); color: #fff; box-shadow: var(--shadow-brand); }
+.uk-badge-now {
+  display: inline-flex; align-items: center;
+  height: 18px; padding: 0 7px; border-radius: 99px;
+  background: var(--green-50); color: var(--green-800);
+  font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   SkeletonBlock — loading placeholders
+   ============================================================ */
+.skeleton { position: relative; overflow: hidden; background: var(--n-100); border-radius: 8px; }
+.skeleton::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
+  transform: translateX(-100%);
+  animation: sk-sweep 1.4s ease-in-out infinite;
+}
+@keyframes sk-sweep { 100% { transform: translateX(100%); } }
+.sk-line { height: 12px; border-radius: 6px; }
+.sk-hero { height: 210px; border-radius: var(--r-2xl); background: var(--n-100); }
+.sk-card { height: 74px; border-radius: var(--r-lg); }
+.sk-circle { width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0; }
+
+/* ============================================================
+   Glass bottom nav (mobile)
+   ============================================================ */
+.bottom-nav {
+  position: sticky; bottom: 0; z-index: 30;
+  margin-top: auto;
+  display: flex;
+  padding: 8px 8px calc(14px + env(safe-area-inset-bottom, 8px));
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(20px) saturate(1.7);
+  -webkit-backdrop-filter: blur(20px) saturate(1.7);
+  border-top: 1px solid rgba(229, 230, 238, 0.7);
+}
+.bottom-nav .nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 0;
+  font-size: 10.5px; font-weight: 600; color: var(--n-600);
+  border-radius: 12px; position: relative;
+}
+.bottom-nav .nav-item.active { color: var(--blue-500); }
+.bottom-nav .nav-item.active::before {
+  content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  width: 22px; height: 3px; border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, var(--blue-500), #6b8cff);
+}
+.bottom-nav .nav-item .nbadge {
+  position: absolute; top: 2px; right: calc(50% - 18px);
+  min-width: 15px; height: 15px; padding: 0 3px; border-radius: 99px;
+  background: var(--red-soft); color: #fff;
+  font-size: 9px; font-weight: 700;
+  display: grid; place-items: center; border: 2px solid #fff;
+}
+
+/* ============================================================
+   Mobile menu drawer (navy sidebar as a left sheet)
+   ============================================================ */
+.drawer-scrim {
+  position: absolute; inset: 0; z-index: 40;
+  background: rgba(22, 22, 67, 0.45);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+}
+.mobile-drawer {
+  position: absolute; top: 0; left: 0; bottom: 0; z-index: 41;
+  width: 82%; border-radius: 0 22px 22px 0;
+  box-shadow: 18px 0 50px rgba(22, 22, 67, 0.35);
+  overflow-y: auto; scrollbar-width: none;
+}
+.mobile-drawer::-webkit-scrollbar { display: none; }
+.mobile-drawer .drawer-close {
+  position: absolute; top: 16px; right: 14px;
+  width: 30px; height: 30px; border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+  display: grid; place-items: center; color: rgba(255, 255, 255, 0.75);
+}
+
+/* ============================================================
+   Desktop overrides
+   ============================================================ */
+.desk-main .cockpit { padding: 26px 30px 22px; margin-top: 20px; }
+.desk-main .ck-headline { font-size: 26px; }
+.desk-main .ck-grid {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 26px; align-items: center;
+}
+.desk-main .ck-grid .ck-progress { margin-top: 0; }
+.desk-main .ck-arrival { margin-top: 18px; }
+
+/* desktop timeline card */
+.desk-main .timeline::before { left: 39px; }
+.desk-main .tl-row { padding: 15px 20px; }
+
+/* desktop unlocks as a row of 3 */
+.desk-main .unlocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.desk-main .unlock-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+.desk-main .unlock-card .uk-right { margin-left: 0; }
+
+/* right rail contact card (reused pattern) */
+.contact-card { padding: 14px; display: flex; align-items: center; gap: 12px; }
+.contact-card .cc-icon {
+  width: 38px; height: 38px; border-radius: 12px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.contact-card .cc-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+.contact-card .cc-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+
+/* focus-visible ring on all interactive cockpit/timeline surfaces */
+.next-action:focus-visible, .ck-open:focus-visible, .tl-row.clickable:focus-visible,
+.tl-cta:focus-visible, .unlock-card.ready:focus-visible, .nav-item:focus-visible,
+.menu-btn:focus-visible, .sh-link:focus-visible {
+  outline: none; box-shadow: var(--shadow-focus);
+}
+.next-action:focus-visible, .ck-open:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.7);
+}

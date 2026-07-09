@@ -137,6 +137,7 @@
   .fine-print a { color: var(--blue-500); font-weight: 600; }
   .fine-print b { color: var(--text-secondary); }
 </style>
+<link rel="stylesheet" href="sign.css">
 </head>
 <body>
 <div class="proto-stage">
@@ -170,7 +171,7 @@
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
         <div class="sb-group">Your stay</div>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
         <div class="sb-footer">
           <div class="sb-avatar">MG</div>
@@ -382,7 +383,7 @@
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
         <div class="sb-group">Your stay</div>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
+        <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
         <div class="sb-footer">
           <div class="sb-avatar">MG</div>
@@ -460,12 +461,21 @@
 
               <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Signature <span class="divider"></span></div>
               <div>
-                <div class="sig-pad">
+                <!-- Desktop draws inline on the pad (enabled SignatureCanvas). -->
+                <div class="sig-pad" id="sig-review" data-sign="inline">
+                  <canvas class="sig-canvas"></canvas>
                   <span class="sig-line"></span>
-                  <span class="sig-mock">María García</span>
-                  <button class="sig-clear"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eraser"/></svg></button>
+                  <span class="sig-xmark">✕</span>
+                  <span class="sig-empty">
+                    <span class="se-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-signature"/></svg></span>
+                    <span class="se-main">Draw your signature here</span>
+                    <span class="se-sub">Use your mouse or trackpad</span>
+                  </span>
+                  <span class="sig-ok"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> Signed</span>
+                  <span class="sig-tools"><span class="sig-tool" data-sign-clear><svg viewBox="0 0 24 24" class="icon"><use href="#i-eraser"/></svg> Clear</span></span>
                 </div>
-                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:7px">Draw with your mouse or trackpad — required by local regulations</div>
+                <div class="sig-msg"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg> The signature is required</div>
+                <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:7px">Draw with your mouse or trackpad — required by local regulations.</div>
               </div>
 
               <div class="section-label" style="margin-top:8px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Agreements <span class="divider"></span></div>
@@ -487,7 +497,7 @@
 
               <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:6px;padding-bottom:8px">
                 <button class="btn btn-outline">Save for later</button>
-                <button class="btn btn-primary">Complete registration <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></button>
+                <button class="btn btn-primary" data-sign-submit data-sign-target="#sig-review" data-href="flow-registered-modal.html">Complete registration <svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></button>
               </div>
             </div>
           </div>
@@ -596,6 +606,8 @@
     <g id="i-id-card"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M8 15c-1.5 0-2.5.5-3 1.5"/><path d="M8 15c1.5 0 2.5.5 3 1.5"/><path d="M14 9h5"/><path d="M14 13h4"/></g>
     <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
     <g id="i-pen"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></g>
+    <g id="i-signature"><path d="M3 16c2.5 0 3-6 5-6s1.6 4 3.5 4S14 9 16 9s2 3 3.5 3"/><path d="M3 20h18"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
     <g id="i-eraser"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></g>
     <g id="i-lock-sm"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
     <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
@@ -606,6 +618,7 @@
     <g id="i-phone"><path d="M13.8 17.4a2 2 0 0 0 2.24-.4l.6-.6a2 2 0 0 0 0-2.83l-1.42-1.4a2 2 0 0 0-2.83 0 .82.82 0 0 1-1.17 0l-2.4-2.4a.82.82 0 0 1 0-1.17 2 2 0 0 0 0-2.83L7.42 4.34a2 2 0 0 0-2.83 0l-.6.6a2 2 0 0 0-.4 2.25 21 21 0 0 0 10.2 10.2"/></g>
   </defs>
 </svg>
+<script src="sign.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>
