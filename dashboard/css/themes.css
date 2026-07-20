@@ -1,0 +1,294 @@
+/* ============================================================
+   Design variants — switchable via the floating theme button.
+   Default (no data-theme) = "Chekin" (navy sidebar, modern polish).
+   Each theme only re-points the token slots; components are shared.
+   ============================================================ */
+
+/* ── 2. Minimal light — flat, airy, quiet chrome ── */
+[data-theme="minimal"] {
+  --surface-app: #ffffff;
+  --topbar-bg: rgba(255, 255, 255, 0.85);
+  --sidebar-bg: #ffffff;
+  --sidebar-fg: var(--neutral-600);
+  --sidebar-fg-strong: var(--neutral-900);
+  --sidebar-muted: var(--neutral-500);
+  --sidebar-hover: var(--neutral-50);
+  --sidebar-active-bg: var(--surface-pressed);
+  --sidebar-active-fg: var(--blue-500);
+  --sidebar-active-shadow: none;
+  --sidebar-border: var(--neutral-150);
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: 0 2px 8px rgba(22, 22, 67, 0.06);
+  --shadow-brand: none;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+}
+[data-theme="minimal"] .sidebar { border-right: 1px solid var(--neutral-150); }
+[data-theme="minimal"] .sidebar-brand .logo { background: var(--blue-500); box-shadow: none; }
+[data-theme="minimal"] .nav-item .nav-badge--info { background: var(--surface-pressed); color: var(--blue-500); }
+[data-theme="minimal"] .card { box-shadow: none; }
+
+/* ── 3. Dark ── */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-app: #0f0f2d;
+  --surface-card: #181842;
+  --surface-sunken: #131336;
+  --surface-hover: #1e1e4e;
+  --surface-selected: #232360;
+  --surface-overlay: rgba(5, 5, 20, 0.6);
+  --border-default: #29295c;
+  --border-subtle: #232352;
+  --border-strong: #3a3a7a;
+  --text-primary: #eeeefb;
+  --text-secondary: #a6a6d3;
+  --text-tertiary: #7c7cab;
+  --neutral-50: #131336;
+  --neutral-75: #1a1a46;
+  --neutral-100: #21214f;
+  --neutral-150: #29295c;
+  --neutral-200: #313168;
+  --neutral-300: #3a3a7a;
+  --neutral-400: #55558c;
+  --neutral-500: #7c7cab;
+  --neutral-600: #a6a6d3;
+  --lavender-surface: #1e1e50;
+  --blue-700: #c3cdfd;
+  --status-success-bg: rgba(53, 229, 188, 0.13);
+  --status-success-fg: #5ce8c4;
+  --status-warning-bg: rgba(255, 183, 0, 0.14);
+  --status-warning-fg: #fdc843;
+  --status-danger-bg: rgba(223, 0, 68, 0.16);
+  --status-danger-fg: #ff7ba3;
+  --status-info-bg: rgba(56, 91, 248, 0.18);
+  --status-info-fg: #9fb1fc;
+  --status-neutral-bg: #21214f;
+  --status-neutral-fg: #a6a6d3;
+  --topbar-bg: rgba(15, 15, 45, 0.8);
+  --sidebar-bg: linear-gradient(180deg, #0a0a24 0%, #0d0d2c 100%);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+[data-theme="dark"] .callout--info { border-color: rgba(56, 91, 248, 0.35); }
+[data-theme="dark"] .callout--warning { border-color: rgba(255, 183, 0, 0.3); }
+[data-theme="dark"] .callout--danger { border-color: rgba(223, 0, 68, 0.35); }
+[data-theme="dark"] .chip-blue { background: rgba(56, 91, 248, 0.2); color: #9fb1fc; }
+[data-theme="dark"] .chip-green { background: rgba(53, 229, 188, 0.15); color: #5ce8c4; }
+[data-theme="dark"] .chip-amber { background: rgba(255, 183, 0, 0.15); color: #fdc843; }
+[data-theme="dark"] .chip-red { background: rgba(223, 0, 68, 0.18); color: #ff7ba3; }
+[data-theme="dark"] .savebar { background: rgba(24, 24, 66, 0.92) !important; }
+[data-theme="dark"] .trial-pill { border-color: rgba(171, 186, 252, 0.35); }
+[data-theme="dark"] .prop-cover h3,
+[data-theme="dark"] .avatar { color: var(--blue-900); }
+[data-theme="dark"] .badge--plain.badge--success { color: #5ce8c4; }
+
+/* ── 4. Playful — lavender canvas, big radii, gradient accents ── */
+[data-theme="playful"] {
+  --surface-app: #f4f4fd;
+  --topbar-bg: rgba(244, 244, 253, 0.8);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --sidebar-bg: linear-gradient(200deg, #23235d 0%, var(--blue-900) 70%);
+  --sidebar-active-bg: #ffffff;
+  --sidebar-active-fg: var(--blue-600);
+  --sidebar-active-shadow: 0 6px 18px rgba(22, 22, 67, 0.35);
+  --shadow-md: 0 6px 20px rgba(56, 91, 248, 0.1), 0 2px 6px rgba(22, 22, 67, 0.05);
+  --shadow-brand: 0 6px 16px rgba(56, 91, 248, 0.4);
+}
+[data-theme="playful"] .btn--primary { background: var(--brand-gradient); }
+[data-theme="playful"] .btn--primary:hover { background: var(--brand-gradient); filter: brightness(1.12); }
+[data-theme="playful"] .btn, [data-theme="playful"] .chip { border-radius: var(--radius-full); }
+[data-theme="playful"] .badge { font-weight: 600; }
+[data-theme="playful"] .card--hover:hover { transform: translateY(-3px) scale(1.005); }
+[data-theme="playful"] .table th { background: var(--lavender-surface); }
+
+/* ── 5. Boutique — warm sand & ink (built on the Airbnb token family) ── */
+[data-theme="warm"] {
+  --surface-app: #f7f6f4;            /* --chekin-airbnb-surface */
+  --surface-card: #ffffff;
+  --surface-sunken: #f4f4f2;         /* --chekin-airbnb-surface-alt */
+  --surface-hover: #f4f4f2;
+  --surface-selected: #ffe8ef;       /* --chekin-airbnb-pink-surface */
+  --border-default: #e7e7e4;         /* --chekin-airbnb-border-soft */
+  --border-subtle: #e7e7e4;
+  --border-strong: #dedad2;          /* --chekin-airbnb-border */
+  --text-primary: #1f1f1b;           /* --chekin-airbnb-ink */
+  --text-secondary: #6c6c6c;
+  --text-tertiary: #8c8c8c;
+  --text-brand: #1f1f1b;
+  --accent: #1f1f1b;
+  --border-focus: #1f1f1b;
+  --shadow-focus: 0 0 0 3px rgba(31, 31, 27, 0.15);
+  --topbar-bg: rgba(247, 246, 244, 0.85);
+  --sidebar-bg: #1f1f1b;
+  --sidebar-fg: #d9d9d4;
+  --sidebar-fg-strong: #ffffff;
+  --sidebar-muted: #8c8c8c;
+  --sidebar-hover: rgba(255, 255, 255, 0.07);
+  --sidebar-active-bg: #fc98dd;      /* --chekin-airbnb-pink */
+  --sidebar-active-fg: #1f1f1b;
+  --sidebar-active-shadow: 0 4px 14px rgba(252, 152, 221, 0.35);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --status-info-bg: #fff5f3;
+  --status-info-fg: #1f1f1b;
+  --status-info-dot: #fc98dd;
+  --shadow-brand: 0 4px 12px rgba(31, 31, 27, 0.2);
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+}
+[data-theme="warm"] .sidebar-brand .logo { background: #fc98dd; color: #1f1f1b; box-shadow: none; }
+[data-theme="warm"] .btn--primary { background: #1f1f1b; }
+[data-theme="warm"] .btn--primary:hover { background: #3f3f46; }
+[data-theme="warm"] .trial-pill { background: #ffe8ef; border-color: #fc98dd; color: #1f1f1b; }
+[data-theme="warm"] .segmented button[aria-selected="true"] .count { color: #1f1f1b; }
+[data-theme="warm"] .tabs button[aria-selected="true"] { border-bottom-color: #fc98dd; }
+[data-theme="warm"] .progress > span { background: #1f1f1b; }
+[data-theme="warm"] .nav-item .nav-badge { background: #fc98dd; color: #1f1f1b; }
+[data-theme="warm"] .section-nav a[aria-current="true"] { color: #1f1f1b; }
+[data-theme="warm"] .set-nav a[aria-current="true"] { color: #1f1f1b; }
+
+/* ── 6. Aurora glass — frosted translucent surfaces on a soft gradient ── */
+[data-theme="glass"] {
+  --surface-app: #eceffd;
+  --surface-card: rgba(255, 255, 255, 0.62);
+  --surface-sunken: rgba(255, 255, 255, 0.55);
+  --surface-hover: rgba(255, 255, 255, 0.75);
+  --surface-selected: rgba(255, 255, 255, 0.9);
+  --border-default: rgba(255, 255, 255, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.6);
+  --border-strong: rgba(172, 172, 213, 0.6);
+  --neutral-100: rgba(236, 236, 248, 0.55);
+  --neutral-75: rgba(240, 240, 248, 0.5);
+  --topbar-bg: rgba(255, 255, 255, 0.4);
+  --sidebar-bg: rgba(255, 255, 255, 0.45);
+  --sidebar-fg: var(--neutral-600);
+  --sidebar-fg-strong: var(--neutral-900);
+  --sidebar-muted: var(--neutral-500);
+  --sidebar-hover: rgba(255, 255, 255, 0.7);
+  --sidebar-active-bg: rgba(255, 255, 255, 0.95);
+  --sidebar-active-fg: var(--blue-600);
+  --sidebar-active-shadow: 0 8px 20px rgba(56, 91, 248, 0.18);
+  --sidebar-border: rgba(255, 255, 255, 0.6);
+  --shadow-sm: 0 2px 8px rgba(22, 22, 67, 0.05);
+  --shadow-md: 0 8px 24px rgba(22, 22, 67, 0.08);
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+}
+[data-theme="glass"] body {
+  background: linear-gradient(160deg, #e4e9fd 0%, #f4e9fa 45%, #e2f6f1 100%) fixed;
+}
+[data-theme="glass"] .sidebar,
+[data-theme="glass"] .topbar {
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+}
+[data-theme="glass"] .sidebar { border-right: 1px solid rgba(255, 255, 255, 0.6); }
+[data-theme="glass"] .card,
+[data-theme="glass"] .menu,
+[data-theme="glass"] .theme-menu,
+[data-theme="glass"] .modal,
+[data-theme="glass"] .drawer,
+[data-theme="glass"] .theme-fab {
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+}
+[data-theme="glass"] .modal, [data-theme="glass"] .drawer { background: rgba(255, 255, 255, 0.78); }
+[data-theme="glass"] .input, [data-theme="glass"] .select, [data-theme="glass"] .textarea { border-color: rgba(172, 172, 213, 0.4); }
+[data-theme="glass"] .table th { backdrop-filter: blur(8px); }
+
+/* ── 7. Slate utility — the token true-gray (Inbox) family, dense & neutral ── */
+[data-theme="slate"] {
+  --surface-app: #f9fafb;            /* --chekin-gray-50 */
+  --surface-card: #ffffff;
+  --surface-sunken: #f3f4f6;         /* gray-100 */
+  --surface-hover: #f3f4f6;
+  --surface-selected: #eef2ff;
+  --border-default: #e5e7eb;         /* gray-200 */
+  --border-subtle: #e5e7eb;
+  --border-strong: #d1d5db;          /* gray-300 */
+  --text-primary: #101828;           /* gray-900 */
+  --text-secondary: #4b5563;         /* gray-600 */
+  --text-tertiary: #6b7280;          /* gray-500 */
+  --neutral-100: #f3f4f6;
+  --neutral-75: #f7f7f7;             /* gray-75 ghost hover */
+  --neutral-150: #e5e7eb;
+  --neutral-300: #d1d5db;
+  --neutral-400: #9ca3af;
+  --neutral-500: #6b7280;
+  --neutral-600: #4b5563;
+  --topbar-bg: rgba(249, 250, 251, 0.85);
+  --sidebar-bg: #101828;
+  --sidebar-fg: #9ca3af;
+  --sidebar-fg-strong: #ffffff;
+  --sidebar-muted: #6b7280;
+  --sidebar-hover: rgba(255, 255, 255, 0.06);
+  --sidebar-active-bg: #353945;      /* gray-700 dark slate */
+  --sidebar-active-fg: #ffffff;
+  --sidebar-active-shadow: none;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --shadow-brand: none;
+  --shadow-md: 0 2px 8px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 12px 28px rgba(16, 24, 40, 0.16);
+}
+[data-theme="slate"] .sidebar-brand .logo { background: #353945; box-shadow: none; }
+[data-theme="slate"] .trial-pill { background: #f3f4f6; border-color: #d1d5db; color: #101828; }
+
+/* ── Theme switcher FAB ── */
+.theme-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 110;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-lg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  transition: transform var(--dur-base) var(--ease-out), color var(--dur-fast);
+}
+.theme-fab:hover { transform: rotate(-12deg) scale(1.06); color: var(--text-brand); }
+.theme-fab svg { width: 20px; height: 20px; }
+
+.theme-menu {
+  position: fixed; right: 20px; bottom: 74px; z-index: 110;
+  min-width: 230px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  display: none;
+}
+.theme-menu.open { display: block; animation: menu-in var(--dur-fast) var(--ease-out); }
+.theme-menu .tm-head {
+  font-size: var(--text-xs); font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-tertiary); padding: 8px 10px 4px;
+}
+.theme-menu button {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 10px; border-radius: var(--radius-md);
+  font-size: var(--text-base); text-align: left; color: var(--text-primary);
+}
+.theme-menu button:hover { background: var(--surface-hover); }
+.theme-menu .swatches { display: inline-flex; flex: none; }
+.theme-menu .swatches i {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid var(--surface-card); margin-right: -5px;
+}
+.theme-menu .tm-name { flex: 1; }
+.theme-menu .tm-sub { display: block; font-size: var(--text-xs); color: var(--text-tertiary); font-weight: 400; }
+.theme-menu .tm-check { width: 15px; height: 15px; color: var(--text-brand); flex: none; opacity: 0; }
+.theme-menu button[aria-checked="true"] .tm-check { opacity: 1; }
+.theme-menu button[aria-checked="true"] { background: var(--surface-selected); }
+
+@media (max-width: 960px) {
+  .theme-fab { bottom: 16px; right: 16px; }
+  .theme-menu { right: 16px; bottom: 70px; }
+}

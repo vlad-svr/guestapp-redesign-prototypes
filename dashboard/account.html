@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings · Chekin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/themes.css">
+<style>
+  .settings-layout { display: grid; grid-template-columns: 218px 1fr; gap: var(--sp-6); align-items: start; }
+
+  .set-nav { position: sticky; top: calc(var(--topbar-h) + 20px); }
+  .set-nav .sn-group { margin-bottom: 14px; }
+  .set-nav .sn-label {
+    font-size: var(--text-xs); font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.07em; color: var(--text-tertiary); padding: 0 10px 5px;
+  }
+  .set-nav a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-radius: var(--radius-md);
+    font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary);
+    transition: background var(--dur-fast), color var(--dur-fast);
+  }
+  .set-nav a:hover { background: var(--surface-hover); color: var(--text-primary); }
+  .set-nav a[aria-current="true"] { background: var(--surface-selected); color: var(--text-brand); font-weight: 600; }
+  .set-nav a.danger-link { color: var(--status-danger-fg); }
+  .set-nav a.danger-link[aria-current="true"] { background: var(--red-50, #fdf2f5); color: var(--status-danger-fg); }
+
+  .settings-view[hidden] { display: none; }
+  .view-enter { animation: view-in var(--dur-slow) var(--ease-out); }
+  @keyframes view-in { from { opacity: 0; transform: translateY(10px); } }
+
+  .view-pager { display: flex; justify-content: space-between; gap: var(--sp-3); margin-top: var(--sp-4); }
+  .view-pager a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-radius: var(--radius-md);
+    font-size: var(--text-base); font-weight: 500; color: var(--text-secondary);
+    background: var(--surface-card); border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-xs);
+    transition: color var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .view-pager a:hover { color: var(--text-brand); border-color: var(--blue-200); box-shadow: var(--shadow-sm); }
+  .view-pager .pager-label { display: block; font-size: var(--text-xs); color: var(--text-tertiary); font-weight: 500; }
+
+  @media (max-width: 960px) {
+    .settings-layout { grid-template-columns: 1fr; }
+    .set-nav {
+      position: static; display: flex; gap: 6px; overflow-x: auto;
+      padding-bottom: 6px; scrollbar-width: none; margin-bottom: var(--sp-2);
+    }
+    .set-nav::-webkit-scrollbar { display: none; }
+    .set-nav .sn-group { display: flex; gap: 6px; margin: 0; }
+    .set-nav .sn-label { display: none; }
+    .set-nav a { white-space: nowrap; border: 1px solid var(--border-default); background: var(--surface-card); }
+    .set-nav a[aria-current="true"] { border-color: var(--blue-200); }
+  }
+
+  .member-row { display: flex; align-items: center; gap: 11px; padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .member-row:last-child { border-bottom: 0; }
+
+  .setting-row { display: flex; align-items: center; gap: var(--sp-4); padding: 14px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .setting-row:last-child { border-bottom: 0; }
+  .setting-row .lbl { font-weight: 500; }
+  .setting-row .desc { font-size: var(--text-sm); color: var(--text-secondary); margin-top: 1px; }
+
+  .conn-logo {
+    width: 38px; height: 38px; border-radius: var(--radius-md); flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: var(--text-xs); font-weight: 700; color: var(--blue-900);
+    background: var(--surface-sunken); border: 1px solid var(--border-subtle);
+  }
+
+  .session-row { display: flex; align-items: center; gap: 11px; padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .session-row:last-child { border-bottom: 0; }
+  .session-row svg { width: 18px; height: 18px; color: var(--text-tertiary); flex: none; }
+</style>
+</head>
+<body data-page="settings">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div class="main">
+    <div id="shell-topbar"></div>
+    <main class="content" id="main-content">
+
+      <div class="page-head">
+        <div>
+          <h1>Settings</h1>
+          <p class="sub">Workspace-wide defaults. Property-specific settings live on each property.</p>
+        </div>
+      </div>
+
+      <div class="settings-layout">
+        <nav class="set-nav" aria-label="Settings sections">
+          <div class="sn-group">
+            <p class="sn-label">Account</p>
+            <a href="#set-profile" aria-current="true">Profile &amp; workspace</a>
+            <a href="#set-security" aria-current="false">Security</a>
+            <a href="#set-notifications" aria-current="false">Notifications</a>
+          </div>
+          <div class="sn-group">
+            <p class="sn-label">Workspace</p>
+            <a href="#set-team" aria-current="false">Team</a>
+            <a href="#set-checkin" aria-current="false">Check-in defaults</a>
+            <a href="#set-payments" aria-current="false">Payments</a>
+            <a href="#set-branding" aria-current="false">Branding &amp; messages</a>
+          </div>
+          <div class="sn-group">
+            <p class="sn-label">Connections</p>
+            <a href="#set-integrations" aria-current="false">Integrations</a>
+            <a href="#set-sdk" aria-current="false">Embedded SDKs</a>
+          </div>
+          <div class="sn-group">
+            <a href="#set-danger" aria-current="false" class="danger-link">Danger zone</a>
+          </div>
+        </nav>
+
+        <div>
+          <!-- ── Profile & workspace ── -->
+          <section class="settings-view" id="set-profile" aria-labelledby="profile-h">
+            <div class="card">
+              <div class="card-head"><h2 id="profile-h">Profile &amp; workspace</h2></div>
+              <div style="padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4);">
+                <div class="row" style="gap:14px;">
+                  <span class="avatar avatar--lg av-1" aria-hidden="true">MF</span>
+                  <div>
+                    <p style="font-weight:600;">Marta Ferreira</p>
+                    <p class="small muted">Owner · Solmar Properties</p>
+                  </div>
+                  <span class="grow"></span>
+                  <button class="btn btn--secondary btn--sm" data-toast="Avatar upload would open">Change photo</button>
+                </div>
+                <div class="grid grid--2">
+                  <div class="field"><label for="s-name">Full name</label><input class="input" id="s-name" value="Marta Ferreira"></div>
+                  <div class="field"><label for="s-email">Email</label><input class="input" id="s-email" type="email" value="marta@solmarproperties.com"></div>
+                  <div class="field"><label for="s-company">Company</label><input class="input" id="s-company" value="Solmar Properties"></div>
+                  <div class="field"><label for="s-lang">Dashboard language</label>
+                    <select class="select" id="s-lang"><option selected>English</option><option>Español</option><option>Italiano</option><option>Français</option><option>Português</option><option>Deutsch</option></select>
+                  </div>
+                  <div class="field"><label for="s-tz">Time zone</label>
+                    <select class="select" id="s-tz"><option selected>Europe/Lisbon (GMT+1)</option><option>Europe/Madrid (GMT+2)</option><option>Europe/Rome (GMT+2)</option></select>
+                    <p class="help">Used for arrival times, reminders and reports.</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="btn btn--primary" data-toast="Profile saved">Save profile</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Security ── -->
+          <section class="settings-view" id="set-security" aria-labelledby="security-h" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+              <div class="card">
+                <div class="card-head"><h2 id="security-h">Security</h2></div>
+                <div class="setting-row">
+                  <div class="grow">
+                    <p class="lbl">Password</p>
+                    <p class="desc">Last changed 4 months ago.</p>
+                  </div>
+                  <button class="btn btn--secondary btn--sm" data-toast="Password change flow would start (current + new password)">Change password</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow">
+                    <p class="lbl">Two-factor authentication</p>
+                    <p class="desc">Require a code from an authenticator app when signing in.</p>
+                  </div>
+                  <span class="badge badge--warning">Off</span>
+                  <button class="btn btn--secondary btn--sm" data-toast="2FA setup wizard would open (QR code + backup codes)">Enable</button>
+                </div>
+              </div>
+              <div class="card" aria-labelledby="sessions-h">
+                <div class="card-head">
+                  <h2 id="sessions-h">Active sessions</h2>
+                  <button class="btn btn--ghost btn--sm" data-toast="All other sessions signed out">Sign out others</button>
+                </div>
+                <div class="session-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8m-4-4v4"/></svg>
+                  <div class="grow"><p style="font-weight:500;">Mac · Chrome <span class="badge badge--success" style="margin-left:6px;">This device</span></p><p class="small muted">Lisbon, Portugal · active now</p></div>
+                </div>
+                <div class="session-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                  <div class="grow"><p style="font-weight:500;">iPhone · Safari</p><p class="small muted">Lisbon, Portugal · 2 hours ago</p></div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Session revoked">Sign out</button>
+                </div>
+                <div class="session-row">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8m-4-4v4"/></svg>
+                  <div class="grow"><p style="font-weight:500;">Windows · Edge</p><p class="small muted">Porto, Portugal · 3 days ago</p></div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Session revoked">Sign out</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Notifications ── -->
+          <section class="settings-view" id="set-notifications" aria-labelledby="notif-h" hidden>
+            <div class="card">
+              <div class="card-head"><h2 id="notif-h">Notifications</h2></div>
+              <div class="setting-row">
+                <div class="grow"><p class="lbl">New booking received</p><p class="desc">When a booking is created or synced from a PMS.</p></div>
+                <label class="switch" aria-label="Toggle new booking emails"><input type="checkbox" checked><span class="track"></span></label>
+              </div>
+              <div class="setting-row">
+                <div class="grow"><p class="lbl">Check-in completed</p><p class="desc">When all guests of a booking finish online check-in.</p></div>
+                <label class="switch" aria-label="Toggle check-in completed emails"><input type="checkbox" checked><span class="track"></span></label>
+              </div>
+              <div class="setting-row">
+                <div class="grow"><p class="lbl">Something needs your attention</p><p class="desc">Failed identity verification, police submission errors, payment failures. Recommended.</p></div>
+                <label class="switch" aria-label="Toggle attention alerts"><input type="checkbox" checked><span class="track"></span></label>
+              </div>
+              <div class="setting-row">
+                <div class="grow"><p class="lbl">Guest messages</p><p class="desc">When a guest replies in the inbox and no one has answered for 15 minutes.</p></div>
+                <label class="switch" aria-label="Toggle guest message alerts"><input type="checkbox" checked><span class="track"></span></label>
+              </div>
+              <div class="setting-row">
+                <div class="grow"><p class="lbl">Weekly digest</p><p class="desc">Monday summary: check-in rate, revenue from upsells, issues resolved.</p></div>
+                <label class="switch" aria-label="Toggle weekly digest"><input type="checkbox"><span class="track"></span></label>
+              </div>
+              <div style="padding:var(--sp-4) var(--sp-5);border-top:1px solid var(--border-subtle);" class="row">
+                <p class="small muted grow">Alerts go to marta@solmarproperties.com.</p>
+                <button class="btn btn--primary" data-toast="Notification preferences saved">Save preferences</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Team ── -->
+          <section class="settings-view" id="set-team" aria-labelledby="team-h" hidden>
+            <div class="card">
+              <div class="card-head">
+                <h2 id="team-h">Team</h2>
+                <button class="btn btn--secondary btn--sm" data-open="#invite-modal">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                  Invite member
+                </button>
+              </div>
+              <div class="member-row">
+                <span class="avatar av-1" aria-hidden="true">MF</span>
+                <div class="grow"><p style="font-weight:600;">Marta Ferreira <span class="small muted" style="font-weight:400;">· you</span></p><p class="small muted">marta@solmarproperties.com</p></div>
+                <span class="badge badge--info badge--plain">Owner</span>
+              </div>
+              <div class="member-row">
+                <span class="avatar av-3" aria-hidden="true">DP</span>
+                <div class="grow"><p style="font-weight:600;">Diego Prieto</p><p class="small muted">diego@solmarproperties.com · All properties</p></div>
+                <span class="badge badge--neutral badge--plain">Manager</span>
+                <button class="btn btn--ghost btn--icon btn--sm" aria-label="Edit Diego Prieto’s access" data-toast="Member access editor would open">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </button>
+              </div>
+              <div class="member-row">
+                <span class="avatar av-5" aria-hidden="true">LC</span>
+                <div class="grow"><p style="font-weight:600;">Lucia Costa</p><p class="small muted">lucia@cleanco.pt · Casa Azulejo, Loft Chiado 21</p></div>
+                <span class="badge badge--neutral badge--plain">Collaborator</span>
+                <button class="btn btn--ghost btn--icon btn--sm" aria-label="Edit Lucia Costa’s access" data-toast="Member access editor would open">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Check-in defaults ── -->
+          <section class="settings-view" id="set-checkin" aria-labelledby="checkin-h" hidden>
+            <div class="card">
+              <div class="card-head"><h2 id="checkin-h">Check-in defaults</h2></div>
+              <div style="padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4);">
+                <div class="callout callout--info">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+                  <div class="grow">These defaults apply to <b>new properties</b>. Existing properties keep their own settings.</div>
+                </div>
+                <div class="grid grid--2">
+                  <div class="field"><label for="ci-when">Invite guests to check in</label>
+                    <select class="select" id="ci-when"><option>7 days before arrival</option><option selected>3 days before arrival</option><option>1 day before arrival</option><option>On booking confirmation</option></select>
+                  </div>
+                  <div class="field"><label for="ci-who">Who must complete check-in</label>
+                    <select class="select" id="ci-who"><option selected>All guests</option><option>Lead guest only</option><option>Adults only</option></select>
+                  </div>
+                </div>
+                <fieldset class="field" style="border:0;padding:0;margin:0;">
+                  <legend style="font-size:var(--text-sm);font-weight:600;margin-bottom:8px;">Data collected from guests</legend>
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <label class="row" style="gap:9px;"><input type="checkbox" class="checkbox" checked disabled> <span>Full name &amp; ID document <span class="small muted">(required by law)</span></span></label>
+                    <label class="row" style="gap:9px;"><input type="checkbox" class="checkbox" checked> <span>Email &amp; phone</span></label>
+                    <label class="row" style="gap:9px;"><input type="checkbox" class="checkbox" checked> <span>Arrival time</span></label>
+                    <label class="row" style="gap:9px;"><input type="checkbox" class="checkbox"> <span>Purpose of stay</span></label>
+                  </div>
+                </fieldset>
+                <div class="setting-row" style="border:1px solid var(--border-subtle);border-radius:var(--radius-md);">
+                  <div class="grow"><p class="lbl">Identity verification</p><p class="desc">Ask guests to photograph their ID and take a selfie during check-in.</p></div>
+                  <label class="switch" aria-label="Toggle identity verification default"><input type="checkbox" checked><span class="track"></span></label>
+                </div>
+                <div class="row">
+                  <button class="btn btn--primary" data-toast="Check-in defaults saved">Save defaults</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Payments ── -->
+          <section class="settings-view" id="set-payments" aria-labelledby="payments-h" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+              <div class="card">
+                <div class="card-head"><h2 id="payments-h">Payments</h2></div>
+                <div class="setting-row">
+                  <span class="conn-logo" aria-hidden="true">St</span>
+                  <div class="grow"><p class="lbl">Stripe</p><p class="desc">Collects tourist taxes, deposits and upsell payments from guests.</p></div>
+                  <span class="badge badge--success">Connected</span>
+                  <button class="btn btn--ghost btn--sm" data-toast="Stripe dashboard would open in a new tab">Manage</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Payout account</p><p class="desc">PT50 •••• •••• 3391 · Banco Montepio</p></div>
+                  <button class="btn btn--secondary btn--sm" data-toast="Payout account change requires re-verification — flow would start">Change</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Currency</p><p class="desc">Used for taxes, deposits and upsell prices.</p></div>
+                  <select class="select" style="width:130px;" aria-label="Currency"><option selected>EUR €</option><option>USD $</option><option>GBP £</option></select>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h2>Defaults for new properties</h2></div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Security deposit</p><p class="desc">Pre-authorised on the guest’s card, released 7 days after check-out.</p></div>
+                  <input class="input" style="width:110px;text-align:right;" value="€ 150" aria-label="Default deposit amount">
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Tourist tax collection</p><p class="desc">Charge city tax automatically during online check-in.</p></div>
+                  <label class="switch" aria-label="Toggle tourist tax collection default"><input type="checkbox" checked><span class="track"></span></label>
+                </div>
+                <div style="padding:var(--sp-4) var(--sp-5);border-top:1px solid var(--border-subtle);" class="row">
+                  <span class="grow"></span>
+                  <button class="btn btn--primary" data-toast="Payment defaults saved">Save defaults</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Branding & messages ── -->
+          <section class="settings-view" id="set-branding" aria-labelledby="branding-h" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+              <div class="card">
+                <div class="card-head"><h2 id="branding-h">Branding</h2></div>
+                <div style="padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-4);">
+                  <div class="row" style="gap:14px;">
+                    <span class="conn-logo" style="width:52px;height:52px;font-size:var(--text-base);" aria-hidden="true">SP</span>
+                    <div class="grow">
+                      <p style="font-weight:500;">Logo</p>
+                      <p class="small muted">Shown on the guest check-in page and in emails. PNG or SVG, min 200×200.</p>
+                    </div>
+                    <button class="btn btn--secondary btn--sm" data-toast="Logo upload would open">Upload logo</button>
+                  </div>
+                  <div class="grid grid--2">
+                    <div class="field"><label for="b-color">Brand color</label>
+                      <div class="row" style="gap:8px;">
+                        <span style="width:34px;height:34px;border-radius:var(--radius-md);background:#385bf8;border:1px solid var(--border-default);flex:none;" aria-hidden="true"></span>
+                        <input class="input" id="b-color" value="#385BF8" style="width:110px;">
+                      </div>
+                      <p class="help">Buttons and accents on guest-facing pages.</p>
+                    </div>
+                    <div class="field"><label for="b-sender">Email sender name</label><input class="input" id="b-sender" value="Solmar Properties"></div>
+                  </div>
+                  <div class="row">
+                    <button class="btn btn--primary" data-toast="Branding saved — guest pages update instantly">Save branding</button>
+                    <button class="btn btn--ghost" data-toast="Guest check-in preview would open in a new tab">Preview guest page</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h2>Message templates</h2><span class="small muted">Sent automatically, editable per property</span></div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Check-in invitation</p><p class="desc">Email + SMS · sent when check-in opens · 6 languages</p></div>
+                  <span class="badge badge--success">On</span>
+                  <button class="btn btn--ghost btn--sm" data-toast="Template editor would open with live preview">Edit</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Check-in reminder</p><p class="desc">Email · sent 24h before arrival if not completed · 6 languages</p></div>
+                  <span class="badge badge--success">On</span>
+                  <button class="btn btn--ghost btn--sm" data-toast="Template editor would open with live preview">Edit</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Welcome &amp; access details</p><p class="desc">Email · sent when check-in completes, includes door codes · 2 languages</p></div>
+                  <span class="badge badge--success">On</span>
+                  <button class="btn btn--ghost btn--sm" data-toast="Template editor would open with live preview">Edit</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Post-stay thank you</p><p class="desc">Email · sent morning after check-out with review link</p></div>
+                  <span class="badge badge--neutral">Off</span>
+                  <button class="btn btn--ghost btn--sm" data-toast="Template editor would open with live preview">Edit</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Integrations ── -->
+          <section class="settings-view" id="set-integrations" aria-labelledby="int-h" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+              <div class="card">
+                <div class="card-head">
+                  <h2 id="int-h">Connected apps</h2>
+                  <button class="btn btn--secondary btn--sm" data-toast="Integration directory would open (30+ PMS, locks, channels)">Browse directory</button>
+                </div>
+                <div class="setting-row">
+                  <span class="conn-logo" aria-hidden="true">Gy</span>
+                  <div class="grow"><p class="lbl">Guesty <span class="badge badge--success" style="margin-left:6px;">Connected</span></p><p class="desc">PMS · syncs bookings for 5 properties · last sync 12 min ago</p></div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Guesty sync settings would open">Settings</button>
+                </div>
+                <div class="setting-row">
+                  <span class="conn-logo" aria-hidden="true">St</span>
+                  <div class="grow"><p class="lbl">Stripe <span class="badge badge--success" style="margin-left:6px;">Connected</span></p><p class="desc">Payments · taxes, deposits and upsells</p></div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Managed under Settings → Payments">Settings</button>
+                </div>
+                <div class="setting-row">
+                  <span class="conn-logo" aria-hidden="true">Nk</span>
+                  <div class="grow"><p class="lbl">Nuki</p><p class="desc">Smart locks · send door codes automatically after check-in</p></div>
+                  <button class="btn btn--secondary btn--sm" data-toast="Nuki OAuth connection would start">Connect</button>
+                </div>
+                <div class="setting-row">
+                  <span class="conn-logo" aria-hidden="true">Ab</span>
+                  <div class="grow"><p class="lbl">Airbnb</p><p class="desc">Channel · import bookings directly from your Airbnb account</p></div>
+                  <button class="btn btn--secondary btn--sm" data-toast="Airbnb connection wizard would start">Connect</button>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h2>API &amp; webhooks</h2></div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">API key</p><p class="desc" style="font-family:ui-monospace,monospace;">ck_live_••••••••••••4f2a</p></div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Key copied to clipboard">Copy</button>
+                  <button class="btn btn--ghost btn--sm" data-toast="Rotating the key breaks existing integrations — confirmation would be required">Rotate…</button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow"><p class="lbl">Webhook endpoint</p><p class="desc">https://api.solmarproperties.com/chekin · booking.updated, checkin.completed</p></div>
+                  <span class="badge badge--success">Healthy</span>
+                  <button class="btn btn--ghost btn--sm" data-toast="Webhook editor with delivery log would open">Edit</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Embedded SDKs ── -->
+          <section class="settings-view" id="set-sdk" aria-labelledby="sdk-h" hidden>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+              <div class="card">
+                <div class="card-head">
+                  <h2 id="sdk-h">Embedded SDKs</h2>
+                  <button class="btn btn--primary btn--sm" data-open="#sdk-modal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                    New API key
+                  </button>
+                </div>
+                <div style="padding:var(--sp-4) var(--sp-5) 0;">
+                  <p class="small muted">Embed Chekin’s online check-in into your own website or app. Each key is scoped to the domains it may run on. <a href="#" data-toast="Docs would open: chekin.gitbook.io — Chekin Embedded SDKs" style="color:var(--text-brand);font-weight:500;">See documentation</a></p>
+                </div>
+                <div class="setting-row">
+                  <div class="grow">
+                    <p class="lbl">Guest checkin widget <span class="badge badge--info badge--plain" style="margin-left:6px;">Guest app</span></p>
+                    <p class="desc" style="font-family:ui-monospace,monospace;">pk_emb_••••••••••••8c1d</p>
+                    <div class="row" style="gap:5px;margin-top:6px;flex-wrap:wrap;">
+                      <span class="badge badge--neutral badge--plain">solmarproperties.com</span>
+                      <span class="badge badge--neutral badge--plain">book.solmarproperties.com</span>
+                      <span class="small muted">· all properties</span>
+                    </div>
+                  </div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Key copied to clipboard">Copy</button>
+                  <button class="btn btn--ghost btn--sm" data-open="#sdk-modal">Edit</button>
+                  <button class="btn btn--ghost btn--icon btn--sm" aria-label="Delete Guest checkin widget key" data-toast="Deleting a key breaks sites using it — confirmation would be required">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                  </button>
+                </div>
+                <div class="setting-row">
+                  <div class="grow">
+                    <p class="lbl">Owner portal <span class="badge badge--info badge--plain" style="margin-left:6px;">Hosts dashboard</span></p>
+                    <p class="desc" style="font-family:ui-monospace,monospace;">pk_emb_••••••••••••2b7f</p>
+                    <div class="row" style="gap:5px;margin-top:6px;flex-wrap:wrap;">
+                      <span class="badge badge--neutral badge--plain">owners.solmarproperties.com</span>
+                      <span class="small muted">· Villa Miramar, Casa Azulejo</span>
+                    </div>
+                  </div>
+                  <button class="btn btn--ghost btn--sm" data-toast="Key copied to clipboard">Copy</button>
+                  <button class="btn btn--ghost btn--sm" data-open="#sdk-modal">Edit</button>
+                  <button class="btn btn--ghost btn--icon btn--sm" aria-label="Delete Owner portal key" data-toast="Deleting a key breaks sites using it — confirmation would be required">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                  </button>
+                </div>
+                <div style="padding:var(--sp-3) var(--sp-5);border-top:1px solid var(--border-subtle);" class="row">
+                  <p class="small muted grow">2 of 3 API keys used on your plan.</p>
+                  <a href="#" class="small" data-toast="Request form would open — sales enables more keys" style="color:var(--text-brand);font-weight:500;">Need more?</a>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h2>Quick start</h2></div>
+                <div style="padding:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-3);">
+                  <p class="small muted">Drop the snippet where the check-in should appear and initialise it with your key:</p>
+                  <pre style="margin:0;padding:14px 16px;background:var(--surface-sunken);border:1px solid var(--border-subtle);border-radius:var(--radius-md);font-family:ui-monospace,monospace;font-size:var(--text-sm);overflow-x:auto;"><code>&lt;script src="https://sdk.chekin.com/hosts.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  ChekinHostsSDK.init({ apiKey: 'pk_emb_…', targetNode: '#chekin' });
+&lt;/script&gt;</code></pre>
+                  <div class="row">
+                    <button class="btn btn--secondary btn--sm" data-toast="Snippet copied to clipboard">Copy snippet</button>
+                    <button class="btn btn--ghost btn--sm" data-toast="Interactive playground would open with your key preloaded">Try in playground</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── Danger zone ── -->
+          <section class="settings-view" id="set-danger" aria-labelledby="danger-h" hidden>
+            <div class="card" style="border-color:var(--red-100);">
+              <div class="card-head"><h2 id="danger-h" style="color:var(--status-danger-fg);">Danger zone</h2></div>
+              <div class="setting-row">
+                <div class="grow">
+                  <p class="lbl">Export all data</p>
+                  <p class="desc">Bookings, guest records and documents as a ZIP archive. Recommended before closing the account.</p>
+                </div>
+                <button class="btn btn--secondary btn--sm" data-toast="Export prepared in background — you’ll get an email when ready">Request export</button>
+              </div>
+              <div class="setting-row">
+                <div class="grow">
+                  <p class="lbl">Close account</p>
+                  <p class="desc">Compliance documents are archived for the legal retention period before deletion.</p>
+                </div>
+                <button class="btn btn--danger-ghost" data-toast="Account closure requires email confirmation — flow would start here">Close account…</button>
+              </div>
+            </div>
+          </section>
+
+          <nav class="view-pager" id="view-pager" aria-label="Settings pagination"></nav>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Invite modal -->
+<div class="modal-overlay" id="invite-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="inv-title" style="max-width:460px;">
+    <div class="modal-head">
+      <h2 id="inv-title">Invite a team member</h2>
+      <button class="btn btn--ghost btn--icon" data-close aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:var(--sp-4);">
+      <div class="field"><label for="inv-email">Email</label><input class="input" id="inv-email" type="email" placeholder="name@company.com"></div>
+      <div class="field">
+        <label for="inv-role">Role</label>
+        <select class="select" id="inv-role">
+          <option selected>Manager — everything except billing</option>
+          <option>Collaborator — bookings &amp; guests only</option>
+        </select>
+        <p class="help">Roles preview what the member will see before you send the invite.</p>
+      </div>
+      <div class="field">
+        <label for="inv-props">Properties</label>
+        <select class="select" id="inv-props"><option selected>All properties</option><option>Choose specific properties…</option></select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn--ghost" data-close>Cancel</button>
+      <button class="btn btn--primary" data-close data-toast="Invitation sent">Send invite</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generate API key modal -->
+<div class="modal-overlay" id="sdk-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="sdk-m-title" style="max-width:480px;">
+    <div class="modal-head">
+      <h2 id="sdk-m-title">Generate API key</h2>
+      <button class="btn btn--ghost btn--icon" data-close aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:var(--sp-4);">
+      <div class="field">
+        <label for="sdk-name">Key name</label>
+        <input class="input" id="sdk-name" placeholder="e.g. Booking site widget">
+        <p class="help">Letters and spaces only — shown in this list, never to guests.</p>
+      </div>
+      <div class="field">
+        <label for="sdk-type">Type of app</label>
+        <select class="select" id="sdk-type">
+          <option selected>Guest app — online check-in for guests</option>
+          <option>Hosts dashboard — property management for owners</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sdk-domains">Allowed domains</label>
+        <input class="input" id="sdk-domains" placeholder="solmarproperties.com, book.solmarproperties.com">
+        <p class="help">The key only works on these domains. Separate with commas.</p>
+      </div>
+      <div class="row" style="gap:10px;">
+        <label class="switch" aria-label="Access to all properties"><input type="checkbox" checked><span class="track"></span></label>
+        <div>
+          <p style="font-weight:500;">Access to all properties</p>
+          <p class="small muted">Turn off to scope the key to specific properties.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn--ghost" data-close>Cancel</button>
+      <button class="btn btn--primary" data-close data-toast="API key generated — copy it from the list">Generate key</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script>
+(function () {
+  var links = Array.from(document.querySelectorAll('.set-nav a'));
+  var order = links.map(function (l) { return l.getAttribute('href').slice(1); });
+  var titles = {};
+  links.forEach(function (l) { titles[l.getAttribute('href').slice(1)] = l.textContent.trim(); });
+  var pager = document.getElementById('view-pager');
+  var arrowL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>';
+  var arrowR = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
+
+  function showView(id, focusHeading) {
+    if (order.indexOf(id) < 0) id = order[0];
+    document.querySelectorAll('.settings-view').forEach(function (s) {
+      var isTarget = s.id === id;
+      s.hidden = !isTarget;
+      if (isTarget) {
+        s.classList.remove('view-enter');
+        void s.offsetWidth;
+        s.classList.add('view-enter');
+      }
+    });
+    links.forEach(function (l) {
+      l.setAttribute('aria-current', String(l.getAttribute('href') === '#' + id));
+    });
+    var i = order.indexOf(id);
+    var prev = i > 0 ? order[i - 1] : null;
+    var next = i < order.length - 1 ? order[i + 1] : null;
+    pager.innerHTML =
+      (prev ? '<a href="#' + prev + '"><span aria-hidden="true">' + arrowL + '</span><span><span class="pager-label">Previous</span>' + titles[prev] + '</span></a>' : '<span></span>') +
+      (next ? '<a href="#' + next + '" style="text-align:right;"><span><span class="pager-label">Next</span>' + titles[next] + '</span><span aria-hidden="true">' + arrowR + '</span></a>' : '<span></span>');
+    if (history.replaceState) history.replaceState(null, '', '#' + id);
+    if (focusHeading) {
+      var h = document.querySelector('#' + id + ' h2');
+      if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: false }); }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#set-"]');
+    if (!a) return;
+    e.preventDefault();
+    showView(a.getAttribute('href').slice(1), true);
+  });
+
+  showView((location.hash || '#set-profile').slice(1), false);
+})();
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>

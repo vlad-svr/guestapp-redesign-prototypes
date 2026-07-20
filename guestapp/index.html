@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chekin Guestapp — Redesign 2.0 UX Prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .wrap { max-width: 980px; margin: 0 auto; padding: 56px 24px 100px; }
+  .hero-head {
+    border-radius: 24px;
+    background: var(--gradient-hero);
+    color: #fff;
+    padding: 40px 40px 36px;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-elev);
+  }
+  .hero-head::before {
+    content: ''; position: absolute; top: -60px; right: -40px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: rgba(140, 165, 255, 0.3); filter: blur(60px);
+  }
+  .hero-head h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; position: relative; }
+  .hero-head p { font-size: 14.5px; line-height: 23px; color: rgba(255,255,255,0.8); margin-top: 12px; max-width: 640px; position: relative; }
+  .hero-head .meta { display: flex; gap: 8px; margin-top: 20px; position: relative; flex-wrap: wrap; }
+  .hero-head .meta span {
+    height: 28px; padding: 0 13px;
+    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(8px);
+    font-size: 11.5px; font-weight: 600;
+  }
+
+  .proto-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 28px; }
+  .proto-link {
+    display: block;
+    padding: 22px;
+    border-radius: 18px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .proto-link:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(56,92,248,0.14), 0 3px 8px rgba(22,22,67,0.06); }
+  .proto-link .pl-icon {
+    width: 46px; height: 46px; border-radius: 14px;
+    background: var(--gradient-brand); color: #fff;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-brand);
+    margin-bottom: 14px;
+  }
+  .proto-link h3 { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .proto-link p { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 6px; }
+  .proto-link .go { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 12.5px; font-weight: 700; color: var(--blue-500); }
+
+  h2.sec { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); margin: 48px 0 6px; }
+  p.sec-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; }
+  h3.feat { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); margin: 26px 0 12px; display: flex; align-items: center; gap: 10px; }
+  h3.feat::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .tag-new { display: inline-flex; align-items: center; height: 18px; padding: 0 8px; border-radius: 99px; background: var(--tint-pressed); color: var(--blue-500); font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle; margin-left: 6px; }
+  .proto-link .ff { font-size: 15px; margin-right: 2px; }
+  /* a proposal card sits below the shipped variant and reads quieter than it */
+  .proto-link.is-proposal h3 { color: var(--text-secondary); font-weight: 600; }
+  .proto-link.is-proposal:hover h3 { color: var(--navy); }
+  .proto-link.is-proposal .pl-icon { opacity: 0.62; }
+  .tag-proposal { display: inline-flex; align-items: center; height: 18px; padding: 0 8px; border-radius: 99px; background: var(--amber-50); color: var(--amber-700); font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle; margin-left: 6px; }
+  .tag-current { display: inline-flex; align-items: center; height: 18px; padding: 0 8px; border-radius: 99px; background: var(--n-100); color: var(--n-600); font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle; margin-left: 6px; }
+  .badge-static { display: inline-flex; align-items: center; height: 18px; padding: 0 8px; border-radius: 99px; background: var(--n-100); color: var(--n-600); font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; vertical-align: middle; }
+
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+  .imp {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    padding: 18px;
+  }
+  .imp .tag {
+    display: inline-flex; align-items: center;
+    height: 22px; padding: 0 9px;
+    border-radius: 99px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .tag.glass-t { background: var(--tint-pressed); color: var(--blue-500); }
+  .tag.ux-t { background: var(--green-50); color: var(--green-800); }
+  .tag.trust-t { background: var(--amber-50); color: var(--amber-700); }
+  .tag.a11y-t { background: var(--tint-info); color: var(--blue-650); }
+  .imp h4 { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .imp .was { font-size: 12px; line-height: 17px; color: var(--text-tertiary); margin-top: 7px; }
+  .imp .was b { color: var(--n-600); font-weight: 600; }
+  .imp .now { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 6px; }
+  .imp .now b { color: var(--navy); font-weight: 600; }
+
+  .note {
+    margin-top: 40px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: var(--tint-promo);
+    border: 1px solid var(--n-100);
+    font-size: 12.5px; line-height: 19px; color: var(--n-600);
+  }
+  .note b { color: var(--navy); }
+</style>
+</head>
+<body>
+<div style="background: var(--gradient-page); min-height: 100vh;">
+<div class="wrap">
+
+  <div class="hero-head">
+    <h1>Guestapp Redesign 2.0 — UX prototypes</h1>
+    <p>Static HTML/CSS mockups of the redesigned Identity Verification, Guest Registration, Payments, Tourist Taxes, FAQ &amp; Language, and Home check-in flows — built on the real <b>@chekinapp/tokens</b> design system (Poppins, brand blue #385bf8, navy #161643, cool lavender neutrals) with incremental UX improvements layered on top — no structural changes, every screen maps 1:1 to an existing component.</p>
+    <div class="meta">
+      <span>Pure HTML + CSS</span>
+      <span>Mock data only</span>
+      <span>Real design tokens</span>
+      <span>Liquid glass accents</span>
+    </div>
+  </div>
+
+  <h2 class="sec" style="margin-top:36px">Prototypes by feature</h2>
+  <p class="sec-sub"><b><span class="tag-proposal" style="margin-left:0">Proposal</span></b> marks a redesign proposal shown beside the <b><span class="tag-current" style="margin-left:0">Current</span></b> shipped variant — proposals are not the main variant. One canonical prototype per feature and form factor. <b>📱 Mobile</b> and <b>🖥 Desktop</b> sit together under each feature. Most are click-through flows (scenario switcher, auto-advancing camera/sync steps, branches follow your choices); a couple are static screen sets, labelled as such.</p>
+
+  <h3 class="feat">Splash screen</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-splash-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Splash screen — mobile</h3>
+      <p>Shown <b>beside today's splash, both clocked</b>. The shipped component holds every guest for <b>load + 5.0 s</b>, closes two curtains over its own logo at 4.3 s, and — if the auth request hangs — <b>never leaves</b>. Here the splash is a <b>handoff, not a gate</b>: it covers a shape-matched skeleton, leaves the instant the data lands (<code>max(load, 500 ms)</code>), stays silent below 1.2 s, admits slowness at 6 s, and hits a <b>watchdog</b> at 20 s. Seven states: fast, slow, taking-longer, can't-load, offline, host-branded and splash-disabled. A <b>Style</b> switch picks between <b>Classic</b> (the refined V1) and <b>Modern</b> (the glass/gradient rebuild) — same behaviour in both.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-splash-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Splash screen — desktop · SDK · kiosk</h3>
+      <p>The same handoff at three sizes. On a laptop it dissolves into the <b>navy-sidebar shell</b> and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b>, never the host's page. On the unattended <b>kiosk</b> the watchdog matters most — today a hung request leaves a lobby screen showing a solid blue rectangle until someone reboots it.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Home &amp; check-in list</h3>
+  <div class="proto-links" style="margin-top:0">
+
+
+    <a class="proto-link" href="home.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
+      <h3><span class="ff">📱</span> Home — mobile <span class="tag-current">Current</span></h3>
+      <p>Glass top bar and bottom nav, hero with arrival countdown, "next up" spotlight row, progress ring, all-done celebration state, and a "Handpicked for your trip" section (native offers + Mozio "HOT DEAL" &amp; Airalo eSIM banners) with a GuruWalk Free-offers FAB.</p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="home-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Home — desktop <span class="tag-current">Current</span></h3>
+      <p>Navy sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards, plus a "Handpicked for your trip" 3-col grid with the Mozio wide banner + Airalo eSIM banner and a Free-offers FAB.</p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link is-proposal" href="home-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
+      <h3><span class="ff">📱</span> Home — mobile <span class="tag-proposal">Proposal</span></h3>
+      <p>The "check-in cockpit" rebuild: one <b>command hero</b> fuses greeting, a progress meter, the single <b>next action</b> and the reward it unlocks; below it an honest <b>step timeline</b>, an <b>"unlocks when you're done"</b> strip, and clearly-optional extras. Four states — in progress, complete, loading (skeleton) and menu drawer. Ships a <b>Standard · Liquid glass</b> switch that frosts the reading surfaces over color orbs.</p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link is-proposal" href="home-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Home — desktop <span class="tag-proposal">Proposal</span></h3>
+      <p>Navy sidebar + command hero (progress + next-action side by side), the step timeline, a 3-up unlocks row, a demoted optional-extras grid (Mozio + Airalo banners), and a host-contact right rail. The V2 concept on the desktop shell.</p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Sign in &amp; onboarding</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-auth-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Sign in &amp; onboarding — mobile</h3>
+      <p>The <b>instant check-in</b> entry (<code>pages/Auth</code>), gated by <code>isInstantCheckInEnabled</code>. The hidden email → password → code sign-up machine gets a <b>real "step 2 of 3"</b>, a password <b>show/hide + strength</b>, and an OTP with a <b>resend countdown</b>; the account is <b>sold up front</b> (save progress · register once · come back for keys) with an honest "continue without an account" and Google. Then the four onboarding steps — trip type, guest counts, who's coming, lead guest — become <b>icon/avatar choice cards</b> on a <b>labelled step rail</b>, ending in the guest-creation success that hands off to registration.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-auth-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Sign in &amp; onboarding — desktop</h3>
+      <p>The same entry as a proper <b>brand-panel split</b> instead of a lone narrow mobile card: a persistent gradient panel that sells the account and shows the property, beside a focused form column. Sign-up, the OTP with its countdown, returning-login, welcome, and the four onboarding steps as choice cards on a labelled rail.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Find booking</h3>
+  <div class="proto-links" style="margin-top:0">
+
+
+    <a class="proto-link" href="flow-search-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Find booking — mobile <span class="tag-current">Current</span></h3>
+      <p>The very first step, before check-in: <code>pages/SearchReservation</code>. The property you're checking into is shown up front (catch a wrong link early), the two methods become <b>self-explaining cards</b> that advance on one tap, the booking code gets a real <b>"where do I find this?"</b> answer, the search runs as a reassuring <b>radar</b> → booking-found, and the dead-end "not found" becomes <b>next steps</b> (retry · other method · contact host). Plus the grouped create-reservation (property-link) form with "From your search" tags and the direct-link auto-search.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-search-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Find booking — desktop <span class="tag-current">Current</span></h3>
+      <p>The same search as a centred <b>pre-auth card</b> on the branded gradient — search happens before any reservation exists, so there's no sidebar or app shell yet. Method cards, booking-code with the help dialog, date + email, grouped create-reservation, the searching radar → found, the actionable not-found and the direct-link auto-search — all mirrored.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link is-proposal" href="flow-search-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Find booking — mobile <span class="tag-proposal">Proposal</span></h3>
+      <p>The arrival card. This screen is the <b>face of the property</b> — the first thing a guest ever sees of it — so the property becomes the hero: a photographic canvas carries the name, the place, the host and a rating, and the search floats over it on a frosted sheet. The booking code is entered into <b>segmented cells</b>, the wait becomes a <b>legible checklist</b> over the property being matched, and "found" pays off as a <b>boarding pass</b> with dates, nights and reference.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link is-proposal" href="flow-search-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Find booking — desktop <span class="tag-proposal">Proposal</span></h3>
+      <p>The desktop half of the arrival card: the property holds a <b>full-height canvas</b> on the left — photo, host, a line from a past guest, the trust badges — while the search lives on a frosted card to the right. The canvas never leaves, so the guest can see where they're going while they search, while they wait, and when it's found.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Identity verification</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-iv-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> IV flow — mobile</h3>
+      <p>Passport → liveness, or ID card → front + back + quick selfie. Plus QR handoff entry, upload → crop &amp; confirm, camera-denied, email + SMS contact verification (with wrong-code state), failure detours and the unavailable state. Vela help sheet on every non-camera screen.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-iv-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> IV flow — desktop</h3>
+      <p>Full desktop parity: phone handoff (QR + live sync), webcam with document choice + back side + selfie/liveness, upload → crop &amp; confirm, email + SMS contact verification, and every detour (validation failed, webcam blocked, unavailable). Stage-aware Vela rail guides every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">IV QR</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-housing-iv-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> IV QR — mobile</h3>
+      <p>Identity verification at an on-property housing must prove one thing: <i>the guest is at the door right now</i>. The guest scans the entrance sticker, finds their booking by name on the SDK page (<code>QR_IV_ON_PROPERTY</code>) and is handed to the regular guestapp, where IV opens straight away: <b>the scan was the proof</b>. When that proof is missing, <code>IVQRGuard</code> holds IV shut and routes the guest through <code>IVQRScannerView</code> to scan the sticker in-app. Either way IV only unlocks on the check-in date. Fixes the <b>modal that names the wrong field</b>, the <b>dead-end not-found</b>, the <b>invalid-QR copy that describes a different error</b>, and shows the <b>presence flag that never gets set</b> after the door scan.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-housing-iv-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> IV QR — desktop</h3>
+      <p>The same flow on the door-mounted tablet. The entrance-QR arrival keeps the full-height property canvas (a wrong sticker is caught before a letter is typed); the in-app scanner and the shared IV steps render in the <b>real guestapp shell</b> — navy sidebar, "Back to summary", and a URL bar that moves from <code>/verify-on-housing</code> to <code>/:token/verification/qr-scan</code> as the guest crosses into their own session.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Guests summary</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-guests-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-users"/></svg></div>
+      <h3><span class="ff">📱</span> Guests summary — mobile</h3>
+      <p>Shown <b>beside today's hub</b> for direct comparison. Deliberately the same shape — same header, sections and one-row-per-guest list — with the noise removed and the defects fixed: <b>one progress line + a segment per guest</b>, <b>action-named statuses</b> (Verify ID / Add details / Not started — never two rows both labelled "Incomplete"), a named slot for every missing guest, a docked CTA that says <b>which guest and which task</b>, and a <b>delete that asks first and can be undone</b>. Six states: partial, nobody registered, solo, all-done, skeleton, background refresh.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-guests-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Guests summary — desktop</h3>
+      <p>The same roster as the navy-sidebar <b>“Guests”</b> destination: progress line, meter and list in a reading column, and the mobile dock reborn as a small <b>action ledger</b> — next guest, next task, and the reward it unlocks ("virtual keys unlock automatically"). Partial, nobody-registered, all-done and skeleton states.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Guest registration</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-registration.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Registration flow — mobile</h3>
+      <p>Hub → add details (scan-to-autofill jumps into IV) → review &amp; sign with the full submission tail: an <b>interactive signature</b> (tap the pad → draw in the sheet → preview, with clear and the required-signature error), backend-driven agreement clauses, contract copy opt-in and the legal fine print.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="guest-registration-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Registration — desktop</h3>
+      <p>Hub with group progress ring and copy-link banner, plus the two-column pre-filled review form with auto tags, the <b>draw-inline signature</b> (draw directly on the pad with mouse/trackpad) and the agreement clauses. <span class="badge-static">static screens</span></p>
+      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Autofill — document scan</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-autofill-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Autofill scan — mobile</h3>
+      <p>The <code>AutoFillFlowModal</code> redesigned: the document-in-frame with the <b>MRZ band highlighted</b> is the hero (so you know exactly what to point at), the OCR wait reads honestly (align → read → done, with the decoded MRZ strip), and the result comes back as <b>"Review your details"</b> with per-field ✦ Scanned tags and a <b>Check</b> flag for anything low-confidence. Includes the barcode document-selection step, couldn't-read retry, camera-blocked recovery and the Need-help MRZ sheet.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-autofill-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Autofill scan — desktop</h3>
+      <p>The same scan as a centred <b>530 px dialog</b> over a dimmed guest form (glass header, on-camera pills), with the review payoff landing on the desktop registration shell — the scan, reading, document-selection and couldn't-read states all mirrored.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Registration complete &amp; offers</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-registered-modal.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱🖥</span> Registered modal + offers</h3>
+      <p>The modal shown while a guest is being registered: offers load during the wait, the status pill flips to “registered” mid-browse, cart summary, no-offers and error states. Mobile bottom sheet and desktop dialog in one flow.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Payments</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-payments-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Payments flow — mobile</h3>
+      <p>Cart with charges split from card holds (dashed = never charged), pay later, the embedded Stripe payment element (fenced — Appearance-API theming only) with the €0.00-hold warning up front, mocked 3-D Secure bank step, live confirmation timeline with a slow-connection fallback, receipt with the next task, decline recovery, order history, empty cart and the deposit chooser.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-payments-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Payments flow — desktop</h3>
+      <p>Two-column cart with a sticky ledger, the embedded Stripe payment element, live confirmation timeline, full-bleed receipt celebration, decline recovery, order history and the deposit chooser — with a stage-aware Vela rail (holds, security, statement copy) on every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Property protection</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-deposit-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Property protection — mobile</h3>
+      <p>The standalone <code>DepositView</code> (<code>/deposit</code>), reached from Home — not the chooser embedded in the cart, though the two now share one card. Every option leads with <b>what leaves the account today</b> (€0.00 held vs €39.00 charged), and the hold's real cost — <b>€300.00 of your card limit frozen</b> — is stated instead of buried. All three backend shapes get an honest screen: one protection (nothing to choose), two (genuinely exclusive), optional (declinable, with a confirm). Plus the auto-opening nudge, edit-from-cart with live totals, the settled state that today is a <b>silent redirect home</b>, the info sheets and the waiver.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-deposit-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Property protection — desktop</h3>
+      <p>A <b>"Property protection"</b> sidebar destination between guest registration and payments. The two options stand <b>side by side</b>, so the trade they represent is a single glance rather than a scroll, with a stage-aware Vela rail that answers the only question anyone has ("is the €300 taken from my account?").</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Tourist taxes</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-taxes-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Taxes flow — mobile</h3>
+      <p>The tax total as visible math: a per-guest breakdown card (taxed nights × rate) with exempt guests kept on the list as dashed €0.00 rows, the season rule pinned on top, an exemption picker that previews the new total before confirming, new-guest exemptions, the edit-from-cart mode, an age-priced region variant and the paid/locked state.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-taxes-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Taxes flow — desktop</h3>
+      <p>Per-guest math on the left, the running total sticky on the right with the confirm CTA inside it, exemption picker with a live "new total if confirmed" preview, edit-from-cart mode that returns to payments, and the paid/locked state — with a stage-aware Vela rail on every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Upselling — extras &amp; experiences</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-upselling-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Upselling flow — mobile</h3>
+      <p>Extras with the booking model made visible: every offer declares ⚡ Instant (straight to cart) or 🕗 On request (host confirms first) before you tap, a "My requests" view tracks the whole lifecycle on a 3-step tracker with dashed un-approved prices, declined requests quote the host and offer a plan B, and partner offers (eSIM, free tours) say up front that they book outside the app.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-upselling-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Upselling flow — desktop</h3>
+      <p>Extras as a sidebar destination: a 3-column grid with lane chips and an exclusive featured card, detail pages with a sticky booking box (quantity, total, "nothing charged now" note), the request tracker inside the booking box for on-request offers, and a "My requests" ledger where waiting amounts stay dashed — with a stage-aware Vela rail on every step.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-book-experience-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Book an experience — mobile</h3>
+      <p>The booking chain the upselling flow only ever pointed at: <code>BookExperienceView</code> → <code>EnterContactEmailView</code> → <code>CreateDealCompleteModal</code>, plus the <code>/:token/:slug</code> deep link. Closes three spec gaps — the <b>delivery date &amp; time picker</b>, <b>multi-item offers</b> (named baskets with their own prices) and the <b>slug deep-link</b>. Also fixes the completion modal, which today tells an <b>on-request</b> guest their booking is confirmed and sends them to a cart that can't hold it. <b>Mobile only</b> — on a laptop both views fall back to <code>OfferView</code>.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Guidebooks</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-guidebooks-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Guidebooks — mobile</h3>
+      <p>The flat icon-row list becomes browsable cards that <b>preview what's inside</b> (Wi-Fi · Check-in · Map) and declare their <b>type</b> (Guide / Web / PDF). A rich guide gets a sticky <b>"In this guide" chapter rail</b>, the Wi-Fi password is <b>surfaced with a copy button</b>, map blocks gain an address + Directions sheet, and recommendations become real <b>place cards</b> with distance, rating and directions. Plus the PDF/HTML readers, the not-available gate and an empty state that points somewhere.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-guidebooks-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Guidebooks — desktop</h3>
+      <p>Guidebooks as the sidebar destination (the "Your stay" nav item that already exists): a <b>card grid</b> that previews each guide's contents and type, and a reading view where the long guide's <b>chapters live in the Vela rail</b> as a live "In this guide" index, alongside jump-to-other-guidebooks. Covers the rich guide, recommendations grid, the PDF reader and the not-available state.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-housing-guidebooks-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Housing guidebooks — mobile</h3>
+      <p>The <b>property-link</b> surface (<code>/housing-guidebooks</code>): guidebooks for a <b>home</b>, opened without a booking. Same cards, a different shell — the host's brand replaces the booking reference, the hamburger opens a nav drawer listing every guidebook, and the page never pretends a stay exists. Fixes three real faults: PDF and Web guidebooks currently <b>escape the layout</b>, the mobile header offers no way back, and the per-language fallback is silent.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-housing-guidebooks-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Housing guidebooks — desktop</h3>
+      <p>The same property link on a laptop: a persistent <b>284px nav</b> that lists every guidebook the home has, so the whole property is one click deep from anywhere. The sidebar belongs to the host, not the booking — no progress ring, no check-in tasks. PDF and Web guides read <b>inside</b> the shell; the loading skeleton and the <code>no_guidebooks_available</code> empty state get a real exit.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">AI Travel Guide</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-travel-guide-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> AI Travel Guide — mobile</h3>
+      <p>The AI itinerary (<code>TravelGuideView</code>) stops being a one-shot artifact and becomes a <b>document you can change</b>. Six questions on one scroll become <b>three required and three folded optional</b>, on real radio/checkbox groups with a meter that measures what actually gates the button. The build screen gains an <b>elapsed clock, a cancel and a "you can leave"</b>; failure gains <b>three exits</b>. The plan grows a <b>"Right now" card</b>, real <code>role="tablist"</code> phase tabs, <b>Directions on every stop</b>, and a <b>"Tuned for" strip</b> that renders <code>profile_assumptions</code> and opens the way back into the questions the shipped app closes for ever.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-travel-guide-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> AI Travel Guide — desktop</h3>
+      <p>The same four views as the navy-sidebar <b>"Travel Guide"</b> destination. A laptop cannot walk to the market, so the mobile "Right now" card becomes a persistent <b>trip rail</b>: at-a-glance totals (with the planned spend the shipped <code>TripGlance</code> omits), the profile the plan was tuned to, <b>where it came from</b> (<code>source_urls</code>, rendered at last) and a <b>"Send to my phone"</b> hand-off. Intro, questions, build, failure, plan, skeleton and empty.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Kiosk</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-keycards-kiosko.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Key cards — kiosk</h3>
+      <p>The <code>/remote-keys</code> route is <b>not</b> virtual keys — it drives the physical card dispenser under the kiosk screen. An abstract progress bar becomes a <b>stack of real cards</b> (printed = solid, remaining = dashed ghosts), and every screen that expects the guest to reach for something <b>points at the slot</b> it comes out of. Covers the auto-opening registration reminder, the print → dispense loop, both PrintedCards outcomes, the dispenser failure (which sends the guest to a human) and the no-room-assigned gate.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Travel eSIM</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-esim-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-card-sim"/></svg></div>
+      <h3><span class="ff">📱</span> Travel eSIM — mobile</h3>
+      <p>A rebuild of <code>pages/esim</code>. The hub leads with the <b>destination and a price</b> instead of a definition of the word “eSIM”. Plans become <b>one-tap radio cards behind a duration rail</b>, with the group that covers the guest's real stay preselected, a <b>€/GB unit price</b> on every card, and <b>“Best value” computed as the cheapest per GB</b> — not stamped on whatever package is unlimited. After paying, the guest is <b>brought back to install</b>, and the install ladder is ordered by what works on the phone in their hand: <b>one-tap install → manual codes → QR (for a second device) → APN (troubleshooting)</b>. Ten states, including the reserving wait, both empty states and a skeleton.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-esim-desktop-v2.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
+      <h3><span class="ff">🖥</span> Travel eSIM — desktop</h3>
+      <p>The same three views as the navy-sidebar <b>“Travel eSIM”</b> destination. The mobile dock becomes a <b>sticky itemised ledger</b> (plan · devices · total, and the three things the guest is about to wonder). The install screen admits that <b>a browser cannot install an eSIM</b> and leads with a scannable QR aimed at the guest's phone — the one case where the QR really is the right first rung.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Chat with host</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-chat-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Chat with host — mobile</h3>
+      <p>The bare "Talking with {property}" thread becomes a real conversation: a <b>host identity</b> (photo, presence dot, verified tick, response-time line) instead of a property name; <b>grouped bubbles</b> with <b>day separators</b> and <b>delivery / read receipts</b>; a warm <b>first-message</b> state with tappable <b>starter questions</b> in place of "No messages yet"; a friendlier <b>identity check</b> that explains why it's asking; image/file bubbles with a lightbox; plus honest <b>reconnecting</b>, <b>chat-off</b> and <b>register-first</b> states.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-chat-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Chat with host — desktop</h3>
+      <p>Chat as the "Support" sidebar destination: the thread in the middle and a right <b>context rail</b> carrying the host card, the booking summary both sides share, common questions and a shared-files gallery — so the guest never re-explains their stay. Covers the conversation, the first-message state, the identity check and the chat-off state.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Check-out</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-checkout-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Check-out flow — mobile</h3>
+      <p>The bare payment-box becomes one guided flow with a visible <b>settle → rate → done</b> spine. A <b>"you're all set" checklist</b> reassures before it asks, the deposit hold stays <b>hollow and out of the total</b>, and the long-shipped-but-never-built <b>"add before you go"</b> services (late check-out, luggage) finally have a surface — with an <b>honest €0.00 path</b> that just says "continue". The star rating gains an <b>emotive read-out</b>, and a low score opens a real <b>service-recovery</b> screen (message the host / call back) instead of the old dead end. Ends in a warm thank-you with optional public reviews and the trip-home transfer.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-checkout-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Check-out flow — desktop</h3>
+      <p>Check-out as the closing <b>"Your stay"</b> destination: the settled checklist and last add-ons on the left, a <b>sticky action ledger</b> on the right, and a <b>stage-aware Vela rail</b> that carries the check-out timeline, the deposit-hold explainer and the airport transfer. Same rate → repair / thanks branch, receipt confirmation and completed-state summary as mobile.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">FAQ &amp; language</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-faq-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> FAQ &amp; language — mobile</h3>
+      <p>The FAQ grouped by check-in task with answers that end in the action they describe, search that auto-opens and highlights its matches, a no-results state with a way out (Ask Vela), and the language bottom sheet with a "Suggested" group — switching is instant, translated in place, no reload.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-faq-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> FAQ &amp; language — desktop</h3>
+      <p>FAQ as a sidebar destination (new "Support" group: Language with its current value, FAQs, Privacy policy), highlight search, and the language dialog with a two-column grid — picking Español translates the sidebar, page and Vela rail in place.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Remote access — virtual keys</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-remote-access-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Virtual keys — mobile</h3>
+      <p>Your phone as the key, in two honest states: <b>live</b> — each door says whether it opens right now (green "Open now" vs amber "Opens 15:00"), a tactile <b>slide-to-open</b> for remote locks and a copyable keypad code; and <b>gated</b> — the "not available yet" screen becomes a conditions checklist where the blocking task (verify Carlos's ID) deep-links straight to it. Plus the Keyless partner-app path, a many-door building (one lock offline), and the opening → opened → connection-issue status modals.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-remote-access-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Virtual keys — desktop</h3>
+      <p>Remote access as a "Virtual keys" sidebar destination: doors in a comfortable reading column with the slide-to-open, the same conditions-gate checklist and before-the-window locked state, and a multi-door building view — with a stage-aware Vela rail (door-status legend, "the last step" deep-link, access-window explainer).</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Error &amp; recovery</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-error-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Error states — mobile</h3>
+      <p>The full-page <code>ErrorView</code>, redesigned so it's never a dead end. Each real case gets its own mark and its own exit: a <b>broken link</b> routes into booking search (+ contact host, what-to-check), <b>too many requests</b> shows a countdown that invites a retry, a <b>crash</b> (<code>ErrorFallback</code>) hands over a copyable error reference, and the <b>SDK embedded</b> error (<code>SDKErrorView</code>) gets a compact recoverable card shown inside a mock host site.</p>
+      <span class="go">Run states <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-error-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Error states — desktop</h3>
+      <p>The same four states as a centred <b>glass card</b> on the branded gradient — errors happen pre-auth, so they reuse the Find-booking pre-auth shell rather than the app shell. SDK embedded shown inside a wider mock host page.</p>
+      <span class="go">Run states <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="sec">Building blocks</h2>
+  <p class="sec-sub">Shared primitives and behaviors used across the flows above.</p>
+
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="vela.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkle"/></svg></div>
+      <h3>Vela helper</h3>
+      <p>The contextual assistant: glass rail on desktop, FAB + glass sheet on mobile — with Ask Vela input, quick actions (QR handoff, share link, guest count), progress, offers and guidebook blocks.</p>
+      <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="modals-demo.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-layers"/></svg></div>
+      <h3>Modals &amp; overlays</h3>
+      <p>QR handoff, share booking link, photo privacy, skip confirmation, and the Vela sheet — dialogs on desktop, bottom/right sheets on mobile. Also wired to their real triggers inside the flows.</p>
+      <span class="go">Open demo <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="scroll-demo.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-scroll"/></svg></div>
+      <h3>Scroll behavior</h3>
+      <p>Long form and long home on mobile (sticky glass top bar, CTA dock, pinned bottom nav) plus desktop with fixed sidebar and Vela rail.</p>
+      <span class="go">Open demo <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="sec">What changed and why</h2>
+  <p class="sec-sub">Each improvement maps to a concrete gap found in the current redesign-2.0 code.</p>
+
+  <h3 class="feat">Splash screen</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag glass-t">Two treatments</span>
+      <h4>Classic and Modern — same component, same behaviour</h4>
+      <p class="was"><b>Now in code:</b> one look, and it is the look that produced the dead screen: a flat background, a logo, three dots, and two curtains closing on a blind five-second clock.</p>
+      <p class="now"><b>Proposed:</b> a <b>Style</b> switch offers two shippable surfaces. <b>Classic</b> is V1 with its four defects fixed and <i>nothing else touched</i> — flat brand ground, bare logo, the three dots, curtains removed. <b>Modern</b> rebuilds the surface in the <b>pre-auth idiom already used by Find booking and Sign-in</b>: branded gradient, colour orbs, film grain, a liquid-glass plate with one slow specular sweep, and the honest ring. The timing contract, the states, the handoff and the whole accessibility pass are <b>identical in both</b> — the choice is purely aesthetic. (The dots are honest too: indeterminate by construction, they can never imply a percentage, which is why Classic needs no ring.)</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Speed</span>
+      <h4>The 5-second tax is deleted</h4>
+      <p class="was"><b>Now in code:</b> <code>SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000</code>, and the timer only <i>starts</i> once <code>hideSplashScreen</code> flips true. Total splash time is <code>load + 5000 ms</code> — a flat five-second toll on every cold start, for every guest, forever.</p>
+      <p class="now"><b>Proposed:</b> the splash is held for <b><code>max(load, 500 ms)</code></b> and not one frame longer. The 500 ms floor exists only so a cached load doesn't strobe. A typical arrival goes from <b>5.7 s</b> to <b>0.7 s</b> — both phones in the prototype are clocked, so you can watch the difference rather than take it on trust.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Reliability</span>
+      <h4>The infinite splash gets a watchdog</h4>
+      <p class="was"><b>Now in code:</b> that 5 s timer is the component's <i>only</i> timer, and it is gated behind the data having already arrived. If auth-init neither resolves nor rejects — offline, captive portal, dead API — <code>hideSplashScreen</code> never flips and <b>the splash never unmounts</b>. No timeout, no error state, no way out.</p>
+      <p class="now"><b>Proposed:</b> a four-rung ladder. Silent below <b>1.2 s</b>; at <b>6 s</b> it says "this is taking longer than usual", reveals an elapsed clock, offers <i>Try again</i> and promises nothing is lost; at <b>20 s</b> a <b>watchdog</b> renders a real error state — <i>Try again</i> · <i>Find my booking</i> · <i>Message your host</i> · a copyable error reference.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Continuity</span>
+      <h4>The curtains close over a dead screen — so they're gone</h4>
+      <p class="was"><b>Now in code:</b> the curtains animate from <i>mount</i> over 5 s and are fully shut by 86 % (≈4.3 s), while dismissal waits for <code>load + 5000 ms</code>. Everything in between is an opaque rectangle of the brand colour — no logo, no loader, no text. On a 3 s load that is <b>3.7 s of nothing</b>. The V1 phone counts it out loud.</p>
+      <p class="now"><b>Proposed:</b> the splash sits <b>on top of a shape-matched skeleton</b> of the screen it is about to become. On ready the surface fades, the mark <b>travels to the header logo slot</b>, and the skeleton flips to content in the same frame. There is never a blank frame between splash and app.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Honesty</span>
+      <h4>A progress ring that can't lie</h4>
+      <p class="was"><b>Now in code:</b> three pulsing dots. They say something is happening, but not what, and not whether it is progressing — they look identical at 300 ms and at 30 s.</p>
+      <p class="now"><b>Proposed:</b> a ring that eases toward <b>90 % and stops</b>, reaching 100 % only when the data actually lands. Past 6 s it drops back to <b>indeterminate</b>: a stalled 90 % arc reads as "broken", a rotating one reads as "working". No fake progress bar, ever.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Branding</span>
+      <h4>The splash stops arriving late, and stops popping</h4>
+      <p class="was"><b>Now in code:</b> <code>isSplashScreenEnabled</code> reads <code>splash_screen_enabled</code> from branding, which resolves <i>after</i> first paint. The app renders, and <i>then</i> the splash slams down on top of it. The logo and brand colours land late too, reflowing and repainting under the guest.</p>
+      <p class="now"><b>Proposed:</b> the splash is the <b>default on first paint</b> — branding may only <i>disable</i> it. The host logo shares a <b>reserved 96 px box</b> with the Chekin mark, so the swap is one deliberate cross-fade, never a reflow. Where branding disables it, the guest still gets a skeleton — never a flash of half-built app.</p>
+    </div>
+    <div class="imp">
+      <span class="tag a11y-t">Accessibility</span>
+      <h4>Announced, contrast-guarded, motion-safe</h4>
+      <p class="was"><b>Now in code:</b> an unlabelled <code>&lt;div&gt;</code> with <code>alt=""</code> on the logo and a loader drawn with <code>box-shadow: 9999px</code> — invisible to assistive tech. Text and loader both take <code>--splash-animation-color</code> on <code>--splash-bg</code> with no contrast guard, so a host that sets both to the same value gets an invisible loader. The 3 s fade, 2 s dot pulse and 5 s curtains all ignore <code>prefers-reduced-motion</code>.</p>
+      <p class="now"><b>Proposed:</b> loading is <code>role="status" aria-live="polite" aria-busy</code>; terminal states drop the live region and become a real <code>&lt;h1&gt;</code> + buttons, with focus moved to the arrived heading. <b><code>--sp-ink</code> is derived from the luminance of the host's background</b>, so navy-on-navy cannot happen. Reduced motion is honoured — the mark doesn't travel, but the handoff still completes.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The one surface that can name the operator</h4>
+      <p class="was"><b>Now in code:</b> a logo and three dots. The guest has just tapped a link from an email about their passport and their card, and nothing on screen says who is asking for them.</p>
+      <p class="now"><b>Proposed:</b> a persistent <b>"Secure check-in · Powered by Chekin"</b> footer beneath the host's mark. It costs nothing, it is on screen exactly when the question is being asked, and it is the cheapest anti-phishing signal in the product.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Defect</span>
+      <h4>A <code>cubic-bezier</code> that has never rendered</h4>
+      <p class="was"><b>Now in code:</b> <code>animation-timing-function: cubic-bezier(0, 1.23)</code> passes <b>two</b> arguments where CSS requires four. The declaration is invalid, browsers drop it, and the curtains silently fall back to <code>ease</code>. The intended overshoot has never once appeared on a guest's screen.</p>
+      <p class="now"><b>Proposed:</b> the curtains are removed entirely, and the bug goes with them. The V1 replica reproduces the <i>fallback</i>, not the intent — because the fallback is what ships.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Home & check-in list</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Focus</span>
+      <h4>"Next up" spotlight on the checklist</h4>
+      <p class="was"><b>Now in code:</b> the pending row gets a blue badge ring, but all rows carry equal visual weight.</p>
+      <p class="now"><b>Proposed:</b> the next task gets a <b>left accent bar + soft blue wash + pulsing badge + "Next up" chip</b>, and completed rows show outcome facts ("€ 380.00 paid"). One glance answers "what do I do now?".</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Motivation</span>
+      <h4>Arrival countdown &amp; instant-keys incentive</h4>
+      <p class="was"><b>Now in code:</b> the hero shows dates/times; the reason to finish check-in early is implicit.</p>
+      <p class="now"><b>Proposed:</b> a glass countdown strip in the hero — "Check-in opens in <b>3 days</b> — finish 2 tasks to get your keys instantly" — tying tasks to the reward (virtual keys), which also appears as a "Locked" state on the keys card.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Discovery</span>
+      <h4>"Handpicked for your trip" on Home</h4>
+      <p class="was"><b>Now in code:</b> Home spreads upsells across three disconnected surfaces — RecommendationsSection grid, a desktop-only UpsellCarousel in the aside, and a FreeOffersFab — each reading the same items list.</p>
+      <p class="now"><b>Proposed:</b> one <b>"Handpicked for your trip" section</b> that mixes native offers (Add/View) with the Mozio and Airalo banners in a single grid, a <b>"See all"</b> into the extras flow, and a GuruWalk <b>Free-offers FAB</b> — the same sources, one coherent moment.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Sign in & onboarding</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>The sign-up machine finally shows its steps</h4>
+      <p class="was"><b>Now in code:</b> <code>LoginView</code> runs a hidden state machine (<code>email → password → check_email_code</code>) with a single "Create account" title and no indication of how many steps remain — the guest doesn't know they're 1 of 3.</p>
+      <p class="now"><b>Proposed:</b> each step names itself (<b>"step 2 of 3"</b>), the password step gets a <b>show/hide toggle + strength meter</b>, and the email-code step gets a 6-cell OTP with a <b>resend countdown</b> (the current resend is a bare always-on link with no cooldown).</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Motivation</span>
+      <h4>The account is sold, not just demanded</h4>
+      <p class="was"><b>Now in code:</b> the create-account screen asks for an email with no reason given; "continue without logging in" sits below as an equal, unexplained option — so guests can't weigh the choice.</p>
+      <p class="now"><b>Proposed:</b> three plain-language <b>value bullets</b> (progress is saved · register everyone once · come back for keys &amp; guides) frame <i>why</i> an account is worth 20 seconds, and "continue without an account" stays available but honest. On desktop these live in a persistent <b>brand panel</b>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Onboarding</span>
+      <h4>Radios &amp; checkboxes become choice cards on a labelled rail</h4>
+      <p class="was"><b>Now in code:</b> the 4 onboarding steps use a bare segmented bar with <b>no labels or numbers</b> (<code>OnboardingStepsProgress</code>), plain bordered radios for reservation type, and text checkboxes for who's coming — no icons, no avatars.</p>
+      <p class="now"><b>Proposed:</b> the rail shows <b>"Your trip · Step 1 of 4"</b>; reservation type becomes <b>icon choice cards</b> (family / group / tourist), guests use tappable <b>counter cards</b> with age context, who's-coming shows <b>guest avatars</b> (registered ones locked-checked), and the lead guest keeps its gold <b>Crown</b>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Pre-auth gets the branded gradient + a desktop split</h4>
+      <p class="was"><b>Now in code:</b> auth is a lone <b>~326px card</b> on a flat light background, shown the same on desktop as on mobile (the header logo only appears above the laptop breakpoint) — no depth, no brand moment at the very first screen.</p>
+      <p class="now"><b>Proposed:</b> the mobile card frosts (<b>liquid glass</b>) over the brand gradient with color orbs — the same pre-auth treatment as Find-booking / Error — and desktop becomes a proper <b>brand-panel split</b> (gradient hero + value props beside the form) instead of a stranded narrow card.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Find booking</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag glass-t">V2 · Liquid glass</span>
+      <h4>The property is the hero, not the form</h4>
+      <p class="was"><b>Now in code:</b> <code>SearchReservation</code> is a form on an empty page. Nothing on it says <i>which home you are checking into</i> — the guest's first ever impression of the property is a title, two radios and a disabled button.</p>
+      <p class="now"><b>Proposed / in V2:</b> a <b>photographic hero canvas</b> (painted in CSS, so it never 404s and can be re-tinted per brand) carries the property name, the city, the "Official check-in" seal, the host and their rating. The search floats over it on a frosted sheet lifted <code>-34px</code> into the photo. On desktop the canvas takes the full left half and <b>stays put through every step</b> — search, wait, result. The screen finally looks like the front door of a specific place.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">V2 · Input</span>
+      <h4>The booking code gets the shape of the answer</h4>
+      <p class="was"><b>Now in code:</b> one anonymous <code>Input</code> labelled "Booking reference code". Length unknown, format unknown; a typo is a wall of characters to re-scan.</p>
+      <p class="now"><b>Proposed / in V2:</b> <b>eight segmented cells</b> split <code>HMAK · 2931</code>, so the shape of the code is visible before you type it and a wrong character is locatable at a glance. A caret walks the cells, filled cells pop, a <b>Paste</b> chip fills all eight at once, and the primary button stays disabled until the last cell lands.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">V2 · Waiting</span>
+      <h4>The wait shows the property being matched</h4>
+      <p class="was"><b>Now in code:</b> <code>SearchingBookingModal</code> is a spinner and the words "Searching booking…". The guest has no idea what is being searched, or how far along it is.</p>
+      <p class="now"><b>Proposed / in V2:</b> a mini property card with a <b>scan line</b> sweeping over it, above a three-row checklist that ticks through <i>Reading your reference → Matching the reservation → Preparing your check-in</i>. Same two seconds, but they now read as progress against a named thing rather than dead air.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">V2 · Payoff</span>
+      <h4>"Booking found" becomes something worth finding</h4>
+      <p class="was"><b>Now in code:</b> the success state is the same modal with its text swapped to "Booking found!", then an immediate redirect. The one moment the guest is owed a reward passes in a second, showing nothing.</p>
+      <p class="now"><b>Proposed / in V2:</b> a <b>boarding pass</b> — property strip, check-in and check-out dates with the night count between them, a copyable reference, the lead guest and party size, a QR block. Tear notches are masked out of the card so it reads as a real ticket on any background. The guest sees the stay we matched, and can check it's the right one before continuing.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Two glass versions, side-by-side switchable</h4>
+      <p class="was"><b>Now in code:</b> the pre-auth screens (search, errors) are flat solid cards with lots of empty margin — no considered treatment of depth or brand at the moment the guest first lands.</p>
+      <p class="now"><b>Proposed / in the prototype:</b> a <b>"Glass style: Full · Minimal"</b> toggle on the Find-booking &amp; Error pages. <b>Full</b> frosts the floating auth card, method cards, property chip and language pill over color orbs; <b>Minimal</b> reverts those to solids and keeps only baseline chrome glass. The choice persists across pages so the two can be compared directly — a decision aid, not a shipped feature.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Search methods become self-explaining cards</h4>
+      <p class="was"><b>Now in code:</b> <code>SearchReservation</code> shows two bare radio labels ("Booking Reference" / "Check-in Date &amp; Email") and a disabled <b>Continue</b> — you select, then press, then land on a form. No hint of what each method needs.</p>
+      <p class="now"><b>Proposed:</b> two <b>descriptive cards</b> (icon, one-line explainer, and "what you'll need" — <i>e.g. HMAK-2931</i> / <i>No code needed</i>) that <b>advance on one tap</b>, folding the redundant Continue press into the choice. Same two routes (bookingCode / checkingDate), one fewer tap.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The property you're checking into, shown up front</h4>
+      <p class="was"><b>Now in code:</b> every search screen just repeats the title "Find your Booking" — the guest gets no confirmation they're on the right property's link (a stale or wrong link only fails <i>after</i> a search).</p>
+      <p class="now"><b>Proposed:</b> a <b>property-context chip</b> (name · city · "Official") from the already-loaded <code>useHousing</code> data on the method screen, and a compact version in the sub-screen top bars — a wrong link is caught before a single field is typed.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Guidance</span>
+      <h4>"Where do I find my booking code?" actually answered</h4>
+      <p class="was"><b>Now in code:</b> <code>BookingCodeView</code> is a single plain text field labelled "Booking reference code" — guests who don't know the code have nowhere to turn but to abandon.</p>
+      <p class="now"><b>Proposed:</b> a big <b>uppercase mono field with an example</b> plus a <b>"Where do I find this?"</b> sheet (confirmation email · booking platform · or switch to date + email) and an inline "use date &amp; email instead" escape — right where guests get stuck.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>"Not found" becomes next steps, not a dead end</h4>
+      <p class="was"><b>Now in code:</b> <code>ReservationNotFoundModal</code> is a warning icon, two lines of text and a single <b>OK</b> that dumps the guest back where they started with no idea what to try.</p>
+      <p class="now"><b>Proposed:</b> an <b>actionable state</b> — <i>check the code &amp; retry</i>, <i>try the other method</i>, <i>contact your host</i> (and, where <code>canCreate</code> allows, <i>register a new stay</i> → <code>NewReservationView</code>). Each a tappable row, so a miss has an exit.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Efficiency</span>
+      <h4>Create-reservation form: grouped + "From your search" tags</h4>
+      <p class="was"><b>Now in code:</b> <code>NewReservationView</code> (property link) is a flat 6-field list; the values it silently preloaded from your search (<code>startDate</code>, <code>email</code>) look identical to the empty ones.</p>
+      <p class="now"><b>Proposed:</b> two labelled groups — <b>Your stay</b> (dates, guests) then <b>Lead guest</b> (name, email) — with a green <b>"From your search"</b> tag on the carried-over fields, so guests only fill what's genuinely missing.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Reassurance</span>
+      <h4>The wait is a branded search, not a bare spinner</h4>
+      <p class="was"><b>Now in code:</b> <code>SearchingBookingModal</code> shows centered text — "Searching booking…" then "Booking found!" — with no visual anchor.</p>
+      <p class="now"><b>Proposed:</b> a <b>radar-pulse</b> around a magnifier for the LOADING state and a <b>pop-in check</b> for SUCCESS (with a booking summary + auto-redirect note). Same two <code>StatusModalStates</code>, made calm and legible. The <code>DirectReservationView</code> deep-link reuses the same searching state.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Identity verification</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>Segmented progress bar in IV &amp; registration</h4>
+      <p class="was"><b>Now in code:</b> progress is text only — "Step X of Y" as the top-bar subtitle (IVTopBarSubtitle); the mobile stepper was removed.</p>
+      <p class="now"><b>Proposed:</b> a slim 4px <b>segmented bar under the glass top bar</b>. Text stays for accessibility; the bar gives instant "how much is left" without reading.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Glass chrome: top bar, bottom nav, camera pills</h4>
+      <p class="was"><b>Now in code:</b> solid white top bar and bottom nav; solid white status pill floating over the camera.</p>
+      <p class="now"><b>Proposed:</b> <b>backdrop-blur glass</b> for the sticky chrome and for on-camera status/hint pills. Content scrolls visibly underneath, chrome feels lighter, and on the dark camera view glass pills read better than solid white. Used only on chrome — never on reading surfaces.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>Time estimates &amp; privacy reassurance in IV</h4>
+      <p class="was"><b>Now in code:</b> the IV intro lists steps but gives no duration and no data-privacy message; camera permission and selfie steps are where guests drop off.</p>
+      <p class="now"><b>Proposed:</b> "<b>Takes about 2 minutes</b>" up front, a GDPR privacy note on the intro, and "selfie is blurred &amp; encrypted" right on the liveness screen — reassurance at the exact moment of hesitation.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Guidance</span>
+      <h4>Live hint chips around the existing camera card</h4>
+      <p class="was"><b>Now in code:</b> camera sits in a card inside the standard light page; guidance is one static status pill.</p>
+      <p class="now"><b>Proposed:</b> keep the page and camera card exactly as they are; add <b>hint chips under the frame</b> — "Good lighting · No glare · All corners visible" — that can flip to green checks as conditions are met. Capture success turns the existing brackets green and shows quality confirmations before moving on.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Guidance</span>
+      <h4>Directional liveness cues + micro-steps</h4>
+      <p class="was"><b>Now in code:</b> Lottie icon + a text line below the camera; a 15s timeout then a red failure overlay.</p>
+      <p class="now"><b>Proposed:</b> an <b>animated arrow pill anchored to the face oval</b> ("Turn your head left") plus a 4-dot challenge tracker, so guests see progress inside the liveness check instead of guessing how many prompts remain.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>Completion screen that sells the next step</h4>
+      <p class="was"><b>Now in code:</b> a modal sheet with an 80px illustration and "verification is completed" text.</p>
+      <p class="now"><b>Proposed:</b> a full <b>celebration screen</b>: green ring, a receipt card of what was verified (document + face match), and a primary CTA "Confirm my details" that carries momentum into the pre-filled form.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Document picker with effort hints</h4>
+      <p class="was"><b>Now in code:</b> RadioCardList shows document names only.</p>
+      <p class="now"><b>Proposed:</b> each option states its cost — "<b>Single-sided · fastest</b>" vs "Front and back required" — with a ⚡ Recommended badge on passport, nudging guests to the least error-prone path.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">IV QR</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Defect</span>
+      <h4>The modal asks for a document number even when the server asked for a birth date</h4>
+      <p class="was"><b>Now in code:</b> on <code>"More than 1 guest found"</code>, <code>FindReservationsByNameView</code> reads <code>next_required_field</code> (which may be <code>id_number</code>, <code>date_of_birth</code> <i>or</i> <code>checkout_date</code>) and reveals that field — but the <code>IncompleteDataModal</code> it opens takes no arguments, so its body is always the hardcoded string "Please provide your document number to continue." A guest asked for a birth date is told to type a document number.</p>
+      <p class="now"><b>Proposed:</b> the ask is <b>attached to the field it is about</b>. Two prototype screens show the same mechanism resolving to different fields — <b>document number</b> and <b>date of birth</b> — with the heading, the body copy and the hint all following <code>next_required_field</code>. The copy can no longer disagree with the form.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Friction</span>
+      <h4>A modal that hides the thing it is asking you to fix</h4>
+      <p class="was"><b>Now in code:</b> submit → a <code>ResponsiveSheet</code> covers the form → you read "We need more information" → you press <b>OK</b> → the sheet closes → a new input has silently appeared somewhere below, unfocused and unexplained. Three interactions and a hunt to answer one question.</p>
+      <p class="now"><b>Proposed:</b> no modal. An amber <b>notice sits directly above the new field</b>, explains <i>why</i> ("there's more than one Ana López staying here tonight"), the field is outlined, <b>focused automatically</b>, and the answer is announced to screen readers. Above it, chips show <b>what you already gave</b> so nothing is retyped. Zero extra taps.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Defect</span>
+      <h4>The door-QR guest is made to scan the same sticker twice</h4>
+      <p class="was"><b>Now in code:</b> a guest who scans the entrance QR has already proved they're at the property. On success <code>FindReservationsByNameView</code> redirects to <code>guest_iv_link?splash=true&amp;<b>scanned=true</b></code> — clearly intending to say so. But <b>nothing reads that parameter</b>, and <code>setPropertyQRScanned(true)</code> is called from exactly one place in the whole repo: <code>IVQRScannerView</code>. So <code>IVQRGuard</code> sees <code>isPropertyQRScanned === false</code> and sends them to <code>verification/qr-scan</code> to scan the sticker they are literally standing in front of.</p>
+      <p class="now"><b>Proposed:</b> the handoff screen states the intended behaviour — <i>"your scan at the door already proved you're here, so identity verification opens straight away"</i> — and the prototype flags the gap in place rather than papering over it. The fix in code is one line: read <code>scanned=true</code> into <code>setPropertyQRScanned(true)</code> on mount.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Orientation</span>
+      <h4>One thing is being proved, and the flow finally says so</h4>
+      <p class="was"><b>Now in code:</b> nothing tells the guest that scanning the entrance sticker <i>counted</i> for anything, and nothing explains why a scanner appears when the app can't tell where they are. <code>IVQRScannerView</code>'s title is just "Scan QR code at your accommodation" — a chore with no stated purpose.</p>
+      <p class="now"><b>Proposed:</b> the pre-auth screens carry <b>no stepper at all</b> — before the reservation is matched the app cannot know whether IV will ask for one document side or two, a selfie, a liveness challenge, or none of them. Once the guest is inside IV the flow adopts <b>IV's own stepper</b> with the door scan prepended as its first step. The scanner explains itself: <i>"identity verification happens at the property, and we can't yet confirm you're there. The sticker at the entrance is the proof — guests who scanned it to get here skip this step entirely."</i></p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Safety</span>
+      <h4>One beat to confirm the match, before a stranger's ID is scanned into your reservation</h4>
+      <p class="was"><b>Now in code:</b> on success the view immediately does <code>window.location.href = guest_iv_link</code>. The guest never sees <i>which</i> reservation was matched — even though the search response already carries <code>guest_name</code>, which is simply discarded. Given the flow's own premise (two guests can share a name), a wrong match is silently unrecoverable once the ID is uploaded.</p>
+      <p class="now"><b>Proposed:</b> a <b>"That's you"</b> card built from the <code>guest_name</code> the API already returns — name, property, check-out date, what's next — with <b>Continue to check-in</b> and <b>That's not me</b>. One tap, and a wrong match becomes cheap to catch instead of impossible to see.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Defect</span>
+      <h4>The invalid-QR sheet describes a completely different error</h4>
+      <p class="was"><b>Now in code:</b> <code>InvalidQRModal</code> is titled "This QR code does not belong to this property" — correct — and then its body reads <b>"Please complete all the required data before continuing."</b> That copy belongs to a form-validation error, not a scanner mismatch. It is wrong in both <code>apps/guestapp</code> and <code>packages/shared</code> English files (and in every translation derived from them).</p>
+      <p class="now"><b>Proposed:</b> the body explains the two things that actually cause it — a screenshot of the code instead of the printed sticker, or the wrong door in a building with several Chekin units — and offers <b>Try again</b> beside <b>Message the host</b>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Honesty</span>
+      <h4>The step rail is gone, because it was guessing</h4>
+      <p class="was"><b>Earlier in this proposal:</b> the pre-auth screens drew a three-step rail — <b>Find you · Scan ID · Selfie</b>. It asserted three things the app has no way of knowing there. Those screens are <code>pages/FindReservationsByName</code>, running <b>before</b> the reservation is matched, so <code>useSchema().identityVerificationDetails</code> isn't even loaded. And the count is unknowable in principle: <code>ivCaptureCopy.tsx</code> types a capture step as <code>'front' | 'back' | 'document' | 'selfie' | 'liveness'</code> — an ID card has a back side, a passport doesn't; the face step is a plain selfie <i>or</i> a liveness challenge <i>or</i> nothing at all.</p>
+      <p class="now"><b>Proposed:</b> <b>no rail.</b> A progress indicator that can be wrong is worse than none — it promises a shape the flow may not take, and a guest who is told "3 steps" and given 4 has been misled by the interface. Progress is carried by the copy instead. The <code>.hv-journey</code> preview on the arrival screen stays, because it isn't a stepper: it previews what the shipped <code>AlertBox</code> already promises — <i>"You will be asked to scan your ID and take a selfie"</i> — without numbering a sequence. The rail and its ~68 lines of CSS are deleted.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Consistency</span>
+      <h4>The door scan becomes a step <i>of</i> identity verification</h4>
+      <p class="was"><b>Earlier in this proposal:</b> the scanner carried its own <b>"Step 1 of 3"</b> rail — invented for this flow — while the IV flow it hands into counts <b>four</b> steps (choose document → scan document → selfie &amp; liveness → confirm details). A guest crossing from one to the other watched the progress indicator reset and change shape. On desktop the scanner also dropped the <code>.vela-rail</code> entirely, so it lost Vela <i>and</i> sat in a two-column grid while every other IV screen sits in three — visibly misaligned.</p>
+      <p class="now"><b>Proposed:</b> the door scan is <b>step 1 of the IV stepper</b>, not a stepper of its own — <i>verify you're at the property</i>, then IV's own four. The scanner reads <b>Step 1 of 5</b>, the document step reads <b>Step 2 of 5</b>, and the progress bar simply advances across the handoff instead of restarting. Desktop restores <code>.desktop-shell.with-rail</code> and the <b>Vela rail</b>, which now carries that five-step progress plus tips for finding the sticker and a "Message the host" action. The scanner is now pixel-aligned with the document step it precedes.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Consistency</span>
+      <h4>The entrance-QR scanner is an IV screen, so it looks like one</h4>
+      <p class="was"><b>Earlier in this proposal:</b> the scanner had its own square viewfinder (<code>.hv-cam</code>) — different frame, different corner brackets, different status label, its own success tick. But <code>IVQRScannerView</code> renders <b>the same <code>&lt;CaptureCamera variant="document"&gt;</code></b> as the document step, inside the same <code>PageLayout</code>. A guest scanning the sticker and then, ten seconds later, scanning their passport would have met two different cameras built to two different designs.</p>
+      <p class="now"><b>Proposed:</b> the scanner uses the IV flow's camera <b>verbatim</b> — same <code>.cam-topbar</code> and step counter, same <code>.cam-progress</code> segments, same <code>.doc-frame</code> with its brackets, scanline and <code>.status-pill</code>, same <code>.frame-overlay</code> on success. Both prototypes now load <code>iv.css</code> / <code>ivd.css</code> for exactly this reason. Only two things are genuinely new: the <b>printed wall sticker</b> (<code>.hv-sticker</code>) that stands in for the document inside the frame, and the <b>"why we're asking you to scan"</b> notice — the one thing the real screen is missing. The bespoke viewfinder and its ~130 lines of CSS are deleted.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Consistency</span>
+      <h4>One "Verification unavailable" view, not two</h4>
+      <p class="was"><b>Earlier in this proposal:</b> this flow drew its own before-check-in-day screen — a bespoke <code>.hv-cd</code> card with a countdown ("in 5 days") and an extra call to action. But <code>IVUnavailableView</code> is a <b>single component</b>: <code>IdentityVerificationLayout</code> swaps it in for every IV route, on-property or not. Two designs for one component is a divergence that would have to be reconciled the moment it shipped.</p>
+      <p class="now"><b>Proposed:</b> the IV flow's version wins, and this flow renders it <b>verbatim</b> — the same <code>.card</code>, the same "Everything else on your checklist can be completed now", the same single way out. The only on-property addition is one clause in the be-ready note: you'll also need <b>the QR code at the property entrance</b>. The bespoke card and its ~36 lines of CSS are deleted.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>Three different failures stop sharing one dead-end modal</h4>
+      <p class="was"><b>Now in code:</b> a missing <code>objectId</code> throws "Housing information is missing"; a genuinely absent guest returns "No guest found"; any network error falls through — and <code>onError</code> routes <b>all three</b> to the same <code>NotFoundReservationModal</code>. Its "Try again" only closes the sheet; "Back to start" discards everything typed. A guest with a broken QR code is sent hunting for a typo that was never there.</p>
+      <p class="now"><b>Proposed:</b> <b>Not found</b> keeps the name you typed (editable in place) and offers real next steps — check the spelling, use your booking link, message the named host. <b>Invalid QR</b> becomes its own screen: "this code isn't linked to a property… nothing you typed is wrong", with a rescan action and a support code to send the host.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Accessibility</span>
+      <h4>Autocomplete turned back on, and every state spoken</h4>
+      <p class="was"><b>Now in code:</b> both name inputs set <code>autoComplete="off"</code> — at a doorway, one-handed, that is the most expensive keystroke tax in the flow. Nothing announces "Searching…", the found reservation, or the newly revealed field; the revealed input never receives focus.</p>
+      <p class="now"><b>Proposed:</b> real <code>&lt;label for&gt;</code> + <code>&lt;input&gt;</code> with <code>autocomplete="given-name" / "family-name" / "bday"</code>; <b>16 px</b> font so iOS doesn't zoom on focus; <b>52 px</b> targets. A polite <code>aria-live</code> region announces every state transition, status is never colour-only, focus rings are visible, and the asked-for field takes focus on arrival — but never on first paint.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Guests summary</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Two different tasks stop sharing one label</h4>
+      <p class="was"><b>Now in code:</b> <code>GUEST_STATUS_META</code> maps <b>both</b> <code>verification_pending</code> and <code>incomplete</code> to the same word — "Incomplete". The only thing separating "photograph your passport" from "type your birth date" is a 12 px hint line underneath.</p>
+      <p class="now"><b>Proposed:</b> statuses are named after the <b>action they demand</b> — <b>Verify ID</b> (shield), <b>Add details</b> (pencil), <b>Not started</b> (plus), <b>Registered</b> (check). Each is an icon + a word + a rail treatment, so the state survives colour-blindness and a greyscale print.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Focus</span>
+      <h4>The page finally answers "what do I do now?"</h4>
+      <p class="was"><b>Now in code:</b> <code>GuestRegistrationView</code> computes a <code>nextPage</code> — and then never offers it. There is <b>no primary CTA</b>; the only way forward is to guess which of N equal-looking rows to tap.</p>
+      <p class="now"><b>Proposed:</b> that same computed next step becomes a <b>docked CTA that names the guest and the task</b> — "Verify Carlos's ID" — and the matching row gets a soft blue wash, so the button and the row are visibly the same thing. One signal, not a badge stack. On desktop it's a small <b>action ledger</b>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Safety</span>
+      <h4>Deleting a guest asks first — and can be undone</h4>
+      <p class="was"><b>Now in code:</b> the kebab's "Delete guest" calls <code>deleteGuestMutate</code> <b>immediately</b>. <code>DeleteGuestStatusModal</code> is a <i>status</i> dialog opened by <code>onMutate</code> — it reports the deletion, it never asks. One mis-tap destroys a guest's details and ID photos with no confirmation and no way back.</p>
+      <p class="now"><b>Proposed:</b> a confirm dialog that <b>names the consequences</b> (details and ID photos deleted · group drops to 3 · tourist tax recalculated), then an optimistic removal with a <b>10-second Undo toast</b>. Destructive and irreversible become destructive and reversible.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Accessibility</span>
+      <h4>A registered guest was unreachable by keyboard</h4>
+      <p class="was"><b>Now in code:</b> <code>GuestBox</code>'s empty slot is a real <code>&lt;button&gt;</code>, but a row with a guest is a <b><code>&lt;div onClick&gt;</code></b> — no <code>tabindex</code>, no <code>role</code>, no Enter/Space. And the kebab <code>IconButton</code> is nested <i>inside</i> that clickable div: an interactive control inside an interactive control.</p>
+      <p class="now"><b>Proposed:</b> every row is a real <code>&lt;a&gt;</code>/<code>&lt;button&gt;</code> with a visible focus ring, and the kebab is a <b>sibling</b>, not a child — one row, two independent tab stops, <code>aria-haspopup="menu"</code>, and <code>aria-describedby</code> tying the name to its status.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Honesty</span>
+      <h4>One progress number, counted once</h4>
+      <p class="was"><b>Now in code:</b> the header pill reads <code>number_of_fully_registered_guests</code> while the bar underneath reads <code>totalFullyRegisteredGuests</code> — two sources for one fact. The denominator falls back to a <b>hard-coded <code>|| 5</code></b>, so a couple can be told "0 of 5 guests". And <code>useGuestGroup</code> exports an IV-aware <code>totalCompletedGuests</code> that the view ignores, under-counting whenever IV is off.</p>
+      <p class="now"><b>Proposed:</b> a single <b>segmented meter — one segment per guest</b>, coloured by that guest's own state. It is its own legend, it cannot disagree with itself, and with no data there are simply no segments to draw.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Completeness</span>
+      <h4>Missing guests get names, not one generic row</h4>
+      <p class="was"><b>Now in code:</b> <code>canAddGuest</code> renders exactly <b>one</b> "Add guest" row no matter how many people are missing, so a group of 4 with 1 registered shows a single anonymous slot. Separately, <code>showOtherGuests = known_number_of_guests &gt; 1</code> silently <b>hides real members</b> if the backend count drifts below the member list.</p>
+      <p class="now"><b>Proposed:</b> one <b>named slot per missing guest</b> ("Fourth guest · Not started"), so the roster length always equals the group size and the gap is visible rather than inferred. The minors affordance moves inline instead of being an orphan section that renders even when the group is full.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Restraint</span>
+      <h4>Every signal earns its place — or it's cut</h4>
+      <p class="was"><b>The first pass of this redesign</b> stacked an avatar row, a headline, a four-item legend, a time estimate, per-row facts, a "Next" chip, a chevron and a kebab on top of each other. It said the same count three times before the guest reached a single name.</p>
+      <p class="now"><b>Proposed:</b> the count is stated <b>once</b>; the meter <i>is</i> the legend; the CTA <i>is</i> the "next" marker (the row just echoes it with a wash); a subtitle appears only where it says something the status pill can't ("You · primary guest"). Share stays exactly where it is today — a header link.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Loading</span>
+      <h4>A background refetch no longer looks like a broken page</h4>
+      <p class="was"><b>Now in code:</b> <code>isFetching</code> is passed into every <code>GuestBox</code>, which applies <code>opacity-50</code> + <code>cursor-progress</code>. A routine React-Query refetch dims and disables the whole list. The initial skeleton is four generic bars that don't match the rows they become.</p>
+      <p class="now"><b>Proposed:</b> <b>shape-matched skeletons</b> (avatar square, name bar, pill) so nothing jumps when data lands, and a refetch shows only a <b>2 px sweep on the top bar</b> plus one honest line — rows stay full-contrast and tappable.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Control</span>
+      <h4>No dead controls, no modal ambush</h4>
+      <p class="was"><b>Now in code:</b> the guest-count pill is always a focusable <code>&lt;button&gt;</code>, but when <code>canEditGuestNumber</code> is false its handler returns <code>undefined</code> — a control that focuses and does nothing. Meanwhile <code>ReservationSettingsModal</code> can auto-open over the page before the guest has seen it.</p>
+      <p class="now"><b>Proposed:</b> group size lives behind an explicit <b>"Edit group"</b> button that is simply absent when editing isn't allowed, opening a sheet with labelled steppers and an honest fee warning ("adding a pet adds €25.00"). The page is never taken over on arrival.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Guest registration</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Efficiency</span>
+      <h4>Auto-filled field tags on the review form</h4>
+      <p class="was"><b>Now in code:</b> the title flips to "Review your details" but pre-filled fields look identical to manual ones.</p>
+      <p class="now"><b>Proposed:</b> an "<b>8 fields auto-filled</b>" summary banner plus per-field <b>✦ auto tags</b> and green borders. Guests skim what came from the passport and jump straight to the 2 fields that actually need typing.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Signature</span>
+      <h4>The signature is honest about its state — and behaves per device</h4>
+      <p class="was"><b>Now in code:</b> the pad works (`SignatureCanvas`) but the prototype used to show a <b>pre-filled cursive name</b> — never empty, never actually drawn, identical on both form factors, with no error state.</p>
+      <p class="now"><b>Proposed / now in the prototype:</b> real freehand drawing with the true form-factor split — <b>desktop draws inline</b>; <b>mobile taps "Tap to open the signature form"</b> → a bottom sheet (<code>SignatureModal</code>) → <b>Confirm signature</b> → an image preview + "✓ Signed". Plus the states that were missing: empty placeholder, Clear, and the <b>required-but-missing error</b> ("The signature is required").</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Collaboration</span>
+      <h4>Share-link for co-travellers</h4>
+      <p class="was"><b>Now in code:</b> one device registers everyone; a companion's data must be typed by the booker.</p>
+      <p class="now"><b>Proposed:</b> a "<b>Not together right now?</b>" banner on the hub that shares a registration link, letting each guest scan their own document on their own phone.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Sticky glass CTA dock</h4>
+      <p class="was"><b>Now in code:</b> the Continue button sits in the page flow — on long forms it's below the fold.</p>
+      <p class="now"><b>Proposed:</b> the primary action lives in a <b>sticky dock with a gradient-fade glass background</b>, always reachable by thumb, with an "progress is saved automatically" reassurance where relevant.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Autofill — document scan</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Autofill</span>
+      <h4>The MRZ scan teaches, reads honestly, and returns a review</h4>
+      <p class="was"><b>Now in code:</b> the <code>AutoFillFlowModal</code> works but the camera is a generic capture — the "point at the code" guidance is buried in a "Need help?" sheet, the OCR wait is a bare scanning state, and unread fields are silently left blank on the form.</p>
+      <p class="now"><b>Proposed:</b> the <b>document-in-frame with the MRZ band highlighted</b> is the hero, so guests see what to aim at without opening help; the read is an honest <b>align → read → done</b> with the decoded MRZ strip; and the result lands as <b>"Review your details"</b> with per-field <b>✦ Scanned</b> tags and an amber <b>Check</b> flag on anything low-confidence — plus graceful couldn't-read and camera-blocked exits. Liquid glass on the modal chrome and on-camera pills only.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Payments</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The pay button states the exact amount</h4>
+      <p class="was"><b>Now in code:</b> the cart CTA says "Confirm transaction" and the card form says "Confirm" — the total lives in a separate summary box (MyCart ConfirmButton, PaymentForm StyledButton).</p>
+      <p class="now"><b>Proposed:</b> every paying CTA reads <b>"Pay €380.00"</b> — cart, card form and the 3-D Secure sheet all quote the same number, so the guest never authorizes an amount they haven't just read.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Charges vs holds — the dashed ledger</h4>
+      <p class="was"><b>Now in code:</b> "Retention" and "Pre-authorizations:" appear as extra summary rows with an info icon (PaymentSummaryItem) — jargon next to real charges, easy to read as costs.</p>
+      <p class="now"><b>Proposed:</b> holds are <b>visually hollow</b> — dashed cards and dashed amount chips, kept out of the payable total, with one plain sentence ("reserved on your card, released after checkout") and a "How holds work" explainer. Same dashed treatment in the receipt and order history.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The €0.00 warning moves before the payment</h4>
+      <p class="was"><b>Now in code:</b> the pre-auth explanation (PreAuthorization3DSInfoModal — "you may see a €0 amount") pops up <b>during</b> the payment, when the guest is already anxious.</p>
+      <p class="now"><b>Proposed:</b> the payment page says the bank will register the <b>€300.00 hold, possibly shown as €0.00</b> — before the guest taps Pay, in our own components around the Stripe element (which itself can't be changed). The mocked bank sheet repeats it. No surprise modals mid-payment.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>Processing is a live timeline, not a spinner</h4>
+      <p class="was"><b>Now in code:</b> PaymentProcessingModal shows "Processing transaction" with a spinner while a websocket + 2 s polling (max 20 retries) works invisibly; slow confirmations look frozen.</p>
+      <p class="now"><b>Proposed:</b> a 3-step timeline — <b>bank approved → confirming with the property → receipt</b> — plus an honest slow-state ("we re-check every few seconds, the receipt also goes to your email") and "don't refresh — you won't be charged twice".</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>Declines explain and recover, not just "OK"</h4>
+      <p class="was"><b>Now in code:</b> the error state shows the raw server message with a single OK button (PaymentProcessingModal ERROR) that drops the guest back on the cart.</p>
+      <p class="now"><b>Proposed:</b> cause first ("Your bank declined the payment — usually a limit or online-payments setting"), technical code second, then <b>primary blue "Try again"</b>, "Use a different card", and the trust line "Nothing was charged — your cart is unchanged".</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>Receipt that sells the next step</h4>
+      <p class="was"><b>Now in code:</b> success is a modal titled "Transaction successful"; the guest closes it and finds their own way onward.</p>
+      <p class="now"><b>Proposed:</b> a full receipt moment — itemized receipt with the hold status line and card/date, "receipt sent to your email", and the §1.4 next-task CTA (<b>"Verify Carlos's ID — last task"</b>) to carry momentum through check-in.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Deposit options state their consequences</h4>
+      <p class="was"><b>Now in code:</b> DepositView shows two radio cards with feature bullets, but the money consequence ("what leaves my account today?") must be inferred.</p>
+      <p class="now"><b>Proposed:</b> each option leads with the cost today — <b>"€0.00 today"</b> (hold) vs <b>"€39.00 one-time"</b> (protection) — with release/refund rules as check bullets and a ⚡ Recommended badge on the no-cost option.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Tourist taxes</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>The tax total becomes visible math</h4>
+      <p class="was"><b>Now in code:</b> TaxesTouristView shows a single grey pill — "Total tourist taxes: €31" — the per-guest calculation happens server-side and is never shown to the guest.</p>
+      <p class="now"><b>Proposed:</b> a <b>per-guest math card</b> — every guest is a row (<b>5 taxed nights × €3.10</b>), exempt guests stay on the list as dashed €0.00 rows (the payments rule: dashed = never charged), and the season rule ("only the first 5 nights are taxed") is pinned on top of the card.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Exemptions preview their savings</h4>
+      <p class="was"><b>Now in code:</b> GuestTaxesForm is two bare selects (exemption, guest); the new total only appears after confirming and returning to the taxes screen.</p>
+      <p class="now"><b>Proposed:</b> a live delta card — <b>"New total if confirmed: €17.00 (was €32.50)"</b> — under the picker, so the money consequence is read before the confirm tap, plus the proof warning moved up front instead of fine print.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>Every exemption names its proof</h4>
+      <p class="was"><b>Now in code:</b> the exemptions list modal says only that exemptions "need to be verified upon arrival" — which document, nobody says.</p>
+      <p class="now"><b>Proposed:</b> each exemption type states its document everywhere it appears — <b>"Registered resident — residence certificate"</b> — in the picker helper, the list modal and the exempt guest's row, so nothing is refused at the door.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>Tax setup lands in the cart, not a dead end</h4>
+      <p class="was"><b>Now in code:</b> the confirm button says "Confirm", and the success modal ("Tourist taxes setup complete!") offers generic navigation.</p>
+      <p class="now"><b>Proposed:</b> the CTA states the amount and destination — <b>"Confirm — €32.50 to my cart"</b> — the success sheet routes straight into the payments cart, and the edit-from-cart mode confirms directly back to payment (its real i18n label, "Confirm and go back to Payment").</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Upselling — extras & experiences</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>The deal lifecycle becomes visible</h4>
+      <p class="was"><b>Now in code:</b> after adding a deal, the only feedback is a green "ADDED" chip on the offer card (OfferCardMark renders APPROVED and PRE_REQUESTED only); REQUESTED, REJECTED and PAID never surface anywhere — a guest whose request was declined simply never hears back.</p>
+      <p class="now"><b>Proposed:</b> a <b>"My requests" view with a 3-step tracker</b> — Request sent → Host reviewing → Pay in cart — where waiting amounts stay <b>dashed</b> (the system rule: dashed = never charged), declined requests quote the host's reply and suggest a plan B, and approved extras link straight into the cart.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Instant vs on-request, declared before the tap</h4>
+      <p class="was"><b>Now in code:</b> auto- and manual-confirmation offers (confirmation_type) look identical on the list and the detail page; the approval requirement surfaces only as a fine-print note in AddToCartForm after the guest has already chosen.</p>
+      <p class="now"><b>Proposed:</b> every offer card carries a <b>lane chip — ⚡ Instant or 🕗 On request</b> — and the detail page opens with one sentence of what that means ("the host checks the schedule and usually replies within a few hours; you're charged only if they say yes"). The CTA matches the lane: "Add to cart — €12.50" vs "Send request — nothing charged yet".</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The reply email is inline, not a surprise modal</h4>
+      <p class="was"><b>Now in code:</b> tapping the CTA on a manual-confirmation offer can pop EnterContactEmailModal (or a separate confirm-email route) — an unexplained email form between the guest and their request.</p>
+      <p class="now"><b>Proposed:</b> the request page shows <b>"The reply goes to maria@gmail.com — Edit"</b> as a row of the form itself, so the email is confirmed in context and the send button stays one tap.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>Partner banners stay prominent, but clearly external</h4>
+      <p class="was"><b>Now in code:</b> Mozio/Airalo banners and GuruWalk cards are interleaved with native offers (BANNER_AFTER_CARD = [2, 5]) but read as native — guests can't tell which bookings leave the app and pay off-site.</p>
+      <p class="now"><b>Proposed:</b> keep the <b>prominent interleaved banners</b> the business runs (Mozio "🔥 HOT DEAL" transfers, Airalo eSIM, GuruWalk free tours) on both Home and the offer list, but make each unmistakably a partner: provider named ("Powered by Mozio · books on the partner site"), an external-link glyph, and a hand-off dialog before leaving. They never enter the Chekin cart.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Guidebooks</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Scannability</span>
+      <h4>Guidebooks preview what's inside, and what they are</h4>
+      <p class="was"><b>Now in code:</b> <code>GuidebooksListView</code> is a flat list of rows — a small icon square, a title and a description — that gives no hint of what a guidebook contains, and no signal that one is a rich guide vs. a PDF vs. a raw web page (they only diverge <i>after</i> you tap, in <code>useGuidebookNavigate</code>).</p>
+      <p class="now"><b>Proposed:</b> browsable <b>cards with a cover band</b> that carry a <b>type badge</b> (Guide / Web / PDF, from <code>content_type</code>) and <b>preview chips</b> of what's inside (Wi-Fi · Check-in · Map · "6 places"), plus an <b>"Auto-translated"</b> chip driven by <code>is_auto_translated</code> — so a guest picks the right guide before opening it.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Navigation</span>
+      <h4>Long guides get a chapter index built from their headings</h4>
+      <p class="was"><b>Now in code:</b> <code>GuidebookContent</code> renders the EDITOR blocks (headings, paragraphs, amenities, maps…) as one long scroll with <b>no way to jump</b> — a house manual with check-in, Wi-Fi, appliances and rules is a wall you scroll through.</p>
+      <p class="now"><b>Proposed:</b> the heading blocks become a sticky <b>"In this guide" chapter rail</b> (a scrollable pill row on mobile, a live index in the Vela rail on desktop) so guests land on Wi-Fi or House rules in one tap — a pure presentation layer over the same blocks.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Utility</span>
+      <h4>The Wi-Fi password stops being buried in a paragraph</h4>
+      <p class="was"><b>Now in code:</b> Wi-Fi details live inside a <code>paragraph</code> block like any other text — the single most-hunted thing in a guidebook has no special treatment and no easy copy.</p>
+      <p class="now"><b>Proposed:</b> a dedicated <b>Wi-Fi card</b> with the network and password on mono rows and a <b>one-tap Copy</b> on each (mirrors the copyable keypad codes in Virtual keys). Same content, surfaced where guests reach for it.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Actionability</span>
+      <h4>Maps and recommendations become places you can go to</h4>
+      <p class="was"><b>Now in code:</b> a <code>mapBlock</code> is a bare 400px Google Maps <b>iframe</b> with no address and no directions; recommendations are free-form <code>imageBlock</code> + text with nothing you can act on.</p>
+      <p class="now"><b>Proposed:</b> map blocks gain a <b>name + address and a Directions sheet</b> (Open in Google / Apple Maps); recommendations render as <b>place cards</b> with distance, walk time, rating and a Directions deep-link — the guidebook becomes a thing you use on the street, not just read.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Guidebooks ship with a Classic · Liquid-glass A/B switch</h4>
+      <p class="was"><b>Now in code:</b> there's one flat treatment — no way to weigh a restrained, chrome-only look against a glassier one on the same content.</p>
+      <p class="now"><b>Proposed / in the prototype:</b> a <b>"Version: Classic · Liquid glass"</b> toggle on both Guidebooks pages. <b>Classic</b> (default) is the shipped look — glass on chrome only, solid reading cards. <b>Liquid glass</b> (<code>html.glass-max</code>) frosts the reading surfaces (cards, search, map, place cards) over soft color orbs. The choice persists across mobile ↔ desktop — a decision aid, mirroring the Find-booking / Error switch.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Honesty</span>
+      <h4>PDF/HTML guides read like documents; dead ends get exits</h4>
+      <p class="was"><b>Now in code:</b> <code>GuidebookPdfView</code> and <code>GuidebookHtmlView</code> drop the content into a bare iframe with no chrome; <code>UnavailableFeature</code> lists reasons but no next step, and the empty list is a blank card.</p>
+      <p class="now"><b>Proposed:</b> a <b>document toolbar</b> (page count · download · full screen) for PDFs and a "web page / auto-translated" badge for HTML; the not-available state turns each reason into a <b>deep-linked task</b> (finish registration) like the virtual-keys gate; and the empty state offers <b>Ask Vela / FAQ</b> instead of nothing.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">AI Travel Guide</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Reversibility</span>
+      <h4>The plan becomes a document you can change</h4>
+      <p class="was"><b>Now in code:</b> the moment a guide exists, <code>TravelGuideView.tsx:70</code> force-forwards <code>intro</code>&nbsp;→&nbsp;<code>guide</code>, and <b>no regenerate control exists anywhere</b>. A guest who tapped "Skip questions", or who answered "Luxury" by accident, is stuck with that itinerary for the whole stay. There is no way back to the questions.</p>
+      <p class="now"><b>Proposed:</b> the plan header carries a <b>"Tuned for" strip</b> — the <code>profile_assumptions</code> the API already returns and the UI never renders — beside a <b>Refine</b> button that reopens the questions and rebuilds. The rebuild confirm says <b>exactly what survives</b> ("the paella class you added to your stay, and anything already paid for — only the recommendations change"), because regenerating is destructive and a guest should not have to guess.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>Six questions become three, and the meter stops lying</h4>
+      <p class="was"><b>Now in code:</b> all six questions render on one scroll; only three (<code>vacationStyle</code>, <code>budget</code>, <code>pace</code>) actually gate the button, but nothing says which. The progress bar has six segments and fills them <b>by count</b> — answer question&nbsp;#6 and segment&nbsp;#1 lights up. Chips are <code>aria-pressed</code> buttons, so re-tapping the chosen budget <b>silently empties a required answer</b>, and the only feedback is one amber dot at the bottom of the page.</p>
+      <p class="now"><b>Proposed:</b> three <b>Required</b> questions first, three <b>Optional</b> ones folded into a "Sharpen it" disclosure. The meter's required segments fill <b>per question</b> and the optional ones are hatched and set apart, so an optional answer never reads as progress. Single-selects become real <code>radio</code> groups (a re-tap cannot empty them); multi-selects gain a <b>soft cap</b> ("pick up to 3 — a narrower answer makes a sharper plan"), since the shipped hook allows selecting everything, which tells the model nothing.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Honesty</span>
+      <h4>The build screen stops promising "a few seconds"</h4>
+      <p class="was"><b>Now in code:</b> <code>loading_subtitle</code> reads "This usually takes a few seconds" above a checklist driven by a <b>5.5&nbsp;s poll across four phases</b>. There is no elapsed time, no timeout and no cancel. A phase the list doesn't know (<code>START</code>, <code>AWAIT_PREFERENCES</code>) clamps to step&nbsp;1 (<code>TravelGuideLoading.tsx:18</code>), so a healthy run can look stuck. <code>gcTime:0</code> means walking away <b>drops the run</b>.</p>
+      <p class="now"><b>Proposed:</b> an <b>elapsed clock beside the real number</b> ("0:07 elapsed · usually 40–60 seconds"), a <b>Cancel</b>, and a "<b>you can leave this page</b> — the plan keeps building" note, because the run lives on the server. Past ninety seconds a <b>Still working</b> state appears with a live sub-count and an honest choice: keep waiting, or build the quick version.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Recovery</span>
+      <h4>Failure gets three exits instead of a sentence</h4>
+      <p class="was"><b>Now in code:</b> every generation failure renders one centered line — "We couldn't build your guide right now." No retry, no way back to the answers, no reference. The only escape is the nav back-arrow, which leaves the feature.</p>
+      <p class="now"><b>Proposed:</b> <b>Try again</b> · <b>Back to my answers</b> · <b>Build without preferences</b>, plus a copyable run reference for support, and the line that matters — "this is on us, not on your answers; <b>they're still saved</b>". Answers survive the failure, so the middle button is not a lie.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Actionability</span>
+      <h4>Every stop leads somewhere; the plan works on the street</h4>
+      <p class="was"><b>Now in code:</b> <code>useSlotAction</code> renders a CTA for upsell, eSIM and GuruWalk slots and <b>nothing at all</b> for <code>web_search</code> — the most common kind. Its <code>source_url</code> is fetched and never shown. So the recommendation with the best copy is the one you cannot open, navigate to, or check the hours of — even though the loading screen just claimed it was "checking opening hours and availability".</p>
+      <p class="now"><b>Proposed:</b> a <b>Directions</b> action on every stop (Google&nbsp;/&nbsp;Apple Maps, or copy the address) and an <b>Opening hours</b> link where a <code>source_url</code> exists. Slots gain a <b>start-time chip</b> beside the free-text duration, days gain <b>Add to calendar</b>, and the plan gains <b>Send to my phone</b> / print. Partner slots are labelled ("Books on guruwalk.com · you'll leave Chekin"); host offers say "nothing is charged until you check out".</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Provenance</span>
+      <h4>An AI plan you cannot check is a rumour</h4>
+      <p class="was"><b>Now in code:</b> <code>WhyThisPick</code> shows the model's sentence and nothing behind it. <code>TravelGuide.source_urls</code> arrives in the payload and is <b>never rendered on any screen</b>, and no slot says which of the guest's own answers produced it.</p>
+      <p class="now"><b>Proposed:</b> "Why this pick" expands to the reason <b>plus a From row</b> — the answer that drove it ("Your answer · No tourist traps") and the source it came from (<code>visitvalencia.com</code>). The desktop rail carries a <b>"Where this came from"</b> card listing every <code>source_url</code>, with the date the opening hours were checked. Disagree with a pick and the chip tells you which answer to change.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Structure</span>
+      <h4>The phase nav becomes a real tablist; the day gets headings</h4>
+      <p class="was"><b>Now in code:</b> <code>PhaseNav</code> and <code>DaySubTabs</code> are <code>&lt;Button aria-pressed&gt;</code> in a scroller — no roving focus, no arrow keys, no panel association; a keyboard user tabs through every chip. The time-of-day label in <code>DayTimeline.tsx:42</code> is a plain <code>&lt;span&gt;</code>, so a screen reader hears the whole day as one undifferentiated list. The active tab is signalled by colour alone.</p>
+      <p class="now"><b>Proposed:</b> a genuine <code>role="tablist"</code> — roving <code>tabindex</code>, ←/→/Home/End, <code>aria-controls</code> onto real <code>tabpanel</code>s. Morning / Afternoon / Evening become <b><code>&lt;h3&gt;</code> headings</b> with an icon and a time range, so the day has an outline. The selected tab is a <b>filled navy shape</b>, not a blue word, and "today" carries a dot as well as a colour.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Truthfulness</span>
+      <h4>The check-in card stops promising a screen it doesn't open</h4>
+      <p class="was"><b>Now in code:</b> <code>CheckInCard</code> says "<b>Start check-in · about 2 min</b>" and then navigates to <code>PATHS.home</code> (<code>CheckInCard.tsx:41</code>) — the guest lands on the home screen and has to find the task themselves. It also names no guest and no blocker.</p>
+      <p class="now"><b>Proposed:</b> the card <b>names the person and the task</b> ("Marc still needs to verify his ID"), says what it unlocks ("until Marc finishes, the door code stays locked"), and the CTA <b>lands on Marc's verification</b>. On the last day the same component turns into the late-check-out hand-off.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Parity</span>
+      <h4>The phone gets the trip totals; the laptop gets the hand-off</h4>
+      <p class="was"><b>Now in code:</b> <code>TripGlance</code> — dates, days, stops — is <code>hidden lg:block</code> (<code>TravelGuidePlan.tsx:149</code>), so the device the guest actually carries never shows the trip summary, while the laptop they'll close before leaving does. Nothing on either surface knows what time it is or what comes next.</p>
+      <p class="now"><b>Proposed:</b> mobile gets the glance as a <b>three-stat strip</b> and, above it, a <b>"Right now" card</b> — the time, the next stop, its walk time, and Directions. Desktop trades that card for a persistent <b>trip rail</b> (glance + planned spend, the tuned-for profile, the sources, and <b>Send to my phone</b>), because a browser cannot walk to Mercat Central.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Resilience</span>
+      <h4>Skeletons, an offline plan, and an empty state that acts</h4>
+      <p class="was"><b>Now in code:</b> the returning guest sees a centered "Preparing your itinerary…"; there is <b>no offline handling of any kind</b>; and an empty guide renders "Your guide is empty for now." with no cause and no action.</p>
+      <p class="now"><b>Proposed:</b> a <b>shape-matched skeleton</b> of the plan that is coming; an <b>offline banner</b> ("showing the plan saved at 09:12 — directions still open in your maps app") with network-dependent actions honestly disabled; and an empty state that <b>names the answers that emptied it</b> ("no packaged tours, no crowds, no long walks, free only") and offers to loosen one.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Accessibility</span>
+      <h4>The submit button is never disabled</h4>
+      <p class="was"><b>Now in code:</b> the Generate button is <code>disabled</code> until three answers exist. A disabled button is skipped by screen readers and explains nothing; the only clue is an amber dot far below, on a page where required and optional questions look identical.</p>
+      <p class="now"><b>Proposed:</b> the button is <b>always enabled and always responds</b>. Pressing it unsatisfied <b>flags each missing question</b>, moves focus to the first one and announces it on a live region; a hint line above the dock counts down ("3 answers still needed" → "Ready — building takes about a minute"). Cost bands add a shape and an <code>sr-only</code> sentence, so nothing is carried by colour alone.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Navigation</span>
+      <h4>Back means back</h4>
+      <p class="was"><b>Now in code:</b> every step transition is <code>setSearchParams(…, {replace:true})</code> (<code>TravelGuideView.tsx:55</code>), so the browser Back button never moves <code>guide</code>&nbsp;→&nbsp;<code>questions</code>&nbsp;→&nbsp;<code>intro</code> — it exits the feature. Combined with answers in an unpersisted <code>useState</code>, one stray Back gesture discards everything the guest typed.</p>
+      <p class="now"><b>Proposed:</b> steps <b>push</b> history and answers persist across them, so Back is a step and not an ejection. Skip is kept, but it now says what it costs ("uses your city, dates and length of stay — no preferences"), and the answers are still there when you return.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Travel eSIM</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag trust-t">Honesty</span>
+      <h4>“Best value” now means the best value</h4>
+      <p class="was"><b>Now in code:</b> <code>PackageCheckbox</code> renders the <code>esim.choose_plan.best_value</code> tag whenever <code>esimPackage.package_is_unlimited</code> is true. “Unlimited” and “best value” are different claims, and the unlimited package is usually the <i>most</i> expensive card on the screen. Nothing else on the row lets the guest check.</p>
+      <p class="now"><b>Proposed:</b> the badge is <b>computed — the lowest price per GB inside the duration group</b> — and every card carries its <b>€/GB unit price</b> beneath the total, so the claim is auditable at a glance. Unlimited keeps a separate, factual <b>“No data cap”</b> badge (with the fair-use throttle stated), and reads “no GB price”.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Task order</span>
+      <h4>The install ladder starts with a method that works</h4>
+      <p class="was"><b>Now in code:</b> <code>InstractionCard</code> opens on the <b>QR code</b> tab, rendering the profile at <code>width={80} height={80}</code> and instructing the guest to “scan this QR code with your device camera” — on the phone that is displaying it. The one method that <i>does</i> work there, <code>direct_apple_installation_url</code>, sits above the tabs and only sometimes. “Networks” (the APN fix) is presented as a peer installation method.</p>
+      <p class="now"><b>Proposed:</b> four <b>rungs in the order they actually succeed</b> — ① one-tap install (iOS) or manual codes (Android, which has no deep link), ② manual codes, ③ QR relabelled <b>“Scan from another device”</b> and drawn large enough to scan, ④ APN demoted to a collapsed <b>“Installed, but no mobile data?”</b> troubleshooting rung. The platform picker is a segmented <b>iOS / Android</b> control with the guest's OS detected — not a <code>&lt;Select&gt;</code> mixing “iOS 17.4” with “Android Option 1”.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Continuity</span>
+      <h4>Buying an eSIM now ends with owning one</h4>
+      <p class="was"><b>Now in code:</b> <code>ChooseForm.submitHandler</code> navigates to <code>PATHS.payments.main</code> and the journey stops there. Nothing returns the guest to <code>MyEsimsView</code>, and the hub (<code>EsimActionsCard</code>) only grows a second button once <code>esims.length</code> is truthy — an unlabelled state change the guest never sees happen.</p>
+      <p class="now"><b>Proposed:</b> the hub is <b>state-aware</b>: owning an un-installed eSIM promotes a <b>“Your eSIM is paid for — install it now”</b> card above the fold, with the plan named and a single primary action. The websocket wait in <code>useEsimPaymentsCreatedListener</code> becomes an explained <b>“Reserving your plan”</b> step instead of a bare spinner inside the button.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Cognitive load</span>
+      <h4>One plan, one tap — multi-buy survives as an opt-in</h4>
+      <p class="was"><b>Now in code:</b> every <code>package_days</code> group is a stacked <code>&lt;fieldset&gt;</code> of checkboxes, so a country with five durations is a twenty-checkbox wall. Quantity lives in a separate <code>TotalToPay</code> panel, and dropping a counter to <code>0</code> calls <code>setValue(checked, false)</code> — silently unchecking a card the guest isn't looking at.</p>
+      <p class="now"><b>Proposed:</b> a <b>duration rail</b> shows one group at a time, with the group covering the guest's real stay preselected and labelled <b>“Covers your stay”</b>. Packages become <b>radios</b>; the quantity stepper moves <b>inside the card it controls</b> and bottoms out at 1. Buying several different packages is preserved behind an explicit <b>“Add a different plan for someone else”</b>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Honesty</span>
+      <h4>No invented data meter</h4>
+      <p class="was"><b>Now in code:</b> the <code>Esim</code> payload carries <code>package_data</code>, <code>package_days</code> and <code>is_roaming</code> — and no usage figures at all. So the single question every guest has after installing (“how much data is left?”) has nowhere to be answered, and the card answers nothing.</p>
+      <p class="now"><b>Proposed:</b> the card states what it <i>can</i> know — data, validity, network, and an install status the guest confirms themselves (<b>Not installed → Installed → Connected</b>) — then <b>points at the two places that hold the real balance</b> (phone settings, the Airalo app) rather than drawing a progress bar from a number nobody sent us.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Timing</span>
+      <h4>Compatibility is answered before the guest invests</h4>
+      <p class="was"><b>Now in code:</b> <code>DeviceCompatibilityModal</code> is a ghost link under the “Choose your plan” heading — one screen <i>after</i> the decision to buy. Opening it leads with a search box over an infinite <code>useInfiniteFetchCompatibleDevices</code> list of model names; the three requirements that actually decide the answer are prose above it.</p>
+      <p class="now"><b>Proposed:</b> a <b>compatibility strip on the hub</b>, before any plan is chosen, naming the guest's detected device. The sheet leads with the <b>three requirements as a checklist</b> and demotes the searchable device list to a fallback. On desktop it says plainly that it <b>cannot detect the phone</b> rather than guessing.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Feedback</span>
+      <h4>Copy buttons that confirm, an accordion that accordions</h4>
+      <p class="was"><b>Now in code:</b> <code>Value.tsx</code> fires <code>copyToClipboard(value)</code> with no toast, no label change and no live region — the guest taps and nothing happens. All three <code>AskedQuestion</code>s mount with <code>useState(true)</code>, so the FAQ opens fully expanded. <code>MyEsimPlans</code>'s loading state is the literal string <code>"loading..."</code>, and an empty <code>esims</code> array renders the “Purchased plans” heading above nothing.</p>
+      <p class="now"><b>Proposed:</b> copy actions flip to <b>“Copied ✓”</b>, raise a toast <b>and</b> announce into an <code>aria-live</code> region. The FAQ is <b>closed by default</b> (the questions are the index) and gains the one everybody asks — “will I keep my normal number?”. Loading is a <b>shape-matched skeleton</b>; “no eSIMs yet” and “no plans for this country” are <b>real empty states with a way out</b>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Structure</span>
+      <h4>The “help” tab folds back into the page</h4>
+      <p class="was"><b>Now in code:</b> <code>MyEsimsView</code> splits two short pages across a tab bar whose second label is the untranslated literal <code>'help'</code> — lowercase. Common issues are a bullet list where each bullet <i>describes</i> its own fix in bold prose, and <code>NeedHelp</code> hard-codes <code>bg-white</code> and <code>border-gray-200</code>, bypassing the theme tokens.</p>
+      <p class="now"><b>Proposed:</b> one scrollable page. Each <b>common issue becomes a link to the rung that fixes it</b>, so “no mobile data” lands on the APN section rather than describing it. Everything is drawn from the theme tokens. (The <code>esim/help</code> route can redirect to the anchored section, so existing links keep working.)</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Chat with host</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag trust-t">Human touch</span>
+      <h4>You're messaging a host, not a property name</h4>
+      <p class="was"><b>Now in code:</b> <code>ChatInterface</code> heads the thread with one line — <code>talking_with {property_name}</code> — and every bubble carries a generic <code>H</code> / <code>G</code> avatar (<code>MessageBubble</code> + <code>senderColors</code>). There's no host identity, no presence, no sense of when a reply might come.</p>
+      <p class="now"><b>Proposed:</b> a <b>host identity header</b> — avatar with a <b>presence dot</b>, display name + verified tick, and a response-time line ("Active now" / "Usually replies within an hour") — plus a <b>trip strip</b> (property · dates · guests) so both sides share context. Host name/photo are a small profile addition that falls back to <code>property_name</code>.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">First impression</span>
+      <h4>The empty thread invites the first message</h4>
+      <p class="was"><b>Now in code:</b> with <code>messages.length === 0</code> the thread renders centered grey text — <code>no_messages_yet</code>. A guest with a question faces a blank page and has to compose from scratch.</p>
+      <p class="now"><b>Proposed:</b> a warm host <b>greeting</b> plus tappable <b>starter questions</b> (Wi-Fi · How do I get in · Check in early · Parking) that fill the composer — less blank-page paralysis, and the host gets the questions they answer most.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Reassurance</span>
+      <h4>Messages tell you where they are</h4>
+      <p class="was"><b>Now in code:</b> outbound messages have only two visible states — sent, or <code>failed_to_send</code> with a retry (<code>failedMessageIds</code>). There's no delivered/read signal and no day separators, so a long thread is a flat, undated stack.</p>
+      <p class="now"><b>Proposed:</b> a status ladder on your own bubbles — <b>Sending → Sent → Delivered → Read</b> — <b>day separators</b> (Today / Yesterday), and <b>grouped bubbles</b> (avatar + name shown once per run). The failed + retry state is kept, just quieter.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Explained security</span>
+      <h4>The identity check stops feeling like a wall</h4>
+      <p class="was"><b>Now in code:</b> <code>OtpVerification</code> is a dialog that pops <b>over a blurred thread</b> — a 6-digit code with no explanation of what it protects or why it appeared.</p>
+      <p class="now"><b>Proposed:</b> the same <code>useChatOtp</code> flow (code · resend cooldown · error) reframed as a <b>full screen with rationale</b> — a shield, the masked email, and a "we ask once per device so only you can read this conversation" note. Same security, far less friction.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Honesty</span>
+      <h4>Dropped connections and dead ends get an exit</h4>
+      <p class="was"><b>Now in code:</b> a <code>WebsocketProvider</code> disconnect is <b>silent</b>; <code>!isChatEnabled</code> and <code>!hasLeadGuestEmail</code> each show a lone icon + one line with nowhere to go.</p>
+      <p class="now"><b>Proposed:</b> a <b>Reconnecting</b> banner with a queued-message state; the chat-off state <b>names the reason</b> and routes to FAQ / guidebook; the register-first state <b>names the lead guest</b> and deep-links registration.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Design system</span>
+      <h4>Chat joins the redesign palette</h4>
+      <p class="was"><b>Now in code:</b> bubbles use raw <code>bg-blue-500</code> / <code>bg-blue-50</code> and grey greys — Tailwind defaults that predate the 2.0 lavender/navy tokens.</p>
+      <p class="now"><b>Proposed:</b> guest bubbles use a <b>brand gradient</b>, host bubbles a bordered white card on the lavender page wash; chrome is the same glass top bar / composer as every other flow, and on desktop chat becomes a proper <b>sidebar destination</b> with a shared-context rail.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Check-out</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>Check-out becomes a guided flow, not a bare payment box</h4>
+      <p class="was"><b>Now in code:</b> <code>BeforeYouLeaveView</code> renders a lone <code>&lt;PaymentSummaryBox&gt;</code> inside an empty <code>&lt;div&gt;</code> — no context, no reassurance, and the three legs (summary → survey → thanks) have <b>no shared progress</b>, so the guest never knows where they are in leaving.</p>
+      <p class="now"><b>Proposed:</b> one flow with a visible <b>settle → rate → done</b> spine, a check-out-by <b>countdown</b>, and a <b>"you're all set" checklist</b> (guests registered ✓ · stay paid ✓ · keys → lockbox) that frames the payment step as a formality rather than a wall.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Completeness</span>
+      <h4>The "add before you go" services the app already wrote copy for</h4>
+      <p class="was"><b>Now in code:</b> <code>check-out.json</code> ships <code>before_you_leave_subtitle</code> ("Select additional services…"), <code>add_to_checkout</code>, <code>airport_city_transfers</code> and <code>available_on_checkout_day</code> — but <b>no component renders them</b>; the strings are orphaned and the surface was never built.</p>
+      <p class="now"><b>Proposed:</b> an <b>"Add before you go"</b> section (late check-out <code>AUTO</code>, luggage drop) that toggles into a <b>live ledger</b> with a transparent service fee — finally delivering the last-minute-services experience the product copy promised.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>The hidden "nothing to pay" logic becomes honest copy</h4>
+      <p class="was"><b>Now in code:</b> <code>shouldHideButton</code> silently hides or relabels the CTA depending on <code>isTotalAmountToPayZero</code> / survey flags — the guest sees a button appear, vanish or change with <b>no explanation</b> of why.</p>
+      <p class="now"><b>Proposed:</b> the CTA <b>states the situation</b>: an empty cart reads <b>"Everything's settled — continue"</b> (straight to the survey), adding an extra flips it to <b>"Pay €X.XX"</b>. Same logic, made legible.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Trust</span>
+      <h4>The deposit hold stops being mistaken for a charge</h4>
+      <p class="was"><b>Now in code:</b> <code>PaymentTotals</code> renders "already paid" rows but gives the security-deposit <b>authorization no distinct treatment</b> — a €300 hold can read like money owed.</p>
+      <p class="now"><b>Proposed:</b> the hold is a <b>hollow, dashed card</b> kept <b>out of "to pay now"</b>, with one plain line — "reserved on your card · released after check-out" — the same hold convention used across payments and taxes.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Service recovery</span>
+      <h4>A poor rating opens a repair, not a dead end</h4>
+      <p class="was"><b>Now in code:</b> <code>ThanksView</code> shows public-review buttons only when the rating clears <code>survey_minimum_nps_score</code>; a low score falls through to a <b>near-blank screen</b> — a review-gating pattern that quietly funnels only happy guests to Google / Booking and leaves unhappy ones nowhere.</p>
+      <p class="now"><b>Proposed:</b> ≥4★ still reaches the warm thanks (optional Google / Booking + Mozio transfer); <b>≤3★ opens a service-recovery screen</b> — "we're sorry we fell short" → <b>message the host / request a call back</b>, feedback kept private, <b>never</b> pushed to public reviews.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Feedback &amp; a11y</span>
+      <h4>The star rating reacts, and works from the keyboard</h4>
+      <p class="was"><b>Now in code:</b> <code>RateForm</code> is a bare <code>&lt;RatingRadioGroup&gt;</code> + textarea; the submit is <code>disabled</code> until a star is picked <b>with no affordance</b> saying why, and there's no emotive confirmation of the choice.</p>
+      <p class="now"><b>Proposed:</b> the row gives an <b>emotive read-out</b> (😞 Very poor … 🤩 Excellent!) announced via <code>aria-live</code>, is a real <code>role="radiogroup"</code> with <b>arrow-key / Enter / Space</b> support, and the submit only lights up — and routes by score — once a star is set.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Liquid glass</span>
+      <h4>Check-out ships a Standard · Liquid-glass A/B switch</h4>
+      <p class="was"><b>Now in code:</b> the shipped rule keeps glass on chrome only, reading surfaces solid — there's no way to weigh a stronger, fully-frosted treatment against it on the same screens.</p>
+      <p class="now"><b>Proposed / in the prototype:</b> a <b>"Glass style: Standard · Liquid glass"</b> toggle (<code>checkout-toggle.js</code>) on both check-out pages. <b>Standard</b> is the default; <b>Liquid glass</b> (<code>html.glass-strong</code>) frosts the reading surfaces — checklist, add-ons, ledger, cards — over soft color orbs with deeper blur, while the navy sidebar and Vela rail stay as-is. Persists across mobile ↔ desktop; a decision aid, mirroring the Guidebooks switch.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">FAQ & language</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Orientation</span>
+      <h4>The FAQ is grouped by task, not a flat list</h4>
+      <p class="was"><b>Now in code:</b> FAQView renders one flat accordion of ~10 questions; conditional ones (IV, taxes, payments) silently appear or disappear per reservation (Questions.tsx).</p>
+      <p class="now"><b>Proposed:</b> the same questions under <b>section labels that mirror the check-in tasks</b> — Your data &amp; registration, Identity verification, Taxes &amp; payments — so guests scan to their problem instead of reading ten headlines. Grouping is presentation only; the conditional logic is unchanged.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Momentum</span>
+      <h4>FAQ answers end in the action they describe</h4>
+      <p class="was"><b>Now in code:</b> answers are static rich text (renderRichText) — the only links are to the Privacy Policy; a guest who reads "you can complete the payment later" still has to find the payments page alone.</p>
+      <p class="now"><b>Proposed:</b> answers that describe a task close with a <b>pill action into that task</b> — "Review your tourist taxes", "Open your payments cart", "Start identity verification" — the same next-step rule the success screens follow.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>FAQ no-results is an exit, not a dead end</h4>
+      <p class="was"><b>Now in code:</b> the empty state is a SearchX icon plus "No results for … — try a different word"; there is no other way forward and no contact/escalation anywhere on the page.</p>
+      <p class="now"><b>Proposed:</b> the same empty state adds <b>"Ask Vela instead"</b> and "Browse all questions" — an unanswered question becomes a conversation, not a shrug.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Clarity</span>
+      <h4>Language switching is one tap closer and suggests first</h4>
+      <p class="was"><b>Now in code:</b> the LanguageModal opens only from menu/footer entries (useNavigationLinks); the sheet is a flat searchable grid of 18 languages, and the browser-language detection (querystring → localStorage → navigator) is invisible to the guest.</p>
+      <p class="now"><b>Proposed:</b> a <b>globe on the page top bar</b> (mobile) and a sidebar "Support" row showing the current value ("Language · English"); the sheet pins a <b>Suggested group</b> — current language plus the device language, labelled "from your device" — above the full list. The good parts stay: search, pending spinner on the picked row, instant in-place switch with no reload.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Remote access — virtual keys</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Access</span>
+      <h4>"Keys not available yet" becomes a checklist you can act on</h4>
+      <p class="was"><b>Now in code:</b> NoAccessKeysBox shows a static lock icon and a bulleted list of <code>incomplete_conditions</code> (all payments complete, all guests identified, on check-in day…). It states what's missing but offers no way to fix it — a dead end.</p>
+      <p class="now"><b>Proposed:</b> the same conditions render as a <b>progress checklist</b> — done rows carry a green check, and the one blocking task the guest controls (verify Carlos's ID) <b>deep-links straight into that flow</b>. A navy "keys go live on check-in day · from 15:00" banner sets the expectation, and the primary CTA is the blocking task itself (mirrors the app-wide next-task priority).</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Access</span>
+      <h4>Every door states whether it opens right now</h4>
+      <p class="was"><b>Now in code:</b> availability is implicit — <code>checkIfCurrentDayBetween(valid_from, valid_through)</code> just disables the switch and relabels it "Keys out of time." A guest sees a greyed control with no sense of when it'll work.</p>
+      <p class="now"><b>Proposed:</b> each door carries an explicit state chip — green <b>"Open now"</b> vs amber <b>"Opens 15:00"</b> — and the before-the-window screen shows the codes/slider locked with the exact go-live time, reusing the app's status-color grammar (green complete · amber waiting · red error). COMMON vs PRIVATE locks get building vs apartment icons so the street door and your unit read at a glance.</p>
+    </div>
+    <div class="imp">
+      <span class="tag glass-t">Signature</span>
+      <h4>Slide-to-open, made tactile and accident-proof</h4>
+      <p class="was"><b>Now in code:</b> OpenDoorSwitch exists but is a plain draggable; the code lock shows a copy button only for Keyless — the standard KeyBox code has none.</p>
+      <p class="now"><b>Proposed:</b> the <b>slide-to-open is the hero</b> of each live door — a deliberate, single-purpose gesture (drag or tap) that opens the OpenLockStatusModal (opening → "You're in" → re-locks itself), with a clear connection-issue recovery. Every keypad code gets a <b>one-tap copy</b>, and multi-lock buildings (Salto) list each door in one place, an offline lock shown honestly with Retry rather than a silent failure.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">Error & recovery</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>The error page stops being a dead end</h4>
+      <p class="was"><b>Now in code:</b> <code>ErrorView</code> is a house icon + title + two lines of text and <b>no actions at all</b> — a guest who hits a broken link or a rate-limit is simply stuck, with hardcoded hex colors off the token system.</p>
+      <p class="now"><b>Proposed:</b> the same title/text/secondText, now with a <b>recovery block</b> — the broken-link case offers <b>"Find my booking"</b> (into the search flow) + contact host + a what-to-check list; every variant has a real way forward, tokenized and on-brand.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Differentiation</span>
+      <h4>Each error looks like what it actually is</h4>
+      <p class="was"><b>Now in code:</b> <code>ConnectionErrorsHandler</code> passes three very different situations — invalid link, a transient <b>"Too many requests"</b>, and (via <code>ErrorFallback</code>) a hard crash — through <b>one identical house-icon layout</b>.</p>
+      <p class="now"><b>Proposed:</b> a <b>variant mark + tint</b> per case (broken-link blue · clock amber · alert red), so a temporary rate-limit never reads as a broken link, and a crash never reads as "your fault".</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Transient</span>
+      <h4>"Too many requests" gets a countdown, not a blind wait</h4>
+      <p class="was"><b>Now in code:</b> the rate-limit variant says "wait a few minutes and try again" with <b>no timer and no retry</b> — the guest reloads blindly and can re-trip the limit.</p>
+      <p class="now"><b>Proposed:</b> a <b>countdown dial</b> ("try again shortly", button auto-enables when the wait is up) and a reassurance line that the check-in itself is fine — turning a scary-sounding limit into a short, honest pause.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Supportability</span>
+      <h4>A crash hands over something support can trace</h4>
+      <p class="was"><b>Now in code:</b> <code>ErrorFallback</code> is "⚠ Something went wrong" text (Sentry catches it silently); the guest has nothing to quote and no clear next step.</p>
+      <p class="now"><b>Proposed:</b> a <b>copyable error reference</b> (CHK-9F3A2), a primary <b>Reload &amp; try again</b>, and a Contact-support path that pre-fills that reference — so a stuck guest and support meet on the same thread.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Embedded</span>
+      <h4>The SDK error is recoverable in the host page</h4>
+      <p class="was"><b>Now in code:</b> <code>SDKErrorView</code> is bare centered text inside the client's iframe — no icon, no retry, and the surrounding host site gives no clue what happened.</p>
+      <p class="now"><b>Proposed:</b> a compact branded <b>error card with a Try-again</b> (the SDK still fires <code>onConnectionError</code> so the host can react), shown here inside a mock host website so the in-context treatment is clear.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Implementation notes.</b> Everything here uses existing token values (<code>@chekinapp/tokens</code>) — no new colors were invented. The payment-method UI is Stripe's embedded <code>&lt;PaymentElement&gt;</code> and cannot be restructured — the payments prototypes fence it off and confine changes to Appearance-API theming (<code>colorPrimary</code>, radius, font) plus the components around it (ledger, hold warning, CTA, processing timeline). The per-guest tax math in the taxes prototypes uses data the backend already returns (<code>SeasonRule</code> age brackets, <code>max_nights</code> cap, the season's <code>Exemption</code> list) — it's a presentation change, not a new API surface. The glass effect is <code>backdrop-filter: blur() saturate()</code> over existing surfaces with graceful fallback (solid <code>rgba</code> backgrounds) and it is confined to chrome: top bars, bottom nav, on-camera pills, CTA docks. All motion respects <code>prefers-reduced-motion</code>. The segmented progress, accent-bar "next up" row, and auto-fill tags are pure CSS additions to existing components (<code>IVTopBarSubtitle → progress segments</code>, <code>TaskRow</code>, <code>GuestFormFields</code>).
+  </div>
+
+</div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
+    <g id="i-scan-face"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-monitor"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></g>
+    <g id="i-card-sim"><path d="M12 14v4"/><path d="M14.172 2a2 2 0 0 1 1.414.586l3.828 3.828A2 2 0 0 1 20 7.828V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M8 14h8"/><rect x="8" y="10" width="8" height="8" rx="1"/></g>
+    <g id="i-play"><polygon points="6 3 20 12 6 21 6 3"/></g>
+    <g id="i-layers"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></g>
+    <g id="i-scroll"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/><path d="m5 8 7-7 7 7" opacity="0.4"/></g>
+    <g id="i-sparkle"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></g>
+  </defs>
+</svg>
+<script src="nav.js" defer></script>
+</body>
+</html>

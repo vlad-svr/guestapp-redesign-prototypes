@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amélie Rousseau · Booking · Chekin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/themes.css">
+<style>
+  .detail-grid { display: grid; grid-template-columns: 1fr 320px; gap: var(--sp-4); align-items: start; }
+  @media (max-width: 1100px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .tl-item:last-child { padding-bottom: 4px; }
+  .tl-item::before {
+    content: ""; position: absolute; left: 14px; top: 30px; bottom: 0;
+    width: 2px; background: var(--border-default);
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-item.is-done::before { background: var(--status-success-dot); }
+  .tl-dot {
+    width: 30px; height: 30px; border-radius: 50%; flex: none; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--neutral-100); color: var(--neutral-500);
+  }
+  .tl-dot svg { width: 14px; height: 14px; }
+  .tl-item.is-done .tl-dot { background: var(--status-success-dot); color: #fff; }
+  .tl-item.is-progress .tl-dot { background: var(--status-info-bg); color: var(--blue-500); box-shadow: 0 0 0 4px rgba(56,91,248,0.12); }
+  .tl-item.is-error .tl-dot { background: var(--red-500); color: #fff; }
+  .tl-body { flex: 1; min-width: 0; padding-top: 4px; }
+  .tl-title { font-weight: 600; font-size: var(--text-base); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tl-sub { color: var(--text-secondary); font-size: var(--text-sm); margin-top: 2px; }
+  .tl-actions { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .guest-row { display: flex; align-items: center; gap: 11px; padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); }
+  .guest-row:last-child { border-bottom: 0; }
+
+  .kv { display: grid; grid-template-columns: 120px 1fr; gap: 9px 14px; font-size: var(--text-base); padding: var(--sp-4) var(--sp-5); margin: 0; }
+  .kv dt { color: var(--text-tertiary); font-weight: 500; font-size: var(--text-sm); }
+  .kv dd { margin: 0; font-weight: 500; }
+
+  /* Verification review modal */
+  .iv-compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+  .iv-photo {
+    aspect-ratio: 4/3; border-radius: var(--radius-md); position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .iv-photo .tag {
+    position: absolute; top: 8px; left: 8px;
+    background: rgba(22,22,67,0.72); color: #fff; font-size: var(--text-xs); font-weight: 600;
+    padding: 3px 8px; border-radius: var(--radius-full);
+  }
+  .iv-face { width: 74px; height: 74px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: var(--blue-900); }
+  .iv-check { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border-subtle); font-size: var(--text-base); }
+  .iv-check:last-child { border-bottom: 0; }
+  .iv-check svg { width: 16px; height: 16px; color: var(--green-700); flex: none; }
+</style>
+</head>
+<body data-page="reservations">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div class="main">
+    <div id="shell-topbar"></div>
+    <main class="content" id="main-content">
+
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="reservations.html">Bookings</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span aria-current="page">Amélie Rousseau</span>
+      </nav>
+
+      <div class="page-head">
+        <div class="row" style="gap:14px;">
+          <span class="avatar avatar--lg av-2" aria-hidden="true">AR</span>
+          <div>
+            <h1 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">Amélie Rousseau <span class="badge badge--warning">Needs action</span></h1>
+            <p class="sub">Villa Miramar · Jul 17 – 24 · 7 nights · 4 guests · Airbnb HM3QZ8</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn--secondary" data-toast="Check-in link copied to clipboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+            Copy check-in link
+          </button>
+          <div style="position:relative;">
+            <button class="btn btn--secondary btn--icon" data-menu="#booking-menu" aria-label="More actions" aria-haspopup="menu">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>
+            </button>
+            <div class="menu" id="booking-menu" role="menu" style="top:40px;right:0;">
+              <button role="menuitem" data-toast="Booking sent to your PMS">Send to PMS</button>
+              <button role="menuitem" data-toast="Edit booking details below — changes save automatically">Edit details</button>
+              <hr>
+              <button role="menuitem" class="danger" data-open="#delete-modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Delete booking
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warning" style="margin-bottom:var(--sp-4);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+        <div class="grow"><b>Guests arrive today and 3 of 4 haven’t registered.</b> Resend the check-in link or register them manually at arrival.</div>
+        <button class="btn btn--primary btn--sm" data-toast="Check-in link re-sent by email and SMS">Resend link</button>
+      </div>
+
+      <div class="detail-grid">
+        <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+
+          <section class="card" aria-labelledby="journey-h">
+            <div class="card-head"><h2 id="journey-h">Check-in journey</h2><span class="hint">2 of 5 steps complete</span></div>
+            <div class="timeline" style="padding:var(--sp-5);">
+              <div class="tl-item is-done">
+                <span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <div class="tl-body">
+                  <p class="tl-title">Booking confirmed <span class="small muted" style="font-weight:400;">Jul 2 · Airbnb</span></p>
+                  <p class="tl-sub">Payment settled through the booking channel.</p>
+                </div>
+              </div>
+              <div class="tl-item is-done">
+                <span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+                <div class="tl-body">
+                  <p class="tl-title">Check-in link sent <span class="small muted" style="font-weight:400;">Jul 3 · email + SMS</span></p>
+                  <p class="tl-sub">Opened 5 times. Last visit yesterday, 18:42.</p>
+                </div>
+              </div>
+              <div class="tl-item is-progress">
+                <span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg></span>
+                <div class="tl-body">
+                  <p class="tl-title">Guest registration <span class="badge badge--warning">1 of 4</span></p>
+                  <p class="tl-sub">Amélie is registered and verified. Three companions still need to fill in their details.</p>
+                  <div class="tl-actions">
+                    <button class="btn btn--secondary btn--sm" data-toast="Reminder sent to remaining guests">Send reminder</button>
+                    <button class="btn btn--ghost btn--sm" data-toast="Manual guest registration form would open">Register manually</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3 4 6v6c0 4.4 3.4 8.4 8 9 4.6-.6 8-4.6 8-9V6l-8-3Z"/></svg></span>
+                <div class="tl-body">
+                  <p class="tl-title">Police registration</p>
+                  <p class="tl-sub">Submitted automatically to Mossos d’Esquadra once all guests are registered.</p>
+                </div>
+              </div>
+              <div class="tl-item">
+                <span class="tl-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M6.5 12.9 21.2 17c.8.2 1.6-.3 1.8-1.1.2-.8-.3-1.6-1.1-1.8l-5.1-1.4-4-8.2-1.9-.5.9 7-5.2-1.4-1.4-3-1.4-.4.1 4.3c0 .4.3.8.7.9Z"/></svg></span>
+                <div class="tl-body">
+                  <p class="tl-title">Check-out · Jul 24</p>
+                  <p class="tl-sub">Departure instructions go out automatically the evening before.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="guests-h">
+            <div class="card-head">
+              <h2 id="guests-h">Guests <span class="muted" style="font-weight:400;">1 of 4 registered</span></h2>
+              <button class="btn btn--secondary btn--sm" data-toast="Manual guest registration form would open">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Add guest
+              </button>
+            </div>
+            <div class="guest-row">
+              <span class="avatar av-2" aria-hidden="true">AR</span>
+              <div class="grow">
+                <p style="font-weight:600;">Amélie Rousseau <span class="small muted" style="font-weight:400;">· lead guest</span></p>
+                <p class="small muted">Passport · France · amelie.r@gmail.com</p>
+              </div>
+              <span class="badge badge--success">ID verified</span>
+              <button class="btn btn--secondary btn--sm" data-open="#iv-modal">Review ID</button>
+            </div>
+            <div class="guest-row">
+              <span class="avatar av-4" aria-hidden="true">TR</span>
+              <div class="grow">
+                <p style="font-weight:600;">Thomas Rousseau</p>
+                <p class="small muted">Invited Jul 3 · opened link, didn’t finish</p>
+              </div>
+              <span class="badge badge--neutral">Not registered</span>
+              <button class="btn btn--ghost btn--sm" data-toast="Personal reminder sent to Thomas">Remind</button>
+            </div>
+            <div class="guest-row">
+              <span class="avatar av-5" aria-hidden="true">G3</span>
+              <div class="grow">
+                <p style="font-weight:600;">Guest 3</p>
+                <p class="small muted">No details yet</p>
+              </div>
+              <span class="badge badge--neutral">Not registered</span>
+              <button class="btn btn--ghost btn--sm" data-toast="Personal reminder sent">Remind</button>
+            </div>
+            <div class="guest-row">
+              <span class="avatar av-6" aria-hidden="true">G4</span>
+              <div class="grow">
+                <p style="font-weight:600;">Guest 4</p>
+                <p class="small muted">No details yet</p>
+              </div>
+              <span class="badge badge--neutral">Not registered</span>
+              <button class="btn btn--ghost btn--sm" data-toast="Personal reminder sent">Remind</button>
+            </div>
+          </section>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+          <section class="card" aria-labelledby="bk-h">
+            <div class="card-head"><h2 id="bk-h">Booking</h2><button class="btn btn--ghost btn--sm" data-toast="Inline editing enabled (prototype)">Edit</button></div>
+            <dl class="kv">
+              <dt>Property</dt><dd><a href="property-detail.html" style="color:var(--text-brand);">Villa Miramar</a></dd>
+              <dt>Stay</dt><dd>Jul 17 → Jul 24, 2026</dd>
+              <dt>Guests</dt><dd>2 adults · 2 children</dd>
+              <dt>Source</dt><dd>Airbnb · HM3QZ8</dd>
+              <dt>Payment</dt><dd><span class="badge badge--success badge--plain" style="height:22px;">Paid via channel</span></dd>
+              <dt>Tourist tax</dt><dd>€33.60 · collected at check-in</dd>
+            </dl>
+          </section>
+
+          <section class="card" aria-labelledby="msg-h">
+            <div class="card-head"><h2 id="msg-h">Latest message</h2></div>
+            <div style="padding:var(--sp-4) var(--sp-5);">
+              <p class="small" style="background:var(--surface-sunken);border-radius:var(--radius-md);padding:10px 12px;">“Is early check-in possible tomorrow? We land at 9am.”</p>
+              <p class="small muted" style="margin-top:6px;">Amélie · 24 min ago · via Airbnb</p>
+              <div class="row" style="margin-top:10px;">
+                <input class="input" placeholder="Reply…" aria-label="Reply to Amélie">
+                <button class="btn btn--primary" data-toast="Reply sent via Airbnb">Send</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="act-h">
+            <div class="card-head"><h2 id="act-h">Activity</h2></div>
+            <div style="padding:var(--sp-2) var(--sp-5) var(--sp-4);font-size:var(--text-sm);color:var(--text-secondary);display:flex;flex-direction:column;gap:9px;">
+              <p><b style="color:var(--text-primary);">Amélie</b> completed ID verification · yesterday 18:47</p>
+              <p><b style="color:var(--text-primary);">System</b> sent check-in reminder · yesterday 09:00</p>
+              <p><b style="color:var(--text-primary);">You</b> replied to a message · Jul 14</p>
+              <p><b style="color:var(--text-primary);">System</b> sent check-in link · Jul 3</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Identity verification review modal -->
+<div class="modal-overlay" id="iv-modal" aria-hidden="true">
+  <div class="modal modal--lg" role="dialog" aria-modal="true" aria-labelledby="iv-title">
+    <div class="modal-head">
+      <div>
+        <h2 id="iv-title">Identity verification — Amélie Rousseau</h2>
+        <p class="small muted" style="margin-top:2px;">Verified automatically yesterday at 18:47 · Passport · France</p>
+      </div>
+      <button class="btn btn--ghost btn--icon" data-close aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:var(--sp-4);">
+      <div class="iv-compare">
+        <div class="iv-photo" style="background:linear-gradient(135deg,var(--avatar-1),var(--avatar-6));">
+          <span class="tag">Document photo</span>
+          <span class="iv-face" style="background:rgba(255,255,255,0.75);" aria-hidden="true">AR</span>
+        </div>
+        <div class="iv-photo" style="background:linear-gradient(135deg,var(--avatar-2),var(--avatar-3));">
+          <span class="tag">Selfie</span>
+          <span class="iv-face" style="background:rgba(255,255,255,0.75);" aria-hidden="true">AR</span>
+        </div>
+      </div>
+      <div>
+        <div class="iv-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span class="grow">Face match — document photo matches the selfie</span>
+          <span class="badge badge--success">Passed</span>
+        </div>
+        <div class="iv-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span class="grow">Liveness — real person detected (blink + head movement)</span>
+          <span class="badge badge--success">Passed</span>
+        </div>
+        <div class="iv-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span class="grow">Document integrity — MRZ readable, no tampering signs</span>
+          <span class="badge badge--success">Passed</span>
+        </div>
+      </div>
+      <dl class="kv" style="padding:0;">
+        <dt>Document</dt><dd>Passport · 19FR44821</dd>
+        <dt>Issued by</dt><dd>France · expires 03/2031</dd>
+        <dt>Name</dt><dd>Amélie Rousseau</dd>
+        <dt>Date of birth</dt><dd>14 Feb 1991</dd>
+      </dl>
+    </div>
+    <div class="modal-foot" style="justify-content:space-between;">
+      <button class="btn btn--danger-ghost" data-close data-toast="Verification rejected — guest asked to retry">Reject &amp; ask to retry</button>
+      <div class="row">
+        <button class="btn btn--ghost" data-close>Close</button>
+        <button class="btn btn--primary" data-close data-toast="Verification confirmed">Confirm verification</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirmation -->
+<div class="modal-overlay" id="delete-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="del-title" style="max-width:420px;">
+    <div class="modal-head"><h2 id="del-title">Delete this booking?</h2></div>
+    <div class="modal-body">
+      <p class="muted">The booking for <b style="color:var(--text-primary);">Amélie Rousseau · Villa Miramar</b> and its guest data will be removed. Registered police submissions are kept for compliance. You can undo for 30 seconds.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn--ghost" data-close>Cancel</button>
+      <button class="btn btn--danger" data-close data-toast="Booking deleted">Delete booking</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

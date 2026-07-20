@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home · Chekin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/themes.css">
+<style>
+  .hero-row { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; margin-bottom: var(--sp-5); }
+  .hero-row .date { color: var(--text-tertiary); font-size: var(--text-sm); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .stats-band { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); margin-bottom: var(--sp-5); }
+  @media (max-width: 960px) { .stats-band { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { position: relative; overflow: hidden; }
+  .stat-card .stat { padding-right: 56px; }
+  .stat-card .icon-chip {
+    position: absolute; top: 14px; right: 14px;
+    width: 32px; height: 32px; border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stat-card .icon-chip svg { width: 16px; height: 16px; }
+  .chip-blue { background: var(--surface-selected); color: var(--blue-500); }
+  .chip-green { background: var(--green-50); color: var(--green-700); }
+  .chip-amber { background: var(--amber-50); color: var(--amber-600); }
+  .chip-red { background: var(--red-50); color: var(--red-500); }
+
+  .home-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--sp-4); align-items: start; }
+  @media (max-width: 1100px) { .home-grid { grid-template-columns: 1fr; } }
+
+  .task-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 13px 16px; border-bottom: 1px solid var(--border-subtle);
+    transition: background var(--dur-fast);
+  }
+  .task-item:last-child { border-bottom: 0; }
+  .task-item:hover { background: var(--surface-hover); }
+  .task-item .sev {
+    width: 30px; height: 30px; border-radius: var(--radius-md); flex: none;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .task-item .sev svg { width: 15px; height: 15px; }
+  .task-item .t-title { font-weight: 600; font-size: var(--text-base); }
+  .task-item .t-detail { color: var(--text-secondary); font-size: var(--text-sm); margin-top: 1px; }
+  .task-item .btn { flex: none; margin-top: 2px; }
+
+  .arrival-item { display: flex; align-items: center; gap: 11px; padding: 11px 16px; border-bottom: 1px solid var(--border-subtle); transition: background var(--dur-fast); }
+  .arrival-item:last-child { border-bottom: 0; }
+  .arrival-item:hover { background: var(--surface-hover); }
+  .arrival-item .who { min-width: 0; flex: 1; }
+  .arrival-item .who .g { font-weight: 600; font-size: var(--text-base); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .arrival-item .who .p { font-size: var(--text-sm); color: var(--text-tertiary); }
+
+  .funnel { display: flex; flex-direction: column; gap: 14px; padding: var(--sp-5); }
+  .funnel .f-row { display: grid; grid-template-columns: 130px 1fr 44px; gap: 12px; align-items: center; font-size: var(--text-sm); }
+  .funnel .f-row .n { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .funnel .f-label { color: var(--text-secondary); font-weight: 500; }
+
+  .quick-actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+</style>
+</head>
+<body data-page="home">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div class="main">
+    <div id="shell-topbar"></div>
+    <main class="content" id="main-content">
+
+      <div class="hero-row">
+        <div>
+          <p class="date">Thursday, 17 July</p>
+          <h1 style="font-size:var(--text-2xl);font-weight:600;margin-top:4px;">Good morning, Marta</h1>
+          <p class="muted" style="margin-top:4px;">3 arrivals and 2 departures today · <strong style="color:var(--status-danger-fg);">2 items need your attention</strong></p>
+        </div>
+        <div class="quick-actions">
+          <button class="btn btn--secondary" data-open="#share-link-modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+            Share check-in link
+          </button>
+          <a class="btn btn--primary" href="reservations.html#new">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            New booking
+          </a>
+        </div>
+      </div>
+
+      <div class="stats-band">
+        <a class="card stat-card" href="reservations.html#today" aria-label="Arrivals today: 3 — open filtered bookings">
+          <div class="stat">
+            <span class="label">Arrivals today</span>
+            <span class="value">3</span>
+            <span class="delta"><span class="muted">2 of 3 ready for check-in</span></span>
+          </div>
+          <span class="icon-chip chip-blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M3.8 13.7 21 9.1c.8-.2 1.3-1 1-1.8-.2-.8-1-1.2-1.8-1L15 7.6 7.5 3 5.6 3.5l4.5 5.4-5.2 1.4-2.7-2-1.4.4 2 3.8c.2.4.6.6 1 .5Z"/></svg></span>
+        </a>
+        <a class="card stat-card" href="reservations.html" aria-label="Departures today: 2 — open bookings">
+          <div class="stat">
+            <span class="label">Departures today</span>
+            <span class="value">2</span>
+            <span class="delta"><span class="muted">All check-outs on track</span></span>
+          </div>
+          <span class="icon-chip chip-green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M6.5 12.9 21.2 17c.8.2 1.6-.3 1.8-1.1.2-.8-.3-1.6-1.1-1.8l-5.1-1.4-4-8.2-1.9-.5.9 7-5.2-1.4-1.4-3-1.4-.4.1 4.3c0 .4.3.8.7.9Z"/></svg></span>
+        </a>
+        <a class="card stat-card" href="reservations.html#awaiting" aria-label="Check-ins pending: 4 — open filtered bookings">
+          <div class="stat">
+            <span class="label">Check-ins pending</span>
+            <span class="value">4</span>
+            <span class="delta down">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/></svg>
+              guests not yet registered
+            </span>
+          </div>
+          <span class="icon-chip chip-amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+        </a>
+        <a class="card stat-card" href="reservations.html#error" aria-label="Compliance issues: 1 — open filtered bookings">
+          <div class="stat">
+            <span class="label">Compliance issues</span>
+            <span class="value">1</span>
+            <span class="delta down">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4m0 4h.01"/></svg>
+              police submission failed
+            </span>
+          </div>
+          <span class="icon-chip chip-red" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.4 3.4 8.4 8 9 4.6-.6 8-4.6 8-9V6l-8-3Z"/></svg></span>
+        </a>
+      </div>
+
+      <div class="home-grid">
+        <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+
+          <section class="card" aria-labelledby="needs-attention-h">
+            <div class="card-head">
+              <h2 id="needs-attention-h">Needs attention</h2>
+              <span class="badge badge--danger">4 items</span>
+            </div>
+            <div id="tasks-list"></div>
+          </section>
+
+          <section class="card" aria-labelledby="funnel-h">
+            <div class="card-head">
+              <h2 id="funnel-h">Online check-in this week</h2>
+              <a class="btn btn--ghost btn--sm" href="reservations.html">View bookings</a>
+            </div>
+            <div class="funnel">
+              <div class="f-row">
+                <span class="f-label">Link sent</span>
+                <div class="progress" role="img" aria-label="Link sent: 18 of 18 bookings"><span style="width:100%;"></span></div>
+                <span class="n">18</span>
+              </div>
+              <div class="f-row">
+                <span class="f-label">Guests registered</span>
+                <div class="progress" role="img" aria-label="Guests registered: 13 of 18 bookings"><span style="width:72%;"></span></div>
+                <span class="n">13</span>
+              </div>
+              <div class="f-row">
+                <span class="f-label">ID verified</span>
+                <div class="progress" role="img" aria-label="Identity verified: 11 of 18 bookings"><span style="width:61%;"></span></div>
+                <span class="n">11</span>
+              </div>
+              <div class="f-row">
+                <span class="f-label">Fully complete</span>
+                <div class="progress success" role="img" aria-label="Fully complete: 10 of 18 bookings"><span style="width:56%;"></span></div>
+                <span class="n">10</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+          <section class="card" aria-labelledby="today-h">
+            <div class="card-head"><h2 id="today-h">Today</h2><span class="hint">3 arrivals · 2 departures</span></div>
+            <div id="today-list"></div>
+          </section>
+
+          <section class="card" aria-labelledby="messages-h">
+            <div class="card-head">
+              <h2 id="messages-h">New messages</h2>
+              <button class="btn btn--ghost btn--sm" data-toast="Inbox is out of scope for this prototype">Open inbox</button>
+            </div>
+            <div class="arrival-item">
+              <span class="avatar av-2" aria-hidden="true">AR</span>
+              <div class="who">
+                <p class="g">Amélie Rousseau</p>
+                <p class="p">“Is early check-in possible tomorrow?” · 24 min ago</p>
+              </div>
+              <button class="btn btn--secondary btn--sm" data-toast="Reply sent (prototype)">Reply</button>
+            </div>
+            <div class="arrival-item">
+              <span class="avatar av-5" aria-hidden="true">NF</span>
+              <div class="who">
+                <p class="g">Novak family</p>
+                <p class="p">“Where do we leave the keys?” · 2 h ago</p>
+              </div>
+              <button class="btn btn--secondary btn--sm" data-toast="Reply sent (prototype)">Reply</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Share check-in link modal -->
+<div class="modal-overlay" id="share-link-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="share-link-title">
+    <div class="modal-head">
+      <h2 id="share-link-title">Share check-in link</h2>
+      <button class="btn btn--ghost btn--icon" data-close aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:var(--sp-4);">
+      <div class="field">
+        <label for="share-booking">Booking</label>
+        <select class="select" id="share-booking">
+          <option>Amélie Rousseau · Villa Miramar · Jul 17–24</option>
+          <option>Chen Wei · Villa Miramar · Jul 19–21</option>
+          <option>Igor Petrov · Marina Bay 804 · Jul 22–26</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="share-url">Check-in link</label>
+        <div class="row">
+          <input class="input" id="share-url" readonly value="https://a.chekin.com/APT12QZ8" aria-describedby="share-url-help">
+          <button class="btn btn--secondary" data-toast="Link copied to clipboard">Copy</button>
+        </div>
+        <p class="help" id="share-url-help">Guests use this link to register and verify their ID before arrival.</p>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn--ghost" data-close>Cancel</button>
+      <button class="btn btn--primary" data-close data-toast="Check-in link sent to guest by email">Send by email</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script>
+  (function () {
+    var sev = {
+      error: { cls: 'chip-red', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.3 3.9-8.5 14.2a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 4h.01"/></svg>', label: 'Error' },
+      warning: { cls: 'chip-amber', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>', label: 'Warning' },
+      info: { cls: 'chip-blue', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>', label: 'To do' }
+    };
+    document.getElementById('tasks-list').innerHTML = MOCK.tasks.map(function (t) {
+      var s = sev[t.kind];
+      return '<div class="task-item">' +
+        '<span class="sev ' + s.cls + '" role="img" aria-label="' + s.label + '">' + s.icon + '</span>' +
+        '<div class="grow"><p class="t-title">' + t.title + '</p><p class="t-detail">' + t.detail + '</p></div>' +
+        '<a class="btn btn--secondary btn--sm" href="' + t.href + '">' + t.action + '</a>' +
+      '</div>';
+    }).join('');
+
+    var today = MOCK.reservations.filter(function (r) { return r.tags; });
+    document.getElementById('today-list').innerHTML = today.map(function (r) {
+      var dir = r.tags[0] === 'Arriving today';
+      var badge = r.status === 'complete'
+        ? '<span class="badge badge--success">Ready</span>'
+        : r.status === 'error'
+          ? '<span class="badge badge--danger">Error</span>'
+          : '<span class="badge badge--warning">Pending</span>';
+      return '<a class="arrival-item" href="reservation-detail.html">' +
+        '<span class="avatar av-' + r.av + '" aria-hidden="true">' + r.guest.split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase() + '</span>' +
+        '<div class="who"><p class="g">' + r.guest + '</p><p class="p">' + (dir ? '↓ Arrives' : '↑ Departs') + ' · ' + r.property + ' · ' + r.guests + ' guests</p></div>' +
+        badge + '</a>';
+    }).join('');
+  })();
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>

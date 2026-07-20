@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan &amp; billing · Chekin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/themes.css">
+<style>
+  .bill-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--sp-4); align-items: start; }
+  @media (max-width: 1000px) { .bill-grid { grid-template-columns: 1fr; } }
+  .plan-hero {
+    background: var(--brand-gradient);
+    color: #fff; border-radius: var(--radius-lg); padding: var(--sp-6);
+    position: relative; overflow: hidden;
+  }
+  .plan-hero::after {
+    content: ""; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px;
+    border-radius: 50%; background: rgba(255,255,255,0.07); pointer-events: none;
+  }
+  .plan-hero .price { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; }
+  .plan-feature { display: flex; align-items: center; gap: 9px; font-size: var(--text-base); padding: 6px 0; }
+  .plan-feature svg { width: 15px; height: 15px; color: var(--green-500); flex: none; }
+</style>
+</head>
+<body data-page="billing">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div class="main">
+    <div id="shell-topbar"></div>
+    <main class="content" id="main-content">
+
+      <div class="page-head">
+        <div>
+          <h1>Plan &amp; billing</h1>
+          <p class="sub">Plan, payment method and invoices — one place, no separate wizards.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info" style="margin-bottom:var(--sp-4);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+        <div class="grow"><b>Your trial ends in 9 days</b> (Jul 26). Pick a plan before then to keep online check-in running — your settings and data stay untouched.</div>
+      </div>
+
+      <div class="bill-grid">
+        <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+          <div class="plan-hero">
+            <div class="row" style="justify-content:space-between;align-items:flex-start;">
+              <div>
+                <p style="font-size:var(--text-sm);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;opacity:0.8;">Current plan</p>
+                <p style="font-size:var(--text-xl);font-weight:700;margin-top:4px;">Growth — trial</p>
+              </div>
+              <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">6 properties</span>
+            </div>
+            <p class="price" style="margin-top:14px;">€3.90 <span style="font-size:var(--text-base);font-weight:500;opacity:0.8;">/ property / month, billed yearly</span></p>
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:0 18px;">
+              <p class="plan-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Online check-in &amp; guest app</p>
+              <p class="plan-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Police &amp; stats reporting</p>
+              <p class="plan-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>ID verification (100/mo)</p>
+              <p class="plan-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Tourist taxes &amp; contracts</p>
+            </div>
+            <div class="row" style="margin-top:18px;">
+              <button class="btn" style="background:#fff;color:var(--blue-700);" data-open="#plan-modal">Choose plan</button>
+              <button class="btn" style="color:rgba(255,255,255,0.9);" data-toast="Plan comparison table would open">Compare plans</button>
+            </div>
+          </div>
+
+          <section class="card" aria-labelledby="inv-h">
+            <div class="card-head"><h2 id="inv-h">Invoices</h2>
+              <button class="btn btn--ghost btn--sm" data-toast="All invoices exported as ZIP">Download all</button>
+            </div>
+            <div class="table-wrap">
+              <table class="table" style="min-width:520px;" aria-label="Invoices">
+                <thead><tr><th>Invoice</th><th>Date</th><th class="num">Amount</th><th>Status</th><th style="width:60px;"><span class="visually-hidden">Download</span></th></tr></thead>
+                <tbody>
+                  <tr><td class="cell-main">#2026-0198</td><td>Jul 1, 2026</td><td class="num">€0.00</td><td><span class="badge badge--info">Trial</span></td><td><button class="btn btn--ghost btn--sm" data-toast="Invoice downloaded">PDF</button></td></tr>
+                  <tr><td class="cell-main">#2026-0142</td><td>Jun 1, 2026</td><td class="num">€0.00</td><td><span class="badge badge--info">Trial</span></td><td><button class="btn btn--ghost btn--sm" data-toast="Invoice downloaded">PDF</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:var(--sp-4);">
+          <section class="card" aria-labelledby="pm-h">
+            <div class="card-head"><h2 id="pm-h">Payment method</h2></div>
+            <div style="padding:var(--sp-5);">
+              <div class="empty" style="padding:var(--sp-4);">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+                <h3 style="font-size:var(--text-md);">No card yet</h3>
+                <p class="small">Added when you choose a plan — nothing is charged during the trial.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="bd-h">
+            <div class="card-head"><h2 id="bd-h">Billing details</h2>
+              <button class="btn btn--ghost btn--sm" data-toast="Billing details editor would open">Edit</button>
+            </div>
+            <dl style="display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:var(--text-base);padding:var(--sp-4) var(--sp-5);margin:0;">
+              <dt class="muted small" style="font-weight:500;">Company</dt><dd style="margin:0;">Solmar Properties Lda</dd>
+              <dt class="muted small" style="font-weight:500;">VAT</dt><dd style="margin:0;">PT 514 223 987</dd>
+              <dt class="muted small" style="font-weight:500;">Address</dt><dd style="margin:0;">Rua das Flores 12, Lisbon</dd>
+              <dt class="muted small" style="font-weight:500;">Billing email</dt><dd style="margin:0;">billing@solmarproperties.com</dd>
+            </dl>
+          </section>
+
+          <section class="card card--pad" aria-labelledby="usage-h">
+            <h2 id="usage-h" style="font-size:var(--text-md);font-weight:600;margin-bottom:12px;">Usage this month</h2>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <div class="row" style="justify-content:space-between;margin-bottom:5px;"><span class="small" style="font-weight:500;">ID verifications</span><span class="small muted">38 / 100</span></div>
+                <div class="progress" role="img" aria-label="ID verifications: 38 of 100 used"><span style="width:38%;"></span></div>
+              </div>
+              <div>
+                <div class="row" style="justify-content:space-between;margin-bottom:5px;"><span class="small" style="font-weight:500;">SMS credits</span><span class="small muted">112 / 200</span></div>
+                <div class="progress" role="img" aria-label="SMS credits: 112 of 200 used"><span style="width:56%;"></span></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Plan chooser modal (replaces the 4-page wizard) -->
+<div class="modal-overlay" id="plan-modal" aria-hidden="true">
+  <div class="modal modal--lg" role="dialog" aria-modal="true" aria-labelledby="plan-title">
+    <div class="modal-head">
+      <h2 id="plan-title">Choose your plan</h2>
+      <button class="btn btn--ghost btn--icon" data-close aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="small muted" style="margin-bottom:var(--sp-4);">Prices for your 6 properties, billed yearly. Switch or cancel any time — no separate wizard, no lost state on refresh.</p>
+      <div class="grid grid--3">
+        <div class="card card--pad card--hover" style="border-width:1.5px;">
+          <p style="font-weight:600;">Basic</p>
+          <p style="font-size:1.4rem;font-weight:700;margin:6px 0 2px;">€2.50<span class="small muted" style="font-weight:400;"> /property/mo</span></p>
+          <p class="small muted" style="min-height:34px;">Online check-in and police reporting.</p>
+          <button class="btn btn--secondary" style="width:100%;margin-top:10px;" data-close data-toast="Basic plan selected — checkout would open">Select</button>
+        </div>
+        <div class="card card--pad" style="border:1.5px solid var(--blue-500);position:relative;">
+          <span class="badge badge--info badge--plain" style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);">Recommended</span>
+          <p style="font-weight:600;">Growth</p>
+          <p style="font-size:1.4rem;font-weight:700;margin:6px 0 2px;">€3.90<span class="small muted" style="font-weight:400;"> /property/mo</span></p>
+          <p class="small muted" style="min-height:34px;">Everything in Basic + ID verification, taxes, contracts.</p>
+          <button class="btn btn--primary" style="width:100%;margin-top:10px;" data-close data-toast="Growth plan selected — checkout would open">Select</button>
+        </div>
+        <div class="card card--pad card--hover" style="border-width:1.5px;">
+          <p style="font-weight:600;">Pro</p>
+          <p style="font-size:1.4rem;font-weight:700;margin:6px 0 2px;">€6.20<span class="small muted" style="font-weight:400;"> /property/mo</span></p>
+          <p class="small muted" style="min-height:34px;">+ Smart locks, upselling, damage protection, API.</p>
+          <button class="btn btn--secondary" style="width:100%;margin-top:10px;" data-close data-toast="Pro plan selected — checkout would open">Select</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

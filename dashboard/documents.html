@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documents · Chekin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/shell.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/themes.css">
+<style>
+  .doc-icon { width: 34px; height: 34px; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .doc-icon svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body data-page="documents">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app">
+  <div id="shell-sidebar"></div>
+  <div class="main">
+    <div id="shell-topbar"></div>
+    <main class="content" id="main-content">
+
+      <div class="page-head">
+        <div>
+          <h1>Documents</h1>
+          <p class="sub">Every registry submission, contract and invoice in one place — filtered, not scattered across 20 pages.</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn--primary" data-toast="Export started — we’ll notify you when the file is ready">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            Export
+          </button>
+        </div>
+      </div>
+
+      <div class="toolbar row" style="margin-bottom:var(--sp-4);flex-wrap:wrap;">
+        <div class="segmented" role="tablist" aria-label="Document type" data-panels="#doc-panels">
+          <button role="tab" aria-selected="true" data-type="all">All <span class="count">9</span></button>
+          <button role="tab" aria-selected="false" data-type="registry">Registry submissions <span class="count">4</span></button>
+          <button role="tab" aria-selected="false" data-type="guestbook">Guest books <span class="count">2</span></button>
+          <button role="tab" aria-selected="false" data-type="contract">Contracts <span class="count">2</span></button>
+          <button role="tab" aria-selected="false" data-type="invoice">Invoices <span class="count">1</span></button>
+        </div>
+        <span class="grow"></span>
+        <button class="chip" data-toast="Property filter would open">Property <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="chip" data-toast="Authority filter: Alloggiati, Mossos, SEF, Feratel…">Authority <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="chip" data-toast="Date range picker would open">Dates <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap">
+          <table class="table" aria-label="Documents">
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Property</th>
+                <th>Authority / recipient</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th style="width:120px;"><span class="visually-hidden">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="doc-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="small muted" style="margin-top:10px;">Registry formats (Alloggiati, Mossos, SEF, Feratel, UbyPort, INE…) are grouped here by <b>authority</b> — the old per-authority pages became a filter.</p>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/shell.js"></script>
+<script>
+(function () {
+  var docs = [
+    { type: 'registry', name: 'Police submission · 2 guests', prop: 'Trastevere Suites', auth: 'Alloggiati Web (IT)', date: 'Jul 17', status: 'error', statusLabel: 'Failed — retry' },
+    { type: 'registry', name: 'Police submission · 2 guests', prop: 'Casa Azulejo', auth: 'SEF / AIMA (PT)', date: 'Jul 17', status: 'success', statusLabel: 'Accepted' },
+    { type: 'registry', name: 'Police submission · 6 guests', prop: 'Alpine Chalet Bruck', auth: 'Feratel (AT)', date: 'Jul 16', status: 'success', statusLabel: 'Accepted' },
+    { type: 'registry', name: 'Occupancy statistics · June', prop: 'Villa Miramar', auth: 'INE (ES)', date: 'Jul 15', status: 'pending', statusLabel: 'Queued' },
+    { type: 'guestbook', name: 'Guest book · June 2026', prop: 'Casa Azulejo', auth: '—', date: 'Jul 1', status: 'success', statusLabel: 'Generated' },
+    { type: 'guestbook', name: 'Guest book · June 2026', prop: 'Villa Miramar', auth: '—', date: 'Jul 1', status: 'success', statusLabel: 'Generated' },
+    { type: 'contract', name: 'Rental contract · J. Weber', prop: 'Casa Azulejo', auth: 'Signed by guest', date: 'Jul 14', status: 'success', statusLabel: 'Signed' },
+    { type: 'contract', name: 'Rental contract · Chen Wei', prop: 'Villa Miramar', auth: 'Awaiting signature', date: 'Jul 13', status: 'pending', statusLabel: 'Pending' },
+    { type: 'invoice', name: 'Invoice #2026-041 · €84.00', prop: 'Alpine Chalet Bruck', auth: 'Novak family', date: 'Jul 12', status: 'success', statusLabel: 'Issued' }
+  ];
+  var iconFor = {
+    registry: { cls: 'chip-blue', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.4 3.4 8.4 8 9 4.6-.6 8-4.6 8-9V6l-8-3Z"/></svg>' },
+    guestbook: { cls: 'chip-green', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15Z"/><path d="M20 22H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>' },
+    contract: { cls: 'chip-amber', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v5h5"/><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="m9 15 2 2 4-4"/></svg>' },
+    invoice: { cls: 'chip-red', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>' }
+  };
+  var badge = {
+    success: '<span class="badge badge--success">',
+    pending: '<span class="badge badge--warning">',
+    error: '<span class="badge badge--danger">'
+  };
+  var body = document.getElementById('doc-body');
+  function render(type) {
+    body.innerHTML = docs.filter(function (d) { return type === 'all' || d.type === type; }).map(function (d) {
+      var ic = iconFor[d.type];
+      var retry = d.status === 'error'
+        ? '<button class="btn btn--secondary btn--sm" onclick="event.stopPropagation();showToast(\'Submission queued for retry\')">Retry</button>'
+        : '<button class="btn btn--ghost btn--sm" onclick="event.stopPropagation();showToast(\'Download started\')">Download</button>';
+      return '<tr tabindex="0">' +
+        '<td><div class="row"><span class="doc-icon ' + ic.cls + '" aria-hidden="true">' + ic.svg + '</span><span class="cell-main">' + d.name + '</span></div></td>' +
+        '<td>' + d.prop + '</td><td class="muted">' + d.auth + '</td><td>' + d.date + '</td>' +
+        '<td>' + badge[d.status] + d.statusLabel + '</span></td>' +
+        '<td style="text-align:right;">' + retry + '</td></tr>';
+    }).join('');
+  }
+  document.querySelectorAll('[data-type]').forEach(function (b) {
+    b.addEventListener('click', function () { render(b.getAttribute('data-type')); });
+  });
+  render('all');
+})();
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>
