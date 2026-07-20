@@ -1,10 +1,15 @@
-# Redesign 2.0 — UX Prototypes
+# Chekin — UX Prototypes
 
-Static HTML/CSS mockups (no build, no app logic, mock data) of the redesigned guest flows with proposed UX improvements layered on top of the existing `@chekinapp/tokens` design system.
+Static HTML/CSS mockups (no build, no app logic, mock data) of redesigned Chekin surfaces, layered on top of the existing `@chekinapp/tokens` design system.
+
+Two prototypes live here, behind a common chooser at the root `index.html` ([GitHub Pages](https://vlad-svr.github.io/guestapp-redesign-prototypes/)):
+
+- **`dashboard/`** — the host-side property management app: action-queue Home, bookings pipeline with clickable KPI filters, table-based properties, property workspace and workspace settings with separated views, unified documents hub, billing, 7 switchable design variants. See `dashboard/UX-AUDIT.md` for the audit and "what changed and why".
+- **`guestapp/`** — the guest-side Redesign 2.0 flows documented below.
 
 ## How to view
 
-Open `index.html` in a browser — it links to all prototypes and documents every proposed change with its rationale.
+Open the root `index.html` in a browser and pick a surface — or open `guestapp/index.html` directly; it links to all guest prototypes and documents every proposed change with its rationale.
 
 **Proposal vs current.** Where a feature has two prototypes, the one marked **Proposal** is a redesign
 proposal shown *beside* the **current** shipped variant — it is not the main variant, and nothing is

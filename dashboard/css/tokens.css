@@ -1,0 +1,171 @@
+/* ============================================================
+   Chekin Dashboard Redesign — Design Tokens
+   Values mirror @chekinapp/tokens (colors.css + surfaces/dashboard.css)
+   so the prototype stays on today's design system. Only genuinely
+   missing slots (elevation, motion, layout) are added.
+   ============================================================ */
+
+:root {
+  /* ── Brand primitives (verbatim from @chekinapp/tokens) ── */
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #abbafc;
+  --blue-300: #5975f5;   /* brand hover */
+  --blue-500: #385bf8;   /* brand DEFAULT */
+  --blue-600: #294df1;
+  --blue-700: #23235d;
+  --blue-900: #161643;   /* navy ink */
+
+  --lavender-surface: #f4f4fd;   /* --chekin-surface-promo */
+  --blue-tint-info: #e3efff;     /* --chekin-blue-tint-info */
+  --surface-pressed: #f0f3ff;    /* --chekin-surface-pressed */
+  --surface-card-tint: #efefff;  /* --chekin-surface-card */
+
+  --neutral-0: #ffffff;
+  --neutral-50: #f4f6f8;   /* input-empty / lightest surface */
+  --neutral-75: #f0f0f8;
+  --neutral-100: #ececf8;  /* table head */
+  --neutral-150: #e5e6ee;  /* border DEFAULT */
+  --neutral-200: #dedeeb;
+  --neutral-300: #cecede;  /* border strong / separator */
+  --neutral-400: #acacd5;
+  --neutral-500: #9696b9;  /* tertiary text */
+  --neutral-600: #6b6b95;  /* secondary text */
+  --neutral-900: #161643;
+
+  --green-50: #e8fcf7;     /* success surface */
+  --green-500: #35e5bc;    /* success DEFAULT */
+  --green-600: #2bc29f;
+  --green-700: #0f9f80;
+  --green-800: #059669;    /* success text */
+
+  --amber-50: #fff9db;
+  --amber-200: #fff4e5;    /* warning surface */
+  --amber-400: #ffc400;
+  --amber-500: #ffb700;    /* warning DEFAULT */
+  --amber-600: #ce8b0b;    /* warning text */
+
+  --red-50: #fff5f9;
+  --red-100: #ffe2ed;      /* danger surface */
+  --red-soft: #f84b7a;     /* inline validation error */
+  --red-500: #df0044;      /* danger DEFAULT */
+
+  --avatar-1: #e0e9fb;
+  --avatar-2: #e0fbf3;
+  --avatar-3: #fbf5e0;
+  --avatar-4: #fbede0;
+  --avatar-5: #fbe0f4;
+  --avatar-6: #ede0fb;
+
+  --brand-gradient: linear-gradient(151deg, #385cf8, #2148ff); /* styled/theme.ts $gradient */
+
+  /* ── Semantic: text (── --chekin-text-*) ── */
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-tertiary: var(--neutral-500);
+  --text-brand: var(--blue-500);
+  --text-danger: var(--red-500);
+  --text-inverse: #ffffff;
+
+  /* ── Semantic: surfaces (near-white canvas so cards float) ── */
+  --surface-app: #f8f9fc;             /* hairline off --background-main, from neutral-50 hue */
+  --surface-card: #ffffff;
+  --surface-sunken: var(--neutral-50); /* --empty-field-background */
+  --surface-hover: var(--neutral-50);
+  --surface-selected: var(--surface-pressed);
+  --surface-sidebar: var(--blue-900);  /* current AppSidebar is navy w/ white logo */
+  --surface-overlay: rgba(22, 22, 67, 0.4);
+
+  /* ── Semantic: borders ── */
+  --border-default: var(--neutral-150);
+  --border-subtle: var(--neutral-150);
+  --border-strong: var(--neutral-300);
+  --border-focus: var(--blue-500);
+
+  /* ── Status (surface/text pairs from token semantics) ── */
+  --status-success-bg: var(--green-50);
+  --status-success-fg: var(--green-800);
+  --status-success-dot: var(--green-600);
+  --status-warning-bg: var(--amber-200);
+  --status-warning-fg: var(--amber-600);
+  --status-warning-dot: var(--amber-500);
+  --status-danger-bg: var(--red-100);
+  --status-danger-fg: var(--red-500);
+  --status-danger-dot: var(--red-500);
+  --status-info-bg: var(--blue-tint-info);
+  --status-info-fg: var(--blue-600);
+  --status-info-dot: var(--blue-500);
+  --status-neutral-bg: var(--neutral-75);
+  --status-neutral-fg: var(--neutral-600);
+  --status-neutral-dot: var(--neutral-400);
+
+  /* ── Typography (dashboard surface = ProximaNova) ── */
+  --font-sans: 'Proxima Nova', ProximaNova, Montserrat, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --text-xs: 0.6875rem;   /* 11px */
+  --text-sm: 0.75rem;     /* 12px */
+  --text-base: 0.8125rem; /* 13px — app default */
+  --text-md: 0.875rem;    /* 14px */
+  --text-lg: 1rem;        /* 16px */
+  --text-xl: 1.1875rem;   /* 19px */
+  --text-2xl: 1.4375rem;  /* 23px */
+  --leading-tight: 1.3;
+  --leading-normal: 1.5;
+
+  /* ── Spacing (Tailwind 4px scale, as in the app) ── */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
+
+  /* ── Radii (system 4/6 base, one notch up for surfaces) ── */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 999px;
+
+  /* ── Elevation (soft layered depth; ink-tinted, never gray) ── */
+  --shadow-xs: 0 1px 2px rgba(22, 22, 67, 0.04);
+  --shadow-sm: 0 1px 3px rgba(22, 22, 67, 0.06), 0 1px 2px rgba(22, 22, 67, 0.04);
+  --shadow-md: 0 4px 14px rgba(22, 22, 67, 0.07), 0 2px 4px rgba(22, 22, 67, 0.04);
+  --shadow-lg: 0 16px 40px rgba(22, 22, 67, 0.16), 0 4px 10px rgba(22, 22, 67, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(56, 91, 248, 0.2); /* --chekin-shadow-focus */
+  --shadow-brand: 0 4px 12px rgba(56, 91, 248, 0.32);
+
+  /* ── Motion ── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 280ms;
+
+  /* ── Layout (app: --sidebar-width 16.5rem, --header-height 64px) ── */
+  --sidebar-w: 264px;
+  --sidebar-w-collapsed: 68px;
+  --topbar-h: 64px;
+  --content-max: 1200px;
+
+  /* ── Shell theme slots (overridden per data-theme in themes.css) ── */
+  --sidebar-bg: linear-gradient(180deg, var(--blue-900) 0%, #131339 100%);
+  --sidebar-fg: var(--neutral-300);
+  --sidebar-fg-strong: #ffffff;
+  --sidebar-muted: var(--neutral-500);
+  --sidebar-hover: rgba(255, 255, 255, 0.07);
+  --sidebar-active-bg: var(--brand-gradient);
+  --sidebar-active-fg: #ffffff;
+  --sidebar-active-shadow: var(--shadow-brand);
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --topbar-bg: rgba(248, 249, 252, 0.82);
+  --accent: var(--blue-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
