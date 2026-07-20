@@ -1,0 +1,1018 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Splash screen V2 — "the arrival moment"
+   Layered on shared.css only. Loaded by flow-splash-v2.html (mobile) and
+   flow-splash-desktop-v2.html (desktop / SDK / kiosk).
+
+   Maps: apps/guestapp/src/components/SplashScreen/{SplashScreen.tsx,styled.ts}
+
+   The splash stops being a timed gate and becomes a *handoff*: it covers a
+   shape-matched skeleton of the screen it is about to become, and dissolves
+   into it the moment the data lands. Nothing here waits on a fixed clock.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   0 · Accessibility primitives
+   ───────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   0.5 · Screen scaffold
+   Each scenario is a flow.js screen. The splash and the skeleton it covers
+   are two absolutely-positioned siblings, so they occupy the same box and
+   the dissolve is a cross-fade rather than a reflow.
+   ───────────────────────────────────────────────────────────── */
+.sp-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+/* Splash and app each paint their own status-bar area — only one is ever on
+   screen. Inside the stage it inherits --sp-ink, so it flips with the theme. */
+.sp-stage > .statusbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: var(--sp-ink);
+  z-index: 3;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   1 · The splash surface
+   The splash is pre-auth, so it follows the pre-auth idiom already
+   established by Find booking and Sign-in: the branded gradient, soft
+   colour orbs behind the glass, and a film-grain layer that stops the
+   gradient reading as a gradient.
+
+   Two theme hooks stand in for the branding CSS vars the app already
+   injects (`--splash-bg`, `--splash-animation-color`). `--sp-ink` is the
+   derived one the app does NOT have today: text colour chosen from the
+   *luminance* of the host's background, so a navy-branded splash can never
+   render navy text on navy, and a white-branded one can never render white.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --sp-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.sp-stage {
+  /* Default = the branded dark stage. A host may recolour it; the ink set
+     follows the ground, never the other way round. */
+  --sp-brand: var(--blue-light);
+  --sp-ink: #ffffff;
+  --sp-ink-soft: rgba(255, 255, 255, 0.76);
+  --sp-ink-faint: rgba(255, 255, 255, 0.52);
+  --sp-plate: rgba(255, 255, 255, 0.14);
+  --sp-plate-edge: rgba(255, 255, 255, 0.38);
+  --sp-hairline: rgba(255, 255, 255, 0.16);
+  --sp-badge-ring: var(--navy-950);
+  --sp-orb-a: #4f6bff;
+  --sp-orb-b: #35e5bc;
+  /* Where the mark flies to: the centre of the app header's logo slot, measured
+     from the centre of the 96px plate. 390px phone → logo centre (31, 75);
+     plate centre ≈ (187, 334). Scale 34/96 = 0.354. */
+  --sp-fly-x: -156px;
+  --sp-fly-y: -259px;
+  --sp-fly-s: 0.354;
+
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* The trust footer is pinned to the bottom, so the centring box has to end
+     above it — otherwise the error screen's actions grow straight into it. */
+  padding: 24px 24px 92px;
+  overflow: hidden;
+  background: var(--gradient-hero);
+  color: var(--sp-ink);
+  transition: opacity 0.34s ease, visibility 0.34s;
+}
+
+/* Soft colour orbs behind the glass — the layered surface the plate sits on.
+   Same construction as `.auth-stage`, so the two pre-auth moments match. */
+.sp-stage::before,
+.sp-stage::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  animation: sp-drift 18s ease-in-out infinite alternate;
+}
+/* The brand orb carries the colour; the accent orb is a bloom in the corner,
+   not a wash across the lower half — the ground must stay navy-blue. */
+.sp-stage::before { width: 280px; height: 280px; top: -70px; left: -80px; background: var(--sp-orb-a); opacity: 0.5; }
+.sp-stage::after { width: 240px; height: 240px; bottom: -110px; right: -110px; background: var(--sp-orb-b); opacity: 0.26; animation-delay: -9s; }
+@keyframes sp-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(18px, -14px, 0) scale(1.12); }
+}
+
+/* Film grain — the single detail that stops the gradient reading as a gradient. */
+.sp-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* above the orbs (::before/::after), below the content */
+  background-image: var(--sp-grain);
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Everything above the orbs and the grain. `.sp-trust` is deliberately absent:
+   it is already `position: absolute`, and re-declaring `position: relative` here
+   would turn its `bottom: 26px` into a 26px upward shift, dragging the footer on
+   top of the error screen's actions. It gets its z-index at its own rule. */
+.sp-stage > .sp-mark,
+.sp-stage > .sp-copy,
+.sp-stage > .sp-actions { position: relative; z-index: 2; }
+
+/* Light host brand: the contrast guard flips the whole ink set the other way.
+   A host whose `splash_screen_background_color` is white gets navy text, a navy
+   loader and a solid plate — without anyone hand-picking a second palette. */
+.sp-stage.on-light {
+  --sp-brand: var(--blue-500);
+  --sp-ink: var(--navy);
+  --sp-ink-soft: var(--text-secondary);
+  --sp-ink-faint: var(--text-tertiary);
+  --sp-plate: rgba(255, 255, 255, 0.86);
+  --sp-plate-edge: rgba(255, 255, 255, 0.95);
+  --sp-hairline: rgba(22, 22, 67, 0.1);
+  --sp-badge-ring: #eef1fb;
+  --sp-orb-a: #b9c7ff;
+  --sp-orb-b: #d8f5ee;
+  background: linear-gradient(168deg, #ffffff 0%, #f2f5fd 58%, #e9eefc 100%);
+}
+.sp-stage.on-light::before,
+.sp-stage.on-light::after { opacity: 0.8; }
+.sp-stage.on-light .sp-grain { opacity: 0.07; }
+
+/* The handoff. The surface leaves; the mark travels to where the app's
+   header logo will be, so the guest's eye is never cut. */
+.sp-stage.is-gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.sp-stage.is-gone .sp-plate {
+  transform: translate(var(--sp-fly-x), var(--sp-fly-y)) scale(var(--sp-fly-s));
+}
+.sp-stage.is-gone .sp-ring,
+.sp-stage.is-gone .sp-copy,
+.sp-stage.is-gone .sp-trust {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2 · Brand plate + honest progress ring
+   The plate is a *reserved box*: the default Chekin mark and the host's
+   logo occupy the same 96px square, so swapping one for the other when
+   branding resolves cross-fades instead of reflowing.
+   ───────────────────────────────────────────────────────────── */
+.sp-mark {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.sp-plate {
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  background: var(--sp-plate);
+  backdrop-filter: blur(24px) saturate(1.7);
+  -webkit-backdrop-filter: blur(24px) saturate(1.7);
+  border: 1px solid var(--sp-hairline);
+  /* Outer lift + the inner top highlight that makes glass read as glass. */
+  box-shadow:
+    0 18px 48px rgba(10, 10, 40, 0.32),
+    inset 0 1px 0 var(--sp-plate-edge),
+    inset 0 -14px 24px -14px rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.34s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+/* One slow specular sweep — the "liquid" tell, borrowed from `.s2-sheet`. */
+.sp-plate::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 48%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: sp-sweep 6.5s ease-in-out infinite;
+}
+@keyframes sp-sweep {
+  0%, 64% { transform: translateX(0); opacity: 0; }
+  72% { opacity: 1; }
+  100% { transform: translateX(330%); opacity: 0; }
+}
+/* A slow breath, so a sub-second splash still feels alive rather than frozen. */
+.sp-mark { animation: sp-breathe 4.5s ease-in-out infinite; }
+@keyframes sp-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.022); }
+}
+.sp-stage.is-gone .sp-mark { animation: none; }
+.sp-plate img,
+.sp-plate .sp-logo {
+  max-width: 68px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* Both marks stack in the same grid cell — no layout shift on swap. */
+  grid-area: 1 / 1;
+  transition: opacity 0.28s ease;
+}
+.sp-plate .sp-logo-default { opacity: 1; }
+.sp-plate .sp-logo-host { opacity: 0; }
+.sp-stage.branded .sp-plate .sp-logo-default { opacity: 0; }
+.sp-stage.branded .sp-plate .sp-logo-host { opacity: 1; }
+
+/* The default Chekin mark, drawn (the prototype must not fetch an asset).
+   Scoped under .sp-plate so it outranks the `width:auto` on the shared
+   `.sp-plate .sp-logo` rule — otherwise the tile collapses to glyph width. */
+.sp-plate .sp-logo-default {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--blue-500), #8ca5ff);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.03em;
+}
+/* A host's logo: a wordmark tile, standing in for splash_screen_logo. It is a
+   deliberately different shape from the Chekin monogram — that is the point of
+   the reserved box. It wraps inside its 64px cap rather than escaping the plate. */
+.sp-logo-host {
+  box-sizing: border-box;
+  width: 64px;
+  padding: 7px 5px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 9px;
+  line-height: 1.25;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--sp-ink);
+  border: 1.5px solid currentColor;
+}
+
+.sp-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+.sp-ring circle {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.sp-ring .sp-ring-track { stroke: var(--sp-hairline); }
+.sp-ring .sp-ring-arc {
+  /* A gradient stroke that fades in from the tail, so the arc reads as light
+     travelling round the mark rather than a bar bent into a circle. */
+  stroke: url(#spRingGrad);
+  filter: drop-shadow(0 0 6px rgba(140, 165, 255, 0.55));
+  stroke-dasharray: 314.16; /* 2πr, r = 50 */
+  /* --sp-p is 0…1 and is written by splash-v2.js. It eases toward 0.9 while
+     work is outstanding and only reaches 1 when the data actually lands —
+     the ring never claims a completion it hasn't earned. */
+  stroke-dashoffset: calc(314.16 * (1 - var(--sp-p, 0)));
+  transition: stroke-dashoffset 0.55s cubic-bezier(0.32, 0.72, 0.3, 1);
+}
+/* Indeterminate: used before the first stage resolves, and whenever the app
+   genuinely cannot estimate (offline retry). A rotating short arc reads as
+   "working", where a stalled 90 % arc would read as "broken". */
+.sp-ring.is-indeterminate {
+  /* Not shared.css's `spin` — that one animates to rotate(360deg) and would
+     stomp the -90deg base rotation, snapping the arc a quarter-turn on start. */
+  animation: sp-spin 1.15s linear infinite;
+}
+@keyframes sp-spin {
+  from { transform: rotate(-90deg); }
+  to { transform: rotate(270deg); }
+}
+.sp-ring.is-indeterminate .sp-ring-arc {
+  stroke-dasharray: 60 260;
+  stroke-dashoffset: 0;
+  transition: none;
+}
+
+.sp-stage.on-light .sp-ring .sp-ring-arc {
+  stroke: url(#spRingGradLight);
+  filter: drop-shadow(0 0 5px rgba(56, 91, 248, 0.3));
+}
+
+/* Error / offline: the ring becomes a state mark, not a progress claim, and
+   the mark stops breathing — nothing here is still working. */
+.sp-mark.is-error,
+.sp-mark.is-offline { animation: none; }
+.sp-mark.is-error .sp-plate { box-shadow: 0 18px 44px rgba(248, 75, 122, 0.28), inset 0 1px 0 var(--sp-plate-edge); }
+.sp-mark.is-error .sp-ring-arc { stroke: var(--red-soft); filter: drop-shadow(0 0 6px rgba(248, 75, 122, 0.5)); }
+.sp-mark.is-offline .sp-ring-arc { stroke: var(--amber-500); filter: drop-shadow(0 0 6px rgba(255, 183, 0, 0.45)); }
+.sp-badge {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  border: 2.5px solid var(--sp-badge-ring);
+}
+.sp-badge.err { background: var(--red-500); }
+.sp-badge.warn { background: var(--amber-700); }
+.sp-badge .icon { width: 14px; height: 14px; }
+
+/* ─────────────────────────────────────────────────────────────
+   3 · Copy block — the stage line
+   Silent for the first QUIET_MS. A splash that narrates a 400 ms load is
+   noise; one that says nothing through a 12 s load is a hang.
+   ───────────────────────────────────────────────────────────── */
+.sp-copy {
+  margin-top: 30px;
+  text-align: center;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+/* Scoped to .sp-stage so it outranks `.proto-stage h1` (0,1,1) from shared.css —
+   the terminal screens use a real <h1>, and without this the heading inherits the
+   page's navy and renders navy-on-navy on the branded ground. */
+.sp-stage .sp-title {
+  text-wrap: balance;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
+  color: var(--sp-ink);
+}
+.sp-stage-line {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--sp-ink-soft);
+  min-height: 20px; /* reserved: the line appearing must not nudge the mark */
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.32s ease, transform 0.32s ease;
+}
+.sp-stage-line.is-shown { opacity: 1; transform: none; }
+.sp-stage-line b { font-weight: 600; color: var(--sp-ink); }
+
+/* Elapsed clock — only ever shown once we've admitted we're slow. */
+.sp-elapsed {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sp-ink-faint);
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--sp-hairline);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4 · Recovery block (slow / error / offline)
+   ───────────────────────────────────────────────────────────── */
+.sp-actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px;
+}
+.sp-actions .btn-block { max-width: 300px; }
+/* On the branded ground the secondary buttons become glass rather than
+   white boxes punched out of the gradient. */
+.sp-stage .btn-outline {
+  border-color: var(--sp-hairline);
+  color: var(--sp-ink);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+}
+.sp-stage .btn-outline:hover { background: rgba(255, 255, 255, 0.16); }
+.sp-stage .btn-ghost { color: var(--sp-ink-soft); }
+.sp-stage .btn-ghost:hover { color: var(--sp-ink); }
+.sp-stage .btn-primary { box-shadow: 0 10px 28px rgba(56, 92, 248, 0.42); }
+
+/* on-light reverts them to the ordinary solid controls */
+.sp-stage.on-light .btn-outline { background: var(--n-0); border-color: var(--border); }
+.sp-stage.on-light .btn-outline:hover { background: var(--n-50); }
+
+/* Copyable error reference — the one thing support will ask for. */
+.sp-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 6px 0 12px;
+  border-radius: 99px;
+  border: 1px dashed var(--sp-hairline);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--sp-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.sp-ref code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.04em; }
+.sp-ref button {
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--sp-hairline);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--sp-ink);
+}
+.sp-ref button:hover { background: rgba(255, 255, 255, 0.22); }
+.sp-stage.on-light .sp-ref { background: rgba(255, 255, 255, 0.7); }
+.sp-stage.on-light .sp-ref button { background: var(--n-0); }
+
+/* An honest note, not a spinner-with-hope. */
+.sp-note {
+  font-size: 11.5px;
+  line-height: 17px;
+  font-weight: 500;
+  color: var(--sp-ink-faint);
+  text-align: center;
+  max-width: 280px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5 · Trust footer
+   The guest arrived here by tapping a link in an email about money and a
+   passport. Naming the operator is a feature, not a logo drop.
+   ───────────────────────────────────────────────────────────── */
+.sp-trust {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 26px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+.sp-trust-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 99px;
+  border: 1px solid var(--sp-hairline);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--sp-ink);
+}
+.sp-trust-row .icon { width: 13px; height: 13px; color: var(--green-500); }
+.sp-stage.on-light .sp-trust-row { background: rgba(255, 255, 255, 0.72); }
+.sp-stage.on-light .sp-trust-row .icon { color: var(--green-700); }
+.sp-trust-sub {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--sp-ink-faint);
+  letter-spacing: 0.01em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6 · The skeleton underneath
+   The splash is not painted over a void. It sits on the shape of the screen
+   it becomes, so the dissolve lands on furniture that is already there.
+   ───────────────────────────────────────────────────────────── */
+.sp-under {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-page);
+  overflow: hidden;
+}
+.sp-skel {
+  background: linear-gradient(90deg, var(--n-100) 25%, var(--n-75) 50%, var(--n-100) 75%);
+  background-size: 220% 100%;
+  animation: sp-shimmer 1.35s ease infinite;
+  border-radius: 8px;
+}
+@keyframes sp-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+.sp-skel-topbar {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--n-0);
+  flex-shrink: 0;
+}
+/* The destination of the flying plate: the real header logo slot. */
+.sp-skel-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--blue-500), #8ca5ff);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.22s;
+}
+.sp-under.is-live .sp-skel-logo { opacity: 1; }
+.sp-skel-body { padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; }
+.sp-skel-hero { height: 128px; border-radius: var(--r-xl); }
+.sp-skel-row {
+  height: 66px;
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+}
+.sp-skel-row .sp-skel { flex-shrink: 0; }
+.sp-skel-avatar { width: 38px; height: 38px; border-radius: 12px; }
+.sp-skel-lines { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+.sp-skel-line { height: 9px; }
+.sp-skel-line.w70 { width: 70%; }
+.sp-skel-line.w45 { width: 45%; }
+.sp-skel-line.w55 { width: 55%; }
+
+/* Once the splash is gone the skeleton becomes real content. */
+.sp-real { display: none; }
+.sp-under.is-live .sp-real { display: block; }
+.sp-under.is-live .sp-skel-stack { display: none; }
+.sp-real { padding: 16px; }
+.sp-real h1 {
+  font-size: 21px;
+  line-height: 27px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  outline: none;
+}
+.sp-real h1:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 4px; border-radius: 4px; }
+.sp-real .sp-real-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; }
+.sp-real-hero {
+  margin-top: 14px;
+  border-radius: var(--r-xl);
+  padding: 16px;
+  background: var(--gradient-hero);
+  color: #fff;
+}
+.sp-real-hero .h-k { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--blue-light); }
+.sp-real-hero .h-t { font-size: 16px; font-weight: 600; margin-top: 5px; }
+.sp-real-hero .h-s { font-size: 11.5px; color: rgba(255, 255, 255, 0.72); margin-top: 3px; }
+.sp-real-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  border: 1px solid var(--border);
+}
+.sp-real-row .r-ic { width: 34px; height: 34px; border-radius: 11px; background: var(--tint-info); color: var(--blue-500); display: grid; place-items: center; flex-shrink: 0; }
+.sp-real-row .r-t { font-size: 13px; font-weight: 600; color: var(--navy); }
+.sp-real-row .r-s { font-size: 11.5px; color: var(--text-secondary); }
+.sp-topbar-title { font-size: 14px; font-weight: 700; color: var(--navy); }
+.sp-topbar-sub { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+
+/* ─────────────────────────────────────────────────────────────
+   7 · Prototype instrumentation
+   The timing claim is the argument, so the prototype measures it out loud.
+   ───────────────────────────────────────────────────────────── */
+.sp-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 99px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.sp-clock .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--amber-500);
+  animation: pulse-ring 1.4s infinite;
+}
+.sp-clock.is-done { color: var(--green-700); border-color: var(--green-500); background: var(--green-50); }
+.sp-clock.is-done .dot { background: var(--green-600); animation: none; }
+.sp-clock.is-bad { color: var(--red-500); border-color: var(--red-soft); background: var(--red-100); }
+.sp-clock.is-bad .dot { background: var(--red-500); animation: none; }
+
+.sp-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.sp-replay {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+}
+.sp-replay:hover { color: var(--navy); }
+
+/* A named defect in the shipped component. */
+.sp-bug {
+  border: 1px solid var(--red-soft);
+  background: var(--red-100);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  text-align: left;
+}
+.sp-bug .icon { color: var(--red-500); width: 15px; height: 15px; margin-top: 1px; flex-shrink: 0; }
+.sp-bug p { font-size: 11.5px; line-height: 17px; color: var(--navy); }
+.sp-bug b { font-weight: 700; }
+.sp-bug code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+.sp-buglist { display: flex; flex-direction: column; gap: 8px; width: 390px; max-width: 100%; }
+
+/* ─────────────────────────────────────────────────────────────
+   8 · V1 replica — today's splash, reproduced defect-for-defect
+   Verbatim port of components/SplashScreen/styled.ts. The curtain timing
+   function there is `cubic-bezier(0, 1.23)` — two arguments, which is invalid
+   CSS, so the declaration is dropped and the browser falls back to `ease`.
+   We reproduce the *fallback*, because that is what ships.
+   ───────────────────────────────────────────────────────────── */
+.v1-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+  background: var(--v1-splash-bg, #f4f6f8);
+}
+/* A 3 s fade-in — on a splash screen. Gated on .is-running so a replay
+   restarts it along with the curtains. */
+.v1-splash.is-running { animation: v1-fade 3s ease-in-out 1 forwards; }
+.v1-splash.is-gone { display: none; }
+@keyframes v1-fade { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+.v1-logo { width: 96px; height: 64px; display: grid; place-items: center; }
+.v1-logo span {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  color: var(--v1-splash-anim, #385bf8);
+}
+
+/* The three-dot pulse, rebuilt without the 9999px box-shadow trick. */
+.v1-dots { display: flex; gap: 6px; }
+.v1-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--v1-splash-anim, #385bf8);
+  animation: v1-dot 2s infinite linear;
+}
+.v1-dots i:nth-child(1) { animation-delay: 0s; }
+.v1-dots i:nth-child(2) { animation-delay: 0.25s; }
+.v1-dots i:nth-child(3) { animation-delay: 0.5s; }
+@keyframes v1-dot {
+  0% { transform: scale(0.5); opacity: 0.35; }
+  30% { transform: scale(1.2); opacity: 1; }
+  60%, 100% { transform: scale(0.5); opacity: 0.35; }
+}
+
+.v1-curtain {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 2;
+  background: var(--v1-splash-anim, #385bf8);
+}
+.v1-curtain.top { top: 0; transform: translateY(-101%); }
+.v1-curtain.bottom { bottom: 0; transform: translateY(101%); }
+/* Both curtains start their 5 s animation on mount — not on data-ready —
+   and are fully closed by 86 % (≈4.3 s). Everything after that is a solid
+   rectangle of the brand colour with no logo, no loader and no text. */
+.v1-splash.is-running .v1-curtain.top { animation: v1-top 5s ease forwards; }
+.v1-splash.is-running .v1-curtain.bottom { animation: v1-bottom 5s ease forwards; }
+@keyframes v1-top {
+  0%, 72% { transform: translateY(-101%); }
+  86%, 100% { transform: translateY(0); }
+}
+@keyframes v1-bottom {
+  0%, 72% { transform: translateY(101%); }
+  86%, 100% { transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9 · Desktop, SDK-embedded and kiosk shells
+   ───────────────────────────────────────────────────────────── */
+.sp-desk-frame {
+  position: relative;
+  min-height: 720px;
+  overflow: hidden;
+}
+/* 1360px browser → sidebar brand tile centre (35, 39); plate centre ≈ (680, 316). */
+.sp-desk-frame .sp-stage { --sp-fly-x: -645px; --sp-fly-y: -277px; --sp-fly-s: 0.3; }
+.sp-desk-frame .sp-mark { width: 156px; height: 156px; }
+.sp-desk-frame .sp-plate { width: 112px; height: 112px; border-radius: 30px; }
+.sp-desk-frame .sp-plate img, .sp-desk-frame .sp-plate .sp-logo { max-width: 76px; max-height: 68px; }
+.sp-desk-frame .sp-plate .sp-logo-default { width: 62px; height: 62px; font-size: 28px; }
+.sp-desk-frame .sp-logo-host { width: 76px; font-size: 10px; }
+.sp-desk-frame .sp-title { font-size: 21px; }
+.sp-desk-frame .sp-copy { max-width: 380px; }
+
+/* The desktop skeleton is the navy-sidebar shell, so the dissolve lands on
+   the app's real furniture rather than a centred spinner over nothing. */
+.sp-skel-shell { display: grid; grid-template-columns: 266px minmax(0, 1fr); min-height: 720px; }
+.sp-real-shell { display: none; }
+.sp-under.is-live .sp-real-shell { display: grid; }
+.sp-real-shell .sp-skel-side { gap: 10px; }
+.sp-real-shell .sd-brand { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 700; font-size: 14px; }
+.sp-real-shell .sd-item { font-size: 12.5px; font-weight: 500; color: rgba(255, 255, 255, 0.62); padding: 9px 10px; border-radius: 9px; }
+.sp-real-shell .sd-item.on { background: rgba(255, 255, 255, 0.1); color: #fff; font-weight: 600; }
+
+/* The mock host page the SDK widget is embedded in. The splash must live
+   inside the widget box, never over the host's own chrome. */
+.sp-sdk-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 720px;
+  padding: 26px;
+  background: #e9ecf5;
+}
+.sp-skel-side { background: var(--navy); padding: 22px 18px; display: flex; flex-direction: column; gap: 14px; }
+.sp-skel-side .sp-skel { background: linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.13) 50%, rgba(255,255,255,0.06) 75%); background-size: 220% 100%; }
+.sp-skel-side .sp-skel-line { height: 11px; border-radius: 6px; }
+.sp-skel-main { padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+.sp-skel-main .sp-skel-hero { height: 170px; }
+.sp-skel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* SDK embedded: the splash is scoped to the widget box, never the viewport.
+   `position: absolute; inset: 0` on .sp-stage already does this — the point of
+   the mock host page is to prove it. */
+.sp-host-site {
+  width: min(900px, 94vw);
+  background: var(--n-0);
+  border-radius: 12px;
+  border: 1px solid var(--n-200);
+  overflow: hidden;
+}
+.sp-host-nav {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.sp-host-nav .brand { font-weight: 800; color: var(--navy); font-size: 15px; letter-spacing: -0.01em; margin-right: auto; }
+.sp-host-body { padding: 26px 24px 34px; display: flex; flex-direction: column; gap: 16px; }
+.sp-host-body h4 { font-size: 17px; font-weight: 700; color: var(--navy); }
+.sp-host-body p { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); max-width: 620px; }
+.sp-widget {
+  position: relative;
+  height: 480px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-page);
+}
+.sp-widget .sp-stage { --sp-fly-x: -395px; --sp-fly-y: -125px; --sp-fly-s: 0.354; }
+.sp-widget-tag {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 60;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 99px;
+  background: rgba(22, 22, 67, 0.72);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Kiosk: one-metre reading distance (same convention as keycards.css). */
+.sp-kiosk { position: relative; min-height: 640px; overflow: hidden; }
+.sp-kiosk .sp-mark { width: 240px; height: 240px; }
+.sp-kiosk .sp-plate { width: 176px; height: 176px; border-radius: 44px; }
+.sp-kiosk .sp-plate .sp-logo-default { width: 104px; height: 104px; border-radius: 28px; font-size: 46px; }
+.sp-kiosk .sp-ring circle { stroke-width: 2.4; }
+.sp-kiosk .sp-title { font-size: 34px; }
+.sp-kiosk .sp-stage-line { font-size: 20px; min-height: 30px; }
+.sp-kiosk .sp-copy { max-width: 620px; margin-top: 40px; }
+.sp-kiosk .sp-trust-row { font-size: 16px; }
+.sp-kiosk .sp-trust-row .icon { width: 18px; height: 18px; }
+.sp-kiosk .sp-trust-sub { font-size: 13px; }
+.sp-kiosk .sp-stage { padding-bottom: 130px; }
+.sp-kiosk .sp-dots { margin-top: 34px; }
+.sp-kiosk .sp-dots i { width: 14px; height: 14px; }
+.sp-kiosk .sp-stage.is-gone .sp-plate { transform: scale(0.9); } /* nowhere to fly to */
+
+/* ─────────────────────────────────────────────────────────────
+   9.5 · Classic — the refined V1
+   Same component, same timing contract, same states, same a11y. Only the
+   surface treatment changes: the shipped calm — a solid brand background, the
+   bare logo, the three pulsing dots — with the curtains removed (they only
+   ever existed to cover a transition that no longer needs covering) and the
+   defects fixed. Toggled by `html.sp-classic` (see splash-toggle.js).
+
+   The dots are honest by construction: they are indeterminate, and they never
+   pretend to be a percentage. That is why Classic needs no ring.
+   ───────────────────────────────────────────────────────────── */
+.sp-dots {
+  display: none;
+  gap: 7px;
+  margin-top: 22px;
+  position: relative;
+  z-index: 2;
+}
+.sp-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--sp-brand);
+  animation: sp-dot 1.6s infinite ease-in-out;
+}
+.sp-dots i:nth-child(2) { animation-delay: 0.2s; }
+.sp-dots i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes sp-dot {
+  0%, 60%, 100% { transform: scale(0.55); opacity: 0.35; }
+  30% { transform: scale(1); opacity: 1; }
+}
+
+html.sp-classic .sp-stage {
+  --sp-brand: var(--blue-500);
+  --sp-ink: var(--navy);
+  --sp-ink-soft: var(--text-secondary);
+  --sp-ink-faint: var(--text-tertiary);
+  --sp-hairline: var(--border);
+  --sp-badge-ring: #f4f6f8;
+  /* `--splash-bg` as the app ships it. Flat, and deliberately so. */
+  background: #f4f6f8;
+}
+/* No orbs, no grain, no glass, no sweep, no breath. */
+html.sp-classic .sp-stage::before,
+html.sp-classic .sp-stage::after,
+html.sp-classic .sp-grain,
+html.sp-classic .sp-plate::after { display: none; }
+html.sp-classic .sp-mark { animation: none; }
+
+/* The mark loses its plate — V1 shows the bare logo. The 96px box survives,
+   because reserving it is what stops the branded logo reflowing on arrival. */
+html.sp-classic .sp-plate {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.sp-classic .sp-ring { display: none; }
+html.sp-classic .sp-dots { display: flex; }
+html.sp-classic .sp-mark.is-error ~ .sp-dots,
+html.sp-classic .sp-mark.is-offline ~ .sp-dots { display: none; }
+html.sp-classic .sp-logo-host { color: var(--navy); }
+html.sp-classic .sp-copy { margin-top: 20px; }
+/* No plate to sit in, so the bare mark takes the room V1 gave it. */
+html.sp-classic .sp-plate .sp-logo-default { width: 66px; height: 66px; border-radius: 20px; font-size: 30px; }
+html.sp-classic .sp-logo-host { width: 80px; font-size: 10.5px; }
+
+/* Chrome becomes flat again: pills lose their frost, buttons their glow. */
+html.sp-classic .sp-trust-row {
+  height: auto;
+  padding: 0;
+  border: none;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+html.sp-classic .sp-trust-row .icon { color: var(--green-700); }
+html.sp-classic .sp-stage .btn-outline {
+  background: var(--n-0);
+  border-color: var(--border);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.sp-classic .sp-stage .btn-outline:hover { background: var(--n-50); }
+html.sp-classic .sp-stage .btn-primary { box-shadow: var(--shadow-brand); }
+html.sp-classic .sp-ref { background: var(--n-0); backdrop-filter: none; -webkit-backdrop-filter: none; }
+html.sp-classic .sp-ref button { background: var(--n-50); color: var(--text-secondary); }
+html.sp-classic .sp-elapsed { border-color: var(--border); }
+
+@media (prefers-reduced-motion: reduce) {
+  html.sp-classic .sp-dots i { animation: none; opacity: 1; transform: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10 · Reduced motion & capability fallbacks
+   shared.css already disables all animation/transition under
+   prefers-reduced-motion. These rules make the *result* correct rather than
+   merely still: the plate must not be frozen mid-flight, and the
+   indeterminate ring must still read as "working".
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sp-stage.is-gone .sp-plate { transform: none; }
+  .sp-skel { background: var(--n-100); }
+  .sp-ring.is-indeterminate .sp-ring-arc { stroke-dasharray: 236 80; }
+  .sp-clock .dot { background: var(--n-500); }
+  /* The orbs, the sweep and the breath are all decoration. Drop them, not the
+     handoff — shared.css already stops the animations; these keep the *result*
+     legible rather than frozen mid-frame. */
+  .sp-stage::before, .sp-stage::after { transform: none; }
+  .sp-plate::after { display: none; }
+}
+
+/* No backdrop-filter: the glass surfaces become opaque instead of transparent,
+   so text keeps its contrast (Appendix A rule 1). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sp-plate { background: var(--navy-700); }
+  .sp-trust-row, .sp-stage .btn-outline, .sp-ref { background: rgba(21, 21, 63, 0.72); }
+  .sp-stage.on-light .sp-plate { background: var(--n-0); }
+  .sp-stage.on-light .sp-trust-row,
+  .sp-stage.on-light .btn-outline,
+  .sp-stage.on-light .sp-ref { background: var(--n-0); }
+}
