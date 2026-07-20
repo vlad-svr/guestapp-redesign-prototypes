@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="upsell.css">
 <link rel="stylesheet" href="home-glass.css">
 <style>
-  /* hero (desktop) */
+  /* hero (blue box — booking dates) */
   .hero {
     border-radius: 20px;
     background: var(--gradient-hero);
@@ -18,7 +18,7 @@
     padding: 26px 30px;
     position: relative; overflow: hidden;
     box-shadow: var(--shadow-elev);
-    margin-top: 22px;
+    margin-top: 14px;
   }
   .hero::before {
     content: ''; position: absolute; top: -50px; right: -30px;
@@ -31,20 +31,10 @@
     background: rgba(140, 165, 255, 0.3); filter: blur(60px);
   }
   .hero > * { position: relative; z-index: 1; }
-  .hero-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .hero-loc { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #c9d0ff; }
-  .hero-pill {
-    display: inline-flex; align-items: center; gap: 7px;
-    height: 28px; padding: 0 13px;
-    border-radius: 99px;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.16);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-size: 11.5px; font-weight: 600;
-  }
-  .hero-pill .tdot { width: 7px; height: 7px; border-radius: 50%; background: #7be3b0; box-shadow: 0 0 8px rgba(123,227,176,0.9); }
-  .hero-grid { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 26px; align-items: center; }
+  .hero-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 26px; align-items: center; }
+  /* check-out hugs the right edge so the block reads balanced instead of
+     bunching every column's content against the left */
+  .hero-grid > div:last-child { text-align: right; }
   .hero .db-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); }
   .hero .db-time { font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; margin-top: 4px; }
   .hero .db-date { font-size: 12px; font-weight: 500; text-transform: uppercase; color: rgba(255,255,255,0.72); margin-top: 2px; }
@@ -58,19 +48,111 @@
     -webkit-backdrop-filter: blur(10px);
     display: grid; place-items: center;
   }
-  .hero-countdown {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 16px;
+
+  /* ── Stage tabs (segmented, above the blue box) ── */
+  .stages {
+    display: flex; align-items: center; gap: 0;
+    background: var(--tint-pressed);
+    border: 1px solid #dce2ff;
     border-radius: 14px;
-    background: rgba(255,255,255,0.09);
-    border: 1px solid rgba(255,255,255,0.13);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.85);
-    max-width: 320px;
+    padding: 5px;
+    box-shadow: var(--shadow-card);
+    margin-top: 20px;
+    /* z-index lifts the bar's stacking context above the hero (both get one from
+       the fadeUp transform), so locked-tab tooltips aren't painted behind it */
+    position: relative; z-index: 5;
   }
-  .hero-countdown .icon { color: #8ca5ff; flex-shrink: 0; }
-  .hero-countdown b { color: #fff; }
+  /* the sliding pill that glides beneath the active tab */
+  .stg-indicator {
+    position: absolute; top: 5px; bottom: 5px; left: 0; width: 0;
+    background: var(--blue-500); border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(56,92,248,0.32);
+    z-index: 0; pointer-events: none;
+    transform: translateX(0);
+  }
+  .stages.ready .stg-indicator { transition: transform 0.44s cubic-bezier(.34,1.4,.5,1), width 0.44s cubic-bezier(.34,1.4,.5,1); }
+  .stages .stg {
+    flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 9px 10px; border-radius: 10px;
+    background: none; border: 0;
+    font-size: 12.5px; font-weight: 600; color: var(--n-500);
+    position: relative; z-index: 1; cursor: pointer;
+    transition: color 0.2s, opacity 0.2s;
+  }
+  /* hover ghost on clickable, non-active tabs */
+  .stages .stg:not(.locked):not(.active)::before {
+    content: ''; position: absolute; inset: 0; border-radius: 10px;
+    background: #e4e9ff; opacity: 0; transition: opacity 0.15s; z-index: -1;
+  }
+  .stages .stg:not(.locked):not(.active):hover { color: var(--navy); }
+  .stages .stg:not(.locked):not(.active):hover::before { opacity: 1; }
+  .stages .stg.done { color: var(--n-600); }
+  .stages .stg.active { color: #fff; }
+  .stages .stg.locked { color: var(--n-500); opacity: 0.6; cursor: not-allowed; }
+  .stages .stg:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(56,91,248,0.3); }
+  .stages .stg.just-freed { animation: stg-pop 0.5s ease; }
+  @keyframes stg-pop { 0% { transform: scale(0.94); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+  /* per-stage mark: dot / check (done) / pulsing today-dot (live) */
+  .stg-mark { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; flex-shrink: 0; }
+  .stg-mark .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--n-300); }
+  .stg-mark .dot.mint { background: #7be3b0; }
+  .stg-mark .dot.live { background: var(--blue-500); animation: live-pulse 1.8s ease-in-out infinite; }
+  .stg-mark .icon { width: 13px; height: 13px; }
+  .stg.done .stg-mark .icon { color: var(--blue-500); }
+  @keyframes live-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(56,92,248,0.5); } 50% { box-shadow: 0 0 0 4px rgba(56,92,248,0); } }
+
+  /* thin dividers between tabs, hidden on both sides of the active pill */
+  .stages .stg:not(:last-child)::after {
+    content: ''; position: absolute; right: -1px; top: 50%;
+    width: 1px; height: 14px; background: var(--border);
+    transform: translateY(-50%);
+  }
+  .stages .stg.active::after,
+  .stages .stg.active + .stg::after,
+  .stages .stg:has(+ .stg.active)::after { background: transparent; }
+
+  /* locked-tab tooltip */
+  .stg-tip {
+    position: absolute; top: calc(100% + 9px); left: 50%;
+    transform: translate(-50%, 4px);
+    background: var(--navy); color: #fff;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+    padding: 6px 10px; border-radius: 8px; box-shadow: var(--shadow-elev);
+    opacity: 0; pointer-events: none; transition: opacity 0.18s, transform 0.18s; z-index: 6;
+  }
+  .stg-tip::before { content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-bottom-color: var(--navy); }
+  .stages .stg.locked:hover .stg-tip { opacity: 1; transform: translate(-50%, 0); }
+  /* the last tab's tooltip would spill past the column, so anchor it right-edge
+     and keep the arrow over the tab's centre */
+  .stages .stg:last-child .stg-tip { left: auto; right: 0; transform: translate(0, 4px); }
+  .stages .stg:last-child.locked:hover .stg-tip { transform: translate(0, 0); }
+  .stages .stg:last-child .stg-tip::before { left: auto; right: 81px; transform: none; }
+
+  /* stage panels */
+  .stage-panels { position: relative; }
+  .stage-panel { display: none; }
+  .stage-panel.is-active { display: block; animation: panel-in 0.42s cubic-bezier(.22,.61,.36,1); }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* open / status banners */
+  .open-banner { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+  /* panels opening with a banner sat flush against the hero — match the 26px
+     top margin a leading .section-head would have given them */
+  .stage-panel > .open-banner:first-child { margin-top: 26px; }
+  .open-banner .ob-icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 23px; background: var(--tint-pressed); flex-shrink: 0; }
+  .open-banner.departure .ob-icon { background: var(--amber-50); }
+  .open-banner .ob-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .open-banner .ob-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+  .open-banner .btn { margin-left: auto; flex-shrink: 0; }
+
+  .review-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+  .review-stars { display: flex; gap: 4px; color: var(--amber-500); }
+  .review-stars .icon { width: 25px; height: 25px; fill: currentColor; stroke: none; cursor: pointer; transition: transform 0.12s; }
+  .review-stars .icon:hover { transform: scale(1.15); }
+  .review-card .rv-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .review-card .rv-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+  .review-card .btn { margin-left: auto; flex-shrink: 0; }
 
   /* checklist desktop */
   .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 26px 0 12px; }
@@ -90,7 +172,9 @@
   .cl-ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--blue-500); }
   .cl-progress .cp-title { font-size: 15px; font-weight: 600; color: var(--navy); }
   .cl-progress .cp-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
-  .cl-progress .cp-cta { margin-left: auto; }
+  /* keep the CTA at its natural width — it sits in a flex row, so without this
+     it gets squeezed and the label wraps out of the fixed-height pill */
+  .cl-progress .cp-cta { margin-left: auto; flex-shrink: 0; white-space: nowrap; }
 
   .task-list { position: relative; }
   .task-list::before {
@@ -156,6 +240,20 @@
   .btn-dark:hover { background: var(--navy-700); }
 
   /* right rail cards */
+  /* ── Upsell carousel (one offer at a time in the rail) ── */
+  .uc-carousel { position: relative; }
+  .uc-viewport { overflow: hidden; border-radius: var(--r-lg); }
+  .uc-track { display: flex; transition: transform 0.42s cubic-bezier(.22,.61,.36,1); }
+  .uc-track > .upsell-card { flex: 0 0 100%; min-width: 0; }
+  .uc-nav { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+  .uc-dots { display: flex; align-items: center; gap: 6px; }
+  .uc-dot {
+    width: 6px; height: 6px; border-radius: 50%; padding: 0; border: 0;
+    background: var(--n-300); cursor: pointer;
+    transition: background 0.2s, width 0.2s;
+  }
+  .uc-dot.on { background: var(--blue-500); width: 16px; border-radius: 99px; }
+
   .upsell-card { overflow: hidden; }
   .upsell-card .uc-img { height: 110px; background: linear-gradient(135deg, #ffb872, #ff7a58); position: relative; }
   .upsell-card .uc-img.sea { background: linear-gradient(135deg, #5975f5, #8ca5ff); }
@@ -188,7 +286,7 @@
 <body>
 <div class="proto-stage">
   <h1>Home — Desktop (Redesign 2.0 Prototype)</h1>
-  <p class="lede">The V3 desktop journey: navy sidebar with a live check-in progress module, hero with glass countdown, checklist with progress ring, timeline and "next up" spotlight, and the upsell/contact right rail. Mock data only.</p>
+  <p class="lede">The V3 desktop journey, split into four stages — Pre-stay, Check-in, Stay, Departure. The booking hero stays constant; the tabs above it switch between stages, each revealing only its own actions. Stages ahead of today stay locked until their date — use the date simulator to watch them unlock. Mock data only.</p>
 
   <div class="browser" style="position:relative">
     <div class="browser-bar">
@@ -209,17 +307,10 @@
           </div>
         </div>
 
-        <div class="sb-progress">
-          <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-          <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-        </div>
-
         <div class="sb-group">Before you arrive</div>
         <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
         <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
+        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge warn">!</span></a>
 
         <div class="sb-group">Your stay</div>
         <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
@@ -240,14 +331,20 @@
       <main class="desk-main">
         <div class="greet fade-up">
           <h1>Welcome, María 👋</h1>
-          <p>Your stay in Barcelona is almost ready — 2 tasks left before your keys unlock.</p>
+          <p id="greetSub">Your stay in Barcelona is almost ready — 2 tasks left before your keys unlock.</p>
         </div>
 
-        <section class="hero fade-up d1">
-          <div class="hero-top">
-            <span class="hero-loc"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-map-pin"/></svg> Carrer de Mallorca 21, Barcelona</span>
-            <span class="hero-pill"><span class="tdot"></span> Arrival confirmed</span>
-          </div>
+        <!-- Stage tabs (switch the panels below) -->
+        <nav class="stages fade-up d1" id="journeyTabs" aria-label="Stay stages">
+          <span class="stg-indicator" id="stgIndicator"></span>
+          <button class="stg" data-stage="0" type="button"><span class="stg-mark"></span>Pre-stay<span class="stg-tip"></span></button>
+          <button class="stg" data-stage="1" type="button"><span class="stg-mark"></span>Check-in<span class="stg-tip"></span></button>
+          <button class="stg" data-stage="2" type="button"><span class="stg-mark"></span>Stay<span class="stg-tip"></span></button>
+          <button class="stg" data-stage="3" type="button"><span class="stg-mark"></span>Departure<span class="stg-tip"></span></button>
+        </nav>
+
+        <!-- Booking dates (blue box) -->
+        <section class="hero fade-up d2">
           <div class="hero-grid">
             <div>
               <div class="db-label">Check-in</div>
@@ -263,14 +360,13 @@
               <div class="db-time">11:00</div>
               <div class="db-date">Tuesday, 14 July</div>
             </div>
-            <div class="hero-countdown">
-              <svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg>
-              <span>Check-in opens in <b>3 days</b>. Finish your tasks to get keys instantly on arrival.</span>
-            </div>
           </div>
         </section>
 
-        <div class="fade-up d2">
+        <div class="stage-panels">
+
+        <!-- ─── Stage 0 · Pre-stay ─── -->
+        <div class="stage-panel" data-panel="0">
           <div class="section-head">
             <h2>Complete your check-in</h2>
             <span class="counter"><b>2</b> of 4 done</span>
@@ -334,20 +430,48 @@
           </div>
         </div>
 
-        <div class="fade-up d3">
-          <div class="section-head"><h2>Your stay</h2></div>
+        <!-- ─── Stage 1 · Check-in ─── -->
+        <div class="stage-panel" data-panel="1">
+          <div class="card open-banner">
+            <div class="ob-icon">🔑</div>
+            <div>
+              <div class="ob-title">Check-in is open — your keys are ready</div>
+              <div class="ob-sub">Head to Carrer de Mallorca 21 anytime after 15:00. Your access code is active now.</div>
+            </div>
+            <a class="btn btn-primary btn-sm" href="flow-remote-access-desktop.html#kd-keys">Open virtual keys <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></a>
+          </div>
+          <div class="section-head"><h2>Your arrival</h2></div>
           <div class="stay-grid">
             <div class="card stay-card">
               <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
               <div class="sc-title">Virtual keys</div>
-              <div class="sc-desc">Unlocks after check-in is complete</div>
-              <a class="btn btn-outline btn-sm" href="flow-remote-access-desktop.html#kd-gate"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock-sm"/></svg> Why locked?</a>
+              <div class="sc-desc">Unlock the door straight from your phone</div>
+              <a class="btn btn-dark btn-sm" href="flow-remote-access-desktop.html#kd-keys">Show access code</a>
             </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-map-pin"/></svg></div>
+              <div class="sc-title">Directions</div>
+              <div class="sc-desc">Getting to the apartment &amp; parking</div>
+              <a class="btn btn-outline btn-sm" href="flow-guidebooks-desktop.html">Open map</a>
+            </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-message"/></svg></div>
+              <div class="sc-title">Message host</div>
+              <div class="sc-desc">Arriving late? Let María know</div>
+              <a class="btn btn-outline btn-sm" href="flow-chat-desktop.html">Chat</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Stage 2 · Stay ─── -->
+        <div class="stage-panel" data-panel="2">
+          <div class="section-head"><h2>During your stay</h2></div>
+          <div class="stay-grid">
             <div class="card stay-card">
               <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
               <div class="sc-title">Guidebooks</div>
               <div class="sc-desc">WiFi, house rules &amp; local tips</div>
-              <button class="btn btn-dark btn-sm">Explore</button>
+              <a class="btn btn-dark btn-sm" href="flow-guidebooks-desktop.html">Explore</a>
             </div>
             <div class="card stay-card">
               <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-compass"/></svg></div>
@@ -355,11 +479,14 @@
               <div class="sc-desc">Tours &amp; activities in Barcelona</div>
               <a class="btn btn-outline btn-sm" href="flow-upselling-desktop.html">Browse</a>
             </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-message"/></svg></div>
+              <div class="sc-title">Chat with host</div>
+              <div class="sc-desc">María usually replies within 1 hour</div>
+              <a class="btn btn-outline btn-sm" href="flow-chat-desktop.html">Message</a>
+            </div>
           </div>
-        </div>
 
-        <!-- Handpicked for your trip (RecommendationsSection + partner banners) -->
-        <div class="fade-up d4">
           <div class="section-head">
             <h2>✨ Handpicked for your trip</h2>
             <a class="counter" href="flow-upselling-desktop.html" style="color:var(--blue-500);font-weight:600">See all extras</a>
@@ -432,35 +559,115 @@
             </a>
           </div>
         </div>
+
+        <!-- ─── Stage 3 · Departure ─── -->
+        <div class="stage-panel" data-panel="3">
+          <div class="card open-banner departure">
+            <div class="ob-icon">🧳</div>
+            <div>
+              <div class="ob-title">Check-out is Tuesday, 14 July at 11:00</div>
+              <div class="ob-sub">Here's how to leave everything ready — or give yourself more time.</div>
+            </div>
+            <button class="btn btn-primary btn-sm">Add late checkout · €25</button>
+          </div>
+          <div class="section-head"><h2>Before you leave</h2></div>
+          <div class="card" style="overflow:hidden">
+            <div class="task-list">
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Return the keys</span>
+                  <span class="t-sub">Leave the keys in the lockbox by the door</span>
+                </span>
+                <span class="t-right"><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Close up the apartment</span>
+                  <span class="t-sub">Windows shut, lights off, taps closed</span>
+                </span>
+                <span class="t-right"><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Take your belongings</span>
+                  <span class="t-sub">Double-check the bathroom, wardrobe &amp; fridge</span>
+                </span>
+                <span class="t-right"><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+            </div>
+          </div>
+          <div class="section-head"><h2>How was your stay?</h2></div>
+          <div class="card review-card">
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+            </div>
+            <div>
+              <div class="rv-title">Leave a review for Villa Serena</div>
+              <div class="rv-sub">Your feedback helps María and future guests</div>
+            </div>
+            <button class="btn btn-outline btn-sm">Write review</button>
+          </div>
+        </div>
+
+        </div>
       </main>
 
       <!-- ═══ Right rail ═══ -->
       <aside class="rail">
         <h3>Make your stay better</h3>
-        <div class="card upsell-card fade-up d1">
-          <div class="uc-img">
-            <span class="uc-tag">Popular</span>
-          </div>
-          <div class="uc-body">
-            <div class="uc-title">Late checkout until 14:00</div>
-            <div class="uc-sub">Sleep in on your last day</div>
-            <div class="uc-foot">
-              <span class="uc-price">€ 25</span>
-              <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Add</button>
+        <div class="uc-carousel fade-up d1" id="ucCarousel">
+          <div class="uc-viewport">
+            <div class="uc-track" id="ucTrack">
+              <div class="card upsell-card">
+                <div class="uc-img">
+                  <span class="uc-tag">Popular</span>
+                </div>
+                <div class="uc-body">
+                  <div class="uc-title">Late checkout until 14:00</div>
+                  <div class="uc-sub">Sleep in on your last day</div>
+                  <div class="uc-foot">
+                    <span class="uc-price">€ 25</span>
+                    <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Add</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card upsell-card">
+                <div class="uc-img sea">
+                  <span class="uc-tag">Free cancellation</span>
+                </div>
+                <div class="uc-body">
+                  <div class="uc-title">Sailing trip along the coast</div>
+                  <div class="uc-sub">3 hours · drinks included</div>
+                  <div class="uc-foot">
+                    <span class="uc-price">€ 49 <span style="font-weight:500;font-size:11px;color:var(--text-secondary)">/ person</span></span>
+                    <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Book</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card upsell-card">
+                <div class="uc-img" style="background:linear-gradient(135deg,#9ae6b4,#35c98f)">
+                  <span class="uc-tag">Free</span>
+                </div>
+                <div class="uc-body">
+                  <div class="uc-title">Gothic Quarter walking tour</div>
+                  <div class="uc-sub">2 hours · by GuruWalk</div>
+                  <div class="uc-foot">
+                    <span class="uc-price">Free</span>
+                    <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Book</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="card upsell-card fade-up d2">
-          <div class="uc-img sea">
-            <span class="uc-tag">Free cancellation</span>
-          </div>
-          <div class="uc-body">
-            <div class="uc-title">Sailing trip along the coast</div>
-            <div class="uc-sub">3 hours · drinks included</div>
-            <div class="uc-foot">
-              <span class="uc-price">€ 49 <span style="font-weight:500;font-size:11px;color:var(--text-secondary)">/ person</span></span>
-              <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Book</button>
-            </div>
+          <div class="uc-nav">
+            <div class="uc-dots" id="ucDots"></div>
           </div>
         </div>
 
@@ -522,5 +729,7 @@
 </svg>
 <script src="nav.js" defer></script>
 <script src="home-glass.js" defer></script>
+<script src="stages.js?v=2" defer></script>
+<script src="upsell-carousel.js?v=2" defer></script>
 </body>
 </html>
