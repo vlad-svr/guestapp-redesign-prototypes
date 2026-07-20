@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guest SDK — Autofill by OCR</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .mrz {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px; letter-spacing: 0.14em; line-height: 15px;
+    color: #6d685a;
+    position: absolute; left: 12%; right: 12%; bottom: 12%;
+    white-space: nowrap; overflow: hidden;
+  }
+  .extract-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+  .extract-row + .extract-row { border-top: 1px solid var(--n-100); }
+  .extract-row .ek { width: 130px; flex-shrink: 0; font-size: 11.5px; font-weight: 600; color: var(--text-secondary); }
+  .extract-row .ev { flex: 1; font-size: 13px; font-weight: 600; color: var(--ink); }
+  .extract-row .edit { color: var(--n-500); font-size: 11.5px; font-weight: 600; }
+  .extract-row .edit:hover { color: var(--brand); }
+  html.view-mobile .extract-row .ek { width: 104px; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Autofill by OCR — scan the document, skip the typing</h1>
+  <p class="lede">The form's fast path. The guest points a camera (or drops a photo) at their passport or ID card; the MRZ is read server-side and the form arrives <b>filled in for review, never silently submitted</b>. Failure lands softly — keep the photo's data or fall back to typing. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="a-choice">Scan or type</button>
+    <button class="fh-chip" data-scenario="a-camera">Capture document</button>
+    <button class="fh-chip" data-scenario="a-processing">Reading (MRZ)</button>
+    <button class="fh-chip" data-scenario="a-review">Review extracted data</button>
+    <button class="fh-chip" data-scenario="a-fail">Could not read</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="url"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> nordicastays.com/trips/8342/check-in</div>
+    </div>
+    <div class="host-site">
+      <div class="host-nav">
+        <span class="h-brand"><i></i> Nordica Stays</span>
+        <span>Apartments</span><span>Destinations</span><span>Help</span>
+        <button class="h-cta">My trips</button>
+      </div>
+      <div class="host-body">
+        <h4>Complete your online check-in</h4>
+
+        <!-- ── Choice ─────────────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="a-choice" data-start data-label="Scan or type — OCR is an offer, never a wall">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <a class="back-btn" href="flow-guest-form.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+            <div class="wh-titles">
+              <div class="wh-title">Add your document</div>
+              <div class="wh-sub">Ana Pérez · Guest 3 of 4</div>
+            </div>
+          </div>
+          <div class="w-progress"><i style="width:35%"></i></div>
+          <div class="w-body">
+            <p class="sec-intro">We can read your details straight from your ID — nothing to type, fewer mistakes in the police report.</p>
+            <div class="opt-cards">
+              <button class="opt-card selected" data-goto="a-camera">
+                <span class="oc-radio"></span>
+                <span style="flex:1;min-width:0">
+                  <span class="oc-t" style="display:block">Scan with your camera</span>
+                  <span class="oc-s" style="display:block">Passport or ID card · about 10 seconds</span>
+                </span>
+                <span class="r-ic brand"><svg viewBox="0 0 24 24" class="icon"><use href="#i-camera"/></svg></span>
+              </button>
+              <button class="opt-card" data-goto="a-processing">
+                <span class="oc-radio"></span>
+                <span style="flex:1;min-width:0">
+                  <span class="oc-t" style="display:block">Upload a photo</span>
+                  <span class="oc-s" style="display:block">JPG or PNG from this device</span>
+                </span>
+                <span class="r-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-upload"/></svg></span>
+              </button>
+              <a class="opt-card" href="flow-guest-form.html">
+                <span class="oc-radio"></span>
+                <span style="flex:1;min-width:0">
+                  <span class="oc-t" style="display:block">Type it in manually</span>
+                  <span class="oc-s" style="display:block">The classic way — works everywhere</span>
+                </span>
+                <span class="r-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-pen"/></svg></span>
+              </a>
+            </div>
+          </div>
+          <div class="w-foot">
+            <span class="foot-note">Photos are used for extraction only and are not stored.</span>
+            <span class="spacer"></span>
+            <button class="btn btn-primary" data-goto="a-camera">Continue</button>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <!-- ── Camera ─────────────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="a-camera" data-label="Capture — auto-detects the document, no shutter hunt" data-autonext="a-processing" data-autodelay="2800">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+            <div class="wh-titles">
+              <div class="wh-title">Scan your document</div>
+              <div class="wh-sub">Front side, all four corners visible</div>
+            </div>
+          </div>
+          <div class="w-progress"><i style="width:45%"></i></div>
+          <div class="w-body">
+            <div class="cam">
+              <div class="cam-doc"><span class="mrz">P&lt;ESPPEREZ&lt;&lt;ANA&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>51249833R2ESP9103148F3011203&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;04</span></div>
+              <div class="cam-guide"></div>
+              <div class="scanline"></div>
+              <div class="cam-status"><span class="spin sm" style="border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span> Hold still — capturing automatically</div>
+            </div>
+            <p class="sec-intro" style="text-align:center">Good light, no glare, dark background helps.</p>
+          </div>
+          <div class="w-foot">
+            <button class="btn btn-ghost" data-goto="a-fail">Simulate a bad photo</button>
+            <span class="spacer"></span>
+            <a class="btn btn-outline" href="flow-guest-form.html">Type instead</a>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <!-- ── Processing ─────────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="a-processing" data-label="Reading the MRZ server-side" data-autonext="a-review" data-autodelay="2200">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <div class="wh-titles">
+              <div class="wh-title">Reading your document…</div>
+              <div class="wh-sub">Usually takes a few seconds</div>
+            </div>
+          </div>
+          <div class="w-progress"><i style="width:60%"></i></div>
+          <div class="w-body center">
+            <div class="spin"></div>
+            <div class="mini-steps" style="margin-top:10px;text-align:left">
+              <div class="ms done"><span class="ms-dot"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span> Photo captured</div>
+              <div class="ms active"><span class="ms-dot"></span> Reading the machine-readable zone</div>
+              <div class="ms"><span class="ms-dot"></span> Filling in the form</div>
+            </div>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <!-- ── Review ─────────────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="a-review" data-label="Review — extracted data is proposed, never silently saved">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+            <div class="wh-titles">
+              <div class="wh-title">Check what we read</div>
+              <div class="wh-sub">From your DNI · anything can be edited</div>
+            </div>
+          </div>
+          <div class="w-progress"><i style="width:80%"></i></div>
+          <div class="w-body">
+            <div class="alert success">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg>
+              <span><b>Document read successfully.</b> Confirm the details below — they'll fill the registration form.</span>
+            </div>
+            <div>
+              <div class="extract-row"><span class="ek">First name</span><span class="ev">Ana</span><button class="edit">Edit</button></div>
+              <div class="extract-row"><span class="ek">Surnames</span><span class="ev">Pérez García</span><button class="edit">Edit</button></div>
+              <div class="extract-row"><span class="ek">Date of birth</span><span class="ev">14 Mar 1991</span><button class="edit">Edit</button></div>
+              <div class="extract-row"><span class="ek">Nationality</span><span class="ev">Spain</span><button class="edit">Edit</button></div>
+              <div class="extract-row"><span class="ek">Document</span><span class="ev">DNI · 51249833R</span><button class="edit">Edit</button></div>
+              <div class="extract-row"><span class="ek">Expiry date</span><span class="ev">20 Nov 2030</span><button class="edit">Edit</button></div>
+              <div class="extract-row">
+                <span class="ek">Sex</span>
+                <span class="ev" style="display:flex;align-items:center;gap:8px">Female <span class="badge badge-warning">Low confidence</span></span>
+                <button class="edit">Edit</button>
+              </div>
+            </div>
+          </div>
+          <div class="w-foot">
+            <button class="btn btn-ghost" data-goto="a-camera"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Rescan</button>
+            <span class="spacer"></span>
+            <a class="btn btn-primary" href="flow-guest-form.html#f-prefill">Use these details</a>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <!-- ── Fail ───────────────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="a-fail" data-label="Could not read — soft landing, manual entry always open">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+            <div class="wh-titles">
+              <div class="wh-title">We couldn't read that</div>
+              <div class="wh-sub">The photo came through blurry</div>
+            </div>
+          </div>
+          <div class="w-progress"><i style="width:45%"></i></div>
+          <div class="w-body center">
+            <span class="result-ic warn"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-alert"/></svg></span>
+            <div class="sec-title">The text wasn't sharp enough</div>
+            <p class="sec-intro" style="max-width:340px">It happens — glare and low light are the usual culprits. Try again near a window, or just type the details in.</p>
+            <div style="display:flex;gap:10px;margin-top:6px">
+              <button class="btn btn-primary" data-goto="a-camera"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-camera"/></svg> Try another photo</button>
+              <a class="btn btn-outline" href="flow-guest-form.html">Type it in</a>
+            </div>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+      </div>
+      <div class="host-foot"><span>© Nordica Stays 2026</span><span>Privacy</span><span>Terms</span></div>
+    </div>
+  </div>
+
+  <div class="config-note">
+    <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+    <span>In the real SDK this is the MRZ autofill path of the guest form (server-side <code>detect-document</code> extraction). The review step feeds <code>prefillData</code>-style values back into the form — see the <b>prefillData variant</b> on the guest form page for where "Use these details" lands.</span>
+  </div>
+
+  <div class="sdk-console">
+    <div class="sc-head"><span class="dot"></span> Integration events — ChekinPro callbacks on the host page</div>
+    <div class="sc-log"></div>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></g>
+    <g id="i-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></g>
+    <g id="i-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></g>
+    <g id="i-refresh"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="modals.js" defer></script>
+<script src="chrome.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

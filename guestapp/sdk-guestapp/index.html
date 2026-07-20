@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chekin Guest SDK — design prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .wrap { max-width: 1080px; width: 100%; display: flex; flex-direction: column; gap: 34px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
+  .p-card {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .p-card .pc-icon {
+    width: 36px; height: 36px; border-radius: var(--r-md);
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center;
+  }
+  .p-card h3 { font-size: 14px; font-weight: 650; color: var(--ink); }
+  .p-card p { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); }
+  .p-card p b { color: var(--ink); font-weight: 600; }
+
+  .flow-card {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 6px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .flow-card:hover { border-color: var(--n-300); box-shadow: var(--shadow-elev); }
+  .flow-card .fc-top { display: flex; align-items: center; gap: 9px; }
+  .flow-card h3 { font-size: 13.5px; font-weight: 650; color: var(--ink); flex: 1; }
+  .flow-card .fc-mode {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 9.5px; font-weight: 600; color: var(--brand);
+    background: var(--brand-soft); border-radius: 5px; padding: 2px 7px;
+  }
+  .flow-card p { font-size: 12px; line-height: 18px; color: var(--text-secondary); }
+  .flow-card .fc-screens { font-size: 11px; color: var(--text-tertiary); line-height: 17px; }
+
+  .modes-table { border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; background: var(--n-0); }
+  .modes-table table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .modes-table th { text-align: left; padding: 10px 16px; background: var(--n-50); border-bottom: 1px solid var(--border); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); }
+  .modes-table td { padding: 10px 16px; border-bottom: 1px solid var(--n-100); color: var(--text-secondary); vertical-align: top; }
+  .modes-table tr:last-child td { border-bottom: 0; }
+  .modes-table td code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--brand); background: var(--brand-soft); border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+  .modes-table td:first-child { white-space: nowrap; }
+  .modes-table td b { color: var(--ink); font-weight: 600; }
+
+  h2.sect { font-size: 16px; font-weight: 650; color: var(--ink); letter-spacing: -0.01em; }
+  h2.sect small { display: block; font-size: 12.5px; font-weight: 400; color: var(--text-secondary); margin-top: 3px; }
+  .excluded { display: flex; flex-wrap: wrap; gap: 8px; }
+  .excluded .badge { height: 26px; font-size: 11.5px; padding: 0 12px; text-decoration: line-through; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <div class="wrap">
+    <div style="text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center">
+      <span class="badge badge-info" style="height:26px;padding:0 12px">Chekin Guest SDK · guestapp-style variant</span>
+      <h1 style="font-size:26px">The same widget, dressed<br>in the guestapp's clothes</h1>
+      <p class="lede" style="margin-top:0">Every flow page here is <b>markup-identical</b> to the neutral SDK prototype in <code>../sdk</code> — only <code>shared.css</code> differs. This variant speaks the guestapp redesign's language: Poppins, Chekin blue <b>#385bf8</b>, brand gradients, a glass widget header, rounder radii and real shadows. Flip between the two folders on any flow to compare the directions — that comparison is the surface-token story told live.</p>
+      <div style="display:flex;gap:10px">
+        <a class="btn btn-primary" href="flow-home.html">Start with the Home hub</a>
+        <a class="btn btn-outline" href="../sdk/index.html">Neutral variant ↗</a>
+        <a class="btn btn-outline" href="../index.html">Guestapp prototype ↗</a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="sect">Principles<small>Every screen in this prototype follows six rules — they're what make it an SDK design rather than a shrunken app.</small></h2>
+      <div class="grid" style="margin-top:14px">
+        <div class="p-card">
+          <span class="pc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-frame"/></svg></span>
+          <h3>The guestapp's voice</h3>
+          <p>Poppins, Chekin blue <b>#385bf8</b>, navy ink and the brand gradient on the tag and progress bar. The partner's page around the widget stays plain — here the widget is <b>allowed</b> to carry Chekin's brand.</p>
+        </div>
+        <div class="p-card">
+          <span class="pc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-box"/></svg></span>
+          <h3>Bounded, always</h3>
+          <p>Modals, splashes, spinners and crashes all render <b>inside the widget's box</b> (the real SDK's iframe). Nothing ever paints over the host page — see the errors page for the proof.</p>
+        </div>
+        <div class="p-card">
+          <span class="pc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-layers"/></svg></span>
+          <h3>Glass & gradients, scoped</h3>
+          <p>Liquid glass on the widget header <b>only</b> — the guestapp's chrome-only rule — plus gradient progress and branded shadows. Reading surfaces (forms, lists, cards) stay solid for contrast.</p>
+        </div>
+        <div class="p-card">
+          <span class="pc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-swatch"/></svg></span>
+          <h3>Themeable by CSS variables</h3>
+          <p>The mock partner page carries Nordica's <b>green</b> brand. Flip the <b>Widget accent</b> toggle on any flow page and the widget adopts it — one repointed variable (gradients included), standing in for the SDK's <b>styles / stylesLink</b> injection.</p>
+        </div>
+        <div class="p-card">
+          <span class="pc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-signal"/></svg></span>
+          <h3>Events out, config in</h3>
+          <p>The dark console under each frame logs the <b>ChekinPro callbacks</b> (onGuestRegistered, onIVFinished, onError…) as you click through, and each page's footnote names the config options that shape it.</p>
+        </div>
+        <div class="p-card">
+          <span class="pc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-share2"/></svg></span>
+          <h3>One DOM, two designs</h3>
+          <p>These pages are <b>byte-identical</b> to the neutral variant's (plus a font link) — checklist rows, fields, option cards, capture frames all restyle from one CSS file. Exactly what a <b>guest-sdk.css</b> surface next to <b>guestapp.css</b> would do in @chekinapp/tokens.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="sect">Flows<small>The confirmed SDK scope — each card lists its screens; the floating switcher (bottom right) deep-links to every one.</small></h2>
+      <div class="grid" style="margin-top:14px">
+        <a class="flow-card" href="flow-home.html">
+          <div class="fc-top"><h3>Home hub</h3><span class="fc-mode">ALL</span></div>
+          <p>The checklist landing screen: required steps first, guidebooks below, access locked until done.</p>
+          <span class="fc-screens">Loading · in progress · all complete</span>
+        </a>
+        <a class="flow-card" href="flow-guests.html">
+          <div class="fc-top"><h3>Guests summary</h3><span class="fc-mode">ALL</span></div>
+          <p>Who's registered, who's missing; add, remove, or share the self-registration link.</p>
+          <span class="fc-screens">List · empty · complete · removal disabled</span>
+        </a>
+        <a class="flow-card" href="flow-guest-form.html">
+          <div class="fc-top"><h3>Guest form</h3><span class="fc-mode">ONLY_GUEST_FORM</span></div>
+          <p>Personal data with police-registry field sets, hiddenSections, prefillData and signature.</p>
+          <span class="fc-screens">Full · police (Mossos) · hidden · prefill · signature · done</span>
+        </a>
+        <a class="flow-card" href="flow-autofill.html">
+          <div class="fc-top"><h3>Autofill by OCR</h3><span class="fc-mode">form fast-path</span></div>
+          <p>Scan or upload the document, review what the MRZ said, land in a prefilled form.</p>
+          <span class="fc-screens">Choice · capture · reading · review · failed</span>
+        </a>
+        <a class="flow-card" href="flow-iv.html">
+          <div class="fc-top"><h3>Identity verification</h3><span class="fc-mode">IV_ONLY</span></div>
+          <p>Consent → document (passport/ID branch) → selfie or liveness → verdict, plus contact OTP.</p>
+          <span class="fc-screens">Start · doc · captures · selfie · verifying · done · failed · contacts</span>
+        </a>
+        <a class="flow-card" href="flow-iv-qr.html">
+          <div class="fc-top"><h3>IV — QR handoff</h3><span class="fc-mode">redirectIVQrUrl</span></div>
+          <p>Laptop shows a QR; the phone does the captures; live status syncs back over the websocket.</p>
+          <span class="fc-screens">QR · waiting live · synced</span>
+        </a>
+        <a class="flow-card" href="flow-qr-property.html">
+          <div class="fc-top"><h3>QR-IV on property</h3><span class="fc-mode">QR_IV_ON_PROPERTY</span></div>
+          <p>Scan the code on the wall, find the booking by surname, verify in the doorway.</p>
+          <span class="fc-screens">Landing · find by name · pick · verify · done</span>
+        </a>
+        <a class="flow-card" href="flow-property-link.html">
+          <div class="fc-top"><h3>Property link</h3><span class="fc-mode">PROPERTY_LINK</span></div>
+          <p>One link per property: booking code + date to find a reservation, or create one directly.</p>
+          <span class="fc-screens">Welcome · code · date · found · create</span>
+        </a>
+        <a class="flow-card" href="flow-guidebooks.html">
+          <div class="fc-top"><h3>Guidebooks & FAQ</h3><span class="fc-mode">ALL</span></div>
+          <p>House manual chapters, hosted and PDF guidebooks, and the host's FAQ — all inside the widget.</p>
+          <span class="fc-screens">List · manual · PDF · FAQ · empty</span>
+        </a>
+        <a class="flow-card" href="flow-remote-access.html">
+          <div class="fc-top"><h3>Remote access & keys</h3><span class="fc-mode">ALL</span></div>
+          <p>Door codes and press-to-open smart locks, gated behind the required steps.</p>
+          <span class="fc-screens">Locked · keys · opening · lock unreachable</span>
+        </a>
+        <a class="flow-card" href="flow-errors.html">
+          <div class="fc-top"><h3>Errors & recovery</h3><span class="fc-mode">cross-cutting</span></div>
+          <p>Developer errors speak code, guest errors speak plain language — and the host page never breaks.</p>
+          <span class="fc-screens">Bad API key · offline · not found · crash</span>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="sect">What the SDK deliberately doesn't have<small>Confirmed exclusions — these stay guestapp-only, which is exactly what makes the mode-scoped SDK worth a separate design.</small></h2>
+      <div class="excluded" style="margin-top:12px">
+        <span class="badge badge-neutral">Payments</span>
+        <span class="badge badge-neutral">Tourist taxes</span>
+        <span class="badge badge-neutral">Deposits / property protection</span>
+        <span class="badge badge-neutral">Booking payments</span>
+        <span class="badge badge-neutral">Upselling & experiences</span>
+        <span class="badge badge-neutral">Chat</span>
+        <span class="badge badge-neutral">Check-out</span>
+        <span class="badge badge-neutral">eSIM</span>
+        <span class="badge badge-neutral">Instant check-in / auth</span>
+        <span class="badge badge-neutral">Kiosk</span>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="sect">SDK modes<small>How a partner scopes the widget — each mode swaps the whole route tree (src/Routes.tsx).</small></h2>
+      <div class="modes-table" style="margin-top:12px">
+        <table>
+          <tr><th>Mode</th><th>What renders</th><th>Prototype</th></tr>
+          <tr><td><code>ALL</code></td><td><b>The full scope:</b> hub, guests, form, IV, guidebooks, remote access.</td><td>Home hub</td></tr>
+          <tr><td><code>ONLY_GUEST_FORM</code></td><td>The personal-data form alone — no hub, no summary.</td><td>Guest form</td></tr>
+          <tr><td><code>GUEST_REGISTRATION_ONLY</code></td><td>Guests summary + form + IV; nothing stay-related.</td><td>Guests summary</td></tr>
+          <tr><td><code>IV_ONLY</code></td><td>Identity verification, straight in.</td><td>Identity verification</td></tr>
+          <tr><td><code>PROPERTY_LINK</code></td><td>Reservation search / creation for a housing-level link.</td><td>Property link</td></tr>
+          <tr><td><code>QR_IV_ON_PROPERTY</code></td><td>Find-by-name + IV for a code posted at the property.</td><td>QR-IV on property</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="p-card" style="border-style:dashed">
+      <h3>Where this points the codebase</h3>
+      <p>Today guestapp and SDK are <b>one build with a flag</b> (VITE_APP_IS_SDK). The two prototype folders — <b>../sdk</b> (neutral) and this one (guestapp-styled) — are the two candidate surfaces for the embedded widget, and they share 100% of their markup and behavior. Whichever direction wins, the code shape is the same: dashboard-style shared packages own the components, and <b>@chekinapp/tokens</b> ships the difference as one surface CSS file per app.</p>
+    </div>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-frame"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></g>
+    <g id="i-box"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></g>
+    <g id="i-layers"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></g>
+    <g id="i-swatch"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></g>
+    <g id="i-signal"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></g>
+    <g id="i-share2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></g>
+  </defs>
+</svg>
+
+<script src="nav.js" defer></script>
+</body>
+</html>

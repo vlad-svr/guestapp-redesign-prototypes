@@ -2,10 +2,32 @@
 
 Static HTML/CSS mockups (no build, no app logic, mock data) of redesigned Chekin surfaces, layered on top of the existing `@chekinapp/tokens` design system.
 
-Two prototypes live here, behind a common chooser at the root `index.html` ([GitHub Pages](https://vlad-svr.github.io/guestapp-redesign-prototypes/)):
+Four prototypes live here, behind a common chooser at the root `index.html` ([GitHub Pages](https://vlad-svr.github.io/guestapp-redesign-prototypes/)):
 
 - **`dashboard/`** — the host-side property management app: action-queue Home, bookings pipeline with clickable KPI filters, table-based properties, property workspace and workspace settings with separated views, unified documents hub, billing, 7 switchable design variants. See `dashboard/UX-AUDIT.md` for the audit and "what changed and why".
 - **`guestapp/`** — the guest-side Redesign 2.0 flows documented below.
+- **`guestapp/sdk/`** — the **embeddable Guest SDK (ChekinPro)** in a neutral skin, shown inside a mock partner website.
+- **`guestapp/sdk-guestapp/`** — the same SDK flows in the guestapp's design language. See below.
+
+## Guest SDK prototypes
+
+The SDK is the same product as the guestapp, but rendered **inside a partner's page**, so it gets its own design study — two candidate surfaces, drawn from **markup-identical** pages that differ only in `shared.css`:
+
+- **`guestapp/sdk/` — neutral.** The language of the hosts-sdk in `dashboard-chekin`: muted slate `#505077`, the host's **system font stack** (an SDK must not force a webfont download on the partner), no photography, no gradients or glass, depth from 1px borders.
+- **`guestapp/sdk-guestapp/` — guestapp style.** Poppins, Chekin blue `#385bf8`, brand gradients, a glass widget header (chrome-only), rounder radii and real elevation.
+
+A **Design: Neutral · Guestapp** toggle on every flow page jumps to the *same screen* in the other skin — the two folders share filenames and screen ids — so the pair doubles as a live demo of what a `guest-sdk.css` surface file in `@chekinapp/tokens` (beside `guestapp.css`) would control.
+
+**Scope** (confirmed with the team): home hub · guests summary · guest form (police field sets, `hiddenSections`, `prefillData`, signature) · autofill by OCR · identity verification (+ QR handoff to phone, + QR-IV on property) · property link · guidebooks & FAQ · remote access & keys · errors & recovery. **Deliberately excluded**, because the Guest SDK does not carry them: payments, tourist taxes, deposits/property protection, upselling, chat, check-out, eSIM, instant check-in/auth, kiosk.
+
+Conventions specific to these two folders:
+
+- The mock partner site ("Nordica Stays") carries its **own green brand**. The **Widget accent: Neutral · Host brand** toggle repoints one CSS variable so the widget adopts that green — standing in for the SDK's real `styles` / `stylesLink` injection.
+- An **integration event console** under each frame logs the ChekinPro callbacks (`onGuestRegistered`, `onIVFinished`, `onError`, `onScreenChanged`…) as you click through, and every page ends with a note naming the config options behind it (`mode`, `hiddenSections`, `redirectIVQrUrl`…).
+- **Everything stays inside the widget box** — sheets, modals, spinners and crash states — mirroring the real SDK's iframe. The partner page never breaks.
+- The **Embed: Desktop · Mobile** toggle narrows the same DOM to a phone-width host page; there are no separate mobile files.
+- The in-widget **language chip** appears on every stable screen (guests read legal text), while the **menu button** appears only on `mode: "ALL"` pages — scoped modes like `ONLY_GUEST_FORM` and `IV_ONLY` stay single-purpose by contract.
+- `flow.js` and `modals.js` are copied **verbatim** from `guestapp/`; `chrome.js` (toggles, sheets, event console) is shared byte-for-byte by both variants.
 
 ## How to view
 

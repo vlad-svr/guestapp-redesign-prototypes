@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guest SDK · guestapp style — Home hub (ALL)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* Booking strip: one quiet row of facts, not a hero */
+  .stay-strip {
+    display: flex; align-items: center; gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--n-50);
+    padding: 12px 4px;
+  }
+  .stay-strip .st {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; gap: 2px;
+    align-items: center; text-align: center;
+    padding: 0 10px;
+  }
+  .stay-strip .st + .st { border-left: 1px solid var(--n-150); }
+  .stay-strip .st .st-k { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); }
+  .stay-strip .st .st-v { font-size: 13px; font-weight: 650; color: var(--ink); white-space: nowrap; }
+  html.view-mobile .stay-strip .st .st-v { font-size: 12px; }
+
+  .hub-progress { display: flex; align-items: center; gap: 10px; }
+  .hub-progress .hp-track { flex: 1; height: 6px; border-radius: 99px; background: var(--n-100); overflow: hidden; }
+  .hub-progress .hp-fill { height: 100%; border-radius: 99px; background: var(--brand); }
+  .hub-progress .hp-label { font-size: 11.5px; font-weight: 650; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Home hub — the SDK's landing screen (mode: <code style="font-size:17px">ALL</code>)</h1>
+  <p class="lede">What a guest sees when the partner embeds the full flow — in the <b>guestapp's design language</b>: Poppins, Chekin blue, a glass header and gradient progress, still scoped to the widget's box. The checklist is the whole story — required steps first, everything else below the fold. Checklist rows link to the other SDK prototype pages. Compare with the <a href="../sdk/flow-home.html" style="color:var(--brand);font-weight:600">neutral variant</a>. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="h-loading">Loading</button>
+    <button class="fh-chip" data-scenario="h-hub">Checklist — in progress</button>
+    <button class="fh-chip" data-scenario="h-done" data-event="onAllRequiredStepsCompleted" data-event-payload='{ reservationId: "res_84213" }'>All steps complete</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="url"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> nordicastays.com/trips/8342/check-in</div>
+    </div>
+    <div class="host-site">
+      <div class="host-nav">
+        <span class="h-brand"><i></i> Nordica Stays</span>
+        <span>Apartments</span><span>Destinations</span><span>Help</span>
+        <button class="h-cta">My trips</button>
+      </div>
+      <div class="host-body">
+        <h4>Complete your online check-in</h4>
+        <p class="host-copy">Finish these steps before arrival and skip the front desk — your access details unlock as soon as everything is done.</p>
+
+        <!-- ── Loading ─────────────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="h-loading" data-label="Loading — skeleton of the exact screen to come" data-autonext="h-hub" data-autodelay="1600">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <div class="wh-titles">
+              <div class="skel skel-line w40" style="height:13px"></div>
+              <div class="skel skel-line w70" style="height:9px;margin-top:6px"></div>
+            </div>
+            <span class="lang-chip" style="opacity:0.4">EN</span>
+          </div>
+          <div class="w-progress"><i style="width:0"></i></div>
+          <div class="w-body">
+            <div class="skel" style="height:64px"></div>
+            <div class="skel" style="height:10px;width:38%"></div>
+            <div class="skel" style="height:58px"></div>
+            <div class="skel" style="height:58px"></div>
+            <div class="skel" style="height:58px"></div>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <!-- ── Hub: in progress ────────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="h-hub" data-start data-label="Checklist — 1 of 3 required steps done">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <div class="wh-titles">
+              <div class="wh-title">Your check-in</div>
+              <div class="wh-sub">Casa Marbella · Fri 24 – Tue 28 Jul</div>
+            </div>
+            <button class="lang-chip"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</button>
+          </div>
+          <div class="w-progress"><i style="width:33%"></i></div>
+          <div class="w-body">
+            <div class="stay-strip">
+              <div class="st"><span class="st-k">Check-in</span><span class="st-v">Fri 24 Jul</span></div>
+              <div class="st"><span class="st-k">Nights</span><span class="st-v">4</span></div>
+              <div class="st"><span class="st-k">Guests</span><span class="st-v">2 adults</span></div>
+              <div class="st"><span class="st-k">Booking</span><span class="st-v">NS-8342</span></div>
+            </div>
+
+            <div class="hub-progress">
+              <div class="hp-track"><div class="hp-fill" style="width:33%"></div></div>
+              <span class="hp-label">1 of 3 done</span>
+            </div>
+
+            <div>
+              <div class="eyebrow" style="margin-bottom:8px">Required before arrival</div>
+              <div class="rows">
+                <a class="row click check-row done" href="flow-guests.html">
+                  <span class="r-ic ok"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="r-main">
+                    <span class="r-t">Register your guests</span>
+                    <span class="r-s">2 of 2 guests registered</span>
+                  </span>
+                  <span class="r-end"><span class="badge badge-success">Done</span></span>
+                </a>
+                <a class="row click check-row active" href="flow-iv.html">
+                  <span class="r-num">2</span>
+                  <span class="r-main">
+                    <span class="r-t">Verify your identity</span>
+                    <span class="r-s">Lead guest · takes about a minute</span>
+                  </span>
+                  <span class="r-end"><span class="badge badge-info">Next</span><svg viewBox="0 0 24 24" class="icon r-chev"><use href="#i-chevron-right"/></svg></span>
+                </a>
+                <div class="row check-row">
+                  <span class="r-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg></span>
+                  <span class="r-main">
+                    <span class="r-t" style="color:var(--text-secondary)">Get your door code</span>
+                    <span class="r-s">Unlocks when the steps above are complete</span>
+                  </span>
+                  <span class="r-end"><span class="badge badge-neutral">Locked</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="eyebrow" style="margin-bottom:8px">For your stay</div>
+              <div class="rows">
+                <a class="row click" href="flow-guidebooks.html">
+                  <span class="r-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></span>
+                  <span class="r-main">
+                    <span class="r-t">Guidebooks</span>
+                    <span class="r-s">House manual, Wi-Fi, local tips</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon r-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="row click" href="flow-guidebooks.html#gb-faq">
+                  <span class="r-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg></span>
+                  <span class="r-main">
+                    <span class="r-t">FAQ</span>
+                    <span class="r-s">Answers from your host</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon r-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="w-foot">
+            <span class="foot-note">Your details are encrypted and shared only with your host.</span>
+            <span class="spacer"></span>
+            <a class="btn btn-primary" href="flow-iv.html">Continue check-in</a>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <!-- ── Hub: everything done ────────────────────────────── -->
+        <div class="sdk-widget flow-screen" id="h-done" data-label="All required steps complete — access details unlocked">
+          <span class="widget-tag">Chekin SDK</span>
+          <div class="w-head">
+            <div class="wh-titles">
+              <div class="wh-title">Your check-in</div>
+              <div class="wh-sub">Casa Marbella · Fri 24 – Tue 28 Jul</div>
+            </div>
+            <button class="lang-chip"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</button>
+          </div>
+          <div class="w-progress"><i style="width:100%"></i></div>
+          <div class="w-body">
+            <div class="alert success">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg>
+              <span><b>You're all set.</b> Every required step is complete — your door code is ready below, and your host has been notified.</span>
+            </div>
+
+            <div class="rows">
+              <div class="row check-row done">
+                <span class="r-ic ok"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                <span class="r-main"><span class="r-t">Register your guests</span><span class="r-s">2 of 2 guests registered</span></span>
+                <span class="r-end"><span class="badge badge-success">Done</span></span>
+              </div>
+              <div class="row check-row done">
+                <span class="r-ic ok"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                <span class="r-main"><span class="r-t">Verify your identity</span><span class="r-s">Verified · passport ····6122</span></span>
+                <span class="r-end"><span class="badge badge-success">Done</span></span>
+              </div>
+              <a class="row click check-row" href="flow-remote-access.html#ra-keys">
+                <span class="r-ic brand"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg></span>
+                <span class="r-main">
+                  <span class="r-t">Get your door code</span>
+                  <span class="r-s">Available now — main entrance and apartment</span>
+                </span>
+                <span class="r-end"><span class="badge badge-info">Ready</span><svg viewBox="0 0 24 24" class="icon r-chev"><use href="#i-chevron-right"/></svg></span>
+              </a>
+            </div>
+
+            <div>
+              <div class="eyebrow" style="margin-bottom:8px">For your stay</div>
+              <div class="rows">
+                <a class="row click" href="flow-guidebooks.html">
+                  <span class="r-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></span>
+                  <span class="r-main"><span class="r-t">Guidebooks</span><span class="r-s">House manual, Wi-Fi, local tips</span></span>
+                  <svg viewBox="0 0 24 24" class="icon r-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="w-foot">
+            <span class="foot-note">Need to change something? Guest details stay editable until check-in.</span>
+            <span class="spacer"></span>
+            <a class="btn btn-outline" href="flow-guests.html">Review guests</a>
+            <a class="btn btn-primary" href="flow-remote-access.html#ra-keys">View door code</a>
+          </div>
+          <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
+        </div>
+
+        <p style="font-size:11px;color:var(--n-300)">Questions about your booking? Contact Nordica Stays support.</p>
+      </div>
+      <div class="host-foot"><span>© Nordica Stays 2026</span><span>Privacy</span><span>Terms</span></div>
+    </div>
+  </div>
+
+  <div class="config-note">
+    <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+    <span>This screen renders when the partner initializes with <code>mode: "ALL"</code> (the default). Sections the partner disabled — payments, upselling, chat, check-out — simply never appear; the checklist is built from the reservation's active steps. The <b>Widget accent</b> toggle above stands in for the <code>styles</code> / <code>stylesLink</code> injection every ChekinPro consumer gets.</span>
+  </div>
+
+  <div class="sdk-console">
+    <div class="sc-head"><span class="dot"></span> Integration events — ChekinPro callbacks on the host page</div>
+    <div class="sc-log"></div>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-book"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+    <g id="i-key"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="modals.js" defer></script>
+<script src="chrome.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

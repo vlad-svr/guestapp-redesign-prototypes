@@ -63,6 +63,8 @@
   .choice .icon svg { width: 24px; height: 24px; }
   .choice--dashboard .icon { background: #ececf8; color: var(--blue); }
   .choice--guestapp .icon { background: #e8fcf7; color: #0f9f80; }
+  .choice--sdk .icon { background: #eef0f6; color: #505077; }
+  .choice--sdk-guestapp .icon { background: #e3efff; color: var(--blue); }
   .choice h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
   .choice p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
   .choice .meta { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
@@ -104,6 +106,26 @@
       <p>The guest-side experience, Redesign&nbsp;2.0: online check-in journey, identity verification, upsells, travel guide and payments — mobile-first flows with desktop variants.</p>
       <span class="meta">55 screens · guest flows &amp; states</span>
       <span class="cta">Open guestapp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="choice choice--sdk" href="guestapp/sdk/index.html">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+      </span>
+      <h2>Guest SDK — neutral</h2>
+      <p>The embeddable check-in widget (ChekinPro) inside a mock partner site, in a neutral hosts-sdk-style skin: system font, muted slate accent, border-first depth. With an integration event console and embed/accent toggles.</p>
+      <span class="meta">11 flows · SDK modes ALL → QR_IV_ON_PROPERTY</span>
+      <span class="cta">Open SDK (neutral) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+    </a>
+
+    <a class="choice choice--sdk-guestapp" href="guestapp/sdk-guestapp/index.html">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M3 9h18"/><path d="M7.5 13.5h4"/><path d="M7.5 17h6"/></svg>
+      </span>
+      <h2>Guest SDK — guestapp style</h2>
+      <p>The same SDK flows, markup-identical, dressed in the guestapp redesign's language — Poppins, Chekin blue, gradients and a glass header. One stylesheet swap; the pair demonstrates surface tokens live.</p>
+      <span class="meta">Same 11 flows · one-click Design toggle between skins</span>
+      <span class="cta">Open SDK (guestapp style) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
     </a>
   </div>
 
