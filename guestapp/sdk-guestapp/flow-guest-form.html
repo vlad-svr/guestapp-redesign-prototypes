@@ -273,11 +273,40 @@
               <span class="sig-hint">Sign with your finger or mouse</span>
             </div>
             <button class="btn btn-ghost" style="align-self:flex-start"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Clear and sign again</button>
+
+            <div class="form-section">
+              <div class="fs-head"><span class="eyebrow">Agreements</span></div>
+              <div class="agreements">
+                <label class="agree" data-required>
+                  <span class="agree-box"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="agree-text">I have read and accept the <a href="#">house rules and rental conditions</a> for Casa Marbella. <span class="req">Required</span></span>
+                </label>
+                <span class="agree-err">Checking this clause is required</span>
+
+                <label class="agree" data-required>
+                  <span class="agree-box"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="agree-text">I confirm the details above are accurate and may be shared with the authorities as required by law. <span class="req">Required</span></span>
+                </label>
+                <span class="agree-err">Checking this clause is required</span>
+
+                <label class="agree">
+                  <span class="agree-box"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="agree-text">Send me a copy of the <b>contract</b> by email.</span>
+                </label>
+
+                <label class="agree">
+                  <span class="agree-box"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
+                  <span class="agree-text">Nordica Stays may email me about offers for this stay. <span class="opt-tag">Optional</span></span>
+                </label>
+
+                <p class="agree-note">By clicking <b>Finish registration</b> you accept to sign the form with your name and the <a href="#">contract</a>, and you accept our <a href="#">Privacy Policy</a>.</p>
+              </div>
+            </div>
           </div>
           <div class="w-foot">
             <span class="foot-note">Stored encrypted with the guest record.</span>
             <span class="spacer"></span>
-            <button class="btn btn-primary" data-goto="f-saving" data-event="onGuestRegistered" data-event-payload='{ guestId: "g_7834", isLeader: false }'>Finish registration</button>
+            <button class="btn btn-primary" data-agree-guard data-goto="f-saving" data-event="onGuestRegistered" data-event-payload='{ guestId: "g_7834", isLeader: false }'>Finish registration</button>
           </div>
           <div class="powered"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · Powered by <b>Chekin</b></div>
         </div>
@@ -323,7 +352,7 @@
 
   <div class="config-note">
     <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
-    <span>In <code>mode: "ONLY_GUEST_FORM"</code> this form <b>is</b> the whole widget — no hub, no summary. Field sets are driven by the property's registration target (<code>POLICE_CODES</code>: mossos, ertzaintza, germanyAVS, switzerlandAVS). Partner options shown: <code>hiddenSections</code>, <code>prefillData.guestForm</code>. Finishing fires <code>onGuestRegistered</code>.</span>
+    <span>In <code>mode: "ONLY_GUEST_FORM"</code> this form <b>is</b> the whole widget — no hub, no summary. Field sets are driven by the property's registration target (<code>POLICE_CODES</code>: mossos, ertzaintza, germanyAVS, switzerlandAVS). Partner options shown: <code>hiddenSections</code>, <code>prefillData.guestForm</code>. The <b>Agreements</b> block on the signature step renders the host's own <code>agreement_clauses</code> (only <code>is_active</code> ones; <code>is_required</code> blocks submit with "Checking this clause is required"), plus the contract-by-email checkbox that appears when <code>is_contract_enabled</code> — try submitting with a required clause unticked. Finishing fires <code>onGuestRegistered</code>.</span>
   </div>
 
   <div class="sdk-console">

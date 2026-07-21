@@ -145,6 +145,35 @@
     }
   });
 
+  /* ---- agreement clauses ----
+     Capture phase, because a required clause left unticked has to stop the
+     submit before flow.js's own document listener advances the screen —
+     the same gate the real SignBlock applies. */
+  document.addEventListener('click', function (e) {
+    var lab = e.target.closest('.agree');
+    if (lab) {
+      if (e.target.closest('.agree-text a')) return; // let the clause link win
+      e.preventDefault();
+      if (lab.hasAttribute('data-on')) lab.removeAttribute('data-on');
+      else lab.setAttribute('data-on', '');
+      lab.classList.remove('error');
+      return;
+    }
+    var cta = e.target.closest('[data-agree-guard]');
+    if (!cta) return;
+    var scope = cta.closest('.sdk-widget');
+    if (!scope) return;
+    var missing = Array.prototype.filter.call(
+      scope.querySelectorAll('.agree[data-required]'),
+      function (a) { return !a.hasAttribute('data-on'); }
+    );
+    if (!missing.length) return;
+    e.preventDefault();
+    e.stopPropagation();
+    missing.forEach(function (m) { m.classList.add('error'); });
+    missing[0].scrollIntoView({block: 'center', behavior: 'smooth'});
+  }, true);
+
   function init() {
     var hud = document.querySelector('.flow-hud');
     var bar = document.createElement('div');
