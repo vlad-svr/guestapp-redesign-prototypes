@@ -17,12 +17,13 @@
 <body>
 <div class="proto-stage">
   <h1>Tourist Taxes — Interactive Flow (Desktop)</h1>
-  <p class="lede">Per-guest math on the left, the running total sticky on the right. Exempt guests stay visible as dashed €0.00 rows, the exemption picker previews the new total before confirming, and the confirmed tax lands in the payments cart. Mock data only.</p>
+  <p class="lede">Per-guest math on the left, the running total sticky on the right. An exemption is a <b>zero-cost option</b> — an exempt guest shows a green <b>€0.00</b> and what it saves — and <b>claiming one lives in the ⋯ menu on that guest</b> rather than a page-level CTA. Guests and nights come from the reservation and cannot be edited here. Mock data only.</p>
 
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="td-setup">▶ Full flow</button>
     <button class="fh-chip" data-scenario="td-exemption">Add exemption</button>
     <button class="fh-chip" data-scenario="td-edit">From payments cart</button>
+    <button class="fh-chip" data-scenario="td-unregistered">Guest not registered yet</button>
     <button class="fh-chip" data-scenario="td-paid">Taxes paid</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
     <span class="fh-label"></span>
@@ -38,50 +39,20 @@
     <!-- ═══ td-setup · TaxesTouristView ═══ -->
     <div class="flow-screen" id="td-setup" data-start data-label="Tax setup — the math, guest by guest" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge warn">!</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col wide">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Tourist taxes</div>
-              <div class="page-title">Who pays <span class="hl">what</span></div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Tourist taxes"
+                 data-title="Who pays {what}">
               <p class="page-intro">Villa Serena is required by law to collect the region's tourist tax. Here's your total — guest by guest, night by night. <button class="pi-edit" style="margin-top:0" data-modal="m-info">Why this tax?</button></p>
             </div>
             <div class="payd-grid">
               <div>
                 <div class="pay-sec">
                   <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> 3 guests · 7 nights
-                  <button class="sec-info"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Edit guests</button>
                 </div>
                 <div class="tax-math">
                   <div class="season-note">
@@ -94,7 +65,23 @@
                       <span class="tm-name">María García</span>
                       <span class="tm-meta">Adult · 5 taxed nights</span>
                     </span>
-                    <span class="tm-side"><span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span></span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-maria" title="Options for María"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-maria">
+                          <button class="rm-item free" data-goto="td-exemption">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
+                            <span><span class="rm-t">Add an exemption</span><span class="rm-d">If María qualifies she pays €0.00 — free to check, undo any time</span></span>
+                          </button>
+                          <hr class="rm-sep">
+                          <button class="rm-item" data-modal="m-info">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+                            <span><span class="rm-t">Why is María taxed?</span><span class="rm-d">The region's rule, the rate and the 5-night cap</span></span>
+                          </button>
+                        </div>
+                      </span>
+                    </span>
                   </div>
                   <div class="tm-row">
                     <span class="tm-ava">AR</span>
@@ -102,7 +89,23 @@
                       <span class="tm-name">Ana Rodríguez</span>
                       <span class="tm-meta">Adult · 5 taxed nights</span>
                     </span>
-                    <span class="tm-side"><span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span></span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-ana" title="Options for Ana"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-ana">
+                          <button class="rm-item free" data-goto="td-exemption">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
+                            <span><span class="rm-t">Add an exemption</span><span class="rm-d">If Ana qualifies she pays €0.00 — free to check, undo any time</span></span>
+                          </button>
+                          <hr class="rm-sep">
+                          <button class="rm-item" data-modal="m-info">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+                            <span><span class="rm-t">Why is Ana taxed?</span><span class="rm-d">The region's rule, the rate and the 5-night cap</span></span>
+                          </button>
+                        </div>
+                      </span>
+                    </span>
                   </div>
                   <div class="tm-row exempt">
                     <span class="tm-ava">CG</span>
@@ -111,24 +114,40 @@
                       <span class="tm-meta">17 · Under 18</span>
                     </span>
                     <span class="tm-side">
-                      <span class="hc-chip">Exempt · €0.00</span>
-                      <button class="tm-remove" data-modal="m-remove" title="Remove exemption"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+                      <span class="tm-price"><span class="tm-zero"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> €0.00</span><span class="tm-saved">saves €15.50</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-carlos" title="Options for Carlos"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-carlos">
+                      <button class="rm-item" data-modal="m-exemptions">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-file"/></svg>
+                        <span><span class="rm-t">Which document to bring</span><span class="rm-d">What the property checks at check-in</span></span>
+                      </button>
+                      <button class="rm-item" data-goto="td-exemption">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-pen"/></svg>
+                        <span><span class="rm-t">Change the exemption type</span><span class="rm-d">Pick a different reason — the total previews first</span></span>
+                      </button>
+                      <hr class="rm-sep">
+                      <button class="rm-item" data-modal="m-remove">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-x"/></svg>
+                        <span><span class="rm-t">Remove the exemption</span><span class="rm-d">Carlos goes back to the full rate — €15.50</span></span>
+                      </button>
+                        </div>
+                      </span>
                     </span>
                   </div>
+            <button class="add-row" data-goto="td-exemption">
+                                <span class="plus-badge"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                                <span>
+                                  <span class="a-label" style="display:block">Add guest</span>
+                                  <span class="a-sub">Someone on the booking who isn't listed here</span>
+                                </span>
+                              </button>
                 </div>
 
-                <div class="pay-sec" style="margin-top:20px">
-                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg> Exemptions
-                  <button class="sec-info" data-modal="m-exemptions"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> Who can be exempt</button>
+                <div class="tax-hint" style="margin-top:16px">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+                  <span>Some guests pay <b>nothing</b> — minors, registered residents, disability and subsidized stays. Open <b>⋯</b> on a guest to claim it; checking costs you nothing and you can undo it any time before you pay. <button class="lnk" data-modal="m-exemptions">Who qualifies</button></span>
                 </div>
-                <button class="add-exemption" data-goto="td-exemption">
-                  <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
-                  <span class="ae-main">
-                    <span class="ae-title">Add guest with exemption</span>
-                    <span class="ae-sub">Resident, disability, subsidized stay… proof is checked on arrival</span>
-                  </span>
-                  <svg viewBox="0 0 24 24" class="icon icon-sm chev"><use href="#i-chevron-right"/></svg>
-                </button>
               </div>
 
               <div class="ledger">
@@ -142,7 +161,7 @@
                   <span class="lr-amount">€1.50</span>
                 </div>
                 <hr class="lg-sep">
-                <div class="lg-row hold">
+                <div class="lg-row zero">
                   <span class="lr-label">1 guest exempt (Carlos)</span>
                   <span class="lr-amount">€0.00</span>
                 </div>
@@ -186,18 +205,184 @@
               <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
             </button>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about taxes…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ═══ td-unregistered · a guest on the booking who has not registered yet ═══ -->
+    <div class="flow-screen" id="td-unregistered" data-label="Not everyone registered yet — the tax still counts them" style="flex:1">
+      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
+
+        <main class="desk-page">
+          <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
+          <div class="desk-col wide">
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Tourist taxes"
+                 data-title="Who pays {what}">
+              <p class="page-intro">Villa Serena is required by law to collect the region's tourist tax. Here's your total — guest by guest, night by night. <button class="pi-edit" style="margin-top:0" data-modal="m-info">Why this tax?</button></p>
+            </div>
+            <div class="payd-grid">
+              <div>
+                <div class="pay-sec">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> 3 guests · 7 nights
+                </div>
+                <div class="tax-math">
+                  <div class="season-note">
+                    <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+                    <span>High season rate: <b>€3.10 per adult per night</b> — the region taxes only the <b>first 5 nights</b> of your 7-night stay.</span>
+                  </div>
+                  <div class="tm-row">
+                    <span class="tm-ava">MG</span>
+                    <span class="tm-main">
+                      <span class="tm-name">María García</span>
+                      <span class="tm-meta">Adult · 5 taxed nights</span>
+                    </span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-maria" title="Options for María"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-maria">
+                          <button class="rm-item free" data-goto="td-exemption">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
+                            <span><span class="rm-t">Add an exemption</span><span class="rm-d">If María qualifies she pays €0.00 — free to check, undo any time</span></span>
+                          </button>
+                          <hr class="rm-sep">
+                          <button class="rm-item" data-modal="m-info">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+                            <span><span class="rm-t">Why is María taxed?</span><span class="rm-d">The region's rule, the rate and the 5-night cap</span></span>
+                          </button>
+                        </div>
+                      </span>
+                    </span>
+                  </div>
+                  <div class="tm-row unregistered">
+                    <span class="tm-ava"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg></span>
+                    <span class="tm-main">
+                      <span class="tm-name">Unregistered guest</span>
+                      <span class="tm-meta">Adult · 5 taxed nights</span>
+                      <span class="tm-tag"><svg viewBox="0 0 24 24" class="icon" style="width:9px;height:9px"><use href="#i-alert"/></svg> No details yet</span>
+                    </span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-unreg" title="Options for Ana"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-unreg">
+                          <button class="rm-item free" data-goto="td-exemption">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
+                            <span><span class="rm-t">Add an exemption</span><span class="rm-d">Claimable before they register — same person, same exemption</span></span>
+                          </button>
+                          <hr class="rm-sep">
+                          <a class="rm-item" href="flow-registration.html#r-hub">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+                            <span><span class="rm-t">Finish their registration</span><span class="rm-d">Adds the name here — the amount does not change</span></span>
+                          </a>
+                        </div>
+                      </span>
+                    </span>
+                  </div>
+                  <div class="tm-row exempt">
+                    <span class="tm-ava">CG</span>
+                    <span class="tm-main">
+                      <span class="tm-name">Carlos García</span>
+                      <span class="tm-meta">17 · Under 18</span>
+                    </span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-zero"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> €0.00</span><span class="tm-saved">saves €15.50</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-carlos" title="Options for Carlos"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-carlos">
+                      <button class="rm-item" data-modal="m-exemptions">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-file"/></svg>
+                        <span><span class="rm-t">Which document to bring</span><span class="rm-d">What the property checks at check-in</span></span>
+                      </button>
+                      <button class="rm-item" data-goto="td-exemption">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-pen"/></svg>
+                        <span><span class="rm-t">Change the exemption type</span><span class="rm-d">Pick a different reason — the total previews first</span></span>
+                      </button>
+                      <hr class="rm-sep">
+                      <button class="rm-item" data-modal="m-remove">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-x"/></svg>
+                        <span><span class="rm-t">Remove the exemption</span><span class="rm-d">Carlos goes back to the full rate — €15.50</span></span>
+                      </button>
+                        </div>
+                      </span>
+                    </span>
+                  </div>
+            <button class="add-row" data-goto="td-exemption">
+                                <span class="plus-badge"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                                <span>
+                                  <span class="a-label" style="display:block">Add guest</span>
+                                  <span class="a-sub">Someone on the booking who isn't listed here</span>
+                                </span>
+                              </button>
+                </div>
+
+                <div class="tax-hint" style="margin-top:16px">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+                  <span><b>The tax counts people, not registrations.</b> The booking is for 3 guests, so 3 are taxed — a guest who hasn't filled in their details yet is still one of them. Registering them changes the name on this row, not the amount. <a class="lnk" href="flow-registration.html#r-hub">Finish their registration</a></span>
+                </div>
+
+                <div class="tax-hint" style="margin-top:12px">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+                  <span>Some guests pay <b>nothing</b> — minors, registered residents, disability and subsidized stays. Open <b>⋯</b> on a guest to claim it; checking costs you nothing and you can undo it any time before you pay. <button class="lnk" data-modal="m-exemptions">Who qualifies</button></span>
+                </div>
               </div>
-              <div class="vela-chips">
-                <span class="chip">Why only 5 nights?</span>
-                <span class="chip">Is Carlos really exempt?</span>
+
+              <div class="ledger">
+                <div class="lg-total"><span class="lt-label">To your payments cart</span><span class="lt-amount">€32.50</span></div>
+                <div class="lg-row">
+                  <span class="lr-label"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-coins"/></svg> Tourist tax — 2 of 3 guests</span>
+                  <span class="lr-amount">€31.00</span>
+                </div>
+                <div class="lg-row">
+                  <span class="lr-label"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-receipt"/></svg> Chekin service fee</span>
+                  <span class="lr-amount">€1.50</span>
+                </div>
+                <hr class="lg-sep">
+                <div class="lg-row zero">
+                  <span class="lr-label">1 guest exempt (Carlos)</span>
+                  <span class="lr-amount">€0.00</span>
+                </div>
+                <button class="btn btn-primary" data-modal="m-success">Confirm — €32.50 to my cart</button>
+                <div class="lg-note"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> Nothing is charged here — the tax joins your cart and you pay everything in one payment.</div>
               </div>
             </div>
+          </div>
+        </main>
+
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">City taxes look arbitrary until you see the math — so the math is right on the page.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Your taxes</div>
+            <div class="vela-progress" style="margin-top:10px">
+              <div class="vp-row"><span class="vp-title">Tourist taxes</span><span class="vp-count">Step 1 of 2</span></div>
+              <div class="vp-track"><div class="vp-fill" style="width:30%"></div></div>
+              <div class="vela-steps">
+                <div class="vs active"><span class="vs-dot"></span> Confirm the setup</div>
+                <div class="vs todo"><span class="vs-dot"></span> Pay with your cart</div>
+              </div>
+            </div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <button class="vela-tip clickable" data-modal="m-info">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-bank"/></svg></span>
+              <span><span class="vt-title" style="display:block">Why am I paying it?</span><span class="vt-desc">Required by regional law — the property passes it to the tourism board.</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+            </button>
+            <button class="vela-tip clickable" data-modal="m-exemptions">
+              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg></span>
+              <span><span class="vt-title" style="display:block">Who can be exempt?</span><span class="vt-desc">Minors, residents, disability and more — proof is checked on arrival.</span></span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm vt-chev"><use href="#i-chevron-right"/></svg>
+            </button>
           </div>
         </aside>
       </div>
@@ -206,56 +391,26 @@
     <!-- ═══ td-exemption · TaxesExemptionView + GuestTaxesForm ═══ -->
     <div class="flow-screen" id="td-exemption" data-label="Add exemption — total previews before confirming" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge warn">!</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-goto="td-setup"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to taxes</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Tourist taxes</div>
-              <div class="page-title">Add an <span class="hl">exemption</span></div>
-              <p class="page-intro">Pick the type and the guest — the total updates before you confirm anything.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Tourist taxes"
+                 data-title="Add an {exemption}"
+                 data-intro="Pick the type and the guest — the total updates before you confirm anything."></div>
             <div class="payd-form-col">
               <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:15px">
-                <div class="tx-field">
-                  <label>Exemption</label>
-                  <div class="tx-control select">Registered resident <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-down"/></svg></div>
-                  <div class="tx-help"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg> Needs a residence certificate at check-in.</div>
-                </div>
                 <div class="tx-field">
                   <label>Exempted guest</label>
                   <div class="tx-control select">Ana Rodríguez <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-down"/></svg></div>
                   <div class="tx-help"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> Carlos isn't listed — he's already exempt (under 18).</div>
+                </div>
+                <div class="tx-field">
+                  <label>Exemption</label>
+                  <div class="tx-control select">Registered resident <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-down"/></svg></div>
+                  <div class="tx-help"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg> Needs a residence certificate at check-in.</div>
                 </div>
                 <button class="pi-edit" style="margin-top:0"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plus"/></svg> Guest not in the list? Add a new guest</button>
               </div>
@@ -296,19 +451,6 @@
               <span><span class="vt-title" style="display:block">Nothing is locked</span><span class="vt-desc">You can remove or re-add exemptions any time before you pay.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about exemptions…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">What counts as proof?</span>
-                <span class="chip">Can two guests be exempt?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -316,50 +458,19 @@
     <!-- ═══ td-edit · edit-from-payments mode ═══ -->
     <div class="flow-screen" id="td-edit" data-label="From the cart — confirm returns to payment" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to cart</a>
           <div class="desk-col wide">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">From your payments cart</div>
-              <div class="page-title">Edit tourist <span class="hl">taxes</span></div>
-              <p class="page-intro">Change guests or exemptions — the Tourist taxes line in your cart updates when you confirm.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="From your payments cart"
+                 data-title="Edit tourist {taxes}"
+                 data-intro="Change guests or exemptions — the Tourist taxes line in your cart updates when you confirm."></div>
             <div class="payd-grid">
               <div>
                 <div class="pay-sec">
                   <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg> 3 guests · 7 nights
-                  <button class="sec-info"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Edit guests</button>
                 </div>
                 <div class="tax-math">
                   <div class="season-note">
@@ -372,7 +483,23 @@
                       <span class="tm-name">María García</span>
                       <span class="tm-meta">Adult · 5 taxed nights</span>
                     </span>
-                    <span class="tm-side"><span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span></span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-maria2" title="Options for María"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-maria2">
+                          <button class="rm-item free" data-goto="td-exemption">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
+                            <span><span class="rm-t">Add an exemption</span><span class="rm-d">If María qualifies she pays €0.00 — free to check, undo any time</span></span>
+                          </button>
+                          <hr class="rm-sep">
+                          <button class="rm-item" data-modal="m-info">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+                            <span><span class="rm-t">Why is María taxed?</span><span class="rm-d">The region's rule, the rate and the 5-night cap</span></span>
+                          </button>
+                        </div>
+                      </span>
+                    </span>
                   </div>
                   <div class="tm-row">
                     <span class="tm-ava">AR</span>
@@ -380,7 +507,23 @@
                       <span class="tm-name">Ana Rodríguez</span>
                       <span class="tm-meta">Adult · 5 taxed nights</span>
                     </span>
-                    <span class="tm-side"><span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span></span>
+                    <span class="tm-side">
+                      <span class="tm-price"><span class="tm-amount">€15.50</span><span class="tm-calc">5 × €3.10</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-ana2" title="Options for Ana"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-ana2">
+                          <button class="rm-item free" data-goto="td-exemption">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
+                            <span><span class="rm-t">Add an exemption</span><span class="rm-d">If Ana qualifies she pays €0.00 — free to check, undo any time</span></span>
+                          </button>
+                          <hr class="rm-sep">
+                          <button class="rm-item" data-modal="m-info">
+                            <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+                            <span><span class="rm-t">Why is Ana taxed?</span><span class="rm-d">The region's rule, the rate and the 5-night cap</span></span>
+                          </button>
+                        </div>
+                      </span>
+                    </span>
                   </div>
                   <div class="tm-row exempt">
                     <span class="tm-ava">CG</span>
@@ -389,24 +532,40 @@
                       <span class="tm-meta">17 · Under 18</span>
                     </span>
                     <span class="tm-side">
-                      <span class="hc-chip">Exempt · €0.00</span>
-                      <button class="tm-remove" data-modal="m-remove" title="Remove exemption"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+                      <span class="tm-price"><span class="tm-zero"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> €0.00</span><span class="tm-saved">saves €15.50</span></span>
+                      <span class="rm-wrap">
+                        <button class="rm-btn" data-menu="tm-carlos2" title="Options for Carlos"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-dots-v"/></svg></button>
+                        <div class="rm-pop" id="tm-carlos2">
+                      <button class="rm-item" data-modal="m-exemptions">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-file"/></svg>
+                        <span><span class="rm-t">Which document to bring</span><span class="rm-d">What the property checks at check-in</span></span>
+                      </button>
+                      <button class="rm-item" data-goto="td-exemption">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-pen"/></svg>
+                        <span><span class="rm-t">Change the exemption type</span><span class="rm-d">Pick a different reason — the total previews first</span></span>
+                      </button>
+                      <hr class="rm-sep">
+                      <button class="rm-item" data-modal="m-remove">
+                        <svg viewBox="0 0 24 24" class="icon"><use href="#i-x"/></svg>
+                        <span><span class="rm-t">Remove the exemption</span><span class="rm-d">Carlos goes back to the full rate — €15.50</span></span>
+                      </button>
+                        </div>
+                      </span>
                     </span>
                   </div>
+            <button class="add-row" data-goto="td-exemption">
+                                <span class="plus-badge"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-plus"/></svg></span>
+                                <span>
+                                  <span class="a-label" style="display:block">Add guest</span>
+                                  <span class="a-sub">Someone on the booking who isn't listed here</span>
+                                </span>
+                              </button>
                 </div>
 
-                <div class="pay-sec" style="margin-top:20px">
-                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file"/></svg> Exemptions
-                  <button class="sec-info" data-modal="m-exemptions"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> Who can be exempt</button>
+                <div class="tax-hint" style="margin-top:16px">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg>
+                  <span>Some guests pay <b>nothing</b> — minors, registered residents, disability and subsidized stays. Open <b>⋯</b> on a guest to claim it; checking costs you nothing and you can undo it any time before you pay. <button class="lnk" data-modal="m-exemptions">Who qualifies</button></span>
                 </div>
-                <button class="add-exemption" data-goto="td-exemption">
-                  <svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg>
-                  <span class="ae-main">
-                    <span class="ae-title">Add guest with exemption</span>
-                    <span class="ae-sub">Resident, disability, subsidized stay… proof is checked on arrival</span>
-                  </span>
-                  <svg viewBox="0 0 24 24" class="icon icon-sm chev"><use href="#i-chevron-right"/></svg>
-                </button>
               </div>
 
               <div class="ledger">
@@ -447,19 +606,6 @@
               <span><span class="vt-title" style="display:block">Your cart is safe</span><span class="vt-desc">Nothing is charged while you edit — the cart just recalculates.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about taxes…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Why did the total change?</span>
-                <span class="chip">What proof do I need?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -467,44 +613,14 @@
     <!-- ═══ td-paid · taxes COMPLETE (locked) ═══ -->
     <div class="flow-screen" id="td-paid" data-label="Taxes paid — locked, receipt in order history" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>75%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:75%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-history"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Tourist taxes</div>
-              <div class="page-title">Taxes <span class="hl">paid</span></div>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Tourist taxes"
+                 data-title="Taxes {paid}"></div>
             <div style="display:flex;flex-direction:column;gap:18px;margin-top:16px">
               <div class="tax-paid">
                 <span class="tp-ring"><svg viewBox="0 0 24 24" class="icon" style="stroke-width:2.5"><use href="#i-check"/></svg></span>
@@ -540,7 +656,7 @@
                     <span class="tm-name">Carlos García</span>
                     <span class="tm-meta">17 · Under 18 · verified at check-in</span>
                   </span>
-                  <span class="tm-side"><span class="hc-chip">Exempt · €0.00</span></span>
+                  <span class="tm-side"><span class="tm-price"><span class="tm-zero"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> €0.00</span><span class="tm-saved">saves €15.50</span></span></span>
                 </div>
               </div>
               <div class="tax-lock">
@@ -669,6 +785,9 @@
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
+    <g id="i-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></g>
+    <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
+    <g id="i-dots-v"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></g>
     <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
     <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
     <g id="i-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></g>
@@ -697,7 +816,9 @@
   </defs>
 </svg>
 <script src="modals.js" defer></script>
+<script src="rowmenu.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

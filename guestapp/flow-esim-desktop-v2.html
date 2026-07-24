@@ -32,29 +32,8 @@
     </div>
 
     <!-- ══════════════════ 1 · eSIM HOME ══════════════════ -->
-    <div class="desktop-shell flow-screen" id="ed2-hub" data-start data-label="eSIM home — nothing bought yet">
-      <aside class="sidebar" aria-label="Sections">
-        <div class="sb-head">
-          <div class="sb-logo" aria-hidden="true">V</div>
-          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
-        </div>
-        <div class="sb-progress">
-          <div class="sp-row"><span>Check-in progress</span><span>100%</span></div>
-          <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
-        </div>
-        <div class="sb-group">Check-in</div>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
-        <div class="sb-group">Your stay</div>
-        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
-        <div class="sb-footer">
-          <div class="sb-avatar" aria-hidden="true">MG</div>
-          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
-        </div>
-      </aside>
+    <div class="desktop-shell with-rail flow-screen" id="ed2-hub" data-start data-label="eSIM home — nothing bought yet">
+      <aside class="sidebar" data-sidebar data-active="experiences"></aside>
 
       <main class="desk-page">
         <span class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back to home</span>
@@ -132,28 +111,30 @@
           </div>
         </div>
       </main>
-    </div>
+    
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">A data plan for the trip — worth checking your phone supports eSIM before you buy.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <div style="margin-top:6px"><div class="vela-tip attention"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></span><span><span class="vt-title" style="display:block">Your phone must be eSIM-capable and unlocked</span><span class="vt-desc">Most phones from 2019 on are; carrier-locked ones are not.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></svg></span><span><span class="vt-title" style="display:block">Install before you fly</span><span class="vt-desc">Activation needs Wi-Fi — do it at home, it starts when you land.</span></span></div></div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-chat-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a><a class="vela-action" href="flow-faq-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a></div>
+          </div>
+        </aside>
+      </div>
 
     <!-- ══════════════════ 2 · CHOOSE A PLAN ══════════════════ -->
-    <div class="desktop-shell flow-screen" id="ed2-plans" data-label="Choose a plan — sticky ledger, priced per GB">
-      <aside class="sidebar" aria-label="Sections">
-        <div class="sb-head">
-          <div class="sb-logo" aria-hidden="true">V</div>
-          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
-        </div>
-        <div class="sb-group">Check-in</div>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
-        <div class="sb-group">Your stay</div>
-        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
-        <div class="sb-footer">
-          <div class="sb-avatar" aria-hidden="true">MG</div>
-          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
-        </div>
-      </aside>
+    <div class="desktop-shell with-rail flow-screen" id="ed2-plans" data-label="Choose a plan — sticky ledger, priced per GB">
+      <aside class="sidebar" data-sidebar data-active="experiences"></aside>
 
       <main class="desk-page">
         <button class="back-pill" data-goto="ed2-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</button>
@@ -449,22 +430,30 @@
           </aside>
         </div>
       </main>
-    </div>
+    
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">A data plan for the trip — worth checking your phone supports eSIM before you buy.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <div style="margin-top:6px"><div class="vela-tip attention"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></span><span><span class="vt-title" style="display:block">Your phone must be eSIM-capable and unlocked</span><span class="vt-desc">Most phones from 2019 on are; carrier-locked ones are not.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></svg></span><span><span class="vt-title" style="display:block">Install before you fly</span><span class="vt-desc">Activation needs Wi-Fi — do it at home, it starts when you land.</span></span></div></div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-chat-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a><a class="vela-action" href="flow-faq-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a></div>
+          </div>
+        </aside>
+      </div>
 
     <!-- ══════════════════ 3 · PLANS LOADING ══════════════════ -->
-    <div class="desktop-shell flow-screen" id="ed2-plans-loading" data-label="Plans loading — shape-matched skeleton" data-autonext="ed2-plans" data-autodelay="2200">
-      <aside class="sidebar" aria-label="Sections">
-        <div class="sb-head">
-          <div class="sb-logo" aria-hidden="true">V</div>
-          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
-        </div>
-        <div class="sb-group">Your stay</div>
-        <span class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM</span>
-        <div class="sb-footer">
-          <div class="sb-avatar" aria-hidden="true">MG</div>
-          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
-        </div>
-      </aside>
+    <div class="desktop-shell with-rail flow-screen" id="ed2-plans-loading" data-label="Plans loading — shape-matched skeleton" data-autonext="ed2-plans" data-autodelay="2200">
+      <aside class="sidebar" data-sidebar data-active="experiences"></aside>
 
       <main class="desk-page">
         <span class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</span>
@@ -513,34 +502,33 @@
           </aside>
         </div>
       </main>
-    </div>
+    
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">A data plan for the trip — worth checking your phone supports eSIM before you buy.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <div style="margin-top:6px"><div class="vela-tip attention"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></span><span><span class="vt-title" style="display:block">Your phone must be eSIM-capable and unlocked</span><span class="vt-desc">Most phones from 2019 on are; carrier-locked ones are not.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></svg></span><span><span class="vt-title" style="display:block">Install before you fly</span><span class="vt-desc">Activation needs Wi-Fi — do it at home, it starts when you land.</span></span></div></div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-chat-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a><a class="vela-action" href="flow-faq-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a></div>
+          </div>
+        </aside>
+      </div>
 
     <!-- ══════════════════ 4 · MY eSIM — NOT INSTALLED ══════════════════
          A desktop browser cannot install an eSIM. Leading with a QR that
          the guest's *phone* can scan is the one place the big screen wins.
          ════════════════════════════════════════════════════════════════ -->
-    <div class="desktop-shell flow-screen" id="ed2-my" data-label="My eSIMs — hand off to the phone">
-      <aside class="sidebar" aria-label="Sections">
-        <div class="sb-head">
-          <div class="sb-logo" aria-hidden="true">V</div>
-          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
-        </div>
-        <div class="sb-group">Check-in</div>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
-        <div class="sb-group">Your stay</div>
-        <span class="sb-item active">
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM
-          <span class="sb-badge warn" data-es-badge>1</span>
-        </span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
-        <div class="sb-footer">
-          <div class="sb-avatar" aria-hidden="true">MG</div>
-          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
-        </div>
-      </aside>
+    <div class="desktop-shell with-rail flow-screen" id="ed2-my" data-label="My eSIMs — hand off to the phone">
+      <aside class="sidebar" data-sidebar data-active="experiences"></aside>
 
       <main class="desk-page">
         <button class="back-pill" data-goto="ed2-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</button>
@@ -716,31 +704,30 @@
           </section>
         </div>
       </main>
-    </div>
+    
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">A data plan for the trip — worth checking your phone supports eSIM before you buy.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <div style="margin-top:6px"><div class="vela-tip attention"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></span><span><span class="vt-title" style="display:block">Your phone must be eSIM-capable and unlocked</span><span class="vt-desc">Most phones from 2019 on are; carrier-locked ones are not.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></svg></span><span><span class="vt-title" style="display:block">Install before you fly</span><span class="vt-desc">Activation needs Wi-Fi — do it at home, it starts when you land.</span></span></div></div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-chat-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a><a class="vela-action" href="flow-faq-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a></div>
+          </div>
+        </aside>
+      </div>
 
     <!-- ══════════════════ 5 · INSTALLED & CONNECTED ══════════════════ -->
-    <div class="desktop-shell flow-screen" id="ed2-my-done" data-label="My eSIMs — installed and connected">
-      <aside class="sidebar" aria-label="Sections">
-        <div class="sb-head">
-          <div class="sb-logo" aria-hidden="true">V</div>
-          <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
-        </div>
-        <div class="sb-group">Check-in</div>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Overview</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guests</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-credit-card"/></svg> Payments</span>
-        <div class="sb-group">Your stay</div>
-        <span class="sb-item active">
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-card-sim"/></svg> Travel eSIM
-          <span class="sb-badge teal">✓</span>
-        </span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-book"/></svg> Guidebooks</span>
-        <span class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-key"/></svg> Virtual keys</span>
-        <div class="sb-footer">
-          <div class="sb-avatar" aria-hidden="true">MG</div>
-          <div><div class="sb-user">María García</div><div class="sb-mail">maria@example.com</div></div>
-        </div>
-      </aside>
+    <div class="desktop-shell with-rail flow-screen" id="ed2-my-done" data-label="My eSIMs — installed and connected">
+      <aside class="sidebar" data-sidebar data-active="experiences"></aside>
 
       <main class="desk-page">
         <button class="back-pill" data-goto="ed2-hub"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Travel eSIM</button>
@@ -838,7 +825,26 @@
           </a>
         </div>
       </main>
-    </div>
+    
+        <aside class="vela-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">A data plan for the trip — worth checking your phone supports eSIM before you buy.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <div style="margin-top:6px"><div class="vela-tip attention"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></span><span><span class="vt-title" style="display:block">Your phone must be eSIM-capable and unlocked</span><span class="vt-desc">Most phones from 2019 on are; carrier-locked ones are not.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></svg></span><span><span class="vt-title" style="display:block">Install before you fly</span><span class="vt-desc">Activation needs Wi-Fi — do it at home, it starts when you land.</span></span></div></div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-chat-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a><a class="vela-action" href="flow-faq-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a></div>
+          </div>
+        </aside>
+      </div>
 
     <!-- ══════════════════ TOAST + LIVE REGION ══════════════════ -->
     <div class="es-toast" data-es-toast hidden role="status" style="left:auto;right:24px;bottom:24px;width:auto">
@@ -941,6 +947,7 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
     <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
     <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
     <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
@@ -979,6 +986,7 @@
 <script src="flow.js" defer></script>
 <script src="modals.js" defer></script>
 <script src="esim-v2.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

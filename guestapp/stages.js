@@ -110,10 +110,8 @@
     seg += '</div>';
     wrap.innerHTML = seg;
 
-    var glass = stage.querySelector('.glass-toggle');
     var lede = stage.querySelector('p.lede');
-    if (glass && glass.nextSibling) stage.insertBefore(wrap, glass.nextSibling);
-    else if (lede && lede.nextSibling) stage.insertBefore(wrap, lede.nextSibling);
+    if (lede && lede.nextSibling) stage.insertBefore(wrap, lede.nextSibling);
     else stage.appendChild(wrap);
 
     wrap.addEventListener('click', function (e) {

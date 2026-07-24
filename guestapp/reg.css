@@ -2,68 +2,72 @@
 
   /* ---------- Registration hub ---------- */
   .guests-summary {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
   }
-  .guests-summary .gs-ring { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
-  .guests-summary .gs-ring svg { transform: rotate(-90deg); }
-  .guests-summary .gs-ring .track { fill: none; stroke: var(--n-75); stroke-width: 5.6; }
-  .guests-summary .gs-ring .arc { fill: none; stroke: url(#gsGrad); stroke-width: 5.6; stroke-linecap: round; stroke-dasharray: 141; stroke-dashoffset: 71; }
-  .guests-summary .gs-ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--blue-500); }
-  .guests-summary .gs-title { font-size: 14px; font-weight: 600; color: var(--navy); }
-  .guests-summary .gs-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  /* The ring is a glance, not a feature — 44 px keeps it readable while the
+     row stays one comfortable line tall. The <svg> carries width/height
+     attributes, so it has to be told to follow the wrapper or it renders at
+     its intrinsic 56 px and spills out of the box. */
+  .guests-summary .gs-ring { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
+  .guests-summary .gs-ring svg { width: 100%; height: 100%; display: block; transform: rotate(-90deg); }
+  .guests-summary .gs-ring .track { fill: none; stroke: var(--n-75); stroke-width: 6; }
+  .guests-summary .gs-ring .arc { fill: none; stroke: url(#gsGrad); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 141; stroke-dashoffset: 71; }
+  .guests-summary .gs-ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 10.5px; font-weight: 700; color: var(--blue-500); }
+  .guests-summary .gs-title { font-size: 13.5px; font-weight: 600; color: var(--navy); line-height: 18px; }
+  .guests-summary .gs-sub { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 1px; }
 
   .guest-row {
     display: flex; align-items: center; gap: 12px;
-    padding: 13px 16px;
+    padding: 13px 18px;
     width: 100%; text-align: left;
     position: relative;
     transition: background 0.15s;
     overflow: hidden;
   }
-  .guest-row + .guest-row, .guest-row + .add-row, .add-row + .guest-row { border-top: 1px solid var(--border); }
+  .guest-row + .guest-row, .guest-row + .add-row, .add-row + .guest-row,
+  .add-row + .add-row { border-top: 1px solid var(--border); }
   .guest-row:hover { background: #fbfbfe; }
   .guest-row::before {
     content: ''; position: absolute; left: 0; top: 0; bottom: 0;
     width: 4px;
   }
   .guest-row.complete::before { background: var(--green-700); }
-  .guest-row.pending::before { background: var(--amber-500); }
+  .guest-row.pending::before,
+  .guest-row.iv-pending::before { background: var(--amber-500); }
   .guest-row.complete { background: linear-gradient(90deg, transparent 40%, rgba(232, 252, 247, 0.75)); }
-  .guest-row.pending { background: linear-gradient(90deg, transparent 40%, rgba(255, 242, 224, 0.75)); }
+  .guest-row.pending,
+  .guest-row.iv-pending { background: linear-gradient(90deg, transparent 40%, rgba(255, 242, 224, 0.75)); }
 
-  .guest-row .g-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 13px; font-weight: 700;
-    flex-shrink: 0;
+  .guest-row .g-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .guest-row .g-name { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+  .guest-row .g-sub { font-size: 12px; line-height: 17px; color: var(--text-secondary); }
+
+  .guest-row .g-status {
+    margin-left: auto; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
+    text-align: right;
   }
-  .guest-row.complete .g-avatar { background: #e0e9fb; color: var(--blue-650); }
-  .guest-row.pending .g-avatar { background: var(--n-75); color: var(--n-600); border: 1.5px dashed var(--n-300); }
-  .guest-row .g-name { font-size: 14px; font-weight: 700; color: var(--navy); }
-  .guest-row .g-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
-  .guest-row .g-status { margin-left: auto; text-align: right; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
-  .guest-row .g-status .st-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .guest-row .st-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .guest-row .st-label .icon { width: 16px; height: 16px; flex-shrink: 0; }
+  .guest-row .st-action { font-size: 12.5px; font-weight: 500; }
   .guest-row.complete .st-label { color: var(--green-700); }
-  .guest-row.pending .st-label { color: var(--amber-700); }
-  .guest-row .g-status .icon { flex-shrink: 0; }
-  .guest-row.complete .g-status .icon { color: var(--green-700); }
-  .guest-row.pending .g-status .icon { color: var(--amber-500); }
+  .guest-row.pending .st-label,
+  .guest-row.iv-pending .st-label { color: var(--amber-700); }
+  .guest-row.pending .st-action,
+  .guest-row.iv-pending .st-action { color: var(--amber-700); }
 
-  .add-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 13px 16px; width: 100%; text-align: left;
-    background: rgba(244, 246, 251, 0.7);
-    transition: background 0.15s;
-  }
-  .add-row:hover { background: rgba(56, 91, 248, 0.05); }
-  .add-row .plus-badge {
-    width: 30px; height: 30px; border-radius: 10px;
-    background: var(--tint-info); color: var(--blue-500);
-    display: grid; place-items: center; flex-shrink: 0;
-  }
-  .add-row .a-label { font-size: 13.5px; font-weight: 600; color: var(--blue-500); }
-  .add-row .a-sub { font-size: 11.5px; color: var(--text-tertiary); margin-top: 1px; }
+  .guest-row .g-more,
+  .guest-row .g-chev { flex-shrink: 0; display: grid; place-items: center; color: var(--n-500); }
+  .guest-row .g-more { width: 22px; }
+  .guest-row .g-more:hover, .guest-row .g-chev:hover { color: var(--navy); }
+  /* Phone frames: the row-level overflow menu costs ~40px of a 340px row and
+     squeezes the name to ~120px. The chevron already opens the guest, so the
+     kebab (a desktop convenience) stands down here. */
+  .phone .guest-row .g-more { display: none; }
 
   /* register-all banner */
   .register-all {
@@ -180,11 +184,6 @@
   .vela-box .vb-close { margin-left: auto; color: var(--n-500); flex-shrink: 0; padding: 2px; }
 
   /* Guest registered but identity NOT verified yet */
-  .guest-row.iv-pending::before { background: var(--amber-500); }
-  .guest-row.iv-pending { background: linear-gradient(90deg, transparent 40%, rgba(255, 244, 229, 0.85)); }
-  .guest-row.iv-pending .g-avatar { background: #fbf5e0; color: var(--amber-700); }
-  .guest-row.iv-pending .st-label { color: var(--amber-700); }
-  .guest-row.iv-pending .g-status .icon { color: var(--amber-500); }
 
   /* Mobile: form fields are full width (matches GuestFormFields single-column stack) */
   .phone .two-col { grid-template-columns: 1fr; }

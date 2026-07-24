@@ -92,12 +92,12 @@ mark.hlq { background: rgba(255, 183, 0, 0.32); color: inherit; border-radius: 3
   background: linear-gradient(180deg, rgba(21,21,63,0) 30%, rgba(21,21,63,0.28));
   pointer-events: none;
 }
-.cover-home  { background: linear-gradient(135deg, #385bf8 0%, #8ca5ff 100%); }
-.cover-map   { background: linear-gradient(135deg, #0f9f80 0%, #35e5bc 100%); }
-.cover-food  { background: linear-gradient(135deg, #b86a00 0%, #ffb700 100%); }
-.cover-beach { background: linear-gradient(135deg, #294df1 0%, #35e5bc 100%); }
-.cover-city  { background: linear-gradient(135deg, #23235d 0%, #5975f5 100%); }
-.cover-spa   { background: linear-gradient(135deg, #6b6b95 0%, #cecede 100%); }
+.cover-home  { background-image: url("https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=640&q=70"); background-size: cover; background-position: center; }
+.cover-map   { background-image: url("https://images.unsplash.com/photo-1524661135-423995f22d0b?w=640&q=70"); background-size: cover; background-position: center; }
+.cover-food  { background-image: url("https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=640&q=70"); background-size: cover; background-position: center; }
+.cover-beach { background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=640&q=70"); background-size: cover; background-position: center; }
+.cover-city  { background-image: url("https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=640&q=70"); background-size: cover; background-position: center; }
+.cover-spa   { background-image: url("https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=640&q=70"); background-size: cover; background-position: center; }
 
 .gb-card .gc-ic {
   position: relative; z-index: 1;
@@ -528,75 +528,15 @@ mark.hlq { background: rgba(255, 183, 0, 0.32); color: inherit; border-radius: 3
 .gb-nav .gn-num { width: 18px; font-size: 11px; font-weight: 700; color: var(--n-500); flex-shrink: 0; text-align: center; }
 .gb-nav .gn-row.on .gn-num { color: var(--blue-500); }
 
-/* ============================================================
-   "Liquid glass" A/B version (html.glass-max) — see guide-toggle.js.
-   Extends the frosted treatment onto the reading surfaces over soft
-   color orbs, so it can be compared with the shipped chrome-only look.
-   Reading cards use the STRONG glass (0.78 alpha) so text stays legible.
-   ============================================================ */
-
 /* Orb backdrop so the blur has something to sample (mobile scroll frame + desktop columns) */
-html.glass-max .phone,
-html.glass-max .desk-main,
-html.glass-max .desk-page,
-html.glass-max .gd-scroll {
-  background:
-    radial-gradient(circle 240px at 10% 4%, rgba(56, 91, 248, 0.20), transparent 60%),
-    radial-gradient(circle 280px at 96% 22%, rgba(53, 229, 188, 0.16), transparent 62%),
-    radial-gradient(circle 320px at 60% 98%, rgba(140, 165, 255, 0.20), transparent 60%),
-    var(--bg-page);
-}
 
 /* Frost the reading surfaces */
-html.glass-max .gb-card,
-html.glass-max .gb-search,
-html.glass-max .gb-wifi,
-html.glass-max .gb-rows,
-html.glass-max .gb-amenity,
-html.glass-max .gb-map,
-html.glass-max .gb-place,
-html.glass-max .gb-file,
-html.glass-max .gb-jump,
-html.glass-max .gb-nav,
-html.glass-max .gb-offline,
-html.glass-max .gb-reasons {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(20px) saturate(1.6);
-  -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-html.glass-max .gb-card:hover { box-shadow: var(--glass-shadow), var(--shadow-elev); }
 
 /* Chapter-rail / filter pills and doc-toolbar tools become frosted too */
-html.glass-max .gb-toc .tc,
-html.glass-max .gb-doc .gd-bar .gd-tool {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px) saturate(1.5);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
-  border-color: var(--glass-border);
-}
-html.glass-max .gb-toc .tc.on { background: var(--tint-info); border-color: var(--blue-500); }
 
 /* Inner solid chips lighten so the frosted parent reads through */
-html.glass-max .gc-chip,
-html.glass-max .gb-wifi .gw-row,
-html.glass-max .gb-row .gr-ic,
-html.glass-max .gb-amenity .am-ic { background: rgba(255, 255, 255, 0.5); }
 
 /* Page-level orbs behind the mobile stage / desktop shell reading columns
    only affect guidebooks; chrome (top bar, Vela rail, sidebar) already glassy */
-html.glass-max .gd-scroll { background-blend-mode: normal; }
 
 /* Graceful fallback: no backdrop-filter → keep the strong solid so text stays readable */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  html.glass-max .gb-card,
-  html.glass-max .gb-search,
-  html.glass-max .gb-wifi,
-  html.glass-max .gb-rows,
-  html.glass-max .gb-map,
-  html.glass-max .gb-place,
-  html.glass-max .gb-file,
-  html.glass-max .gb-jump,
-  html.glass-max .gb-nav { background: rgba(255, 255, 255, 0.95); }
-}

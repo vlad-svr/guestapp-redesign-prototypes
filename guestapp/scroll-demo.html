@@ -51,11 +51,10 @@
           <div class="progress-track">
             <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
           </div>
-          <div class="page-head">
-            <div class="kicker">Guest registration</div>
-            <div class="page-title">Review your <span class="hl">details</span></div>
-            <p class="page-intro">A long schema-driven form — note how the top bar and the Continue button behave while you scroll.</p>
-          </div>
+          <div class="page-head" data-page-head
+               data-kicker="Guest registration"
+               data-title="Review your {details}"
+               data-intro="A long schema-driven form — note how the top bar and the Continue button behave while you scroll."></div>
           <div class="content">
             <div class="form-grid">
               <div class="section-label"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg> Personal data <span class="divider"></span></div>
@@ -307,36 +306,7 @@
       <span style="width:52px"></span>
     </div>
     <div class="desktop-shell with-rail scroll-shell">
-      <aside class="sidebar">
-        <div class="sb-head">
-          <div class="sb-logo">V</div>
-          <div>
-            <div class="sb-prop">Villa Serena</div>
-            <div class="sb-ref">Booking · CHK-58291</div>
-          </div>
-        </div>
-        <div class="sb-progress">
-          <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-          <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-        </div>
-        <div class="sb-group">Before you arrive</div>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-        <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">1</span></a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-        <div class="sb-group">Your stay</div>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-        <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-        <div class="sb-footer">
-          <div class="sb-avatar">MG</div>
-          <div>
-            <div class="sb-user">María García</div>
-            <div class="sb-mail">maria@gmail.com</div>
-          </div>
-          <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-        </div>
-      </aside>
+      <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
       <main class="desk-main">
         <div style="max-width:640px;margin:0 auto">
@@ -421,15 +391,6 @@
             </div>
           </div>
         </div>
-        <div class="vela-section">
-          <div class="vela-eyebrow">Ask Vela</div>
-          <div class="vela-ask" style="margin-top:10px">
-            <div class="ask-input">
-              Ask anything…
-              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-            </div>
-          </div>
-        </div>
       </aside>
     </div>
   </div>
@@ -469,6 +430,7 @@
     <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
   </defs>
 </svg>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

@@ -57,7 +57,7 @@
 <body>
 <div class="proto-stage">
   <h1>Vela Helper — Redesign 2.0 Prototype</h1>
-  <p class="lede">Vela is the contextual assistant: a glass rail on desktop, a sparkle FAB opening a right-side glass sheet on mobile. It combines the existing tips engine with new building blocks — Ask Vela input, quick actions (share link, switch to phone via QR, guest count), verification &amp; registration progress, offers and guidebook shortcuts. Mock data only.</p>
+  <p class="lede">Vela is the contextual assistant: a glass rail on desktop, a sparkle FAB opening a right-side glass sheet on mobile. It combines the existing tips engine with new building blocks — quick actions (share link, switch to phone via QR, guest count), verification &amp; registration progress, offers and guidebook shortcuts. No chat — Vela is rule-based tips and shortcuts, not a conversation. Mock data only.</p>
 
   <!-- ═══════════ IN CONTEXT: desktop rail + mobile sheet ═══════════ -->
   <div class="row-title" style="font-size:15px;font-weight:700;color:var(--navy);text-align:center;margin-top:8px">In context <span style="display:block;font-size:12px;font-weight:500;color:var(--text-secondary);margin-top:3px">desktop rail (IV scene) · mobile FAB + glass sheet</span></div>
@@ -143,20 +143,6 @@
           </div>
         </div>
 
-        <div class="vela-section">
-          <div class="vela-eyebrow">Ask Vela</div>
-          <div class="vela-ask" style="margin-top:10px">
-            <div class="ask-input">
-              Ask anything about check-in…
-              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-            </div>
-            <div class="vela-chips">
-              <span class="chip">Which documents work?</span>
-              <span class="chip">Is my data safe?</span>
-              <span class="chip">Skip for now?</span>
-            </div>
-          </div>
-        </div>
       </aside>
 <div class="proto-modal" id="m-qr"><div class="pm-scrim"></div><div class="pm-card"><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Continue on your phone</div><div class="pm-desc">Scan with your phone camera — your verification continues there and this page updates live.</div><div class="pm-qr"><div class="qr-box-m"><div class="qr-cells-m"><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="pm-steps"><div class="ps"><span class="ps-n">1</span><span>Open the <b>camera app</b> on your phone</span></div><div class="ps"><span class="ps-n">2</span><span>Point it at this code and tap the link</span></div><div class="ps"><span class="ps-n">3</span><span>Pick up <b>right where you left off</b></span></div></div></div><span class="pm-wait"><span class="spin"></span> Waiting for your phone… code expires in 9:41</span></div></div>
 <div class="proto-modal" id="m-share"><div class="pm-scrim"></div><div class="pm-card"><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Share booking link</div><div class="pm-desc">Anyone with this link can register guests for booking <b style="color:var(--navy)">CHK-58291</b>. It stops working after check-in.</div><div class="pm-link">guest.chekin.com/r/chk-58291<button class="pm-copy"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy</button></div><div class="pm-share-grid"><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span> WhatsApp</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span> Email</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></span> More</button></div></div></div>
@@ -176,11 +162,10 @@
             </div>
             <button class="vela-fab"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
           </div>
-          <div class="page-head">
-            <div class="kicker">Guest registration</div>
-            <div class="page-title">Choose your <span class="hl">document</span></div>
-            <p class="page-intro">Select your nationality and the ID you have with you.</p>
-          </div>
+          <div class="page-head" data-page-head
+               data-kicker="Guest registration"
+               data-title="Choose your {document}"
+               data-intro="Select your nationality and the ID you have with you."></div>
           <div class="content">
             <div class="card" style="height:110px;opacity:0.45"></div>
             <div class="card" style="height:190px;opacity:0.45"></div>
@@ -243,19 +228,6 @@
               </div>
             </div>
 
-            <div class="vela-section">
-              <div class="vela-eyebrow">Ask Vela</div>
-              <div class="vela-ask" style="margin-top:10px">
-                <div class="ask-input">
-                  Ask anything…
-                  <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-                </div>
-                <div class="vela-chips">
-                  <span class="chip">Which documents work?</span>
-                  <span class="chip">Is my data safe?</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -281,20 +253,7 @@
       <div class="cb-note">Gradient avatar (brand → light), green presence dot, one-line role description. Same across rail and sheet.</div>
     </div>
 
-    <div class="comp-block">
-      <div class="cb-head"><span class="cb-name">Ask Vela · chat input</span><span class="cb-tag">new</span></div>
       <div class="cb-body">
-        <div class="vela-ask">
-          <div class="ask-input">
-            Ask anything about check-in…
-            <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-          </div>
-          <div class="vela-chips">
-            <span class="chip">Which documents work?</span>
-            <span class="chip">Is my data safe?</span>
-            <span class="chip">Skip for now?</span>
-          </div>
-        </div>
       </div>
       <div class="cb-note">Pill input + brand send button, with scene-aware quick-reply chips (the reserved <code>--chip-*</code> tokens finally get used).</div>
     </div>
@@ -485,6 +444,7 @@
   </defs>
 </svg>
 <script src="modals.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

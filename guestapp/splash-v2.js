@@ -7,10 +7,10 @@
 
    Deterministic by construction — no Date.now(), no Math.random(). Every
    number below is a timeout offset, so a replay is byte-identical to the
-   first run and the two phones can be compared frame for frame.
+   first run.
 
-   The four constants ARE the proposal. They are the whole behavioural
-   change, and they are mirrored in SPEC.md §36.2.
+   The four constants ARE the change. The surface stays V1's; everything that
+   moves is timing, and it is mirrored in SPEC.md §36.2.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
   /* ── Timing contract ─────────────────────────────────────────────────────
@@ -32,47 +32,40 @@
   var WATCHDOG = 20000;
 
   var HANDOFF = 340; // must match .sp-stage transition in splash-v2.css
+  var CURTAIN = 340; // must match .sp-curtain transition in splash-v2.css
 
   /* ── Ladders ─────────────────────────────────────────────────────────────
-     `p` is the ring fill, 0…1. It eases toward 0.9 and is only ever written
-     to 1.0 by a step that also carries `ready: true`. The ring cannot claim
-     a completion the network hasn't delivered.
+     Each step is a moment on the clock. The loader is the three pulsing dots,
+     which are indeterminate by construction — there is no percentage here to
+     get wrong, and no completion to claim before the data lands.
      ────────────────────────────────────────────────────────────────────── */
   var LADDERS = {
     /* The 90 % case. Silent, sub-second, gone before QUIET elapses. */
     fast: [
-      { at: 0,   p: 0.12, indeterminate: true },
-      { at: 220, p: 0.55, indeterminate: false },
-      { at: 480, p: 0.88 },
-      { at: 720, p: 1, ready: true, announce: 'Your check-in is ready.' },
+      { at: 720, ready: true, announce: 'Your check-in is ready.' },
     ],
 
     /* A real 3G morning. The stage line appears only once we pass QUIET, and
        the copy names the thing being fetched rather than saying "Loading…". */
     slow: [
-      { at: 0,    p: 0.08, indeterminate: true },
-      { at: 700,  p: 0.24, indeterminate: false },
       { at: QUIET, line: 'Connecting…', announce: 'Connecting.' },
-      { at: 2400, p: 0.52, line: 'Loading your check-in', announce: 'Loading your check-in.' },
-      { at: 4200, p: 0.78, line: 'Almost ready' },
-      { at: 5200, p: 0.9 }, /* and there it stops — honest, not 99 % forever */
+      { at: 2400, line: 'Loading your check-in', announce: 'Loading your check-in.' },
+      { at: 4200, line: 'Almost ready' },
       { at: SLOW, slow: true, line: 'This is taking longer than usual', announce: 'This is taking longer than usual. You can keep waiting or try again.' },
       { at: WATCHDOG, watchdog: true },
     ],
 
     /* The same screen, fast-forwarded to the moment it admits it is slow. */
     longer: [
-      { at: 0, p: 0.9, slow: true, line: 'This is taking longer than usual', elapsedFrom: 6.4, announce: 'This is taking longer than usual. You can keep waiting or try again.' },
+      { at: 0, slow: true, line: 'This is taking longer than usual', elapsedFrom: 6.4, announce: 'This is taking longer than usual. You can keep waiting or try again.' },
       { at: WATCHDOG - SLOW, watchdog: true },
     ],
 
-    /* Branding resolved to a light host theme — the ink set inverts with it.
+    /* Branding resolved to a dark host theme — the ink set inverts with it.
        Still sub-second. */
     brand: [
-      { at: 0,   p: 0.14, indeterminate: true },
-      { at: 260, p: 0.5, indeterminate: false, branded: true, theme: 'on-light', announce: 'Casa Valencia check-in.' },
-      { at: 620, p: 0.9 },
-      { at: 900, p: 1, ready: true },
+      { at: 260, branded: true, theme: 'on-dark', announce: 'Casa Valencia check-in.' },
+      { at: 900, ready: true },
     ],
 
     /* splash_screen_enabled === false. There is no splash surface at all —
@@ -146,13 +139,8 @@
        cover the skeleton with. Every write below is guarded accordingly. */
     var stage = screen.querySelector('[data-sp-stage]');
     var under = screen.querySelector('[data-sp-under]');
-    var ring = screen.querySelector('[data-sp-ring]');
     var line = screen.querySelector('[data-sp-line]');
 
-    if (typeof step.p === 'number' && ring) ring.style.setProperty('--sp-p', step.p);
-    if (typeof step.indeterminate === 'boolean' && ring) {
-      ring.classList.toggle('is-indeterminate', step.indeterminate);
-    }
     /* Branding arrives on the same round trip as auth, i.e. always after first
        paint. Today that reflows the logo and repaints the background under the
        guest. Here the host layer occupies a reserved box and cross-fades in
@@ -171,7 +159,6 @@
        guest is now owed a choice, not a nicer spinner. */
     if (step.slow) {
       screen.querySelectorAll('[data-sp-when="slow"]').forEach(function (n) { n.hidden = false; });
-      if (ring) ring.classList.add('is-indeterminate');
     }
 
     /* The watchdog. Today's component has no equivalent: with a hung auth
@@ -201,16 +188,24 @@
     var wait = Math.max(0, MIN_VISIBLE - (heldMs || 0));
 
     timers.push(setTimeout(function () {
-      if (stage) stage.classList.add('is-gone');
-      stopClock(screen, 'is-done');
+      /* The curtains close first — over a screen that is already rendered
+         behind them, which is the whole difference from today. */
+      if (stage) stage.classList.add('is-closing');
       if (under) under.classList.add('is-live');
 
-      /* Focus lands on the heading of the screen that arrived — the splash is
-         a `role="status"` region and must not keep the focus ring. */
       timers.push(setTimeout(function () {
-        var h = under && under.querySelector('[data-sp-focus]');
-        if (h && screen.classList.contains('active')) h.focus({ preventScroll: true });
-      }, stage ? HANDOFF : 0));
+        if (stage) stage.classList.add('is-gone');
+        /* The clock stops when the guest can see the app, not when the data
+           landed — the curtain is time on screen and is counted as such. */
+        stopClock(screen, 'is-done');
+
+        /* Focus lands on the heading of the screen that arrived — the splash is
+           a `role="status"` region and must not keep the focus ring. */
+        timers.push(setTimeout(function () {
+          var h = under && under.querySelector('[data-sp-focus]');
+          if (h && screen.classList.contains('active')) h.focus({ preventScroll: true });
+        }, stage ? HANDOFF : 0));
+      }, stage ? CURTAIN : 0));
     }, wait));
   }
 
@@ -224,13 +219,11 @@
     /* Reset the screen to its first frame. */
     var stage = screen.querySelector('[data-sp-stage]');
     var under = screen.querySelector('[data-sp-under]');
-    var ring = screen.querySelector('[data-sp-ring]');
     var line = screen.querySelector('[data-sp-line]');
     var pill = scopeOf(screen).querySelector('[data-sp-clock]');
 
-    if (stage) stage.classList.remove('is-gone', 'branded', 'on-light');
+    if (stage) stage.classList.remove('is-gone', 'is-closing', 'branded', 'on-dark');
     if (under) under.classList.remove('is-live');
-    if (ring) { ring.style.setProperty('--sp-p', 0); ring.classList.remove('is-indeterminate'); }
     if (line) { line.textContent = ''; line.classList.remove('is-shown'); }
     if (pill) pill.classList.remove('is-done', 'is-bad');
     screen.querySelectorAll('[data-sp-when="slow"]').forEach(function (n) { n.hidden = true; });
@@ -238,7 +231,7 @@
     announce(screen, screen.getAttribute('data-sp-announce'));
 
     /* Terminal screens (error, offline): no ladder, no clock, and the mark is
-       already a state mark rather than a progress ring. */
+       already a state mark rather than a loader. */
     if (!ladder.length) {
       var value = scopeOf(screen).querySelector('[data-sp-clock-value]');
       if (value) value.textContent = '—';
@@ -254,61 +247,6 @@
     });
   }
 
-  /* ── V1 replica ──────────────────────────────────────────────────────────
-     Reproduces components/SplashScreen/SplashScreen.tsx faithfully:
-       · curtains animate from mount, over 5 s, closed by 86 % (≈4.3 s)
-       · the 5 s dismissal timer starts only once the data has ARRIVED
-       · therefore total = load + 5000 ms, and everything between 4.3 s and
-         that total is a solid rectangle of the brand colour
-     `data-v1-load` is the simulated fetch time.
-     ────────────────────────────────────────────────────────────────────── */
-  var v1Timers = [];
-  var v1Tick = null;
-
-  function runV1(box) {
-    v1Timers.forEach(clearTimeout);
-    v1Timers = [];
-    if (v1Tick) { clearInterval(v1Tick); v1Tick = null; }
-
-    var load = parseInt(box.getAttribute('data-v1-load') || '750', 10);
-    var total = load + 5000; // SHOW_MODAL_AFTER_SPLASH_TIMEOUT, started at ready
-    var splash = box.querySelector('.v1-splash');
-    var clockValue = box.querySelector('[data-v1-clock-value]');
-    var pill = box.querySelector('[data-v1-clock]');
-    var dead = box.querySelector('[data-v1-dead]');
-
-    splash.classList.remove('is-gone', 'is-running');
-    if (pill) pill.classList.remove('is-bad');
-    if (dead) dead.hidden = true;
-    void splash.offsetWidth; // restart the CSS animations
-    splash.classList.add('is-running');
-
-    var t = 0;
-    if (clockValue) clockValue.textContent = fmt(0);
-    v1Tick = setInterval(function () {
-      t += 0.1;
-      if (clockValue) clockValue.textContent = fmt(t);
-    }, 100);
-
-    /* Curtains are fully closed at 86 % of 5 s. From here to `total` the guest
-       is looking at an opaque brand-coloured rectangle. */
-    v1Timers.push(setTimeout(function () {
-      if (dead) {
-        dead.hidden = false;
-        /* Round in integer deciseconds: (5750-4300)/1000 = 1.45, which is
-           1.4499…  in binary, so .toFixed(1) would print "1.4s". */
-        var slot = dead.querySelector('[data-v1-dead-value]');
-        if (slot) slot.textContent = fmt(Math.round((total - 4300) / 100) / 10);
-      }
-    }, 4300));
-
-    v1Timers.push(setTimeout(function () {
-      if (v1Tick) { clearInterval(v1Tick); v1Tick = null; }
-      splash.classList.add('is-gone');
-      if (pill) pill.classList.add('is-bad');
-      if (clockValue) clockValue.textContent = fmt(total / 1000);
-    }, total));
-  }
 
   /* ── Wiring ──────────────────────────────────────────────────────────── */
   document.addEventListener('click', function (e) {
@@ -332,17 +270,6 @@
       return;
     }
 
-    if ((el = e.target.closest('[data-v1-replay]'))) {
-      e.preventDefault();
-      var box = el.closest('[data-v1]');
-      var load = el.getAttribute('data-v1-replay');
-      if (load) box.setAttribute('data-v1-load', load);
-      box.querySelectorAll('[data-v1-replay]').forEach(function (b) {
-        b.classList.toggle('on', b === el);
-      });
-      runV1(box);
-      return;
-    }
   });
 
   /* ── Screen activation ───────────────────────────────────────────────── */
@@ -370,7 +297,6 @@
       observer.observe(s, { attributes: true, attributeFilter: ['class'] });
     });
     onActivate();
-    document.querySelectorAll('[data-v1]').forEach(runV1);
   }
 
   document.addEventListener('keydown', function (e) {

@@ -124,8 +124,8 @@
   background: linear-gradient(135deg, #b86a00 0%, #ffb700 100%);
   display: grid; place-items: center; color: #fff;
 }
-.bx-offer .bo-thumb.tour { background: linear-gradient(135deg, #385bf8 0%, #8ca5ff 100%); }
-.bx-offer .bo-thumb.late { background: linear-gradient(135deg, #23235d 0%, #5975f5 100%); }
+.bx-offer .bo-thumb.tour { background: url("https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=200&q=70") center/cover; }
+.bx-offer .bo-thumb.late { background: url("https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=200&q=70") center/cover; }
 .bx-offer .bo-title { font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.25; }
 .bx-offer .bo-meta { font-size: 11.5px; color: var(--text-secondary); margin-top: 3px; }
 

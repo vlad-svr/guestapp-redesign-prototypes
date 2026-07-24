@@ -64,6 +64,23 @@
 }
 .auth-top .at-prop { font-size: 14px; font-weight: 700; line-height: 1.2; }
 .auth-top .at-ref { font-size: 11px; color: rgba(255, 255, 255, 0.7); font-variant-numeric: tabular-nums; }
+
+/* Mobile has no brand panel to hang the reservation card on, so the same
+   context arrives as one line under the header — enough to confirm which stay
+   this is without pushing the form below the fold. */
+.auth-res {
+  display: flex; align-items: center; gap: 8px;
+  margin: 12px 2px 0; padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  color: #fff; font-size: 12px; font-weight: 500;
+}
+.auth-res .icon { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.75; }
+.auth-res b { font-weight: 600; }
+.auth-res .sep { opacity: 0.5; }
 .auth-top .at-lang {
   margin-left: auto;
   height: 30px; padding: 0 11px; border-radius: 99px;
@@ -171,6 +188,48 @@
   padding: 6px;
 }
 .auth-alt:hover { color: var(--navy); }
+
+/* ── "You don't have to" ─────────────────────────────────────────────────
+   The account is a convenience, never a gate — the reservation link alone
+   is enough to check in. The old page never said so: the only way out was
+   a grey text link under a Google button, which reads as a third-choice
+   afterthought rather than a right. Three additions state it instead:
+   a pill on the title, a sentence in the sub, and a real bordered card
+   that names the trade honestly (faster now vs. saved for next time). */
+.auth-optional {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 9px;
+  border-radius: 999px;
+  background: var(--green-50);
+  color: var(--green-800);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.auth-optional .icon { width: 11px; height: 11px; }
+/* The title and its pill sit on one baseline-aligned row */
+.auth-title-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; justify-content: center; }
+.auth-formpanel .auth-title-row { justify-content: flex-start; }
+
+.auth-skip {
+  display: flex; align-items: center; gap: 11px;
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: var(--n-0);
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.auth-skip:hover { border-color: var(--blue-500); background: var(--tint-pressed); }
+.auth-skip .as-ic {
+  width: 32px; height: 32px; border-radius: 10px;
+  background: var(--n-50); color: var(--n-600);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.auth-skip .as-main { flex: 1; min-width: 0; }
+.auth-skip .as-title { display: block; font-size: 13px; font-weight: 600; color: var(--navy); }
+.auth-skip .as-sub { display: block; font-size: 11px; line-height: 15px; color: var(--text-tertiary); margin-top: 1px; }
+.auth-skip .as-chev { color: var(--n-500); flex-shrink: 0; }
+
 .auth-foot { display: flex; gap: 6px; justify-content: center; font-size: 11px; color: var(--text-tertiary); }
 .auth-foot a { color: var(--text-secondary); text-decoration: underline; }
 
@@ -317,6 +376,54 @@
 .auth-brandpanel .bp-prop { font-size: 15px; font-weight: 700; }
 .auth-brandpanel .bp-ref { font-size: 12px; color: rgba(255,255,255,0.7); }
 .auth-brandpanel .bp-hero { margin-top: auto; }
+
+/* ── Reservation card ────────────────────────────────────────────────────
+   Sign-in is the one screen where the guest has the least context: they
+   arrived from a link in an email and are being asked for an address before
+   anything confirms which stay this is. Naming the property and the dates
+   here answers "am I in the right place" before the form asks for anything.
+   Chrome glass, which is allowed on the branded panel. */
+.auth-brandpanel .bp-res {
+  margin-top: 22px;
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+}
+.auth-brandpanel .bp-res-dates {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center;
+}
+.auth-brandpanel .bp-res-dates > div:last-child { text-align: right; }
+.auth-brandpanel .bp-res-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.11em; color: rgba(255, 255, 255, 0.62);
+}
+.auth-brandpanel .bp-res-day {
+  font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.auth-brandpanel .bp-res-time { font-size: 11.5px; color: rgba(255, 255, 255, 0.72); margin-top: 1px; }
+.auth-brandpanel .bp-res-mid {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.09em; color: rgba(255, 255, 255, 0.62);
+}
+.auth-brandpanel .bp-res-mid .arr {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  display: grid; place-items: center;
+}
+.auth-brandpanel .bp-res-mid .arr .icon { width: 13px; height: 13px; }
+.auth-brandpanel .bp-res-meta {
+  display: flex; align-items: center; gap: 7px;
+  margin-top: 13px; padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 12px; color: rgba(255, 255, 255, 0.78);
+}
+.auth-brandpanel .bp-res-meta .icon { width: 14px; height: 14px; flex-shrink: 0; }
 .auth-brandpanel .bp-kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
 .auth-brandpanel .bp-title { font-size: 30px; line-height: 36px; font-weight: 700; letter-spacing: -0.02em; margin-top: 8px; }
 .auth-brandpanel .bp-perks { display: flex; flex-direction: column; gap: 14px; margin-top: 26px; }
@@ -354,11 +461,10 @@
 .gc-guest .g-ok { margin-left: auto; color: var(--green-600); }
 
 /* ============================================================
-   "Minimal glass" A/B version (html.glass-lite) — shared glass-toggle.js,
-   the same Full · Minimal switch as Find-booking / Error.
-   Full (default) = the current design: frosted auth card over color orbs.
-   Minimal = flatten the stage orbs and make the reading card a clean
-   solid, keeping only the brand gradient (chrome-only glass per rule 1).
+   Minimal glass (html.glass-lite — baked onto <html>, the only version):
+   flattens the stage orbs and keeps the reading card a clean solid,
+   keeping only the brand gradient (chrome-only glass per rule 1). The
+   frosted rules above are the inert base this skin overrides.
    ============================================================ */
 html.glass-lite .auth-stage::before,
 html.glass-lite .auth-stage::after,

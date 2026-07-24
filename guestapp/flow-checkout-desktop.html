@@ -39,34 +39,13 @@
     <div class="flow-screen" id="cd-leave" data-start data-label="Before you leave — you're all set" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
 
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Stay progress</span><span>Check-out day</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:92%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration</a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item" href="flow-guidebooks-desktop.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Check-out</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div><div class="sb-user">María García</div><div class="sb-mail">maria@gmail.com</div></div>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="home"></aside>
 
         <main class="desk-page">
           <div class="desk-col wide">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Check-out · Step 1 of 3</div>
-              <div class="page-title">Before you leave, <span class="hl">María</span></div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Check-out · Step 1 of 3"
+                 data-title="Before you leave, {María}">
               <div class="co-when" style="margin-top:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> Check-out by <b>11:00 today</b> · Fri 22 Aug</div>
               <p class="page-intro" style="margin-top:10px">Your stay is settled — here's a last look, plus a couple of things you can add before you go.</p>
             </div>
@@ -142,7 +121,6 @@
             <button class="vela-tip clickable" data-modal="m-keys"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span><span><span class="vt-title">Where do the keys go?</span><span class="vt-desc">Lockbox by the front door · code 4471#.</span></span><span class="vt-chev"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-right"/></svg></span></button>
           </div>
 
-          <div class="vela-ask"><div class="ask-input">Ask Vela anything… <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke:#fff"><use href="#i-arrow-right"/></svg></span></div></div>
         </aside>
       </div>
     </div>
@@ -174,24 +152,17 @@
     <!-- ═══════════════ cd-rate · Rate your stay ═══════════════ -->
     <div class="flow-screen" id="cd-rate" data-label="Rate your stay" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head"><div class="sb-logo">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
-          <div class="sb-group" style="margin-top:8px">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Check-out</a>
-          <div class="sb-footer"><div class="sb-avatar">MG</div><div><div class="sb-user">María García</div><div class="sb-mail">maria@gmail.com</div></div></div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="home"></aside>
 
         <main class="desk-page">
           <a class="back-pill" data-goto="cd-leave"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</a>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px;align-items:center;text-align:center">
-              <div class="kicker">Check-out · Step 2 of 3</div>
-              <div class="page-title">How was your stay?</div>
+            <div class="page-head" style="padding:0 0 4px;align-items:center;text-align:center" data-page-head
+                 data-kicker="Check-out · Step 2 of 3"
+                 data-title="How was your stay?">
               <p class="page-intro" style="margin:0 auto">Your honest rating helps us and the next guests. It takes ten seconds.</p>
             </div>
-            <div class="card glass" style="padding:28px 26px;margin-top:20px">
+            <div class="card" style="padding:28px 26px;margin-top:20px">
               <div class="rate-card">
                 <div class="stars" role="radiogroup" aria-label="Rate your stay from 1 to 5 stars">
                   <button class="star" role="radio" aria-checked="false" aria-label="1 star — Very poor" data-star="1"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></button>
@@ -229,14 +200,7 @@
     <!-- ═══════════════ cd-thanks · Thank you (great rating) ═══════════════ -->
     <div class="flow-screen" id="cd-thanks" data-label="Thank you — safe travels" style="flex:1">
       <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
-        <aside class="sidebar">
-          <div class="sb-head"><div class="sb-logo">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
-          <div class="sb-group" style="margin-top:8px">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Check-out</a>
-          <div class="sb-footer"><div class="sb-avatar">MG</div><div><div class="sb-user">María García</div><div class="sb-mail">maria@gmail.com</div></div></div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="home"></aside>
         <main class="desk-page payd-celebrate" style="position:relative;overflow:hidden">
           <div class="confetti" aria-hidden="true">
             <i style="left:14%;background:var(--blue-500)"></i><i style="left:28%;background:var(--amber-500);animation-delay:.3s"></i><i style="left:42%;background:var(--green-500);animation-delay:.1s"></i><i style="left:58%;background:var(--blue-300);animation-delay:.5s"></i><i style="left:72%;background:var(--amber-500);animation-delay:.2s"></i><i style="left:86%;background:var(--green-600);animation-delay:.42s"></i>
@@ -274,14 +238,7 @@
     <!-- ═══════════════ cd-recovery · low rating repair ═══════════════ -->
     <div class="flow-screen" id="cd-recovery" data-label="We'd like to make it right" style="flex:1">
       <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
-        <aside class="sidebar">
-          <div class="sb-head"><div class="sb-logo">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
-          <div class="sb-group" style="margin-top:8px">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Check-out</a>
-          <div class="sb-footer"><div class="sb-avatar">MG</div><div><div class="sb-user">María García</div><div class="sb-mail">maria@gmail.com</div></div></div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="home"></aside>
         <main class="desk-page">
           <div class="desk-col" style="max-width:520px;margin-top:40px">
             <div class="recovery">
@@ -303,14 +260,7 @@
     <!-- ═══════════════ cd-done · already checked out ═══════════════ -->
     <div class="flow-screen" id="cd-done" data-label="Checked out" style="flex:1">
       <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
-        <aside class="sidebar">
-          <div class="sb-head"><div class="sb-logo">V</div><div><div class="sb-prop">Villa Serena</div><div class="sb-ref">Booking · CHK-58291</div></div></div>
-          <div class="sb-group" style="margin-top:8px">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg> Check-out</a>
-          <div class="sb-footer"><div class="sb-avatar">MG</div><div><div class="sb-user">María García</div><div class="sb-mail">maria@gmail.com</div></div></div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="home"></aside>
         <main class="desk-page payd-celebrate">
           <div class="desk-col" style="max-width:520px;margin-top:24px">
             <div class="co-celebrate">
@@ -422,7 +372,7 @@
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="checkout-flow.js" defer></script>
-<script src="checkout-toggle.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

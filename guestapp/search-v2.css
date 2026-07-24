@@ -9,7 +9,7 @@
    ever put behind a blur.
 
    Depends on shared.css for tokens, .phone/.browser, .btn, .field, .icon.
-   Honours the Full · Minimal switch from glass-toggle.js via html.glass-lite.
+   Minimal glass (html.glass-lite) is baked onto <html> — the only version.
    Palette is limited to the tokens already in shared.css. No new hues.
    ══════════════════════════════════════════════════════════════════════════ */
 
@@ -122,6 +122,10 @@
   background: #fff;
   box-shadow: 0 2px 8px rgba(22, 22, 67, 0.3);
 }
+/* On the desktop canvas the brand anchors a 516px panel, so it scales up;
+   the mobile hero bar keeps the compact base size. */
+.s2-canvas .s2-brand { font-size: 17px; gap: 10px; }
+.s2-canvas .s2-brand i { width: 34px; height: 34px; border-radius: 11px; font-size: 16px; }
 .s2-lang {
   display: inline-flex;
   align-items: center;
@@ -139,6 +143,25 @@
   -webkit-backdrop-filter: blur(14px) saturate(1.6);
 }
 .s2-lang:hover { background: rgba(255, 255, 255, 0.26); }
+
+/* On the form panel (moved off the canvas to match the sign-in layout: the
+   language control lives top-right of the light side, not on the photo). The
+   glass pill styling is for the dark canvas, so it flips to the sign-in
+   .fp-lang look here. */
+.s2-panel > .s2-lang {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  z-index: 2;
+  height: 34px;
+  padding: 0 13px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.s2-panel > .s2-lang:hover { background: var(--n-50); }
 
 /* back row for the slim hero */
 .s2-hero-nav {
@@ -412,6 +435,7 @@
    ───────────────────────────────────────────────────────────── */
 .s2-code-wrap { display: flex; flex-direction: column; gap: 10px; }
 .s2-lbl-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.s2-lbl-row label { white-space: nowrap; }
 .s2-lbl-row label { font-size: 12.5px; font-weight: 600; color: var(--navy); }
 .s2-help {
   display: inline-flex;
@@ -517,6 +541,7 @@
   align-items: center;
   gap: 4px;
   height: 20px;
+  white-space: nowrap;
   padding: 0 7px;
   border-radius: 99px;
   font-size: 10px;
@@ -574,7 +599,7 @@
   overflow: hidden;
   position: relative;
   background: var(--n-0);
-  box-shadow: 0 18px 44px rgba(22, 22, 67, 0.2);
+  border: 1px solid var(--border);
 }
 .s2-scan-photo { height: 96px; position: relative; overflow: hidden; }
 .s2-scan-body { padding: 11px 13px; text-align: left; }
@@ -860,7 +885,7 @@
 }
 .s2-canvas {
   position: relative;
-  width: 46%;
+  width: 38%;
   min-width: 380px;
   overflow: hidden;
   display: flex;
@@ -896,6 +921,29 @@
 .s2-quote .q-by .s2-avatar { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); }
 .s2-quote .q-name { font-size: 12px; font-weight: 600; }
 .s2-quote .q-role { font-size: 11px; color: rgba(255, 255, 255, 0.72); }
+
+/* Why check in now, before arrival — the one pitch that makes sense before a
+   booking is even matched. (Not the sign-in panel's account perks: saved
+   progress and "register once" argue for an account, which this guest is
+   several screens away from.) Replaces a guest testimonial, which read well
+   but claimed a review system that does not exist. */
+/* No margin-top:auto here — .s2-hero-meta already claims the free space, and
+   two auto margins split it, leaving the property name floating mid-canvas.
+   The identity anchors the lower group; the perks sit directly beneath it. */
+.s2-perks { display: flex; flex-direction: column; gap: 13px; }
+/* the identity's 44px tail is spacing to the canvas floor — too much when the
+   perks follow it */
+.s2-hero-meta:has(+ .s2-perks) { padding-bottom: 20px; }
+.s2-perk {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13.5px; font-weight: 500; color: #fff;
+}
+.s2-perk .p-ic {
+  width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: grid; place-items: center;
+}
 
 .s2-badges { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
 .s2-badge {
@@ -959,6 +1007,10 @@
   position: relative;
   overflow: hidden;
 }
+/* Create reservation is the one two-column form in the flow; the 420px card
+   sized for the single-column cards wraps its date labels mid-word. */
+#sd2-create .s2-card { max-width: 560px; }
+
 .s2-card::after {
   content: '';
   position: absolute;
@@ -1039,6 +1091,10 @@ html.glass-lite .s2-quote {
 }
 html.glass-lite .s2-lang,
 html.glass-lite .s2-hero-nav .s2-back { background: rgba(21, 21, 63, 0.42); }
+/* …but not when the pill sits on the light form panel — the dark slab
+   fallback is for the canvas placement only */
+html.glass-lite .s2-panel > .s2-lang { background: var(--n-0); }
+html.glass-lite .s2-panel > .s2-lang:hover { background: var(--n-50); }
 html.glass-lite .s2-seal { background: rgba(15, 159, 128, 0.5); }
 html.glass-lite .s2-quote { background: rgba(21, 21, 63, 0.5); }
 html.glass-lite .s2-grain { opacity: 0.08; }
@@ -1057,6 +1113,7 @@ html.glass-lite .s2-step .st-dot { background: var(--n-0); }
   .s2-sheet, .s2-card { background: var(--n-0); box-shadow: var(--shadow-elev); }
   .s2-method, .s2-why, .s2-group, .s2-nf, .s2-cell { background: var(--n-0); }
   .s2-lang, .s2-hero-nav .s2-back { background: rgba(21, 21, 63, 0.5); }
+  .s2-panel > .s2-lang { background: var(--n-0); }
   .s2-seal { background: rgba(15, 159, 128, 0.55); }
   .s2-quote { background: rgba(21, 21, 63, 0.55); }
 }

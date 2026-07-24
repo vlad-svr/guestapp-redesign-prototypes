@@ -3,13 +3,22 @@
    Loaded AFTER pay.css; reuses its item/ledger/steps primitives.
    ============================================================ */
 
-/* Two-column cart: items left, sticky ledger right */
+/* Two-column cart: items left, sticky ledger right.
+   The content column carries a real minimum. With `minmax(0, 1fr)` it could
+   starve to ~130 px against the rigid 316 px ledger once the shell got narrow
+   (sidebar 266 + rail 324 leave the page only ~540 px on a 1180 px window),
+   which crushed every row. Below the width where both columns fit, the grid
+   stacks instead — the ledger goes under the items rather than beside them. */
 .payd-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 316px;
+  grid-template-columns: minmax(300px, 1fr) 316px;
   gap: 22px;
   align-items: start;
   margin-top: 20px;
+}
+@media (max-width: 1345px) {
+  .payd-grid { grid-template-columns: minmax(0, 1fr); }
+  .payd-grid .ledger { position: static; }
 }
 .payd-grid .ledger { position: sticky; top: 24px; }
 .payd-grid .ledger .btn { width: 100%; margin-top: 4px; }

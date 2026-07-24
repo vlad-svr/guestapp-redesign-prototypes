@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="photos.css">
 <link rel="stylesheet" href="pay.css">
 <link rel="stylesheet" href="upsell.css">
 </head>
@@ -48,17 +49,15 @@
         <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-heart"/></svg> Wellness</button>
         <button class="cat"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map"/></svg> Free tours</button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Extras &amp; experiences</div>
-        <div class="page-title">Make it <span class="hl">your stay</span></div>
-        <p class="page-intro">Upgrades from Villa Serena — instant ones go straight to your cart, the rest need a quick yes from the host. Nothing is charged outside your payments cart.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Extras &amp; experiences"
+           data-title="Make it {your stay}"
+           data-intro="Upgrades from Villa Serena — instant ones go straight to your cart, the rest need a quick yes from the host. Nothing is charged outside your payments cart."></div>
       <div class="content" style="gap:16px">
 
         <button class="of-feature">
-          <span class="ft-art" style="background:linear-gradient(135deg,#ffd3a5,#f78ca0)">🌅</span>
+          <span class="ft-art ph-wine"></span>
           <span class="ft-scrim"></span>
-          <span class="ft-flag">✦ Exclusive for guests</span>
           <span class="ft-body">
             <span class="ft-main">
               <span class="ft-title" style="display:block">Sunset vineyard tour</span>
@@ -74,7 +73,7 @@
           </div>
           <div class="of-grid">
             <button class="of-card tap" data-goto="u-detail">
-              <span class="of-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+              <span class="of-photo ph-breakfast">
                 <span class="of-price">€12.50 <span class="per">/ basket</span></span>
               </span>
               <span class="of-body">
@@ -84,7 +83,7 @@
               </span>
             </button>
             <button class="of-card tap" data-goto="u-request">
-              <span class="of-photo" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+              <span class="of-photo ph-checkin">
                 <span class="of-price">€20.00 <span class="per">/ stay</span></span>
               </span>
               <span class="of-body">
@@ -99,12 +98,11 @@
               <span class="mz-head">
                 <span class="mz-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
                 <span class="mz-titles">
-                  <span class="mz-title">Airport &amp; City Transfers <span class="mozio-tag">🔥 Hot deal</span></span>
+                  <span class="mz-title">Airport &amp; City Transfers</span>
                   <span class="mz-partner"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Powered by Mozio · books on the partner site</span>
                 </span>
               </span>
               <span class="mz-sub">Prebook airport shuttles, taxis, buses &amp; private transfers — anytime, everywhere.</span>
-              <span class="mz-accent">✨ Discover unbeatable rates</span>
               <span class="mz-pills">
                 <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Free cancellation</span>
                 <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> 24/7 support</span>
@@ -114,7 +112,7 @@
             </button>
 
             <div class="of-card">
-              <span class="of-photo" style="background:linear-gradient(135deg,#d0e2fd,#a9c4f5)">🚕
+              <span class="of-photo ph-transfer">
                 <span class="of-price">€35.00 <span class="per">/ trip</span></span>
               </span>
               <span class="of-body">
@@ -124,7 +122,7 @@
               </span>
             </div>
             <div class="of-card">
-              <span class="of-photo" style="background:linear-gradient(135deg,#d8f5e3,#a8e6cf)">🧖
+              <span class="of-photo ph-spa">
                 <span class="of-price">€18.00 <span class="per">/ person</span></span>
               </span>
               <span class="of-body">
@@ -134,7 +132,7 @@
               </span>
             </div>
             <div class="of-card">
-              <span class="of-photo" style="background:linear-gradient(135deg,#ffe3c2,#f7b267)">🥘
+              <span class="of-photo ph-food">
                 <span class="of-price">€35.00 <span class="per">/ person</span></span>
               </span>
               <span class="of-body">
@@ -158,7 +156,7 @@
             </button>
 
             <div class="of-card">
-              <span class="of-photo" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇
+              <span class="of-photo ph-checkout">
                 <span class="of-price">€15.00 <span class="per">/ stay</span></span>
                 <span class="of-cartmark"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> In cart</span>
               </span>
@@ -178,7 +176,7 @@
           </div>
           <div class="of-grid">
             <button class="of-card" data-modal="m-partner">
-              <span class="of-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+              <span class="of-photo ph-walking">
                 <span class="of-cartmark free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
               </span>
               <span class="of-body">
@@ -188,7 +186,7 @@
               </span>
             </button>
             <button class="of-card" data-modal="m-partner">
-              <span class="of-photo" style="background:linear-gradient(135deg,#e3f0ff,#b7d4ff)">⛪
+              <span class="of-photo ph-gaudi">
                 <span class="of-cartmark free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
               </span>
               <span class="of-body">
@@ -216,7 +214,7 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="of-hero" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+      <div class="of-hero ph-breakfast">
         <span class="of-price">€12.50 <span class="per">/ basket</span></span>
       </div>
       <div class="content" style="gap:16px">
@@ -268,7 +266,7 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="of-hero" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+      <div class="of-hero ph-checkin">
         <span class="of-price">€20.00 <span class="per">/ stay</span></span>
       </div>
       <div class="content" style="gap:16px">
@@ -332,18 +330,17 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Extras &amp; experiences</div>
-        <div class="page-title">Where things <span class="hl">stand</span></div>
-        <p class="page-intro">Every request and extra, with its next step. Dashed amounts are never charged — they become real only when the host approves and you pay.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Extras &amp; experiences"
+           data-title="Where things {stand}"
+           data-intro="Every request and extra, with its next step. Dashed amounts are never charged — they become real only when the host approves and you pay."></div>
       <div class="content" style="gap:18px">
 
         <div>
           <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Waiting for the host</div>
           <div class="req-card">
             <div class="rq-top">
-              <span class="rq-thumb" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤</span>
+              <span class="rq-thumb ph-checkin"></span>
               <span class="rq-main">
                 <span class="rq-title" style="display:block">Early check-in</span>
                 <span class="rq-meta" style="display:block">Sent today, 10:24 · entry from 12:00 on arrival day</span>
@@ -387,7 +384,7 @@
           </div>
           <div class="card">
             <div class="pay-item">
-              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇</span>
+              <span class="rq-thumb ph-checkout" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0"></span>
               <span class="pi-main">
                 <span class="pi-name" style="display:block">Late check-out</span>
                 <span class="pi-meta" style="display:block">Until 14:00 on departure day · added during registration</span>
@@ -395,7 +392,7 @@
               <span class="pi-side"><span class="pi-price"><span class="pi-amount">€15.00</span></span></span>
             </div>
             <div class="pay-item">
-              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐</span>
+              <span class="rq-thumb ph-breakfast" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0"></span>
               <span class="pi-main">
                 <span class="pi-name" style="display:block">Breakfast basket × 1</span>
                 <span class="pi-meta" style="display:block">First morning, 8:30–9:00 · remove free until you pay</span>
@@ -432,18 +429,17 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Extras &amp; experiences</div>
-        <div class="page-title">Where things <span class="hl">stand</span></div>
-        <p class="page-intro">The host couldn't make one request work this time — nothing was charged, and there's a plan B below.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Extras &amp; experiences"
+           data-title="Where things {stand}"
+           data-intro="The host couldn&#x27;t make one request work this time — nothing was charged, and there&#x27;s a plan B below."></div>
       <div class="content" style="gap:18px">
 
         <div>
           <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x-circle"/></svg> Declined by the host</div>
           <div class="req-card">
             <div class="rq-top">
-              <span class="rq-thumb" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba);filter:saturate(0.4)">🌤</span>
+              <span class="rq-thumb ph-checkin"></span>
               <span class="rq-main">
                 <span class="rq-title" style="display:block">Early check-in</span>
                 <span class="rq-meta" style="display:block">Requested yesterday · answered today, 9:05 · nothing was charged</span>
@@ -484,7 +480,7 @@
         <div>
           <div class="pay-sec"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sparkle-fill" style="fill:currentColor;stroke:none"/></svg> Plan B for that morning</div>
           <button class="sug-card">
-            <span class="pc-art" style="background:linear-gradient(135deg,#e8e8f0,#c9c9dd)">🧳</span>
+            <span class="pc-art ph-home"></span>
             <span class="pc-main">
               <span class="pc-title">Luggage drop <span class="lane instant"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg> Instant</span></span>
               <span class="pc-sub">Leave your bags at the property from 9:00 and explore hands-free.</span>
@@ -500,7 +496,7 @@
           </div>
           <div class="card">
             <div class="pay-item">
-              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇</span>
+              <span class="rq-thumb ph-checkout" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0"></span>
               <span class="pi-main">
                 <span class="pi-name" style="display:block">Late check-out</span>
                 <span class="pi-meta" style="display:block">Until 14:00 on departure day</span>
@@ -508,7 +504,7 @@
               <span class="pi-side"><span class="pi-price"><span class="pi-amount">€15.00</span></span></span>
             </div>
             <div class="pay-item">
-              <span class="rq-thumb" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐</span>
+              <span class="rq-thumb ph-breakfast" style="width:38px;height:38px;font-size:17px;border-radius:11px;display:grid;place-items:center;flex-shrink:0"></span>
               <span class="pi-main">
                 <span class="pi-name" style="display:block">Breakfast basket × 1</span>
                 <span class="pi-meta" style="display:block">First morning, 8:30–9:00</span>
@@ -538,8 +534,8 @@
       <div class="empty-stage">
         <div class="empty-ring" style="background:var(--tint-pressed);color:var(--blue-500)"><svg viewBox="0 0 24 24" class="icon" style="width:34px;height:34px"><use href="#i-gift"/></svg></div>
         <div class="proc-title" style="font-size:20px">No extras for this stay yet</div>
-        <p class="proc-sub" style="margin-top:-8px">Villa Serena hasn't published any extras. Need something specific — an earlier arrival, a cot, an airport ride? Ask Vela and we'll pass it to the host.</p>
-        <button class="btn btn-primary" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg> Ask Vela</button>
+        <p class="proc-sub" style="margin-top:-8px">Villa Serena hasn't published any extras. Need something specific — an earlier arrival, a cot, an airport ride? Your host can usually arrange it — message them from Vela's quick actions.</p>
+        <button class="btn btn-primary" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg> Open Vela</button>
         <a class="btn-ghost" href="home.html">Back to home</a>
       </div>
     </div>
@@ -626,19 +622,6 @@
             <span><span class="vt-title" style="display:block">Can I change my mind?</span><span class="vt-desc">Cancel a request while it's waiting, and remove cart extras free any time before you pay.</span></span>
           </div>
         </div>
-        <div class="vela-section">
-          <div class="vela-eyebrow">Ask Vela</div>
-          <div class="vela-ask" style="margin-top:10px">
-            <div class="ask-input">
-              Ask anything about extras…
-              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-            </div>
-            <div class="vela-chips">
-              <span class="chip">Can we arrive at noon?</span>
-              <span class="chip">Is the breakfast vegetarian?</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -681,6 +664,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

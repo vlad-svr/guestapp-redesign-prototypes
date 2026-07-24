@@ -46,9 +46,12 @@
 .tg-scope {
   --tg-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
   --tg-ease: cubic-bezier(0.32, 0.72, 0, 1);
-  --tg-e1: 0 1px 2px rgba(22, 22, 67, 0.05), 0 2px 8px -2px rgba(22, 22, 67, 0.06);
-  --tg-e2: 0 1px 2px rgba(22, 22, 67, 0.06), 0 8px 24px -6px rgba(22, 22, 67, 0.12);
-  --tg-e3: 0 2px 4px rgba(22, 22, 67, 0.05), 0 18px 44px -12px rgba(22, 22, 67, 0.22);
+  /* Boxes render flat design-wide; elevations are no-op values (kept as
+     tokens because they appear in shadow lists). The inset lip survives —
+     it's a hairline highlight, not a drop shadow. */
+  --tg-e1: 0 0 rgba(22, 22, 67, 0);
+  --tg-e2: 0 0 rgba(22, 22, 67, 0);
+  --tg-e3: 0 0 rgba(22, 22, 67, 0);
   --tg-lip: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
@@ -811,14 +814,14 @@
   box-shadow: inset 0 0 0 1px rgba(22, 22, 67, 0.06);
   border-radius: inherit;
 }
-.tg-thumb.sea { background: linear-gradient(180deg, #7fb3ff 0 42%, #2f6fd0 42% 66%, #f2dfae 66% 100%); }
-.tg-thumb.gothic { background: linear-gradient(180deg, #c9d6f5 0 46%, #6b6b95 46% 62%, #3a3a63 62% 100%); }
-.tg-thumb.market { background: linear-gradient(140deg, #ffb700 0%, #f84b7a 58%, #b8477f 100%); }
-.tg-thumb.park { background: linear-gradient(180deg, #a5d8c0 0 40%, #2bc29f 40% 70%, #0f9f80 70% 100%); }
-.tg-thumb.night { background: linear-gradient(180deg, #23235d 0 48%, #2e46c8 48% 76%, #8ca5ff 76% 100%); }
-.tg-thumb.food { background: linear-gradient(140deg, #ffcf6b, #ff8a5c 52%, #df0044 100%); }
-.tg-thumb.museum { background: linear-gradient(180deg, #e5e6ee 0 44%, #9696b9 44% 68%, #494970 68% 100%); }
-.tg-thumb.sim { background: linear-gradient(140deg, #385bf8, #8ca5ff); }
+.tg-thumb.sea { background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.gothic { background-image: url("https://images.unsplash.com/photo-1562883676-8c7feb83f09b?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.market { background-image: url("https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.park { background-image: url("https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.night { background-image: url("https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.food { background-image: url("https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.museum { background-image: url("https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=200&q=70"); background-size: cover; background-position: center; }
+.tg-thumb.sim { background-image: url("https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=200&q=70"); background-size: cover; background-position: center; }
 .tg-thumb-ic {
   position: absolute; inset: 0;
   display: grid; place-items: center;

@@ -32,38 +32,53 @@
   }
   .privacy-note .icon { color: var(--blue-500); margin-top: 1px; }
 
-  .radio-card {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: var(--r-lg);
-    background: var(--n-0);
+  /* ---------- Document type list ----------
+     One card with hairline-separated rows, not three floating bordered cards:
+     the same block the desktop flow uses (`ivd.css`), so the choice reads
+     identically on both. Selection is a tint + a 3 px blue edge rather than a
+     border/shadow lift, which keeps it flat per the shared card rule. */
+  .doc-list .doc-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
     cursor: pointer;
-    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    position: relative;
+    transition: background 0.15s;
   }
-  .radio-card:hover { background: var(--n-50); }
-  .radio-card.selected {
-    background: var(--tint-info);
-    border-color: var(--blue-500);
-    box-shadow: 0 0 0 1px var(--blue-500), var(--shadow-brand);
+  .doc-list .doc-row:first-child { border-top: none; }
+  .doc-row .dr-ic {
+    width: 38px; height: 38px; border-radius: 11px;
+    background: var(--tint-pressed); color: var(--blue-500);
+    display: grid; place-items: center; flex-shrink: 0;
   }
-  .radio-card .rc-title { font-size: 13.5px; font-weight: 600; color: var(--navy); }
-  .radio-card .rc-desc { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
-  .radio-card .rc-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
-  .radio-card .radio {
+  .doc-row .dr-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .doc-row .dr-name { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+  .doc-row .dr-desc { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); }
+  .doc-row .dr-flag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; font-weight: 700; color: var(--blue-500);
+    margin-top: 3px;
+  }
+  .doc-row .radio {
     margin-left: auto;
     width: 20px; height: 20px; border-radius: 50%;
-    border: 2px solid var(--n-300);
-    flex-shrink: 0;
-    display: grid; place-items: center;
-    transition: border-color 0.15s;
+    border: 2px solid var(--n-200);
+    flex-shrink: 0; display: grid; place-items: center;
+    background: var(--n-0);
   }
-  .radio-card.selected .radio { border-color: var(--blue-500); }
-  .radio-card.selected .radio::after {
-    content: ''; width: 10px; height: 10px; border-radius: 50%;
+  .doc-row:hover { background: var(--n-50); }
+  .doc-row.selected { background: var(--tint-pressed); }
+  .doc-row.selected::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
     background: var(--blue-500);
   }
-  .rc-group { display: flex; flex-direction: column; gap: 10px; }
+  .doc-row.selected .radio { border-color: var(--blue-500); }
+  .doc-row.selected .radio::after {
+    content: '';
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--blue-500);
+  }
 
   /* ---------- Camera screens ---------- */
   /* Light page shell (matches current PageLayout) — the dark gradient

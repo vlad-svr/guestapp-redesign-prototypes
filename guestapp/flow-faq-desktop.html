@@ -37,49 +37,15 @@
     <!-- ═══ hd-faq · FAQView ═══ -->
     <div class="flow-screen" id="hd-faq" data-start data-label="FAQ — grouped by task, answers end in actions" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge warn">!</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-group">Support</div>
-          <a class="sb-item" data-goto="hd-lang"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Language <span class="sb-val">English</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-circle-help"/></svg> FAQs</a>
-          <a class="sb-item" href="https://chekin.com/en/privacy-policy/"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Privacy policy</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="faq"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Support</div>
-              <div class="page-title">How can we <span class="hl">help</span>?</div>
-              <p class="page-intro">Everything you need to know about checking in, verifying your identity, paying any taxes and getting your digital key.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Support"
+                 data-title="How can we {help}?"
+                 data-intro="Everything you need to know about checking in, verifying your identity, paying any taxes and getting your digital key."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
               <button class="faq-search" data-goto="hd-search">
                 <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg>
@@ -182,7 +148,7 @@
               <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
             </div>
           </div>
-          <p class="vela-intro">If the FAQ doesn't cover it, just ask — I answer in your language.</p>
+          <p class="vela-intro">If the FAQ doesn't cover it, your host is one tap away.</p>
           <div class="vela-section">
             <div class="vela-eyebrow">Quick help</div>
             <button class="vela-tip clickable" data-goto="hd-lang">
@@ -195,19 +161,6 @@
               <span><span class="vt-title" style="display:block">Answers match your stay</span><span class="vt-desc">The questions here follow this property's setup — Spain rules, ID verification, tourist taxes.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about your stay…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Can I check in late?</span>
-                <span class="chip">Where do I get the keys?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -215,48 +168,14 @@
     <!-- ═══ hd-search · FAQView with query ═══ -->
     <div class="flow-screen" id="hd-search" data-label="Search — matches open themselves, terms highlighted" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge warn">!</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-group">Support</div>
-          <a class="sb-item" data-goto="hd-lang"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Language <span class="sb-val">English</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-circle-help"/></svg> FAQs</a>
-          <a class="sb-item" href="https://chekin.com/en/privacy-policy/"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Privacy policy</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="faq"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Support</div>
-              <div class="page-title">How can we <span class="hl">help</span>?</div>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Support"
+                 data-title="How can we {help}?"></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
               <div class="faq-search">
                 <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg>
@@ -312,22 +231,6 @@
               <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg></span>
               <span><span class="vt-title" style="display:block">Two different ages</span><span class="vt-desc">Registration applies from 14 (Spain rule); ID verification from 18.</span></span>
             </div>
-            <div class="vela-tip">
-              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg></span>
-              <span><span class="vt-title" style="display:block">Nothing found?</span><span class="vt-desc">Ask me in the box below — I answer beyond the FAQ list.</span></span>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about your stay…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Does my 15-year-old register?</span>
-              </div>
-            </div>
           </div>
         </aside>
       </div>
@@ -336,49 +239,15 @@
     <!-- ═══ hd-lang · LanguageModal (ResponsiveSheet, desktop dialog) ═══ -->
     <div class="flow-screen" id="hd-lang" data-label="Language dialog — suggested first, switching to Español" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge warn">!</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-group">Support</div>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Language <span class="sb-val">English</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-circle-help"/></svg> FAQs</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Privacy policy</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="language"></aside>
 
         <main class="desk-page">
           <a class="back-pill"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Support</div>
-              <div class="page-title">How can we <span class="hl">help</span>?</div>
-              <p class="page-intro">Everything you need to know about checking in, verifying your identity, paying any taxes and getting your digital key.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Support"
+                 data-title="How can we {help}?"
+                 data-intro="Everything you need to know about checking in, verifying your identity, paying any taxes and getting your digital key."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
               <div class="faq-search">
                 <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg>
@@ -451,49 +320,15 @@
     <div class="flow-screen" id="hd-es" data-label="Switched to Español — the whole shell translates in place" style="flex:1">
       <div class="pay-toast" style="left:auto;right:24px;top:auto;bottom:24px;width:auto"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:3"><use href="#i-check"/></svg> Idioma actualizado — Español</div>
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Reserva · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Progreso del check-in</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Antes de tu llegada</div>
-          <a class="sb-item" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Inicio</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Registro de huéspedes <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Pagos <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Protección de la propiedad</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tasas turísticas <span class="sb-badge warn">!</span></a>
-          <div class="sb-group">Tu estancia</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Llaves virtuales</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guías</a>
-          <div class="sb-group">Ayuda</div>
-          <a class="sb-item" data-goto="hd-lang"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Idioma <span class="sb-val">Español</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-circle-help"/></svg> FAQs</a>
-          <a class="sb-item" href="https://chekin.com/en/privacy-policy/"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Política de privacidad</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="faq"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Volver al inicio</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Ayuda</div>
-              <div class="page-title">¿En qué podemos <span class="hl">ayudarte</span>?</div>
-              <p class="page-intro">Todo lo que necesitas saber sobre cómo registrarte, verificar tu identidad, pagar los impuestos correspondientes y obtener tu llave digital.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Ayuda"
+                 data-title="¿En qué podemos {ayudarte}?"
+                 data-intro="Todo lo que necesitas saber sobre cómo registrarte, verificar tu identidad, pagar los impuestos correspondientes y obtener tu llave digital."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
               <div class="faq-search">
                 <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-search"/></svg>
@@ -603,19 +438,6 @@
               <span><span class="vt-title" style="display:block">Respuestas según tu estancia</span><span class="vt-desc">Las preguntas siguen la configuración de esta propiedad.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Pregunta a Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Pregunta lo que quieras…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">¿Puedo llegar tarde?</span>
-                <span class="chip">¿Dónde recojo las llaves?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -651,6 +473,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

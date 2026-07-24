@@ -71,18 +71,17 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="topbar">
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
-        <div class="tb-titles"><div class="tb-title">Identity verification</div></div>
+        <div class="tb-titles"><div class="tb-title">Registration</div></div>
         <button class="tb-action" data-modal="m-skip">Skip for now</button>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Verify your <span class="hl">identity</span></div>
-        <p class="page-intro">A few quick steps with your phone camera. Your data is encrypted and only shared with your host.</p>
+      <div class="page-head" data-page-head
+           data-title="Verify your {identity}"
+           data-intro="A few quick steps with your phone camera. Your data is encrypted and only shared with your host.">
         <div class="est-time" style="margin-top:6px"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Takes about 2 minutes</div>
       </div>
       <div class="content">
-        <div class="card glass">
+        <div class="card">
           <div class="steps-list">
             <div class="step-row">
               <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
@@ -126,14 +125,12 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="topbar">
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
-        <div class="tb-titles"><div class="tb-title">Identity verification</div></div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <div class="tb-titles"><div class="tb-title">Registration</div></div>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Verification <span class="hl">unavailable</span></div>
-        <p class="page-intro">This property verifies guests on the day of check-in.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-title="Verification {unavailable}"
+           data-intro="This property verifies guests on the day of check-in."></div>
       <div class="content">
         <div class="card">
           <div class="card-header">
@@ -162,7 +159,7 @@
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
         <div>
           <div class="tb-title">Connect devices</div>
-          <div class="tb-sub">Identity verification</div>
+          <div class="tb-sub">Registration</div>
         </div>
       </div>
       <div class="cam-head">
@@ -193,20 +190,18 @@
       <div class="topbar">
         <button class="back-btn" data-back><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
         <div class="tb-titles">
-          <div class="tb-title">Identity verification</div>
+          <div class="tb-title">Registration</div>
           <div class="tb-sub">Step 1 of 4</div>
         </div>
         <button class="tb-action" data-modal="m-skip">Skip for now</button>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg active"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Choose your <span class="hl">document</span></div>
-        <p class="page-intro">Select your nationality and the ID you have with you.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-title="Choose your {document}"
+           data-intro="Select your nationality and the ID you have with you."></div>
       <div class="content">
         <div class="card">
           <div class="card-header">
@@ -222,35 +217,36 @@
             </div>
           </div>
         </div>
-        <div>
-          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin:2px 4px 10px;display:flex;align-items:center;gap:8px">
-            <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-id-card"/></svg> Document type
+        <div class="card">
+          <div class="card-header">
+            <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></span>
+            <span class="ch-label">Document type</span>
           </div>
-          <div class="rc-group">
-            <div class="radio-card selected" data-set-doc="passport">
-              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></div>
-              <div>
-                <div class="rc-title">Passport</div>
-                <div class="rc-desc">Single-sided · liveness selfie</div>
-                <div class="rc-meta"><span class="badge badge-info"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended</span></div>
-              </div>
-              <div class="radio"></div>
+          <div class="doc-list">
+            <div class="doc-row selected" data-set-doc="passport">
+              <span class="dr-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></span>
+              <span class="dr-text">
+                <span class="dr-name">Passport</span>
+                <span class="dr-desc">Single-sided · liveness selfie</span>
+                <span class="dr-flag"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended</span>
+              </span>
+              <span class="radio"></span>
             </div>
-            <div class="radio-card" data-set-doc="dni">
-              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
-              <div>
-                <div class="rc-title">National ID card (DNI)</div>
-                <div class="rc-desc">Front and back · quick selfie</div>
-              </div>
-              <div class="radio"></div>
+            <div class="doc-row" data-set-doc="dni">
+              <span class="dr-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></span>
+              <span class="dr-text">
+                <span class="dr-name">National ID card (DNI)</span>
+                <span class="dr-desc">Front and back · quick selfie</span>
+              </span>
+              <span class="radio"></span>
             </div>
-            <div class="radio-card" data-set-doc="dni">
-              <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></div>
-              <div>
-                <div class="rc-title">Driving license</div>
-                <div class="rc-desc">Front and back · quick selfie</div>
-              </div>
-              <div class="radio"></div>
+            <div class="doc-row" data-set-doc="dni">
+              <span class="dr-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
+              <span class="dr-text">
+                <span class="dr-name">Driving license</span>
+                <span class="dr-desc">Front and back · quick selfie</span>
+              </span>
+              <span class="radio"></span>
             </div>
           </div>
         </div>
@@ -395,16 +391,14 @@
           <div class="tb-title">Check your photo</div>
           <div class="tb-sub">Step 2 of 4</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Check the <span class="hl">front</span> side</div>
-        <p class="page-intro">Your photo is loaded — drag the corners so the document fills the frame.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-title="Check the {front} side"
+           data-intro="Your photo is loaded — drag the corners so the document fills the frame."></div>
       <div class="content">
         <div class="crop-stage">
           <div class="mock-doc">
@@ -435,7 +429,7 @@
           <div class="tb-title">Scan document</div>
           <div class="tb-sub">Step 2 of 4</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div>
@@ -750,16 +744,14 @@
           <div class="tb-title">Verify contact</div>
           <div class="tb-sub">Step 4 of 4 · contact 1 of 2</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Verify your <span class="hl">email</span></div>
-        <p class="page-intro">Booking updates and your virtual keys go here — let's make sure it's right.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-title="Verify your {email}"
+           data-intro="Booking updates and your virtual keys go here — let&#x27;s make sure it&#x27;s right."></div>
       <div class="content">
         <div class="field">
           <label>Email</label>
@@ -784,14 +776,13 @@
           <div class="tb-title">Verify contact</div>
           <div class="tb-sub">Step 4 of 4 · contact 1 of 2</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Check your <span class="hl">email</span></div>
+      <div class="page-head" data-page-head
+           data-title="Check your {email}">
         <p class="page-intro">Enter the 6-digit code we sent to <b style="color:var(--navy)">m•••a@gmail.com</b>.</p>
       </div>
       <div class="content">
@@ -827,14 +818,13 @@
           <div class="tb-title">Verify contact</div>
           <div class="tb-sub">Step 4 of 4 · contact 1 of 2</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Check your <span class="hl">email</span></div>
+      <div class="page-head" data-page-head
+           data-title="Check your {email}">
         <p class="page-intro">Enter the 6-digit code we sent to <b style="color:var(--navy)">m•••a@gmail.com</b>.</p>
       </div>
       <div class="content">
@@ -866,16 +856,14 @@
           <div class="tb-title">Verify contact</div>
           <div class="tb-sub">Step 4 of 4 · contact 2 of 2</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Verify your <span class="hl">phone</span></div>
-        <p class="page-intro">Email verified ✓ — one more: your host uses this number only for urgent arrival updates.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-title="Verify your {phone}"
+           data-intro="Email verified ✓ — one more: your host uses this number only for urgent arrival updates."></div>
       <div class="content">
         <div class="field">
           <label>Phone number</label>
@@ -900,14 +888,13 @@
           <div class="tb-title">Verify contact</div>
           <div class="tb-sub">Step 4 of 4 · contact 2 of 2</div>
         </div>
-        <button class="vela-fab" data-modal="m-vela" aria-label="Ask Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela" aria-label="Open Vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="progress-track">
         <div class="seg done"></div><div class="seg done"></div><div class="seg done"></div><div class="seg active"></div>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Check your <span class="hl">messages</span></div>
+      <div class="page-head" data-page-head
+           data-title="Check your {messages}">
         <p class="page-intro">Enter the 6-digit code we sent by SMS to <b style="color:var(--navy)">+34 6•• ••• •78</b>.</p>
       </div>
       <div class="content">
@@ -942,7 +929,7 @@
         </div>
         <div class="done-title">You're verified!</div>
         <p class="done-sub">Identity verification is completed. Your details were pre-filled from your document — just confirm them in the next step.</p>
-        <div class="card glass done-card">
+        <div class="card done-card">
           <div class="dc-row">
             <div class="chip-icon" style="background:var(--green-50);color:var(--green-700)"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
             <div>
@@ -967,7 +954,7 @@
       </div>
     </div>
 
-<div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><div class="vela-section"><div class="vela-eyebrow">Getting a sharp photo</div><div style="margin-top:6px;display:flex;flex-direction:column;gap:4px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Good light, no glare</span><span class="vt-desc">Face a window and rest the document on a flat surface — tilt it slightly if light reflects off it.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Your data is safe</span><span class="vt-desc">Photos are encrypted, used only for this verification, and deleted afterwards per GDPR.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><button class="vela-action" data-modal-close data-goto="s-crop"><span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span><span>Upload a photo instead<span class="va-sub">No camera needed — crop &amp; confirm</span></span><svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg></button><button class="vela-action"><span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-help"/></svg></span><span>Chat with your host<span class="va-sub">For questions about your stay</span></span><svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg></button></div></div><div class="vela-section"><div class="vela-eyebrow">Ask Vela</div><div class="vela-ask" style="margin-top:10px"><div class="ask-input">Ask anything…<span class="send" style="display:grid;place-items:center;color:#fff">↑</span></div><div class="vela-chips"><span class="chip">Which documents work?</span><span class="chip">Is my data safe?</span></div></div></div></div></div>
+<div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><div class="vela-section"><div class="vela-eyebrow">Getting a sharp photo</div><div style="margin-top:6px;display:flex;flex-direction:column;gap:4px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-sun"/></svg></span><span><span class="vt-title" style="display:block">Good light, no glare</span><span class="vt-desc">Face a window and rest the document on a flat surface — tilt it slightly if light reflects off it.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Your data is safe</span><span class="vt-desc">Photos are encrypted, used only for this verification, and deleted afterwards per GDPR.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><button class="vela-action" data-modal-close data-goto="s-crop"><span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span><span>Upload a photo instead<span class="va-sub">No camera needed — crop &amp; confirm</span></span><svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg></button><button class="vela-action"><span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-help"/></svg></span><span>Chat with your host<span class="va-sub">For questions about your stay</span></span><svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg></button></div></div></div></div>
 <div class="proto-modal sheet" id="m-skip"><div class="pm-scrim"></div><div class="pm-card"><div class="pm-grabber"></div><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Verify later?</div><div class="pm-desc">You can skip identity verification now and finish it on arrival — but your <b style="color:var(--navy)">virtual keys stay locked</b> until it’s done, and check-in at the door takes longer.</div><div class="pm-actions"><button class="btn btn-primary" data-modal-close>Continue verification</button><button class="btn btn-outline" data-modal-close data-goto="s-start">Skip for now</button></div></div></div>
   </div>
 </div>
@@ -1011,6 +998,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

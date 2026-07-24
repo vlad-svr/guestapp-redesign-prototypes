@@ -26,10 +26,12 @@
       ]},
     ]},
     { group: 'Home', items: [
-      { file: 'home-v2.html', label: 'Home — mobile', proposal: true, icon: '📱', by: 'opus' },
-      { file: 'home-desktop-v2.html', label: 'Home — desktop', proposal: true, icon: '🖥', by: 'opus' },
-      { file: 'home.html', label: 'Home — mobile', current: true, icon: '📱' },
-      { file: 'home-desktop.html', label: 'Home — desktop', current: true, icon: '🖥' },
+      { file: 'home.html', label: 'Home — mobile', icon: '📱' },
+      { file: 'home-desktop.html', label: 'Home — desktop', icon: '🖥' },
+    ]},
+    // An alternative Home, kept apart so the flat one stays the baseline.
+    { group: 'Staged journey', items: [
+      { file: 'home-desktop-stages.html', label: 'Staged journey — desktop', proposal: true, icon: '🖥', by: 'opus' },
     ]},
     { group: 'Sign in & onboarding', items: [
       { file: 'flow-auth-mobile.html', label: 'Sign in & onboarding — mobile', icon: '📱', by: 'opus', subs: [
@@ -55,7 +57,7 @@
       ]},
     ]},
     { group: 'Find booking', items: [
-      { file: 'flow-search-v2.html', label: 'Find booking — mobile', proposal: true, icon: '📱', by: 'opus', subs: [
+      { file: 'flow-search-v2.html', label: 'Find booking — mobile', icon: '📱', by: 'opus', subs: [
         { hash: 's2-method', label: 'Arrival — choose method' },
         { hash: 's2-code', label: 'Booking reference (segmented)' },
         { hash: 's2-date', label: 'Check-in date & email' },
@@ -64,7 +66,7 @@
         { hash: 's2-searching-nf', label: 'Not found (next steps)' },
         { hash: 's2-direct', label: 'Direct link (auto-search)' },
       ]},
-      { file: 'flow-search-desktop-v2.html', label: 'Find booking — desktop', proposal: true, icon: '🖥', by: 'opus', subs: [
+      { file: 'flow-search-desktop-v2.html', label: 'Find booking — desktop', icon: '🖥', by: 'opus', subs: [
         { hash: 'sd2-method', label: 'Arrival — choose method' },
         { hash: 'sd2-code', label: 'Booking reference (segmented)' },
         { hash: 'sd2-date', label: 'Check-in date & email' },
@@ -72,24 +74,6 @@
         { hash: 'sd2-searching', label: 'Searching → boarding pass' },
         { hash: 'sd2-searching-nf', label: 'Not found (next steps)' },
         { hash: 'sd2-direct', label: 'Direct link (auto-search)' },
-      ]},
-      { file: 'flow-search-mobile.html', label: 'Find booking — mobile', current: true, icon: '📱', by: 'opus', subs: [
-        { hash: 'sr-method', label: 'Full flow (choose method)' },
-        { hash: 'sr-code', label: 'Booking reference code' },
-        { hash: 'sr-date', label: 'Check-in date & email' },
-        { hash: 'sr-create', label: 'Create reservation (property link)' },
-        { hash: 'sr-searching', label: 'Searching → booking found' },
-        { hash: 'sr-searching-nf', label: 'Not found (next steps)' },
-        { hash: 'sr-direct', label: 'Direct link (auto-search)' },
-      ]},
-      { file: 'flow-search-desktop.html', label: 'Find booking — desktop', current: true, icon: '🖥', by: 'opus', subs: [
-        { hash: 'srd-method', label: 'Full flow (choose method)' },
-        { hash: 'srd-code', label: 'Booking reference code' },
-        { hash: 'srd-date', label: 'Check-in date & email' },
-        { hash: 'srd-create', label: 'Create reservation (property link)' },
-        { hash: 'srd-searching', label: 'Searching → booking found' },
-        { hash: 'srd-searching-nf', label: 'Not found (next steps)' },
-        { hash: 'srd-direct', label: 'Direct link (auto-search)' },
       ]},
     ]},
     { group: 'Identity verification', items: [
@@ -104,16 +88,14 @@
         { hash: 's-unavailable', label: 'Outside check-in window' },
       ]},
       { file: 'flow-iv-desktop.html', label: 'IV flow — desktop', icon: '🖥', subs: [
-        { hash: 'd-choice', label: 'Start — choose method' },
+        { hash: 'd-choice', label: 'Start — choose document' },
         { hash: 'd-qr', label: 'Continue on phone (QR)' },
-        { hash: 'd-doc', label: 'Webcam — choose document' },
         { hash: 'd-cam', label: 'Webcam capture' },
         { hash: 'd-crop', label: 'Upload — crop & confirm' },
         { hash: 'd-contact-email', label: 'Contacts — email + SMS' },
         { hash: 'd-front-failed', label: 'Validation failed' },
         { hash: 'd-cam-denied', label: 'Webcam blocked' },
         { hash: 'd-unavailable', label: 'Outside check-in window' },
-        { hash: 'd-upload', label: 'Upload view (deprecated)' },
       ]},
     ]},
     { group: 'IV QR', items: [
@@ -142,22 +124,6 @@
         { hash: 'hvd-scan', label: 'Scan the entrance QR' },
         { hash: 'hvd-iv', label: 'The regular IV flow' },
         { hash: 'hvd-unavailable', label: 'Before check-in day' },
-      ]},
-    ]},
-    { group: 'Guests summary', items: [
-      { file: 'flow-guests-v2.html', label: 'Guests summary — mobile', icon: '📱', by: 'opus', subs: [
-        { hash: 'g2-hub', label: 'Partial — 2 of 4 registered' },
-        { hash: 'g2-none', label: 'Nobody registered yet' },
-        { hash: 'g2-solo', label: 'Solo booking (1 guest)' },
-        { hash: 'g2-done', label: 'Everyone registered' },
-        { hash: 'g2-loading', label: 'Loading (skeleton)' },
-        { hash: 'g2-syncing', label: 'Background refresh' },
-      ]},
-      { file: 'flow-guests-desktop-v2.html', label: 'Guests summary — desktop', icon: '🖥', by: 'opus', subs: [
-        { hash: 'gd2-hub', label: 'Partial — 2 of 4 registered' },
-        { hash: 'gd2-none', label: 'Nobody registered yet' },
-        { hash: 'gd2-done', label: 'Everyone registered' },
-        { hash: 'gd2-loading', label: 'Loading (skeleton)' },
       ]},
     ]},
     { group: 'Guest registration', items: [
@@ -218,6 +184,23 @@
         { hash: 'pd-history', label: 'Order history' },
         { hash: 'pd-deposit', label: 'Deposit chooser' },
       ]},
+      { file: 'flow-payments-v2.html', label: 'Payments V2 (simpler) — mobile', icon: '📱', subs: [
+        { hash: 'p2-cart', label: 'Full flow (bill → pay → receipt)' },
+        { hash: 'p2-later', label: 'Pay later' },
+        { hash: 'p2-form', label: 'Card form' },
+        { hash: 'p2-3ds', label: 'Bank confirmation (3-D Secure)' },
+        { hash: 'p2-error', label: 'Payment failed' },
+        { hash: 'p2-history', label: 'Order history' },
+        { hash: 'p2-empty', label: 'Nothing to pay' },
+        { hash: 'p2-deposit', label: 'Deposit chooser' },
+      ]},
+      { file: 'flow-payments-desktop-v2.html', label: 'Payments V2 (simpler) — desktop', icon: '🖥', subs: [
+        { hash: 'pd2-cart', label: 'Full flow (bill → pay → receipt)' },
+        { hash: 'pd2-form', label: 'Card form' },
+        { hash: 'pd2-error', label: 'Payment failed' },
+        { hash: 'pd2-history', label: 'Order history' },
+        { hash: 'pd2-deposit', label: 'Deposit chooser' },
+      ]},
     ]},
     { group: 'Property protection', items: [
       { file: 'flow-deposit-mobile.html', label: 'Property protection — mobile', icon: '📱', by: 'opus', subs: [
@@ -244,12 +227,14 @@
         { hash: 't-added', label: 'Exemption added' },
         { hash: 't-edit', label: 'From payments cart' },
         { hash: 't-empty', label: 'Age-priced region (no exemptions)' },
+        { hash: 't-unregistered', label: 'Guest not registered yet' },
         { hash: 't-paid', label: 'Taxes paid (locked)' },
       ]},
       { file: 'flow-taxes-desktop.html', label: 'Taxes flow — desktop', icon: '🖥', subs: [
         { hash: 'td-setup', label: 'Full flow (setup → cart)' },
         { hash: 'td-exemption', label: 'Add exemption' },
         { hash: 'td-edit', label: 'From payments cart' },
+        { hash: 'td-unregistered', label: 'Guest not registered yet' },
         { hash: 'td-paid', label: 'Taxes paid (locked)' },
       ]},
     ]},
@@ -312,6 +297,7 @@
         { hash: 'gd-list', label: 'Guidebooks grid' },
         { hash: 'gd-guide', label: 'House manual (rich guide)' },
         { hash: 'gd-recos', label: 'Local recommendations' },
+        { hash: 'gd-html', label: 'Web (HTML) guidebook' },
         { hash: 'gd-pdf', label: 'PDF guidebook' },
         { hash: 'gd-unavailable', label: 'Not available yet' },
       ]},

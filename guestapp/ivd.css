@@ -26,37 +26,6 @@
   .radio-card.selected .radio { border-color: var(--blue-500); }
   .radio-card.selected .radio::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--blue-500); }
 
-  /* handoff panel: camera OR phone */
-  .handoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .handoff-card {
-    padding: 22px 20px;
-    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
-    position: relative;
-    overflow: visible;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-  }
-  .handoff-grid { padding-top: 11px; }
-  .handoff-card:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(56,92,248,0.14), 0 3px 8px rgba(22,22,67,0.06); }
-  .handoff-card.recommended { border-color: var(--blue-500); box-shadow: 0 0 0 1px var(--blue-500), var(--shadow-brand); }
-  .handoff-card .hc-flag {
-    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-    height: 22px; padding: 0 11px;
-    display: inline-flex; align-items: center; gap: 4px;
-    border-radius: 99px;
-    background: var(--blue-500); color: #fff;
-    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-    box-shadow: var(--shadow-brand);
-    white-space: nowrap;
-  }
-  .handoff-card .hc-icon {
-    width: 52px; height: 52px; border-radius: 16px;
-    background: var(--tint-info); color: var(--blue-500);
-    display: grid; place-items: center;
-    margin-top: 6px;
-  }
-  .handoff-card .hc-title { font-size: 14.5px; font-weight: 700; color: var(--navy); }
-  .handoff-card .hc-desc { font-size: 12px; line-height: 17px; color: var(--text-secondary); }
 
   /* QR panel */
   .qr-panel { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; padding: 24px; }
@@ -156,88 +125,6 @@
     font-size: 11.5px; font-weight: 500;
   }
   .cam-hint-lite .icon-sm { color: var(--blue-500); }
-
-  /* upload dropzone — DEPRECATED (kept for reference, see .dep-* treatment): the real
-     app opens the native file picker directly and goes straight to crop & confirm */
-  .dropzone {
-    border: 2px dashed var(--n-300);
-    border-radius: var(--r-xl);
-    background: linear-gradient(135deg, rgba(240, 243, 255, 0.6), rgba(244, 244, 253, 0.45));
-    padding: 34px 24px;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    text-align: center;
-    transition: border-color 0.15s, background 0.15s;
-    cursor: pointer;
-  }
-  .dropzone:hover { border-color: var(--blue-500); background: var(--tint-pressed); }
-  .dropzone .dz-icon {
-    width: 54px; height: 54px; border-radius: 16px;
-    background: var(--tint-info); color: var(--blue-500);
-    display: grid; place-items: center;
-  }
-  .dropzone .dz-title { font-size: 14.5px; font-weight: 700; color: var(--navy); }
-  .dropzone .dz-title .hl { color: var(--blue-500); }
-  .dropzone .dz-sub { font-size: 12px; color: var(--text-secondary); }
-  .upload-row {
-    display: flex; align-items: center; gap: 13px;
-    padding: 12px 16px;
-  }
-  .upload-row + .upload-row { border-top: 1px solid var(--border); }
-  .upload-row .up-thumb {
-    width: 58px; height: 42px; border-radius: 8px;
-    background: linear-gradient(145deg, #dfe6f5, #c3cee8);
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-    position: relative; overflow: hidden;
-  }
-  .upload-row .up-thumb::after {
-    content: ''; position: absolute; left: 10%; top: 20%;
-    width: 24%; height: 60%; border-radius: 3px;
-    background: rgba(122, 139, 176, 0.9);
-  }
-  .upload-row .up-name { font-size: 12.5px; font-weight: 600; color: var(--navy); }
-  .upload-row .up-meta { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
-  .upload-row .up-state { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-  .upload-bar { width: 90px; height: 5px; border-radius: 99px; background: var(--n-75); overflow: hidden; }
-  .upload-bar i { display: block; height: 100%; width: 65%; border-radius: 99px; background: linear-gradient(90deg, var(--blue-500), #6b8cff); }
-
-  /* deprecated-screen treatment: keeps rejected designs visible for reference */
-  .dep-wrap { position: relative; }
-  .dep-wrap .dep-content {
-    opacity: 0.45;
-    filter: grayscale(0.55);
-    pointer-events: none;
-    user-select: none;
-  }
-  .dep-wrap::before {
-    content: '';
-    position: absolute; inset: 0; z-index: 1;
-    background: repeating-linear-gradient(-45deg,
-      transparent 0 26px,
-      rgba(122, 122, 158, 0.10) 26px 30px);
-    pointer-events: none;
-  }
-  .dep-banner {
-    position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%) rotate(-3deg);
-    z-index: 2;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    padding: 18px 26px;
-    border-radius: var(--r-lg);
-    background: var(--n-0);
-    border: 2px dashed var(--n-400);
-    box-shadow: var(--shadow-elev);
-    text-align: center;
-    max-width: 380px;
-  }
-  .dep-banner .dep-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    height: 26px; padding: 0 12px;
-    border-radius: 99px;
-    background: var(--n-100); color: var(--n-600);
-    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  }
-  .dep-banner .dep-title { font-size: 15px; font-weight: 700; color: var(--navy); text-decoration: line-through; text-decoration-color: var(--red-500); text-decoration-thickness: 2px; }
-  .dep-banner .dep-why { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); }
 
   /* upload crop & confirm — maps to PhotoUpload + ImageCropper (react-easy-crop) */
   .crop-stage {
@@ -484,3 +371,94 @@
   }
   .perm-steps .ps-text { font-size: 13px; line-height: 18px; color: var(--n-600); }
   .perm-steps .ps-text b { color: var(--navy); }
+
+  /* "No camera?" rail QR — the phone handoff, demoted from the start screen's
+     main column to a secondary affordance beside document selection. */
+  .iv-qr { display: flex; flex-direction: column; gap: 12px; }
+  .iv-qr .vq-row { display: flex; align-items: flex-start; gap: 10px; }
+  .iv-qr .vq-title {
+    font-size: 12.5px; font-weight: 600; color: var(--navy);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  /* .va-icon / .va-sub are scoped to .vela-action in shared.css — mirror them here */
+  .iv-qr .va-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--tint-info); color: var(--blue-500);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .iv-qr .va-sub { display: block; font-size: 10.5px; font-weight: 400; color: var(--text-tertiary); margin-top: 2px; line-height: 15px; }
+  .iv-qr .vq-box {
+    align-self: center;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .iv-qr .vq-box:hover { border-color: var(--blue-500); }
+  .iv-qr .qr-mock { grid-template-columns: repeat(9, 10px); grid-template-rows: repeat(9, 10px); }
+
+  /* Document selection — the app's two stacked boxes: a Nationality card with a
+     label/value dropdown row, and a Document-type card whose radio rows run
+     full-bleed with hairline dividers (selected = tint + left accent bar). */
+  .nat-row {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    text-align: left;
+  }
+  .nat-row .nat-lbl {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+  }
+  .nat-row .nat-val {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--navy);
+  }
+  .nat-row .nat-val b { font-weight: 600; }
+  .nat-row:hover { background: var(--n-50); }
+
+  .doc-list .doc-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px;
+    border-top: 1px solid var(--border);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+  }
+  .doc-list .doc-row:first-child { border-top: none; }
+  .doc-row .dr-ic {
+    width: 38px; height: 38px; border-radius: 11px;
+    background: var(--tint-pressed); color: var(--blue-500);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .doc-row .dr-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .doc-row .dr-name { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .doc-row .dr-desc { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); }
+  .doc-row .dr-flag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; font-weight: 700; color: var(--blue-500);
+    margin-top: 3px;
+  }
+  .doc-row .radio {
+    margin-left: auto;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--n-200);
+    flex-shrink: 0; display: grid; place-items: center;
+    background: var(--n-0);
+  }
+  .doc-row:hover { background: var(--n-50); }
+  .doc-row.selected { background: var(--tint-pressed); }
+  .doc-row.selected::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--blue-500);
+  }
+  .doc-row.selected .radio { border-color: var(--blue-500); }
+  .doc-row.selected .radio::after {
+    content: '';
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--blue-500);
+  }

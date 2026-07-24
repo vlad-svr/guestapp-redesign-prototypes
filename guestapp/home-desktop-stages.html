@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Desktop — Redesign Prototype</title>
+<title>Staged journey — Desktop (Redesign Prototype)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <link rel="stylesheet" href="photos.css">
 <link rel="stylesheet" href="upsell.css">
 <style>
-  /* hero (desktop) */
+  /* hero (blue box — booking dates) */
   .hero {
     border-radius: 20px;
     background: var(--gradient-hero);
@@ -18,7 +18,7 @@
     padding: 26px 30px;
     position: relative; overflow: hidden;
     box-shadow: var(--shadow-elev);
-    margin-top: 22px;
+    margin-top: 14px;
   }
   .hero::before {
     content: ''; position: absolute; top: -50px; right: -30px;
@@ -31,9 +31,9 @@
     background: rgba(140, 165, 255, 0.3); filter: blur(60px);
   }
   .hero > * { position: relative; z-index: 1; }
-  /* Three columns, not four: the countdown that used to hold the fourth is
-     gone, so check-out takes the right edge instead of floating mid-column. */
   .hero-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 26px; align-items: center; }
+  /* check-out hugs the right edge so the block reads balanced instead of
+     bunching every column's content against the left */
   .hero-grid > div:last-child { text-align: right; }
   .hero .db-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.6); }
   .hero .db-time { font-size: 32px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; margin-top: 4px; }
@@ -48,6 +48,112 @@
     -webkit-backdrop-filter: blur(10px);
     display: grid; place-items: center;
   }
+
+  /* ── Stage tabs (segmented, above the blue box) ── */
+  .stages {
+    display: flex; align-items: center; gap: 0;
+    background: var(--tint-pressed);
+    border: 1px solid #dce2ff;
+    border-radius: 14px;
+    padding: 5px;
+    box-shadow: var(--shadow-card);
+    margin-top: 20px;
+    /* z-index lifts the bar's stacking context above the hero (both get one from
+       the fadeUp transform), so locked-tab tooltips aren't painted behind it */
+    position: relative; z-index: 5;
+  }
+  /* the sliding pill that glides beneath the active tab */
+  .stg-indicator {
+    position: absolute; top: 5px; bottom: 5px; left: 0; width: 0;
+    background: var(--blue-500); border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(56,92,248,0.32);
+    z-index: 0; pointer-events: none;
+    transform: translateX(0);
+  }
+  .stages.ready .stg-indicator { transition: transform 0.44s cubic-bezier(.34,1.4,.5,1), width 0.44s cubic-bezier(.34,1.4,.5,1); }
+  .stages .stg {
+    flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 9px 10px; border-radius: 10px;
+    background: none; border: 0;
+    font-size: 12.5px; font-weight: 600; color: var(--n-500);
+    position: relative; z-index: 1; cursor: pointer;
+    transition: color 0.2s, opacity 0.2s;
+  }
+  /* hover ghost on clickable, non-active tabs */
+  .stages .stg:not(.locked):not(.active)::before {
+    content: ''; position: absolute; inset: 0; border-radius: 10px;
+    background: #e4e9ff; opacity: 0; transition: opacity 0.15s; z-index: -1;
+  }
+  .stages .stg:not(.locked):not(.active):hover { color: var(--navy); }
+  .stages .stg:not(.locked):not(.active):hover::before { opacity: 1; }
+  .stages .stg.done { color: var(--n-600); }
+  .stages .stg.active { color: #fff; }
+  .stages .stg.locked { color: var(--n-500); opacity: 0.6; cursor: not-allowed; }
+  .stages .stg:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(56,91,248,0.3); }
+  .stages .stg.just-freed { animation: stg-pop 0.5s ease; }
+  @keyframes stg-pop { 0% { transform: scale(0.94); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+  /* per-stage mark: dot / check (done) / pulsing today-dot (live) */
+  .stg-mark { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; flex-shrink: 0; }
+  .stg-mark .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--n-300); }
+  .stg-mark .dot.mint { background: #7be3b0; }
+  .stg-mark .dot.live { background: var(--blue-500); animation: live-pulse 1.8s ease-in-out infinite; }
+  .stg-mark .icon { width: 13px; height: 13px; }
+  .stg.done .stg-mark .icon { color: var(--blue-500); }
+  @keyframes live-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(56,92,248,0.5); } 50% { box-shadow: 0 0 0 4px rgba(56,92,248,0); } }
+
+  /* thin dividers between tabs, hidden on both sides of the active pill */
+  .stages .stg:not(:last-child)::after {
+    content: ''; position: absolute; right: -1px; top: 50%;
+    width: 1px; height: 14px; background: var(--border);
+    transform: translateY(-50%);
+  }
+  .stages .stg.active::after,
+  .stages .stg.active + .stg::after,
+  .stages .stg:has(+ .stg.active)::after { background: transparent; }
+
+  /* locked-tab tooltip */
+  .stg-tip {
+    position: absolute; top: calc(100% + 9px); left: 50%;
+    transform: translate(-50%, 4px);
+    background: var(--navy); color: #fff;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+    padding: 6px 10px; border-radius: 8px; box-shadow: var(--shadow-elev);
+    opacity: 0; pointer-events: none; transition: opacity 0.18s, transform 0.18s; z-index: 6;
+  }
+  .stg-tip::before { content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-bottom-color: var(--navy); }
+  .stages .stg.locked:hover .stg-tip { opacity: 1; transform: translate(-50%, 0); }
+  /* the last tab's tooltip would spill past the column, so anchor it right-edge
+     and keep the arrow over the tab's centre */
+  .stages .stg:last-child .stg-tip { left: auto; right: 0; transform: translate(0, 4px); }
+  .stages .stg:last-child.locked:hover .stg-tip { transform: translate(0, 0); }
+  .stages .stg:last-child .stg-tip::before { left: auto; right: 81px; transform: none; }
+
+  /* stage panels */
+  .stage-panels { position: relative; }
+  .stage-panel { display: none; }
+  .stage-panel.is-active { display: block; animation: panel-in 0.42s cubic-bezier(.22,.61,.36,1); }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* open / status banners */
+  .open-banner { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+  /* panels opening with a banner sat flush against the hero — match the 26px
+     top margin a leading .section-head would have given them */
+  .stage-panel > .open-banner:first-child { margin-top: 26px; }
+  .open-banner .ob-icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 23px; background: var(--tint-pressed); flex-shrink: 0; }
+  .open-banner.departure .ob-icon { background: var(--amber-50); }
+  .open-banner .ob-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .open-banner .ob-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+  .open-banner .btn { margin-left: auto; flex-shrink: 0; }
+
+  .review-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+  .review-stars { display: flex; gap: 4px; color: var(--amber-500); }
+  .review-stars .icon { width: 25px; height: 25px; fill: currentColor; stroke: none; cursor: pointer; transition: transform 0.12s; }
+  .review-stars .icon:hover { transform: scale(1.15); }
+  .review-card .rv-title { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .review-card .rv-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+  .review-card .btn { margin-left: auto; flex-shrink: 0; }
+
   /* checklist desktop */
   .section-head { display: flex; align-items: baseline; justify-content: space-between; margin: 26px 0 12px; }
   .section-head h2 { font-size: 17px; font-weight: 600; color: var(--navy); }
@@ -73,8 +179,8 @@
   .cl-ring .pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--blue-500); }
   .cl-progress .cp-title { font-size: 15px; font-weight: 600; color: var(--navy); }
   .cl-progress .cp-sub { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
-  /* nowrap + no shrink: the label is two words and must stay on the pill's
-     one line when the sub-copy squeezes the row. */
+  /* keep the CTA at its natural width — it sits in a flex row, so without this
+     it gets squeezed and the label wraps out of the fixed-height pill */
   .cl-progress .cp-cta { margin-left: auto; flex-shrink: 0; white-space: nowrap; }
 
   .task-list { position: relative; }
@@ -122,75 +228,8 @@
   .t-chip.next { background: var(--tint-pressed); color: var(--blue-500); }
   .t-chip.todo { background: var(--n-75); color: var(--n-600); }
 
-  /* ── Completed steps, folded away ──────────────────────────────────────
-     A finished step has nothing left to ask of the guest, so it stops taking
-     a full row. The summary keeps the names visible — the point is reassurance
-     that the work is banked, not that it's hidden — and it opens on click. */
-  .task-done-group { display: none; }
-  .task-done-group.is-open { display: block; }
-  .task-fold {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 20px;
-    width: 100%; text-align: left;
-    background: var(--green-50);
-    border: 0; border-top: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
-    /* The timeline rule is .task-list::before — absolutely positioned, so it
-       paints above static in-flow content. .task-row escapes it by being
-       position:relative; the fold bar has to do the same or the grey line
-       draws straight across the green summary. */
-    position: relative;
-  }
-  .task-row + .task-fold, .task-done-group + .task-fold { border-top: 1px solid var(--border); }
-  .task-fold:first-child { border-top: none; }
-  .task-fold:hover { background: #dcf5e8; }
-  .task-fold .tf-check {
-    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-    background: var(--green-600); color: #fff;
-    display: grid; place-items: center;
-    /* sit on the same 41px axis as the step badges below, so the summary reads
-       as part of the timeline rather than floating left of it */
-    margin-left: 10px;
-  }
-  .task-fold .tf-check .icon { width: 13px; height: 13px; }
-  .task-fold .tf-label { font-size: 13px; font-weight: 600; color: var(--green-800); }
-  .task-fold .tf-names {
-    font-size: 12.5px; color: var(--green-800); opacity: 0.75;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
-  }
-  .task-fold .tf-chev {
-    margin-left: auto; flex-shrink: 0; color: var(--green-800);
-    transition: transform 0.2s;
-  }
-  .task-fold.is-open .tf-chev { transform: rotate(180deg); }
-
-  /* All four done: the card stops nagging and confirms. */
-  .cl-progress.is-complete .cp-title { color: var(--green-800); }
-  .cl-progress.is-complete .cl-ring .arc { stroke: var(--green-600); }
-  .cl-progress.is-complete .pct { color: var(--green-700); }
-
   /* stay cards */
-  /* Guidebooks — the home page lists the individual guidebooks instead of one
-     generic "Guidebooks" tile: a named book is a far stronger invitation than a
-     category. The format tag covers all three kinds the app serves — native
-     builder (Guide), a host's own web page (Web) and an uploaded PDF. */
-  .home-guides { padding: 2px 0; }
-  .home-guides .hgb-row { display: flex; align-items: center; gap: 11px; padding: 10px 14px; width: 100%; text-align: left; transition: background 0.15s; }
-  .home-guides .hgb-row + .hgb-row { border-top: 1px solid var(--border); }
-  .home-guides .hgb-row:hover { background: var(--n-50); }
-  .home-guides .hgb-ic { width: 34px; height: 34px; border-radius: 10px; background: var(--tint-info); color: var(--blue-500); display: grid; place-items: center; flex-shrink: 0; }
-  .home-guides .hgb-text { flex: 1; min-width: 0; }
-  /* Title and format tag share one line — the tag was costing a whole row per
-     guidebook for two words. */
-  .home-guides .hgb-title { display: inline; font-size: 13.5px; font-weight: 600; color: var(--navy); }
-  .home-guides .hgb-fmt { display: inline-flex; align-items: center; gap: 4px; margin-left: 7px; vertical-align: 1px; padding: 1px 6px; border-radius: 999px; background: var(--n-50); border: 1px solid var(--border-subtle); font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--n-600); }
-  .home-guides .hgb-fmt .icon { width: 9px; height: 9px; }
-  .home-guides .hgb-desc { display: block; font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
-  .home-guides .hgb-chev { color: var(--n-500); flex-shrink: 0; }
-
   .stay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .stay-grid.duo { grid-template-columns: repeat(2, 1fr); }
   .stay-card {
     display: flex; flex-direction: column; align-items: center; text-align: center;
     padding: 22px 16px 18px; gap: 9px;
@@ -242,51 +281,6 @@
   .upsell-card .uc-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 11px; }
   .upsell-card .uc-price { font-size: 13.5px; font-weight: 700; color: var(--navy); }
 
-
-  /* ---------- Rail sections ----------
-     The rail stopped being a stack of loose blocks and became one panel with a
-     name. Each section states what it is (eyebrow), where the rest of it lives
-     ("See all") and why it is worth opening (one description line) — so a
-     glance down the column reads as a sentence rather than three widgets. */
-  .rail-head { margin-bottom: 4px; }
-  .rail-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--navy); }
-  .rail-sec { display: flex; flex-direction: column; gap: 10px; }
-  .rail-sec .rs-head {
-    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-    padding-bottom: 7px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  .rail-sec .rs-head::after {
-    content: ''; position: absolute; left: 0; bottom: -1px;
-    width: 26px; height: 2px; background: var(--blue-500);
-  }
-  .rail-sec .rs-label {
-    font-size: 9.5px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 0.13em;
-    color: var(--text-secondary);
-  }
-  .rail-sec .rs-more { font-size: 11.5px; font-weight: 600; color: var(--blue-500); flex-shrink: 0; }
-  .rail-sec .rs-more:hover { text-decoration: underline; }
-  .rail-sec .rs-desc { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: -2px; }
-
-  /* Deep links into the guidebook — the chapter a guest actually needs, not
-     the book that contains it. */
-  .rs-rows { display: flex; flex-direction: column; }
-  .rs-row { display: flex; align-items: center; gap: 11px; padding: 9px 0; }
-  .rs-row + .rs-row { border-top: 1px solid var(--border); }
-  .rs-row .rs-ic {
-    width: 32px; height: 32px; border-radius: 10px;
-    background: var(--tint-info); color: var(--blue-500);
-    display: grid; place-items: center; flex-shrink: 0;
-  }
-  .rs-row .rs-text { flex: 1; min-width: 0; }
-  .rs-row .rs-title { display: block; font-size: 12.5px; font-weight: 600; color: var(--navy); }
-  .rs-row .rs-sub { display: block; font-size: 11px; line-height: 15px; color: var(--text-secondary); margin-top: 1px; }
-  .rs-row .rs-chev { color: var(--n-500); flex-shrink: 0; }
-  .rs-row:hover .rs-title { color: var(--blue-500); }
-  .rs-row:hover .rs-chev { color: var(--blue-500); }
-
   .contact-card { padding: 14px; display: flex; align-items: center; gap: 12px; }
   .contact-card .cc-icon {
     width: 38px; height: 38px; border-radius: 12px;
@@ -299,8 +293,8 @@
 </head>
 <body>
 <div class="proto-stage">
-  <h1>Home — Desktop (Redesign 2.0 Prototype)</h1>
-  <p class="lede">The V3 desktop journey: navy sidebar, a booking hero stripped to the two dates that matter, checklist with progress ring, timeline and "next up" spotlight, and the upsell/contact right rail. Mock data only.</p>
+  <h1>Staged journey — Desktop (Redesign 2.0 Prototype)</h1>
+  <p class="lede">Home split into four stages — <b>Pre-stay, Check-in, Stay, Departure</b>. The booking hero stays constant; the tabs above it switch between stages, each revealing only its own actions. Stages ahead of today stay locked until their date — use the date simulator to watch them unlock. An alternative to the flat Home, kept separate so the two can be compared. Mock data only.</p>
 
   <div class="browser" style="position:relative">
     <div class="browser-bar">
@@ -318,10 +312,20 @@
       <main class="desk-main">
         <div class="greet fade-up">
           <h1>Welcome, María 👋</h1>
-          <p data-greet-sub>Your stay in Barcelona is almost ready — 2 tasks left before your keys unlock.</p>
+          <p id="greetSub">Your stay in Barcelona is almost ready — 2 tasks left before your keys unlock.</p>
         </div>
 
-        <section class="hero fade-up d1">
+        <!-- Stage tabs (switch the panels below) -->
+        <nav class="stages fade-up d1" id="journeyTabs" aria-label="Stay stages">
+          <span class="stg-indicator" id="stgIndicator"></span>
+          <button class="stg" data-stage="0" type="button"><span class="stg-mark"></span>Pre-stay<span class="stg-tip"></span></button>
+          <button class="stg" data-stage="1" type="button"><span class="stg-mark"></span>Check-in<span class="stg-tip"></span></button>
+          <button class="stg" data-stage="2" type="button"><span class="stg-mark"></span>Stay<span class="stg-tip"></span></button>
+          <button class="stg" data-stage="3" type="button"><span class="stg-mark"></span>Departure<span class="stg-tip"></span></button>
+        </nav>
+
+        <!-- Booking dates (blue box) -->
+        <section class="hero fade-up d2">
           <div class="hero-grid">
             <div>
               <div class="db-label">Check-in</div>
@@ -340,12 +344,15 @@
           </div>
         </section>
 
-        <div class="fade-up d2">
+        <div class="stage-panels">
+
+        <!-- ─── Stage 0 · Pre-stay ─── -->
+        <div class="stage-panel" data-panel="0">
           <div class="section-head">
             <h2>Complete your check-in</h2>
-            <span class="counter" data-counter><b>2</b> of 4 done</span>
+            <span class="counter"><b>2</b> of 4 done</span>
           </div>
-          <div class="card" style="overflow:hidden" data-checkin>
+          <div class="card" style="overflow:hidden">
             <div class="cl-progress">
               <div class="cl-ring">
                 <svg width="60" height="60" viewBox="0 0 60 60">
@@ -356,20 +363,19 @@
                     </linearGradient>
                   </defs>
                   <circle class="track" cx="30" cy="30" r="26"/>
-                  <circle class="arc" cx="30" cy="30" r="26" data-arc/>
+                  <circle class="arc" cx="30" cy="30" r="26"/>
                 </svg>
-                <span class="pct" data-pct>50%</span>
+                <span class="pct">50%</span>
               </div>
               <div>
-                <div class="cp-title" data-cp-title>You're halfway there</div>
-                <div class="cp-sub" data-cp-sub>2 steps left · about 3 minutes · due before Friday 10 July</div>
+                <div class="cp-title">You're halfway there</div>
+                <div class="cp-sub">2 steps left · about 3 minutes · due before Friday 10 July</div>
               </div>
-              <a class="btn btn-primary btn-sm cp-cta" data-cta href="flow-deposit-desktop.html#dpd-multi"><span data-cta-label>Continue check-in</span> <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></a>
+              <button class="btn btn-primary btn-sm cp-cta">Continue check-in <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
             </div>
 
-            <div class="task-list" data-tasks>
-              <button class="task-row" data-step="guests" data-href="guest-registration-desktop.html" data-state="done" data-mins="3"
-                      data-cta="Register your guests" data-icon="i-users">
+            <div class="task-list">
+              <button class="task-row">
                 <span class="task-badge done"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
                 <span>
                   <span class="t-title" style="display:block">Register guests</span>
@@ -377,8 +383,7 @@
                 </span>
                 <span class="t-right"><span class="t-chip done">Done</span></span>
               </button>
-              <button class="task-row" data-step="payment" data-href="flow-payments-desktop.html#pd-cart" data-state="done" data-mins="1"
-                      data-cta="Pay for your booking" data-icon="i-credit-card">
+              <button class="task-row">
                 <span class="task-badge done"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span>
                 <span>
                   <span class="t-title" style="display:block">Booking payment</span>
@@ -386,8 +391,7 @@
                 </span>
                 <span class="t-right"><span class="t-chip done">Done</span></span>
               </button>
-              <button class="task-row" data-step="protection" data-href="flow-deposit-desktop.html#dpd-multi" data-state="todo" data-mins="1"
-                      data-cta="Choose your protection" data-icon="i-shield">
+              <button class="task-row is-next">
                 <span class="task-badge next"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg></span>
                 <span>
                   <span class="t-title" style="display:block">Property protection</span>
@@ -395,8 +399,7 @@
                 </span>
                 <span class="t-right"><span class="t-chip next">Next up</span><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
               </button>
-              <button class="task-row" data-step="taxes" data-href="flow-taxes-desktop.html#td-setup" data-state="todo" data-mins="1"
-                      data-cta="Pay your tourist taxes" data-icon="i-coins">
+              <button class="task-row">
                 <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg></span>
                 <span>
                   <span class="t-title" style="display:block">Tourist taxes</span>
@@ -408,14 +411,48 @@
           </div>
         </div>
 
-        <div class="fade-up d3">
-          <div class="section-head"><h2>Your stay</h2></div>
-          <div class="stay-grid duo">
+        <!-- ─── Stage 1 · Check-in ─── -->
+        <div class="stage-panel" data-panel="1">
+          <div class="card open-banner">
+            <div class="ob-icon">🔑</div>
+            <div>
+              <div class="ob-title">Check-in is open — your keys are ready</div>
+              <div class="ob-sub">Head to Carrer de Mallorca 21 anytime after 15:00. Your access code is active now.</div>
+            </div>
+            <a class="btn btn-primary btn-sm" href="flow-remote-access-desktop.html#kd-keys">Open virtual keys <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></a>
+          </div>
+          <div class="section-head"><h2>Your arrival</h2></div>
+          <div class="stay-grid">
             <div class="card stay-card">
               <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
               <div class="sc-title">Virtual keys</div>
-              <div class="sc-desc">Unlocks after check-in is complete</div>
-              <a class="btn btn-outline btn-sm" href="flow-remote-access-desktop.html#kd-gate"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock-sm"/></svg> Why locked?</a>
+              <div class="sc-desc">Unlock the door straight from your phone</div>
+              <a class="btn btn-dark btn-sm" href="flow-remote-access-desktop.html#kd-keys">Show access code</a>
+            </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-map-pin"/></svg></div>
+              <div class="sc-title">Directions</div>
+              <div class="sc-desc">Getting to the apartment &amp; parking</div>
+              <a class="btn btn-outline btn-sm" href="flow-guidebooks-desktop.html">Open map</a>
+            </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-message"/></svg></div>
+              <div class="sc-title">Message host</div>
+              <div class="sc-desc">Arriving late? Let María know</div>
+              <a class="btn btn-outline btn-sm" href="flow-chat-desktop.html">Chat</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Stage 2 · Stay ─── -->
+        <div class="stage-panel" data-panel="2">
+          <div class="section-head"><h2>During your stay</h2></div>
+          <div class="stay-grid">
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
+              <div class="sc-title">Guidebooks</div>
+              <div class="sc-desc">WiFi, house rules &amp; local tips</div>
+              <a class="btn btn-dark btn-sm" href="flow-guidebooks-desktop.html">Explore</a>
             </div>
             <div class="card stay-card">
               <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-compass"/></svg></div>
@@ -423,57 +460,14 @@
               <div class="sc-desc">Tours &amp; activities in Barcelona</div>
               <a class="btn btn-outline btn-sm" href="flow-upselling-desktop.html">Browse</a>
             </div>
+            <div class="card stay-card">
+              <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-message"/></svg></div>
+              <div class="sc-title">Chat with host</div>
+              <div class="sc-desc">María usually replies within 1 hour</div>
+              <a class="btn btn-outline btn-sm" href="flow-chat-desktop.html">Message</a>
+            </div>
           </div>
-        </div>
 
-        <!-- Guidebooks — individual books, listed by name (no generic "Guidebooks" tile) -->
-        <div class="fade-up d4">
-          <div class="section-head" style="margin-bottom:10px">
-            <h2>Your guidebooks</h2>
-            <a class="counter" href="flow-guidebooks-desktop.html#gd-list" style="color:var(--blue-500);font-weight:600">See all</a>
-          </div>
-          <div class="card home-guides">
-            <a class="hgb-row" href="flow-guidebooks-desktop.html#gd-guide">
-              <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-book-marked"/></svg></span>
-              <span class="hgb-text">
-                <span class="hgb-title">Welcome &amp; House Manual</span>
-                <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
-                <span class="hgb-desc">How to get in, the Wi-Fi, appliances and house rules</span>
-              </span>
-              <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
-            </a>
-            <a class="hgb-row" href="flow-guidebooks-desktop.html#gd-recos">
-              <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-utensils"/></svg></span>
-              <span class="hgb-text">
-                <span class="hgb-title">Local Recommendations</span>
-                <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
-                <span class="hgb-desc">Your host's own list of places within walking distance</span>
-              </span>
-              <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
-            </a>
-            <a class="hgb-row" href="flow-guidebooks-desktop.html#gd-html">
-              <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-landmark"/></svg></span>
-              <span class="hgb-text">
-                <span class="hgb-title">Getting Around Málaga</span>
-                <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Web</span>
-                <span class="hgb-desc">Airport transfers, buses, the metro and parking</span>
-              </span>
-              <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
-            </a>
-            <a class="hgb-row" href="flow-guidebooks-desktop.html#gd-pdf">
-              <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-waves"/></svg></span>
-              <span class="hgb-text">
-                <span class="hgb-title">Beaches &amp; Day Trips</span>
-                <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg> PDF</span>
-                <span class="hgb-desc">A printable guide to the coast near Marbella</span>
-              </span>
-              <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Handpicked for your trip (RecommendationsSection + partner banners) -->
-        <div class="fade-up d4">
           <div class="section-head">
             <h2>✨ Handpicked for your trip</h2>
             <a class="counter" href="flow-upselling-desktop.html" style="color:var(--blue-500);font-weight:600">See all extras</a>
@@ -545,47 +539,70 @@
             </a>
           </div>
         </div>
+
+        <!-- ─── Stage 3 · Departure ─── -->
+        <div class="stage-panel" data-panel="3">
+          <div class="card open-banner departure">
+            <div class="ob-icon">🧳</div>
+            <div>
+              <div class="ob-title">Check-out is Tuesday, 14 July at 11:00</div>
+              <div class="ob-sub">Here's how to leave everything ready — or give yourself more time.</div>
+            </div>
+            <button class="btn btn-primary btn-sm">Add late checkout · €25</button>
+          </div>
+          <div class="section-head"><h2>Before you leave</h2></div>
+          <div class="card" style="overflow:hidden">
+            <div class="task-list">
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Return the keys</span>
+                  <span class="t-sub">Leave the keys in the lockbox by the door</span>
+                </span>
+                <span class="t-right"><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Close up the apartment</span>
+                  <span class="t-sub">Windows shut, lights off, taps closed</span>
+                </span>
+                <span class="t-right"><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+              <button class="task-row">
+                <span class="task-badge todo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg></span>
+                <span>
+                  <span class="t-title" style="display:block">Take your belongings</span>
+                  <span class="t-sub">Double-check the bathroom, wardrobe &amp; fridge</span>
+                </span>
+                <span class="t-right"><svg viewBox="0 0 24 24" class="icon chev"><use href="#i-chevron-right"/></svg></span>
+              </button>
+            </div>
+          </div>
+          <div class="section-head"><h2>How was your stay?</h2></div>
+          <div class="card review-card">
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+              <svg viewBox="0 0 24 24" class="icon"><use href="#i-star"/></svg>
+            </div>
+            <div>
+              <div class="rv-title">Leave a review for Villa Serena</div>
+              <div class="rv-sub">Your feedback helps María and future guests</div>
+            </div>
+            <button class="btn btn-outline btn-sm">Write review</button>
+          </div>
+        </div>
+
+        </div>
       </main>
 
       <!-- ═══ Right rail ═══ -->
       <aside class="rail">
 
-        <div class="rail-head fade-up">
-          <h2 class="rail-title">Everything for your stay</h2>
-        </div>
-
-        <div class="rail-sec fade-up d1">
-          <div class="rs-head">
-            <span class="rs-label">Guidebook</span>
-            <a class="rs-more" href="flow-guidebooks-desktop.html#gd-list">See all</a>
-          </div>
-          <p class="rs-desc">Everything about the property, in one place.</p>
-          <div class="rs-rows">
-            <a class="rs-row" href="flow-guidebooks-desktop.html#gd-guide">
-              <span class="rs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-wifi"/></svg></span>
-              <span class="rs-text">
-                <span class="rs-title">Wi-Fi &amp; access</span>
-                <span class="rs-sub">Network, password, door code</span>
-              </span>
-              <svg viewBox="0 0 24 24" class="icon icon-sm rs-chev"><use href="#i-chevron-right"/></svg>
-            </a>
-            <a class="rs-row" href="flow-guidebooks-desktop.html#gd-guide">
-              <span class="rs-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-file-text"/></svg></span>
-              <span class="rs-text">
-                <span class="rs-title">House rules</span>
-                <span class="rs-sub">Quiet hours, smoking, pets</span>
-              </span>
-              <svg viewBox="0 0 24 24" class="icon icon-sm rs-chev"><use href="#i-chevron-right"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="rail-sec fade-up d2">
-          <div class="rs-head">
-            <span class="rs-label">Offers for your stay</span>
-            <a class="rs-more" href="flow-upselling-desktop.html">See all</a>
-          </div>
-          <p class="rs-desc">Picked for your arrival and trip — small extras to make check-in smoother.</p>
+        <h3>Make your stay better</h3>
         <div class="uc-carousel fade-up d1" id="ucCarousel">
           <div class="uc-viewport">
             <div class="uc-track" id="ucTrack">
@@ -614,20 +631,27 @@
                   </div>
                 </div>
               </div>
+              <div class="card upsell-card">
+                <div class="uc-img ph-walking">
+                  <span class="uc-tag">Free</span>
+                </div>
+                <div class="uc-body">
+                  <div class="uc-title">Gothic Quarter walking tour</div>
+                  <div class="uc-sub">2 hours · by GuruWalk</div>
+                  <div class="uc-foot">
+                    <span class="uc-price">Free</span>
+                    <button class="btn btn-outline btn-sm" style="height:30px;font-size:12px">Book</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="uc-nav">
             <div class="uc-dots" id="ucDots"></div>
           </div>
         </div>
-        </div>
 
-        <div class="rail-sec fade-up d3">
-          <div class="rs-head">
-            <span class="rs-label">Need help?</span>
-            <a class="rs-more" href="flow-faq-desktop.html">See all</a>
-          </div>
-          <p class="rs-desc">A person or an answer, whichever you would rather have.</p>
+        <h3 style="margin-top:8px">Need help?</h3>
         <a class="card contact-card fade-up d3" href="flow-chat-desktop.html">
           <div class="cc-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-message"/></svg></div>
           <div>
@@ -642,7 +666,6 @@
             <div class="cc-sub">Check-in, keys, house rules</div>
           </div>
         </a>
-        </div>
       </aside>
 
     </div>
@@ -657,13 +680,6 @@
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
-    <g id="i-wifi"><path d="M12 20h.01"/><path d="M8.5 16.4a5 5 0 0 1 7 0"/><path d="M5 12.9a10 10 0 0 1 14 0"/><path d="M1.4 9.4a15 15 0 0 1 21.2 0"/></g>
-    <g id="i-book-marked"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
-    <g id="i-utensils"><path d="M3 2v7a3 3 0 0 0 3 3 3 3 0 0 0 3-3V2"/><path d="M6 2v20"/><path d="M18 2v20"/><path d="M18 9c1.5 0 3-1.5 3-4s-1.5-3-3-3"/></g>
-    <g id="i-landmark"><path d="M3 22h18"/><path d="M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="m12 2 9 5H3z"/></g>
-    <g id="i-waves"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></g>
-    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
-    <g id="i-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></g>
     <g id="i-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g>
     <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
     <g id="i-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></g>
@@ -673,11 +689,11 @@
     <g id="i-book-open"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></g>
     <g id="i-compass"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></g>
     <g id="i-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
     <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
     <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
     <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
     <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
-    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
     <g id="i-lock-sm"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
     <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
     <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
@@ -693,7 +709,7 @@
 </svg>
 <script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
-<script src="upsell-carousel.js" defer></script>
-<script src="checkin.js" defer></script>
+<script src="stages.js?v=2" defer></script>
+<script src="upsell-carousel.js?v=2" defer></script>
 </body>
 </html>

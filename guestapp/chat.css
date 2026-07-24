@@ -45,7 +45,6 @@
   display: grid; place-items: center;
   color: #fff; font-weight: 700; font-size: 15px;
   background: linear-gradient(135deg, #2e46c8, #6b8cff);
-  box-shadow: 0 2px 6px rgba(22, 22, 67, 0.18);
   overflow: hidden;
 }
 .host-av img { width: 100%; height: 100%; object-fit: cover; }
@@ -420,7 +419,6 @@
   display: grid; place-items: center;
   background: var(--tint-info); color: var(--blue-500);
   margin-bottom: 6px;
-  box-shadow: 0 8px 22px rgba(56, 92, 248, 0.16);
 }
 .verify-icon .icon { width: 34px; height: 34px; }
 .verify-wrap h2 {
@@ -600,80 +598,11 @@
   padding: 34px 30px;
 }
 
-/* ============================================================
-   Liquid-glass version (html.glass-max) — chat-toggle.js
-   Extends frosting onto the reading surfaces over soft color
-   orbs. Chrome-only is deliberately relaxed here as an A/B
-   decision aid (mirrors the Guidebooks Classic · Liquid-glass
-   switch). Body text stays navy on a ≥60%-opaque frost so
-   bubbles remain readable.
-   ============================================================ */
-html.glass-max .chat-thread,
-html.glass-max .cd-main {
-  background:
-    radial-gradient(circle 240px at 84% 8%, rgba(79, 107, 255, 0.20), transparent 68%),
-    radial-gradient(circle 300px at 8% 92%, rgba(53, 229, 188, 0.16), transparent 70%),
-    radial-gradient(circle 220px at 92% 78%, rgba(139, 165, 255, 0.16), transparent 70%),
-    var(--bg-page);
-}
-
 /* host reading bubble → frosted glass */
-html.glass-max .bubble.host {
-  background: rgba(255, 255, 255, 0.62);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(16px) saturate(1.5);
-  -webkit-backdrop-filter: blur(16px) saturate(1.5);
-}
 /* guest bubble keeps its brand gradient but gains inner-light depth */
-html.glass-max .bubble.me {
-  box-shadow: 0 4px 14px rgba(56, 92, 248, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.28);
-}
 
 /* trip strip, day chips, starter chips, notes → glass */
-html.glass-max .trip-strip {
-  background: var(--glass-bg);
-  backdrop-filter: blur(14px) saturate(1.5);
-  -webkit-backdrop-filter: blur(14px) saturate(1.5);
-  border-bottom-color: var(--glass-border);
-}
-html.glass-max .chat-day {
-  background: var(--glass-bg);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-html.glass-max .st-chip {
-  background: rgba(255, 255, 255, 0.58);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(12px) saturate(1.4);
-  -webkit-backdrop-filter: blur(12px) saturate(1.4);
-}
 
 /* desktop context rail → frosted cards over the wash */
-html.glass-max .ctx-rail {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border-left-color: var(--glass-border);
-}
-html.glass-max .ctx-card {
-  background: rgba(255, 255, 255, 0.62);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(14px) saturate(1.5);
-  -webkit-backdrop-filter: blur(14px) saturate(1.5);
-}
-html.glass-max .ctx-ask {
-  background: rgba(255, 255, 255, 0.5);
-  border-color: var(--glass-border);
-}
 
 /* stronger chrome frosting to match */
-html.glass-max .chat-head,
-html.glass-max .cd-topbar,
-html.glass-max .composer {
-  background: var(--glass-bg);
-  backdrop-filter: blur(22px) saturate(1.7);
-  -webkit-backdrop-filter: blur(22px) saturate(1.7);
-}

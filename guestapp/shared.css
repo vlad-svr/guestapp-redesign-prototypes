@@ -54,9 +54,12 @@
   --border: var(--n-150);
   --border-subtle: var(--n-200);
 
-  /* Shadows */
-  --shadow-card: 0 1px 3px rgba(22, 22, 67, 0.05);
-  --shadow-elev: 0 10px 30px rgba(22, 22, 67, 0.08), 0 2px 6px rgba(22, 22, 67, 0.05);
+  /* Shadows — the redesigned app renders boxes flat (no card/elev shadows);
+     card + elev are kept as no-op values (not `none`: they appear inside
+     comma-separated shadow lists, where `none` would invalidate the whole
+     declaration). Brand CTA glow and focus ring survive, as in the app. */
+  --shadow-card: 0 0 rgba(22, 22, 67, 0);
+  --shadow-elev: 0 0 rgba(22, 22, 67, 0);
   --shadow-brand: 0 3px 10px rgba(56, 92, 248, 0.26);
   --shadow-focus: 0 0 0 3px rgba(56, 91, 248, 0.2);
 
@@ -266,6 +269,11 @@ a { text-decoration: none; color: inherit; }
   color: var(--navy);
 }
 .page-title .hl { color: var(--blue-500); }
+/* Outcome accents — a captured/passed screen turns the highlighted word green,
+   a retry turns it red. Modifiers rather than inline styles so the component
+   (chrome.js `data-accent`) owns the colour and one edit moves all of them. */
+.page-title .hl.ok { color: var(--green-700); }
+.page-title .hl.bad { color: var(--red-soft); }
 .page-intro {
   font-size: 13px;
   line-height: 20px;
@@ -433,7 +441,10 @@ a { text-decoration: none; color: inherit; }
   background: var(--bg-page);
   box-shadow: 0 30px 60px rgba(22, 22, 67, 0.22);
   border: 1px solid var(--n-200);
-  overflow: hidden;
+  /* x:auto so a too-narrow viewport scrolls the desktop layout rather than
+     crushing it; y stays hidden so the radius still clips */
+  overflow-x: auto;
+  overflow-y: hidden;
   flex-shrink: 0;
 }
 .browser-bar {
@@ -459,12 +470,17 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ---------- Desktop app shell: navy sidebar + content ---------- */
+/* The sidebar (266) and rail (324) are fixed, so `minmax(0, 1fr)` on the main
+   column let it collapse to nothing once the frame dropped below ~600px —
+   content overhung its card and the copy shredded into one word per line.
+   A desktop layout shown too narrow should scroll, not liquefy, so the main
+   column keeps a floor and .browser scrolls horizontally past it. */
 .desktop-shell {
   display: grid;
-  grid-template-columns: 266px minmax(0, 1fr);
+  grid-template-columns: 266px minmax(360px, 1fr);
   min-height: 780px;
 }
-.desktop-shell.with-rail { grid-template-columns: 266px minmax(0, 1fr) 324px; }
+.desktop-shell.with-rail { grid-template-columns: 266px minmax(360px, 1fr) 324px; }
 
 .sidebar {
   background: var(--navy);
@@ -510,6 +526,13 @@ a { text-decoration: none; color: inherit; }
 }
 .sidebar .sb-badge.warn { background: rgba(255, 183, 0, 0.2); color: #ffcf5a; }
 .sidebar .sb-badge.teal { background: rgba(107, 224, 168, 0.22); color: #7be3b0; }
+/* Current-value hint on a nav row (Language · English). Lives here, not in
+   faq.css, because chrome.js renders the sidebar on every page. */
+.sidebar .sb-val {
+  margin-left: auto;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+}
 .sidebar .sb-progress {
   margin: 14px 8px 4px;
   padding: 12px;
@@ -568,6 +591,26 @@ a { text-decoration: none; color: inherit; }
 .desk-col { max-width: 640px; margin: 22px auto 0; }
 .desk-col .page-title { font-size: 27px; line-height: 32px; }
 .desk-col .page-intro { font-size: 14px; line-height: 21px; }
+
+/* ---------- Add-a-row (roster + taxes) ----------
+   The "one more of these" affordance at the foot of a list card. Shared because
+   the guest roster and the tax guest list are the same gesture on the same
+   booking: the reservation says how many people, and this is how you name one
+   the app does not know about yet. */
+.add-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; width: 100%; text-align: left;
+  background: rgba(244, 246, 251, 0.7);
+  transition: background 0.15s;
+}
+.add-row:hover { background: rgba(56, 91, 248, 0.05); }
+.add-row .plus-badge {
+  width: 30px; height: 30px; border-radius: 10px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.add-row .a-label { font-size: 13.5px; font-weight: 600; color: var(--blue-500); }
+.add-row .a-sub { font-size: 11.5px; color: var(--text-tertiary); margin-top: 1px; }
 
 /* ---------- Vela helper rail (desktop) / sheet (mobile) ---------- */
 .vela-rail {
@@ -672,26 +715,6 @@ a { text-decoration: none; color: inherit; }
 .vela-action .va-sub { display: block; font-size: 10.5px; font-weight: 500; color: var(--text-tertiary); margin-top: 1px; }
 .vela-action .va-chev { margin-left: auto; color: var(--n-500); }
 
-/* Ask Vela chat input */
-.vela-ask { display: flex; flex-direction: column; gap: 8px; }
-.vela-ask .ask-input {
-  display: flex; align-items: center; gap: 9px;
-  height: 42px;
-  border-radius: 21px;
-  border: 1px solid var(--border-subtle);
-  background: var(--n-0);
-  padding: 0 6px 0 14px;
-  font-size: 12.5px; color: var(--n-500);
-  box-shadow: var(--shadow-card);
-}
-.vela-ask .ask-input .send {
-  margin-left: auto;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--blue-500); color: #fff;
-  display: grid; place-items: center;
-  box-shadow: var(--shadow-brand);
-  flex-shrink: 0;
-}
 .vela-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .vela-chips .chip {
   height: 26px; padding: 0 11px;
@@ -726,14 +749,11 @@ a { text-decoration: none; color: inherit; }
 .vela-qr .vq-title { font-size: 12.5px; font-weight: 700; color: var(--navy); }
 .vela-qr .vq-desc { font-size: 11px; line-height: 15px; color: var(--text-secondary); margin-top: 2px; }
 
-/* Progress block (registration / IV) */
-.vela-progress {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--n-0);
-  padding: 14px;
-  box-shadow: var(--shadow-card);
-}
+/* Progress block (registration / IV) — deliberately NOT a card.
+   It sits inside the Vela rail, which is already a panel, under an eyebrow
+   that already groups it; a bordered box there is a container inside a
+   container. Every other thing in the rail (.vela-tip, .vela-action) is flat
+   for the same reason. */
 .vela-progress .vp-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
 .vela-progress .vp-title { font-size: 12.5px; font-weight: 700; color: var(--navy); }
 .vela-progress .vp-count { font-size: 11.5px; font-weight: 600; color: var(--blue-500); }

@@ -1,0 +1,153 @@
+/* ============================================================
+   Payments — V2 (flow-payments-v2.html + flow-payments-desktop-v2.html)
+   Loaded AFTER pay.css; the desktop page also layers payd.css.
+
+   The v2 brief was one word: SIMPLER. The v1 cart spent the screen
+   on a kicker + display title + intro, two tabs, three section
+   headers, a separate hold card and a ledger that restated
+   everything. V2 collapses all of it into ONE bill: the items, the
+   total, the hold and the already-paid line are one card read top
+   to bottom. The receipt (p2-success) was approved as-is and is
+   carried over from v1 untouched.
+   ============================================================ */
+
+/* ---------- Compact head ---------- */
+.p2-head { padding: 16px 20px 0; }
+.p2-title { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
+.p2-note { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: 5px; }
+
+/* ---------- The bill — one card, everything in reading order ---------- */
+.bill {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+}
+.bill-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 10px 13px 16px;
+}
+.bill-row + .bill-row { border-top: 1px solid var(--border); }
+.bill-row:first-child { border-radius: var(--r-xl) var(--r-xl) 0 0; }
+.br-ic {
+  width: 36px; height: 36px;
+  border-radius: 11px;
+  background: var(--n-50);
+  color: var(--n-600);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.br-ic .icon { width: 17px; height: 17px; }
+.br-main { flex: 1; min-width: 0; }
+.br-name { display: block; font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.br-meta { display: block; font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+.br-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 5px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--blue-500);
+}
+.br-link:hover { text-decoration: underline; }
+.br-link .icon { width: 12px; height: 12px; }
+.br-side { flex-shrink: 0; display: flex; align-items: center; gap: 2px; }
+.br-price { text-align: right; }
+.br-amt { font-size: 14px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.br-fee { display: block; font-size: 10.5px; color: var(--text-tertiary); margin-top: 2px; }
+
+/* The foot of the same card: total, then the two lines that are NOT the total */
+.bill-foot {
+  border-top: 1px solid var(--border);
+  background: var(--n-50);
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  padding: 14px 16px;
+}
+.bill-foot .bf-total {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+}
+.bill-foot .bf-label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.bill-foot .bf-big { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+/* Hold — dashed everywhere in this prototype means "never charged" */
+.bill-foot .bf-hold {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px dashed var(--n-300);
+  border-radius: 11px;
+  background: var(--n-0);
+  font-size: 11.5px; line-height: 16px;
+  color: var(--text-secondary);
+}
+.bill-foot .bf-hold b { color: var(--navy); }
+.bill-foot .bf-hold .icon { width: 14px; height: 14px; color: var(--n-500); flex-shrink: 0; }
+.bill-foot .bf-hold .bh-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.bill-foot .bf-paid {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+}
+.bill-foot .bf-paid .bp-left { display: flex; align-items: center; gap: 7px; }
+.bill-foot .bf-paid .icon { width: 13px; height: 13px; color: var(--green-600); flex-shrink: 0; }
+.bill-foot .bf-paid .bp-amt { font-variant-numeric: tabular-nums; }
+
+/* ---------- Order history as a quiet link row (replaces the tab pair) ---------- */
+.p2-more {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  text-align: left;
+  transition: border-color 0.15s;
+}
+.p2-more:hover { border-color: var(--blue-500); }
+.p2-more .pm-ic { width: 32px; height: 32px; border-radius: 10px; background: var(--n-50); color: var(--n-600); display: grid; place-items: center; flex-shrink: 0; }
+.p2-more .pm-ic .icon { width: 15px; height: 15px; }
+.p2-more .pm-t { flex: 1; font-size: 13px; font-weight: 600; color: var(--navy); }
+.p2-more .pm-chev { color: var(--n-500); flex-shrink: 0; }
+
+/* ---------- Desktop: bill left, pay panel sticky right ---------- */
+/* Same rule as .payd-grid: the bill needs a floor, or it starves against the
+   rigid pay panel and every row wraps. Under that width the panel stacks. */
+.p2-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 316px;
+  gap: 22px;
+  align-items: start;
+  margin-top: 20px;
+}
+.p2-grid .bill-row { padding: 15px 12px 15px 18px; }
+.p2-col { display: flex; flex-direction: column; gap: 14px; }
+
+/* On desktop the pay panel owns the total, so the bill's own total would be
+   the third copy of €380.00 on one screen — exactly the restating this cut
+   set out to remove. The foot keeps only the two lines that are NOT the
+   total: the hold and the already-paid ledger row. */
+.p2-grid .bill-foot .bf-total { display: none; }
+.p2-grid .bill-foot .bf-hold { margin-top: 0; }
+
+@media (max-width: 1345px) {
+  .p2-grid { grid-template-columns: minmax(0, 1fr); }
+  .p2-grid .p2-pay { position: static; }
+  /* stacked, the panel is the only total on screen again */
+  .p2-grid .bill-foot .bf-total { display: flex; }
+}
+
+/* The right-hand pay panel repeats only the number and the button */
+.p2-pay {
+  position: sticky; top: 24px;
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  padding: 16px;
+}
+.p2-pay .pp-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.p2-pay .pp-big { font-size: 28px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.p2-pay .btn { width: 100%; margin-top: 14px; }
+.p2-pay .pp-secure {
+  display: flex; gap: 7px; align-items: center; justify-content: center;
+  margin-top: 11px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+.p2-pay .pp-secure .icon { width: 12px; height: 12px; }

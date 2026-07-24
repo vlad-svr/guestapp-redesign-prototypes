@@ -44,14 +44,27 @@
 .doors { display: flex; flex-direction: column; gap: 14px; position: relative; }
 
 /* ---------- Door card ---------- */
+/* A door is an access artifact, not a list row. The card stays quiet and the
+   boldness is spent in one place — the code strip below. */
 .door {
+  position: relative;
   border: 1px solid var(--border);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-2xl);
   background: var(--n-0);
-  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
-.door.now { border-color: rgba(43, 194, 159, 0.5); }
+/* The edge carries STATE, not identity. Both doors are peers on one path — the
+   glyph already says which is the street and which is your flat — so colouring
+   them differently only implied a rank that does not exist. What a guest scans
+   for is which doors are live right now. */
+.door::after {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--n-200);
+}
+.door.now::after { background: linear-gradient(var(--unlock-2), var(--unlock-1)); }
+.door.now { border-color: rgba(16, 185, 129, 0.4); }
+
 .door-top {
   display: flex; align-items: center; gap: 13px;
   padding: 15px 16px 14px;
@@ -60,9 +73,9 @@
   width: 46px; height: 46px; border-radius: 13px;
   display: grid; place-items: center; flex-shrink: 0;
 }
-.door-ic.building { background: var(--navy); color: #fff; }
-.door-ic.unit { background: var(--gradient-brand); color: #fff; }
-.door-ic.gate { background: var(--n-100); color: var(--navy); }
+.door-ic.building,
+.door-ic.unit,
+.door-ic.gate { background: var(--gradient-brand); color: #fff; }
 .door-ic .icon { width: 22px; height: 22px; }
 .door-main { flex: 1; min-width: 0; }
 .door-name { display: block; font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.25; }
@@ -96,47 +109,72 @@
 /* Door body (code / slide) */
 .door-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
 
-/* Keypad / lockbox code */
+/* ---------- The entry code — the signature ----------
+   This is the one thing that gets a guest through the door, and it used to sit
+   in a dashed grey box, quieter than the page title (and dashed means "never
+   charged" everywhere else in this prototype — the wrong signal entirely).
+   It is now key-caps: each character on its own tile, the way you read a code
+   while typing it on a keypad. No panel behind them — the caps carry the
+   emphasis on their own, so the card stays one clean surface. */
 .door-code {
-  display: flex; align-items: center; gap: 12px;
-  padding: 13px 14px;
-  border-radius: 13px;
-  background: var(--n-50);
-  border: 1px dashed var(--border-subtle);
+  display: flex; align-items: flex-end; gap: 14px;
+  padding: 2px 2px 0;
 }
 .door-code .dc-label {
   display: block;
-  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--text-tertiary);
+  margin-bottom: 8px;
 }
-.door-code .dc-val {
+.door-code .dc-caps { display: flex; gap: 6px; }
+.door-code .dc-caps i {
+  width: 38px; height: 46px;
+  border-radius: 10px;
+  background: var(--n-50);
+  border: 1px solid var(--border);
+  display: grid; place-items: center;
   font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  font-size: 24px; font-weight: 700; color: var(--navy);
-  letter-spacing: 0.14em; line-height: 1;
-  margin-top: 3px;
+  font-size: 21px; font-weight: 700; font-style: normal;
+  color: var(--navy);
 }
 .door-code .dc-copy {
   margin-left: auto;
   display: inline-flex; align-items: center; gap: 6px;
-  height: 38px; padding: 0 14px;
-  border-radius: 10px;
+  height: 46px; padding: 0 15px;
+  border-radius: 11px;
   background: var(--n-0);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-card);
   font-size: 12px; font-weight: 700; color: var(--navy);
   flex-shrink: 0;
   transition: border-color 0.15s, color 0.15s;
 }
 .door-code .dc-copy:hover { border-color: var(--blue-500); color: var(--blue-500); }
-.door-code .dc-copy.done { border-color: var(--green-600); color: var(--green-700); }
+.door-code .dc-copy.done { border-color: var(--unlock-2); color: var(--unlock-1); }
+/* On a phone the caps and the button fight for one row, and the button loses
+   its tap target. Copy takes its own full-width row instead. */
+.phone .door-code { flex-wrap: wrap; gap: 12px; }
+.phone .door-code > span:first-child { flex: 1 1 100%; }
+.phone .door-code .dc-copy { margin-left: 0; flex: 1 1 100%; height: 42px; justify-content: center; }
+
+/* ---------- Unlock green ----------
+   Local to this flow, not a token change: the shared --green-* scale is a mint
+   (#35e5bc) tuned for quiet "complete" badges, and against white it reads teal
+   rather than green. Opening a door is the most affirmative moment in the app,
+   so it gets a true emerald. */
+.doors, .slide, .door.now {
+  --unlock-1: #0b9e6e;
+  --unlock-2: #10b981;
+  --unlock-3: #34d399;
+}
 
 /* ---------- Slide-to-open (the signature control) ---------- */
 .slide {
   position: relative;
-  height: 60px;
+  height: 62px;
   border-radius: 16px;
-  background: linear-gradient(180deg, var(--n-75), var(--n-100));
-  border: 1px solid var(--border-subtle);
+  background: linear-gradient(180deg, var(--n-0), var(--tint-pressed));
+  border: 1px solid rgba(56, 91, 248, 0.22);
+  box-shadow: inset 0 1px 2px rgba(22, 22, 67, 0.05);
   overflow: hidden;
   touch-action: none;
   user-select: none;
@@ -144,31 +182,34 @@
 .slide-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
   width: 56px;
-  background: linear-gradient(90deg, var(--green-600), var(--green-500));
+  background: linear-gradient(90deg, rgba(56, 91, 248, 0.20), rgba(56, 91, 248, 0.09));
   border-radius: 16px;
+  transition: background 0.2s;
 }
+.slide.armed .slide-fill,
+.slide.done .slide-fill { background: linear-gradient(90deg, var(--unlock-1), var(--unlock-3)); }
 .slide-label {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   gap: 8px;
   padding-left: 34px;
-  font-size: 13.5px; font-weight: 700; color: var(--text-secondary);
+  font-size: 13.5px; font-weight: 700; color: var(--navy);
   letter-spacing: 0.01em;
   pointer-events: none;
 }
-.slide-label .chevs { display: inline-flex; color: var(--n-500); }
+.slide-label .chevs { display: inline-flex; color: var(--blue-300); }
 .slide-label .chevs .icon { width: 15px; height: 15px; margin-left: -7px; animation: chev-hint 1.6s infinite; }
 .slide-label .chevs .icon:nth-child(2) { animation-delay: 0.15s; }
 .slide-label .chevs .icon:nth-child(3) { animation-delay: 0.3s; }
 @keyframes chev-hint { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 .slide-thumb {
   position: absolute; left: 5px; top: 5px;
-  width: 50px; height: 50px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 3px 10px rgba(22, 22, 67, 0.18);
+  width: 52px; height: 52px;
+  border-radius: 13px;
+  background: var(--gradient-brand);
+  box-shadow: var(--shadow-brand);
   display: grid; place-items: center;
-  color: var(--blue-500);
+  color: #fff;
   cursor: grab;
   z-index: 2;
 }
@@ -176,7 +217,7 @@
 .slide-thumb .icon { width: 22px; height: 22px; }
 .slide.dragging .slide-thumb, .slide.dragging .slide-fill { transition: none; }
 .slide:not(.dragging) .slide-thumb, .slide:not(.dragging) .slide-fill { transition: left 0.3s cubic-bezier(.2,.8,.2,1), width 0.3s cubic-bezier(.2,.8,.2,1); }
-.slide.armed .slide-label { color: var(--green-800); }
+.slide.armed .slide-label { color: var(--unlock-1); }
 .slide.done .slide-label { color: #fff; }
 .slide.done .slide-thumb { color: var(--green-700); }
 
@@ -400,3 +441,11 @@
 
 /* Solid fallback where backdrop-filter is unsupported already handled in shared.css.
    No new glass surfaces introduced here. */
+
+/* Ambient motion is a hint, never the message — everything here reads the same
+   with animation off. */
+@media (prefers-reduced-motion: reduce) {
+  .door-state.now .dot,
+  .slide-label .chevs .icon { animation: none; }
+  .slide-label .chevs .icon { opacity: 0.75; }
+}

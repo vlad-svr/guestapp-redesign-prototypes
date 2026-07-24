@@ -48,9 +48,9 @@
         <div class="seg"></div>
       </div>
 
-      <div class="page-head">
-        <div class="kicker">Check-out · Step 1 of 3</div>
-        <div class="page-title">Before you leave, <span class="hl">María</span></div>
+      <div class="page-head" data-page-head
+           data-kicker="Check-out · Step 1 of 3"
+           data-title="Before you leave, {María}">
         <div class="co-when"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> Check-out by <b>11:00 today</b> · Fri 22 Aug</div>
         <p class="page-intro" style="margin-top:10px">Your stay is settled — here's a last look, plus a couple of things you can add before you go.</p>
       </div>
@@ -213,14 +213,14 @@
         <div class="seg"></div>
       </div>
 
-      <div class="page-head" style="align-items:center;text-align:center">
-        <div class="kicker">Check-out · Step 2 of 3</div>
-        <div class="page-title">How was your stay?</div>
+      <div class="page-head" style="align-items:center;text-align:center" data-page-head
+           data-kicker="Check-out · Step 2 of 3"
+           data-title="How was your stay?">
         <p class="page-intro" style="margin:0 auto">Your honest rating helps us and the next guests. It takes ten seconds.</p>
       </div>
 
       <div class="content" style="align-items:center">
-        <div class="card glass" style="width:100%;padding:22px 18px">
+        <div class="card" style="width:100%;padding:22px 18px">
           <div class="rate-card">
             <div class="stars" role="radiogroup" aria-label="Rate your stay from 1 to 5 stars" id="co-stars">
               <button class="star" role="radio" aria-checked="false" aria-label="1 star — Very poor" data-star="1"><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></button>
@@ -455,9 +455,6 @@
             <button class="vela-action" data-modal-close data-modal="m-transfer"><span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-plane"/></svg></span> Book an airport transfer <span class="va-chev"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-right"/></svg></span></button>
           </div>
         </div>
-        <div class="vela-ask">
-          <div class="ask-input">Ask Vela anything… <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke:#fff"><use href="#i-arrow-right"/></svg></span></div>
-        </div>
       </div>
     </div>
 
@@ -498,7 +495,7 @@
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="checkout-flow.js" defer></script>
-<script src="checkout-toggle.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

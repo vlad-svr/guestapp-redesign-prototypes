@@ -12,7 +12,7 @@
 <body>
 <div class="proto-stage">
   <h1>Splash screen — the arrival moment (Desktop · SDK · Kiosk)</h1>
-  <p class="lede">The same handoff at three sizes. On a laptop the splash dissolves into the <b>navy-sidebar shell</b>, and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b> — it has no business painting over the host's own page. On the kiosk it is read from a metre away, and it has <b>nowhere to fly to</b>, so it simply settles. The <b>Style</b> switch picks between <b>Classic</b> (the refined V1) and <b>Modern</b> (V2) — the behaviour, the states and the accessibility pass are identical in both. Mock data only.</p>
+  <p class="lede">The same handoff at three sizes. On a laptop the splash dissolves into the <b>navy-sidebar shell</b>, and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b> — it has no business painting over the host's own page. On the kiosk it is read from a metre away, and it has <b>nowhere to fly to</b>, so it simply settles. Mock data only.</p>
 
   <div class="flow-hud">
     <button class="fh-chip" data-scenario="spd-fast">Fast load</button>
@@ -82,13 +82,10 @@
         </div>
 
         <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
+          <span class="sp-curtain top" aria-hidden="true"></span>
+          <span class="sp-curtain bottom" aria-hidden="true"></span>
 
-          <span class="sp-grain" aria-hidden="true"></span>
           <div class="sp-mark">
-            <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-              <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-              <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-            </svg>
             <div class="sp-plate">
               <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
               <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
@@ -136,13 +133,10 @@
         </div>
 
         <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
+          <span class="sp-curtain top" aria-hidden="true"></span>
+          <span class="sp-curtain bottom" aria-hidden="true"></span>
 
-          <span class="sp-grain" aria-hidden="true"></span>
           <div class="sp-mark">
-            <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-              <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-              <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-            </svg>
             <div class="sp-plate">
               <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
               <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
@@ -182,13 +176,10 @@
         <div class="sp-under" data-sp-under></div>
 
         <div class="sp-stage" data-sp-stage>
+          <span class="sp-curtain top" aria-hidden="true"></span>
+          <span class="sp-curtain bottom" aria-hidden="true"></span>
 
-          <span class="sp-grain" aria-hidden="true"></span>
           <div class="sp-mark is-error">
-            <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-              <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-              <circle class="sp-ring-arc" cx="55" cy="55" r="50" style="--sp-p:1"/>
-            </svg>
             <div class="sp-plate"><span class="sp-logo sp-logo-default" aria-hidden="true">C</span></div>
             <span class="sp-badge err" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg></span>
           </div>
@@ -267,12 +258,9 @@
                    viewport. Today's ContentWrapper is width/height:100% with
                    z-index:9999, which only *happens* to be contained. -->
               <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
-                <span class="sp-grain" aria-hidden="true"></span>
+                <span class="sp-curtain top" aria-hidden="true"></span>
+                <span class="sp-curtain bottom" aria-hidden="true"></span>
                 <div class="sp-mark">
-                  <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                    <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                    <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-                  </svg>
                   <div class="sp-plate">
                     <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
                   </div>
@@ -303,7 +291,7 @@
 
     <div class="sp-caption">
       <span class="sp-clock" data-sp-clock><i class="dot"></i> Splash visible <b data-sp-clock-value>0.0s</b></span>
-      <span class="sim-note">held for <b>max(load, 500 ms)</b> · watchdog at 20 s · today: <b>load + 5000 ms</b>, unbounded</span>
+      <span class="sim-note">held for <b>max(load, 500 ms)</b> + a <b>340 ms</b> curtain · watchdog at 20 s · today: <b>load + 5000 ms</b>, unbounded</span>
     </div>
   </div>
 
@@ -316,12 +304,9 @@
 
   <div class="sp-kiosk browser" style="width:min(760px,94vw)">
     <div class="sp-stage" role="status" aria-live="polite" aria-busy="true">
-      <span class="sp-grain" aria-hidden="true"></span>
+      <span class="sp-curtain top" aria-hidden="true"></span>
+      <span class="sp-curtain bottom" aria-hidden="true"></span>
       <div class="sp-mark">
-        <svg class="sp-ring" viewBox="0 0 110 110" aria-hidden="true" style="--sp-p:0.62">
-          <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-          <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-        </svg>
         <div class="sp-plate"><span class="sp-logo sp-logo-default" aria-hidden="true">C</span></div>
       </div>
       <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -343,16 +328,6 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <!-- The progress arc's stroke. A gradient reads as light travelling round
-         the mark; a flat stroke reads as a bar bent into a circle. -->
-    <linearGradient id="spRingGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#8ca5ff"/>
-      <stop offset="100%" stop-color="#ffffff"/>
-    </linearGradient>
-    <linearGradient id="spRingGradLight" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#385bf8"/>
-      <stop offset="100%" stop-color="#8ca5ff"/>
-    </linearGradient>
     <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
     <g id="i-refresh"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
     <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
@@ -364,7 +339,6 @@
 
 <script src="flow.js" defer></script>
 <script src="splash-v2.js" defer></script>
-<script src="splash-toggle.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

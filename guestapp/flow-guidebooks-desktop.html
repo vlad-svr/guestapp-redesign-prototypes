@@ -21,6 +21,7 @@
     <button class="fh-chip on" data-scenario="gd-list">▶ Guidebooks grid</button>
     <button class="fh-chip" data-scenario="gd-guide">House manual (rich guide)</button>
     <button class="fh-chip" data-scenario="gd-recos">Local recommendations</button>
+    <button class="fh-chip" data-scenario="gd-html">Web (HTML) guidebook</button>
     <button class="fh-chip" data-scenario="gd-pdf">PDF guidebook</button>
     <button class="fh-chip" data-scenario="gd-unavailable">Not available yet</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
@@ -37,7 +38,7 @@
     <!-- ═══ gd-list · GuidebooksListView (destination) ═══ -->
     <div class="flow-screen" id="gd-list" data-start data-label="Guidebooks — a card grid destination with a helper rail" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="gd-sidebar"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-main">
           <div class="greet">
             <h1>Your guidebooks</h1>
@@ -63,7 +64,7 @@
                 <div class="gc-chips"><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg> 6 places</span><span class="gc-chip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-map-pin"/></svg> On a map</span></div>
               </div>
             </button>
-            <button class="gb-card" data-goto="gd-list">
+            <button class="gb-card" data-goto="gd-html">
               <div class="gc-cover cover-city"><span class="gc-type"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-globe"/></svg> Web</span><span class="gc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-landmark"/></svg></span></div>
               <div class="gc-body">
                 <div class="gc-title">Getting Around Málaga <svg viewBox="0 0 24 24" class="icon gc-chev"><use href="#i-chevron-right"/></svg></div>
@@ -99,16 +100,7 @@
             <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
             <div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div>
           </div>
-          <p class="vela-intro">Not sure which guide has what you need? Ask me — I read all of them and answer in your language.</p>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Popular questions</div>
-            <div class="vela-chips" style="margin-top:10px">
-              <span class="chip">What's the Wi-Fi password?</span>
-              <span class="chip">Where do I park?</span>
-              <span class="chip">Best paella nearby?</span>
-              <span class="chip">Nearest beach?</span>
-            </div>
-          </div>
+          <p class="vela-intro">Not sure which guide has what you need? The jump list below points you to the right one — auto-translated into your language.</p>
           <div class="vela-section">
             <div class="vela-eyebrow">Good to know</div>
             <button class="vela-tip">
@@ -123,7 +115,7 @@
     <!-- ═══ gd-guide · GuidebookView (EDITOR) ═══ -->
     <div class="flow-screen" id="gd-guide" data-label="House manual — reading column, chapters live in the Vela rail" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="gd-sidebar2"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" data-goto="gd-list"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> All guidebooks</a>
           <div class="gb-read" style="margin-top:20px">
@@ -198,12 +190,6 @@
               <button class="vg-row" data-goto="gd-pdf"><span class="vg-emoji">🏖️</span> Beaches &amp; Day Trips <svg viewBox="0 0 24 24" class="icon icon-sm vg-chev"><use href="#i-chevron-right"/></svg></button>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">Ask about this guide…<span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span></div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -211,7 +197,7 @@
     <!-- ═══ gd-recos · GuidebookView (EDITOR w/ place cards) ═══ -->
     <div class="flow-screen" id="gd-recos" data-label="Local recommendations — place cards on a map with directions" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="gd-sidebar3"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" data-goto="gd-list"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> All guidebooks</a>
           <div class="gb-read" style="margin-top:20px">
@@ -252,10 +238,47 @@
       </div>
     </div>
 
+    <!-- ═══ gd-html · GuidebookHtmlView ═══ -->
+    <div class="flow-screen" id="gd-html" data-label="Web guidebook — host HTML in a real reader, not a bare iframe" style="flex:1">
+      <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
+        <aside class="sidebar" data-sidebar></aside>
+        <main style="display:flex;flex-direction:column;min-width:0">
+          <div class="gb-doc" style="flex:1">
+            <div class="gd-bar" style="top:0">
+              <a class="back-pill" data-goto="gd-list" style="box-shadow:none;background:transparent;border:none;padding:0 8px 0 0"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Getting Around Málaga</a>
+              <div class="gd-tools">
+                <button class="gd-tool" title="Open full screen"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-external-link"/></svg></button>
+              </div>
+            </div>
+            <div class="gd-scroll" style="align-items:center">
+              <div class="gb-html-frame" style="max-width:640px;width:100%;overflow:visible">
+                <span class="gb-html-badge"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-globe"/></svg> Web page · auto-translated to English</span>
+                <h2>Getting Around Málaga</h2>
+                <p>Málaga is compact and very walkable, but here's how to reach everything else from Villa Serena.</p>
+                <h3>From the airport (AGP)</h3>
+                <p>The <a>C1 Cercanías train</a> runs to María Zambrano station every 20 minutes (€2.30, 12 min). Taxis are a flat €25 to the centre. Uber and Cabify both work here.</p>
+                <h3>Buses &amp; metro</h3>
+                <ul>
+                  <li>Single bus ticket €1.40, buy from the driver.</li>
+                  <li>The metro (lines 1 &amp; 2) is handy for the university and stadium.</li>
+                  <li>Download the <a>EMT Málaga</a> app for live times.</li>
+                </ul>
+                <h3>Parking</h3>
+                <p>Street parking is blue-zone (paid 9:00–20:00, free Sundays). The nearest car park is <strong>SMASSA Calle Larios</strong>, two minutes from the villa.</p>
+                <h3>Bikes &amp; scooters</h3>
+                <p>The seafront cycle path is flat and gorgeous. Málagabici docks are dotted along the promenade.</p>
+                <span class="sim-note">GuidebookHtmlView renders html_content in a sandboxed iframe with injected reset CSS. Proposed: the same app chrome as the other formats + a "web page / auto-translated" badge so it doesn't feel like a broken embed</span>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
     <!-- ═══ gd-pdf · GuidebookPdfView ═══ -->
     <div class="flow-screen" id="gd-pdf" data-label="PDF guidebook — a proper reader with page count and download" style="flex:1">
       <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
-        <aside class="sidebar" id="gd-sidebar4"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main style="display:flex;flex-direction:column;min-width:0">
           <div class="gb-doc" style="flex:1">
             <div class="gd-bar" style="top:0">
@@ -289,7 +312,7 @@
     <!-- ═══ gd-unavailable · UnavailableFeature ═══ -->
     <div class="flow-screen" id="gd-unavailable" data-label="Not available yet — honest reason + the task that unlocks it" style="flex:1">
       <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
-        <aside class="sidebar" id="gd-sidebar5"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" data-goto="gd-list"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> All guidebooks</a>
           <div class="gb-state warn" style="max-width:460px;margin:40px auto 0;flex:none">
@@ -385,8 +408,8 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
-<script src="guide-toggle.js" defer></script>
 <script>
 /* clone the shared sidebar into every screen's <aside id="gd-sidebar*"> */
 (function () {

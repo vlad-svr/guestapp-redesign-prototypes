@@ -39,7 +39,7 @@
     <!-- ═══ hgd-list · HousingGuidebooksView (index) ═══ -->
     <div class="flow-screen" id="hgd-list" data-start data-label="Every guidebook of the home, listed in a persistent nav" style="flex:1">
       <div class="hg-shell">
-        <aside class="sidebar" id="hgd-sidebar"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="hg-main">
           <div class="greet">
             <h1>Villa Serena</h1>
@@ -99,7 +99,7 @@
     <!-- ═══ hgd-guide · GuidebookView (EDITOR) ═══ -->
     <div class="flow-screen" id="hgd-guide" data-label="Reading a guide — 94px title header, nav stays put" style="flex:1">
       <div class="hg-shell">
-        <aside class="sidebar" id="hgd-sidebar2"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <div style="min-width:0;display:flex;flex-direction:column">
           <div class="hg-doc-head">
             <h1>Welcome &amp; House Manual</h1>
@@ -159,7 +159,7 @@
     <!-- ═══ hgd-web · GuidebookHtmlView inside the shell ═══ -->
     <div class="flow-screen" id="hgd-web" data-label="Web guidebook — read inside the property shell" style="flex:1">
       <div class="hg-shell">
-        <aside class="sidebar" id="hgd-sidebar3"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <div style="min-width:0;display:flex;flex-direction:column">
           <div class="hg-doc-head">
             <h1>Getting Around Málaga</h1>
@@ -193,7 +193,7 @@
     <!-- ═══ hgd-pdf · GuidebookPdfView inside the shell ═══ -->
     <div class="flow-screen" id="hgd-pdf" data-label="PDF guidebook — doc toolbar, nav stays put" style="flex:1">
       <div class="hg-shell">
-        <aside class="sidebar" id="hgd-sidebar4"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <div style="min-width:0;display:flex;flex-direction:column">
           <div class="hg-doc-head">
             <h1>Beaches &amp; Day Trips</h1>
@@ -228,18 +228,7 @@
     <!-- ═══ hgd-loading · skeleton ═══ -->
     <div class="flow-screen" id="hgd-loading" data-autonext="hgd-list" data-autodelay="2200" data-label="Loading — the nav needs the guidebooks, the header needs the brand" style="flex:1">
       <div class="hg-shell">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sk" style="width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,0.12)"></div>
-            <div style="flex:1"><div class="sk" style="width:70%;height:11px;background:rgba(255,255,255,0.12)"></div></div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px;padding:10px 8px">
-            <div class="sk" style="height:12px;width:52%;background:rgba(255,255,255,0.1)"></div>
-            <div class="sk" style="height:12px;width:78%;background:rgba(255,255,255,0.1)"></div>
-            <div class="sk" style="height:12px;width:66%;background:rgba(255,255,255,0.1)"></div>
-            <div class="sk" style="height:12px;width:72%;background:rgba(255,255,255,0.1)"></div>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="hg-main">
           <div class="sk sk-line" style="width:280px;height:24px"></div>
           <div class="sk sk-line" style="width:420px;margin-top:12px"></div>
@@ -255,7 +244,7 @@
     <!-- ═══ hgd-empty · no_guidebooks_available ═══ -->
     <div class="flow-screen" id="hgd-empty" data-label="No guidebooks — the nav collapses to Home, the page offers an exit" style="flex:1">
       <div class="hg-shell">
-        <aside class="sidebar" id="hgd-sidebar5"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="hg-main">
           <div class="greet">
             <h1>Villa Serena</h1>
@@ -332,6 +321,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 <script>
 /* clone the shared property nav into every screen's <aside id="hgd-sidebar*">,

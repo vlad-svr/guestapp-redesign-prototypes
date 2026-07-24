@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass-lite">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -541,33 +541,14 @@
     <div class="flow-screen" id="hvd-scan" data-hv-url="guest.chekin.com/a1b2c3d4/verification/qr-scan" data-label="Scan the entrance QR (the presence gate)"
          data-hv-announce="Step 1 of 5. Scan the QR code at the property entrance to confirm you are here.">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">C</div>
-            <div><div class="sb-prop">Casa Marbella</div><div class="sb-ref">Booking · HMAK-2931</div></div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Virtual keys</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">AL</div>
-            <div><div class="sb-user">Ana López</div><div class="sb-mail">ana.lopez@email.com</div></div>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests" data-property="casa"></aside>
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to summary</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Scan the <span class="hl">entrance</span> code</div>
-              <p class="page-intro">You'll find the QR code printed at the property entrance. Scanning it here proves you've arrived.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Guest registration"
+                 data-title="Scan the {entrance} code"
+                 data-intro="You&#x27;ll find the QR code printed at the property entrance. Scanning it here proves you&#x27;ve arrived."></div>
             <div class="hv-notice hv-notice-col" style="margin-top:20px">
               <span class="hv-notice-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg></span>
               <span class="hv-notice-main">
@@ -652,33 +633,14 @@
          data-autonext="hvd-iv" data-autodelay="1800"
          data-hv-announce="QR code scanned. Presence confirmed. Opening identity verification.">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">C</div>
-            <div><div class="sb-prop">Casa Marbella</div><div class="sb-ref">Booking · HMAK-2931</div></div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Virtual keys</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">AL</div>
-            <div><div class="sb-user">Ana López</div><div class="sb-mail">ana.lopez@email.com</div></div>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests" data-property="casa"></aside>
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to summary</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">You're at the <span class="hl">property</span></div>
-              <p class="page-intro">Presence confirmed. Opening identity verification…</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Guest registration"
+                 data-title="You&#x27;re at the {property}"
+                 data-intro="Presence confirmed. Opening identity verification…"></div>
             <div class="hv-cam-col" style="margin-top:24px">
               <div class="desk-cam">
                 <div class="hv-sticker" aria-hidden="true">
@@ -744,33 +706,14 @@
     <div class="flow-screen" id="hvd-iv" data-hv-url="guest.chekin.com/a1b2c3d4/verification/document-selection" data-label="The regular IV flow"
          data-hv-announce="Step 2 of 5. Presence confirmed. Next: choose your document.">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">C</div>
-            <div><div class="sb-prop">Casa Marbella</div><div class="sb-ref">Booking · HMAK-2931</div></div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Virtual keys</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">AL</div>
-            <div><div class="sb-user">Ana López</div><div class="sb-mail">ana.lopez@email.com</div></div>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests" data-property="casa"></aside>
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to summary</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Now your <span class="hl">document</span></div>
-              <p class="page-intro">Two steps left, about ninety seconds. From here it's the standard identity verification flow.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Guest registration"
+                 data-title="Now your {document}"
+                 data-intro="Two steps left, about ninety seconds. From here it&#x27;s the standard identity verification flow."></div>
             <div style="margin-top:26px;display:flex;align-items:center;gap:16px;max-width:520px">
               <div class="s2-seal-check" style="background:linear-gradient(150deg,var(--blue-500),var(--blue-light));flex-shrink:0">
                 <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-id-card"/></svg>
@@ -822,33 +765,14 @@
     <div class="flow-screen" id="hvd-unavailable" data-hv-url="guest.chekin.com/a1b2c3d4/verification" data-label="Verification unavailable (IVUnavailableView)"
          data-hv-announce="Verification unavailable. This property verifies guests on the day of check-in.">
       <div class="desktop-shell" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">C</div>
-            <div><div class="sb-prop">Casa Marbella</div><div class="sb-ref">Booking · HMAK-2931</div></div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Virtual keys</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">AL</div>
-            <div><div class="sb-user">Ana López</div><div class="sb-mail">ana.lopez@email.com</div></div>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests" data-property="casa"></aside>
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-left"/></svg> Back to summary</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Verification <span class="hl">unavailable</span></div>
-              <p class="page-intro">This property verifies guests on the day of check-in.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Guest registration"
+                 data-title="Verification {unavailable}"
+                 data-intro="This property verifies guests on the day of check-in."></div>
             <div style="margin-top:22px;display:flex;flex-direction:column;gap:16px;max-width:460px">
               <div class="card">
                 <div class="card-header">
@@ -1022,7 +946,7 @@
 <script src="flow.js" defer></script>
 <script src="search-v2.js" defer></script>
 <script src="housing-iv-v2.js" defer></script>
-<script src="glass-toggle.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

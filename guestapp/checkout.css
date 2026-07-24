@@ -325,72 +325,22 @@
 /* Match the shared vela-tip convention (title stacks above desc). */
 .vela-tip .vt-title { display: block; }
 
-/* ============================================================
-   STRONG LIQUID-GLASS VARIANT  (html.glass-strong — checkout-toggle.js)
-   Standard = glass on chrome only, reading surfaces solid.
-   Strong   = the same reading surfaces frost over soft color orbs with
-              deeper blur + saturation. Navy sidebar + Vela rail stay as-is
-              (same convention as the Guidebooks Classic ↔ Liquid-glass toggle).
-   ============================================================ */
-
 /* 1 — lay soft color orbs behind the content so the frost has something to
        refract. Mobile scroller + desktop content column (not the navy chrome). */
-html.glass-strong .phone .screen,
-html.glass-strong .desk-page {
-  background:
-    radial-gradient(circle 300px at 10% 4%, rgba(56, 91, 248, 0.20), transparent 60%),
-    radial-gradient(circle 280px at 94% 16%, rgba(53, 229, 188, 0.17), transparent 62%),
-    radial-gradient(circle 340px at 74% 98%, rgba(140, 165, 255, 0.24), transparent 60%),
-    var(--bg-page);
-}
 
 /* 2 — frost the reading surfaces. Deeper blur/saturation than the baseline
        chrome (blur 18) so the "stronger" step is legible at a glance. */
-html.glass-strong .settled,
-html.glass-strong .addon,
-html.glass-strong .hold-card,
-html.glass-strong .ledger,
-html.glass-strong .card,
-html.glass-strong .card.glass,
-html.glass-strong .review-plat,
-html.glass-strong .transfer,
-html.glass-strong .co-summary,
-html.glass-strong .settled .st-check {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(28px) saturate(1.8);
-  -webkit-backdrop-filter: blur(28px) saturate(1.8);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
 
 /* inner dividers get lighter so the frost reads as one pane of glass */
-html.glass-strong .settled .st-row + .st-row,
-html.glass-strong .co-summary .cs-row + .cs-row { border-color: rgba(255, 255, 255, 0.45); }
 
 /* the transfer art keeps its gradient but rides a touch higher above the frost */
-html.glass-strong .transfer { overflow: hidden; }
-html.glass-strong .transfer .tr-body { background: rgba(255, 255, 255, 0.35); }
 
 /* the deposit hold stays visually hollow — dashed border, just frosted fill */
-html.glass-strong .hold-card { border-style: dashed; }
 
 /* added add-on keeps its blue ring, layered over the frost */
-html.glass-strong .addon.on {
-  box-shadow: 0 0 0 1px rgba(56, 91, 248, 0.4), var(--glass-shadow);
-}
 
 /* Accessibility: no backdrop-filter support → fall back to near-opaque panes
    so text never loses contrast (Appendix A rule). */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  html.glass-strong .settled,
-  html.glass-strong .addon,
-  html.glass-strong .hold-card,
-  html.glass-strong .ledger,
-  html.glass-strong .card,
-  html.glass-strong .review-plat,
-  html.glass-strong .transfer,
-  html.glass-strong .co-summary { background: rgba(255, 255, 255, 0.96); }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .co-ring, .co-ring::after, .confetti i { animation: none !important; }

@@ -174,7 +174,7 @@
     padding: 18px 14px 16px; gap: 8px;
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .stay-card:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(56,92,248,0.14), 0 3px 8px rgba(22,22,67,0.06); }
+  .stay-card:hover { transform: translateY(-2px); }
   .stay-card .sc-icon {
     width: 46px; height: 46px; border-radius: 50%;
     background: var(--tint-pressed); color: var(--blue-500);

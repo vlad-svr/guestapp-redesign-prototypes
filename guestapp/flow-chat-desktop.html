@@ -34,7 +34,7 @@
     <!-- ═══ cd-conversation ═══ -->
     <div class="flow-screen" id="cd-conversation" data-start data-label="Conversation — thread in the middle, a shared-context rail on the right" style="flex:1">
       <div class="chat-desk" style="flex:1;min-height:0">
-        <aside class="sidebar" data-sb></aside>
+        <aside class="sidebar" data-sidebar></aside>
 
         <div class="cd-main">
           <div class="cd-topbar">
@@ -105,6 +105,23 @@
 
         <!-- context rail -->
         <aside class="ctx-rail">
+          <div class="vela-head">
+            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
+            <div>
+              <div class="vela-name">Vela</div>
+              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
+            </div>
+          </div>
+          <p class="vela-intro">Marco usually replies within the hour. If it can't wait, I can answer the common ones right now.</p>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Good to know</div>
+            <div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><span><span class="vt-title" style="display:block">Typical reply: under an hour</span><span class="vt-desc">Between 22:00 and 08:00 expect the morning.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><span><span class="vt-title" style="display:block">Only you and your host see this</span><span class="vt-desc">Messages are tied to this booking and nobody else can read them.</span></span></div></div>
+          </div>
+          <div class="vela-section">
+            <div class="vela-eyebrow">Quick actions</div>
+            <div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-faq-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a><a class="vela-action" href="flow-guidebooks-desktop.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Open your guidebooks<span class="va-sub">Entry, Wi-Fi and house rules</span></span></a></div>
+          </div>
+
           <div class="ctx-card ctx-host">
             <div class="host-av lg">M<span class="presence-dot"></span></div>
             <div class="ch-name">Marco <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
@@ -147,7 +164,7 @@
     <!-- ═══ cd-empty ═══ -->
     <div class="flow-screen" id="cd-empty" data-label="First message — greeting + starter questions, with the same context rail" style="flex:1">
       <div class="chat-desk" style="flex:1;min-height:0">
-        <aside class="sidebar" data-sb></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <div class="cd-main">
           <div class="cd-topbar">
             <div class="host-av lg" style="width:44px;height:44px;font-size:16px">M<span class="presence-dot away"></span></div>
@@ -209,7 +226,7 @@
     <!-- ═══ cd-verify ═══ -->
     <div class="flow-screen" id="cd-verify" data-label="Verify it's you — the identity check as a centered panel" style="flex:1">
       <div class="chat-desk no-rail" style="flex:1;min-height:0">
-        <aside class="sidebar" data-sb></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <div class="cd-main">
           <div class="cd-center">
             <div class="cc-panel" style="text-align:center">
@@ -234,7 +251,7 @@
     <!-- ═══ cd-unavailable ═══ -->
     <div class="flow-screen" id="cd-unavailable" data-label="Chat not available — the disabled state with a reason and real alternatives" style="flex:1">
       <div class="chat-desk no-rail" style="flex:1;min-height:0">
-        <aside class="sidebar" data-sb></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <div class="cd-main">
           <div class="cd-center">
             <div class="cc-panel" style="text-align:center">
@@ -317,9 +334,9 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 <script src="chat-demo.js" defer></script>
-<script src="chat-toggle.js" defer></script>
 <script>
 /* clone the shared sidebar into every screen's <aside data-sb> */
 (function () {

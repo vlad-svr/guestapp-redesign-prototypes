@@ -38,45 +38,15 @@
     <!-- ═══ kd-keys · keys available ═══ -->
     <div class="flow-screen" id="kd-keys" data-start data-label="Keys ready — slide to open" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Ready for your stay</span><span>100%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge teal">Live</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="keys"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Virtual keys</div>
-              <div class="page-title">You're all set to get <span class="hl">in</span></div>
-              <p class="page-intro">Your phone opens both doors. Follow them in order — street entrance first, then your apartment.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Virtual keys"
+                 data-title="You&#x27;re all set to get {in}"
+                 data-intro="Your phone opens both doors. Follow them in order — street entrance first, then your apartment."></div>
 
             <details class="instr" style="margin-top:18px">
               <summary>
@@ -106,7 +76,7 @@
                   <div class="door-code">
                     <span>
                       <span class="dc-label">Entry code</span>
-                      <span class="dc-val">4471#</span>
+                      <span class="dc-caps" aria-label="Entry code 4471#"><i>4</i><i>4</i><i>7</i><i>1</i><i>#</i></span>
                     </span>
                     <button class="dc-copy" data-copy="Entry code copied" data-copy-label="Copy"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-copy"/></svg><span class="cc-txt">Copy</span></button>
                   </div>
@@ -163,19 +133,6 @@
               <span><span class="vt-title" style="display:block">Do I need to lock up?</span><span class="vt-desc">No — smart locks re-lock themselves. No key to lose or return.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about your keys…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">The code isn't working</span>
-                <span class="chip">Can my partner get in?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -183,36 +140,7 @@
     <!-- ═══ kd-gate · not available yet (conditions checklist) ═══ -->
     <div class="flow-screen" id="kd-gate" data-label="Not available yet — what unlocks your keys" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>75%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:75%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item" href="flow-iv-desktop.html#d-choice"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge warn">Soon</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="keys"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
@@ -298,18 +226,6 @@
               <span><span class="vt-title" style="display:block">Then it's automatic</span><span class="vt-desc">Check-in day flips the last switch — no action from you.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about your keys…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Why do you need Carlos's ID?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -317,45 +233,15 @@
     <!-- ═══ kd-window · before the access window ═══ -->
     <div class="flow-screen" id="kd-window" data-label="Before the window — access opens at 15:00" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Ready for your stay</span><span>100%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item" href="flow-payments-desktop.html#pd-cart"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge warn">15:00</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="keys"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Virtual keys</div>
-              <div class="page-title">Keys ready — <span class="hl">almost</span> time</div>
-              <p class="page-intro">Everything's set. The property opens access at check-in time — your codes and remote unlock switch on then.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Virtual keys"
+                 data-title="Keys ready — {almost} time"
+                 data-intro="Everything&#x27;s set. The property opens access at check-in time — your codes and remote unlock switch on then."></div>
             <div class="win-note" style="margin-top:18px">
               <svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg>
               <span>Access opens at <b>15:00 today, Fri 15 Aug</b>. Your entry code and remote unlock go live automatically — nothing to do here.</span>
@@ -427,44 +313,15 @@
     <!-- ═══ kd-doors · building with several doors (Salto) ═══ -->
     <div class="flow-screen" id="kd-doors" data-label="Building with many doors — open each" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">L</div>
-            <div>
-              <div class="sb-prop">Loft Gràcia</div>
-              <div class="sb-ref">Booking · CHK-64408</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Ready for your stay</span><span>100%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys <span class="sb-badge teal">Live</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="keys" data-property="loft"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Virtual keys</div>
-              <div class="page-title">Every door, <span class="hl">one place</span></div>
-              <p class="page-intro">This property has several smart doors. Open the entrance first, then whichever room you need.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Virtual keys"
+                 data-title="Every door, {one place}"
+                 data-intro="This property has several smart doors. Open the entrance first, then whichever room you need."></div>
 
             <div class="doors" style="margin-top:20px">
               <div class="door now">
@@ -711,6 +568,7 @@
 </script>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

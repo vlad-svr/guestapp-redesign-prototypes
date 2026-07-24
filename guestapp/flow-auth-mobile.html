@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass-lite">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,18 +39,25 @@
             <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
             <button class="at-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</button>
           </div>
+          <div class="auth-res">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg>
+            <b>Fri 10</b> → <b>Tue 14 Jul</b> <span class="sep">·</span> 4 nights <span class="sep">·</span> 2 guests
+          </div>
 
           <div class="auth-card top-gap fade-up">
             <div class="auth-head">
               <span class="ah-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-zap"/></svg></span>
-              <div class="auth-title">Check in, faster</div>
-              <p class="auth-sub">Create a quick account so your details are saved — <b>next time it's one tap</b>.</p>
+              <div class="auth-title-row">
+                <div class="auth-title">Check in, faster</div>
+                <span class="auth-optional"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> Optional</span>
+              </div>
+              <p class="auth-sub">A quick account saves your details — <b>next time it's one tap</b>. You can also skip it and check in right now.</p>
             </div>
 
             <div class="auth-perks">
               <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-save"/></svg></span> Your progress is saved as you go</div>
               <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span> Register everyone in your party once</div>
-              <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-key"/></svg></span> Come back any time for your keys &amp; guides</div>
+              <div class="auth-perk"><span class="ap-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span> See every reservation's progress in one place</div>
             </div>
 
             <div class="auth-form">
@@ -63,7 +70,14 @@
 
             <div class="auth-sep"><span>or</span></div>
             <button class="social-btn" data-modal="m-oauth"><svg viewBox="0 0 24 24" class="g"><use href="#i-google"/></svg> Continue with Google</button>
-            <button class="auth-alt" data-goto="a-type"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-x"/></svg> Continue without an account</button>
+            <button class="auth-skip" data-goto="a-type">
+              <span class="as-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user-x"/></svg></span>
+              <span class="as-main">
+                <span class="as-title">Continue without an account</span>
+                <span class="as-sub">Check in now. Nothing is saved for your next stay.</span>
+              </span>
+              <svg viewBox="0 0 24 24" class="icon icon-sm as-chev"><use href="#i-chevron-right"/></svg>
+            </button>
 
             <div class="auth-switch">Already have an account? <a data-goto="a-login">Log in</a></div>
             <div class="auth-foot"><a>Terms of use</a><span>·</span><a>Privacy policy</a></div>
@@ -150,6 +164,10 @@
             <span class="at-logo">V</span>
             <div><div class="at-prop">Villa Serena</div><div class="at-ref">Booking · CHK-58291</div></div>
             <button class="at-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</button>
+          </div>
+          <div class="auth-res">
+            <svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg>
+            <b>Fri 10</b> → <b>Tue 14 Jul</b> <span class="sep">·</span> 4 nights <span class="sep">·</span> 2 guests
           </div>
           <div class="auth-card top-gap fade-up">
             <div class="auth-head">
@@ -438,6 +456,7 @@
     <g id="i-lock"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
     <g id="i-eye"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7"/><circle cx="12" cy="12" r="3"/></g>
     <g id="i-eye-off"><path d="M10.7 5.1A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a13.2 13.2 0 0 1-2.2 2.9"/><path d="M6.6 6.6A13.3 13.3 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 4.4-1"/><path d="m2 2 20 20"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></g>
+    <g id="i-calendar"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>
     <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
     <g id="i-zap"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></g>
     <g id="i-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></g>
@@ -458,7 +477,6 @@
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="nav.js" defer></script>
-<script src="glass-toggle.js" defer></script>
 <script>
 /* password show/hide affordance (prototype-only) */
 document.addEventListener('click', function (e) {

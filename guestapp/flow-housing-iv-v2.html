@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass-lite">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -578,11 +578,10 @@
         <div class="seg done"></div><div class="seg active"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
       </div>
 
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Now your <span class="hl">document</span></div>
-        <p class="page-intro">Four steps left, about ninety seconds. From here it's the standard identity verification flow.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Guest registration"
+           data-title="Now your {document}"
+           data-intro="Four steps left, about ninety seconds. From here it&#x27;s the standard identity verification flow."></div>
 
       <div class="content" style="align-items:center;text-align:center;gap:18px;padding-top:0">
         <span class="hv-stage-tag session"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-lock"/></svg> The regular guestapp, signed in</span>
@@ -620,11 +619,10 @@
         </div>
       </div>
 
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Verification <span class="hl">unavailable</span></div>
-        <p class="page-intro">This property verifies guests on the day of check-in.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Guest registration"
+           data-title="Verification {unavailable}"
+           data-intro="This property verifies guests on the day of check-in."></div>
 
       <div class="content">
         <div class="card">
@@ -805,7 +803,7 @@
 <script src="flow.js" defer></script>
 <script src="search-v2.js" defer></script>
 <script src="housing-iv-v2.js" defer></script>
-<script src="glass-toggle.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

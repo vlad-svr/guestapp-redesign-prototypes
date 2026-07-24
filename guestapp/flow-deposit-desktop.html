@@ -39,7 +39,7 @@
     <!-- ═══ dpd-multi ═══ -->
     <div class="flow-screen" id="dpd-multi" data-start data-label="Two protections — the trade is one glance, not one scroll" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="dpd-sb1"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Check-in list</a>
           <div class="desk-col" style="max-width:760px">
@@ -99,7 +99,7 @@
     <!-- ═══ dpd-optional ═══ -->
     <div class="flow-screen" id="dpd-optional" data-label="Optional deposit — pay online, pay at the door, or decline" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="dpd-sb2"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Check-in list</a>
           <div class="desk-col" style="max-width:640px">
@@ -141,7 +141,7 @@
     <!-- ═══ dpd-edit ═══ -->
     <div class="flow-screen" id="dpd-edit" data-label="Edit from the cart — each option shows the new total" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="dpd-sb3"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" href="flow-payments-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Back to payment</a>
           <div class="desk-col" style="max-width:760px">
@@ -178,7 +178,7 @@
     <!-- ═══ dpd-paid ═══ -->
     <div class="flow-screen" id="dpd-paid" data-label="Already covered — a settled state instead of a silent redirect" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar" id="dpd-sb4"></aside>
+        <aside class="sidebar" data-sidebar></aside>
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-chevron-left"/></svg> Check-in list</a>
           <div class="desk-col" style="max-width:640px">
@@ -327,16 +327,7 @@
     <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
     <div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div>
   </div>
-  <p class="vela-intro">Deposits confuse everyone. Ask me anything about this one — I'll answer in plain money.</p>
-  <div class="vela-section">
-    <div class="vela-eyebrow">Popular questions</div>
-    <div class="vela-chips" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:7px">
-      <span class="chip">Is the €300 taken from my account?</span>
-      <span class="chip">What if my card has no limit left?</span>
-      <span class="chip">Which is cheaper for me?</span>
-      <span class="chip">Can I change this later?</span>
-    </div>
-  </div>
+  <p class="vela-intro">Deposits confuse everyone — here's this one in plain money.</p>
   <div class="vela-section">
     <div class="vela-eyebrow">Good to know</div>
     <button class="vela-tip">
@@ -374,6 +365,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 <script>
 (function () {

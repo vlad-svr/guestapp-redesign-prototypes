@@ -38,45 +38,15 @@
     <!-- ═══ pd-cart · PaymentsView + MyCart ═══ -->
     <div class="flow-screen" id="pd-cart" data-start data-label="Cart — charges vs holds, sticky ledger" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item" data-goto="pd-deposit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col wide">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Booking payments</div>
-              <div class="page-title">Review &amp; <span class="hl">pay</span></div>
-              <p class="page-intro">Everything for your stay in one place. Anything with a dashed line is a hold — reserved on your card, never charged.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Booking payments"
+                 data-title="Review &amp; {pay}"
+                 data-intro="Everything for your stay in one place. Anything with a dashed line is a hold — reserved on your card, never charged."></div>
             <div class="pay-tabs payd-tabs">
               <button class="pt on"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> My cart <span class="pt-count">4</span></button>
               <button class="pt" data-goto="pd-history"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-history"/></svg> Order history</button>
@@ -192,19 +162,6 @@
               <span><span class="vt-title" style="display:block">Not sure about an extra?</span><span class="vt-desc">Use ⋯ on the item to park it under "pay later" — nothing there is charged.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about payments…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">When is the hold released?</span>
-                <span class="chip">Can I get an invoice?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -212,45 +169,15 @@
     <!-- ═══ pd-history · OrderHistory tab ═══ -->
     <div class="flow-screen" id="pd-history" data-label="Order history — paid, holds, refunds" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item" data-goto="pd-deposit"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <a class="back-pill" href="home-desktop.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to home</a>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Booking payments</div>
-              <div class="page-title">Order <span class="hl">history</span></div>
-              <p class="page-intro">Every movement on this booking — payments, active holds and refunds, with the card they belong to.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Booking payments"
+                 data-title="Order {history}"
+                 data-intro="Every movement on this booking — payments, active holds and refunds, with the card they belong to."></div>
             <div class="pay-tabs payd-tabs">
               <button class="pt" data-goto="pd-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-cart"/></svg> My cart <span class="pt-count">4</span></button>
               <button class="pt on"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-history"/></svg> Order history</button>
@@ -329,19 +256,6 @@
               <span><span class="vt-title" style="display:block">Need an invoice?</span><span class="vt-desc">Each paid entry has a PDF receipt — open the entry to download it.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about payments…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Where's my refund?</span>
-                <span class="chip">When is the hold released?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -349,45 +263,15 @@
     <!-- ═══ pd-form · PaymentFormView (Stripe) ═══ -->
     <div class="flow-screen" id="pd-form" data-label="Pay — wallet or card, hold warned up front" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-goto="pd-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to cart</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Booking payments</div>
-              <div class="page-title">How would you like to <span class="hl">pay</span>?</div>
-              <p class="page-intro">One click with a wallet, or enter your card. The button always states the exact amount.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Booking payments"
+                 data-title="How would you like to {pay}?"
+                 data-intro="One click with a wallet, or enter your card. The button always states the exact amount."></div>
             <div class="payd-form-col">
               <div class="stripe-el">
                 <div class="se-fence"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> Rendered by Stripe — themed via Appearance API only</div>
@@ -471,19 +355,6 @@
               <span><span class="vt-title" style="display:block">On your statement</span><span class="vt-desc">"CHEKIN · VILLA SERENA" — €380.00, plus a €0.00 hold verification.</span></span>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about paying…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Why a €0.00 charge?</span>
-                <span class="chip">Can I use another card?</span>
-              </div>
-            </div>
-          </div>
         </aside>
       </div>
     </div>
@@ -491,36 +362,7 @@
     <!-- ═══ pd-processing · live timeline ═══ -->
     <div class="flow-screen" id="pd-processing" data-label="Processing — live timeline, not a spinner" data-autonext="pd-success" data-autodelay="3000" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page" style="display:flex;flex-direction:column">
           <div class="payd-stage">
@@ -567,36 +409,7 @@
     <!-- ═══ pd-success · receipt, full-bleed (no rail) ═══ -->
     <div class="flow-screen" id="pd-success" data-label="Paid — receipt + next task" style="flex:1">
       <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>75%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:75%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge teal">✓</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page payd-celebrate" style="display:flex;flex-direction:column">
           <div class="payd-stage">
@@ -629,37 +442,8 @@
 
     <!-- ═══ pd-error · declined ═══ -->
     <div class="flow-screen" id="pd-error" data-label="Declined — cause first, blue recovery, nothing charged" style="flex:1">
-      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+      <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page" style="display:flex;flex-direction:column">
           <div class="payd-stage">
@@ -676,89 +460,21 @@
           </div>
         </main>
 
-        <aside class="vela-rail">
-          <div class="vela-head">
-            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
-            <div>
-              <div class="vela-name">Vela</div>
-              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
-            </div>
-          </div>
-          <p class="vela-intro">Declines are almost always the bank being careful — here's what usually fixes it.</p>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Why payments get declined</div>
-            <div class="vela-tip">
-              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-bank"/></svg></span>
-              <span><span class="vt-title" style="display:block">Check your banking app</span><span class="vt-desc">Many banks ask you to approve online payments there first.</span></span>
-            </div>
-            <div class="vela-tip">
-              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-credit-card"/></svg></span>
-              <span><span class="vt-title" style="display:block">Limits &amp; online settings</span><span class="vt-desc">Daily limits or "online payments off" are the two most common causes.</span></span>
-            </div>
-            <div class="vela-tip">
-              <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg></span>
-              <span><span class="vt-title" style="display:block">No rush</span><span class="vt-desc">Your cart is saved — you can come back and pay any time before arrival.</span></span>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about payments…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Was I charged?</span>
-                <span class="chip">Can I pay on arrival?</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
 
     <!-- ═══ pd-deposit · protection chooser ═══ -->
     <div class="flow-screen" id="pd-deposit" data-label="Protection — consequences stated per option" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge warn">1</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge">4</span></a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection</a>
-          <a class="sb-item" href="flow-taxes-desktop.html#td-setup"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes</a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="payments"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-goto="pd-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to cart</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Property protection</div>
-              <div class="page-title">Choose how to <span class="hl">cover</span> the stay</div>
-              <p class="page-intro">Villa Serena asks for cover against accidental damage. Each option says exactly what happens to your money.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Property protection"
+                 data-title="Choose how to {cover} the stay"
+                 data-intro="Villa Serena asks for cover against accidental damage. Each option says exactly what happens to your money."></div>
             <div class="payd-opts">
               <button class="opt-card selected">
                 <span class="oc-flag"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended — nothing to pay</span>
@@ -818,19 +534,6 @@
             <div class="vela-tip">
               <span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-umbrella"/></svg></span>
               <span><span class="vt-title" style="display:block">Pick protection if…</span><span class="vt-desc">you'd rather pay €39 once than have €300 blocked — e.g. on a debit card.</span></span>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about cover…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">What counts as damage?</span>
-                <span class="chip">Debit card OK?</span>
-              </div>
             </div>
           </div>
         </aside>
@@ -898,6 +601,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

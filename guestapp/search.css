@@ -432,10 +432,10 @@
 }
 
 /* ============================================================
-   "Minimal" glass version — toggled via glass-toggle.js (html.glass-lite).
+   Minimal glass (html.glass-lite — baked onto <html>, the only version).
    Reverts the EXTRA frosted surfaces + orbs + gradient stage to solids;
-   keeps only the baseline chrome glass (top bars, CTA docks). This is the
-   restrained A/B counterpart to the full liquid-glass version above.
+   keeps only the baseline chrome glass (top bars, CTA docks). The full
+   liquid-glass rules above are the inert base this skin overrides.
    ============================================================ */
 html.glass-lite .sr-standalone { background: var(--bg-page); }
 html.glass-lite .sr-standalone::before,

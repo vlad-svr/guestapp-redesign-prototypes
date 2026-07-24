@@ -123,6 +123,7 @@
         <div class="topbar">
           <button class="back-btn" data-goto="tg-intro" aria-label="Back to intro"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
           <div class="tb-titles"><div class="tb-title">Shape your plan</div></div>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
         </div>
 
         <div class="tg-qhead">
@@ -391,6 +392,7 @@
         <div class="topbar">
           <button class="back-btn" data-goto="tg-intro" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
           <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
         </div>
 
         <div class="tg-fail">
@@ -426,6 +428,7 @@
           <button class="tb-action" data-modal="m-tg-save" aria-label="Save or share this plan">
             <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-share"/></svg>
           </button>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
         </div>
 
         <div class="tg-plan-head">
@@ -1047,6 +1050,7 @@
         <div class="topbar">
           <span class="back-btn" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></span>
           <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
         </div>
         <div class="content" aria-busy="true" aria-label="Loading your plan">
           <div class="tg-sk" style="height:28px;width:62%"></div>
@@ -1090,6 +1094,7 @@
         <div class="topbar">
           <button class="back-btn" data-goto="tg-plan" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
           <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
         </div>
 
         <div class="tg-offline" role="status">
@@ -1144,6 +1149,7 @@
         <div class="topbar">
           <button class="back-btn" data-goto="tg-intro" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
           <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
         </div>
         <div class="content">
           <div class="tg-blank">
@@ -1268,7 +1274,8 @@
         <span data-tg-toast-text></span>
       </div>
 
-    </div>
+    <div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><p class="vela-intro">I built this plan from your answers. Nothing here is fixed — tell me what to swap and I'll rebuild that day.</p><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span><span><span class="vt-title" style="display:block">Every stop has directions and hours</span><span class="vt-desc">Tap a stop to open it in maps or see when it closes.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></svg></span><span><span class="vt-title" style="display:block">Rebuild any day you dislike</span><span class="vt-desc">Regenerating one day leaves the rest of your plan alone.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-guidebooks-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Local recommendations<span class="va-sub">Your host's own list</span></span></a><a class="vela-action" href="flow-chat-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a></div></div></div></div>
+</div>
     </div>
   </div>
 </div>
@@ -1278,6 +1285,7 @@
      ============================================================ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
     <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
     <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
     <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>

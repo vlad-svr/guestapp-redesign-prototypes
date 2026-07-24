@@ -37,12 +37,12 @@
           <div class="tb-title">Guest details</div>
           <div class="tb-sub">Second guest</div>
         </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Guest registration</div>
-        <div class="page-title">Add <span class="hl">details</span></div>
-        <p class="page-intro">Scan a document and we'll fill everything for you — or type it in below.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Guest registration"
+           data-title="Add {details}"
+           data-intro="Scan a document and we&#x27;ll fill everything for you — or type it in below."></div>
       <div class="content">
         <button class="af-box" data-goto="af-scan">
           <span class="afb-ic"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-scan-line"/></svg></span>
@@ -169,12 +169,12 @@
           <div class="tb-title">Review your details</div>
           <div class="tb-sub">Filled from your document</div>
         </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Autofill</div>
-        <div class="page-title">Read from your <span class="hl">passport</span></div>
-        <p class="page-intro">These came straight off the document. Check the flagged one, then continue — you can still edit anything.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Autofill"
+           data-title="Read from your {passport}"
+           data-intro="These came straight off the document. Check the flagged one, then continue — you can still edit anything."></div>
       <div class="content">
         <div class="af-summary">
           <span class="as-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check-circle"/></svg></span>
@@ -330,7 +330,8 @@
       </div>
     </div>
 
-  </div>
+  <div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><p class="vela-intro">Your document already proves most of this — I fill those fields in and mark them so you only check, not type.</p><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h7l-2 8 9-12h-7l2-8z"/></svg></span><span><span class="vt-title" style="display:block">Green fields came from your ID</span><span class="vt-desc">Tap any of them to correct it — nothing is locked.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><span><span class="vt-title" style="display:block">The scan stays on your phone</span><span class="vt-desc">Only the extracted text is sent, never the photo itself.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-chat-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a><a class="vela-action" href="flow-faq-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a></div></div></div></div>
+</div>
 </div>
 
 <svg width="0" height="0" style="position:absolute">
@@ -359,6 +360,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

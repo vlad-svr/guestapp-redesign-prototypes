@@ -29,19 +29,18 @@
 <body>
 <div class="proto-stage">
   <h1>Identity Verification — Interactive Flow (Desktop)</h1>
-  <p class="lede">Three ways to verify on desktop: hand off to the phone via QR (recommended — sync is simulated live), use the webcam, or upload a file — the file picker opens directly and the chosen photo goes straight to crop &amp; confirm, one file per side. Click through; camera and sync steps advance automatically. Mock data only.</p>
+  <p class="lede">Document selection is the main flow: pick nationality &amp; document, then scan with the webcam — or upload a file (the picker opens directly; the photo goes straight to crop &amp; confirm, one file per side). The QR phone handoff is secondary, living in the Vela rail (sync is simulated live). Click through; camera and sync steps advance automatically. Mock data only.</p>
 
   <div class="flow-hud">
-    <button class="fh-chip on" data-scenario="d-choice">▶ Start (choose method)</button>
+    <button class="fh-chip on" data-scenario="d-choice">▶ Start (document selection)</button>
     <button class="fh-chip" data-scenario="d-qr">Continue on phone (QR)</button>
-    <button class="fh-chip" data-scenario="d-doc" data-doc="passport">Webcam — passport + liveness</button>
+    <button class="fh-chip" data-scenario="d-cam" data-doc="passport">Webcam — passport + liveness</button>
     <button class="fh-chip" data-scenario="d-cam" data-doc="dni">Webcam — ID card + selfie</button>
     <button class="fh-chip" data-scenario="d-crop">Upload — crop &amp; confirm</button>
     <button class="fh-chip" data-scenario="d-contact-email">Contacts — email + SMS</button>
     <button class="fh-chip" data-scenario="d-front-failed">Validation failed</button>
     <button class="fh-chip" data-scenario="d-cam-denied">Webcam blocked</button>
     <button class="fh-chip" data-scenario="d-unavailable">Outside check-in window</button>
-    <button class="fh-chip" data-scenario="d-upload">✕ Upload view (deprecated)</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
     <span class="fh-label"></span>
   </div>
@@ -54,93 +53,65 @@
     </div>
 
     <!-- ═══ d-choice ═══ -->
-    <div class="flow-screen" id="d-choice" data-start data-label="Choose how to verify" style="flex:1">
+    <div class="flow-screen" id="d-choice" data-start data-label="Document selection" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back to registration</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Verify your <span class="hl">identity</span></div>
-              <p class="page-intro">Takes about 2 minutes. Choose your document, then pick the camera that works best for you.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration"
+                 data-title="Verify your {identity}"
+                 data-intro="Takes about 2 minutes. Choose your document, then scan it with your webcam."></div>
             <div style="display:flex;flex-direction:column;gap:18px;margin-top:22px">
               <div class="card">
                 <div class="card-header">
                   <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg></span>
-                  <span class="ch-label">Nationality &amp; document</span>
+                  <span class="ch-label">Nationality</span>
                 </div>
-                <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-                  <div class="field">
-                    <label>Nationality</label>
-                    <div class="input" style="justify-content:space-between">
-                      <span style="display:flex;align-items:center;gap:10px">🇪🇸 <span style="font-weight:500">Spain</span></span>
-                      <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-down"/></svg>
-                    </div>
+                <button class="nat-row">
+                  <span class="nat-lbl">Nationality</span>
+                  <span class="nat-val">🇪🇸 <b>Spain</b> <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-down"/></svg></span>
+                </button>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></span>
+                  <span class="ch-label">Document type</span>
+                </div>
+                <div class="doc-list">
+                  <div class="doc-row selected" data-set-doc="passport">
+                    <span class="dr-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></span>
+                    <span class="dr-text">
+                      <span class="dr-name">Passport</span>
+                      <span class="dr-desc">Single-sided · liveness selfie</span>
+                      <span class="dr-flag"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended</span>
+                    </span>
+                    <span class="radio"></span>
                   </div>
-                  <div class="field">
-                    <label>Document type</label>
-                    <div class="input" style="justify-content:space-between">
-                      <span style="font-weight:500">Passport</span>
-                      <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-down"/></svg>
-                    </div>
+                  <div class="doc-row" data-set-doc="dni">
+                    <span class="dr-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></span>
+                    <span class="dr-text">
+                      <span class="dr-name">National ID card (DNI)</span>
+                      <span class="dr-desc">Front and back · quick selfie</span>
+                    </span>
+                    <span class="radio"></span>
+                  </div>
+                  <div class="doc-row" data-set-doc="dni">
+                    <span class="dr-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
+                    <span class="dr-text">
+                      <span class="dr-name">Driving license</span>
+                      <span class="dr-desc">Front and back · quick selfie</span>
+                    </span>
+                    <span class="radio"></span>
                   </div>
                 </div>
               </div>
 
               <div>
-                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin:2px 4px 12px;display:flex;align-items:center;gap:8px">
-                  <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-camera"/></svg> How do you want to scan?
-                </div>
-                <div class="handoff-grid">
-                  <div class="card handoff-card recommended">
-                    <span class="hc-flag"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended</span>
-                    <div class="hc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-smartphone"/></svg></div>
-                    <div class="hc-title">Continue on your phone</div>
-                    <div class="hc-desc">Scan a QR code — phone cameras read documents faster and sharper.</div>
-                    <button class="btn btn-primary btn-sm" style="margin-top:6px" data-goto="d-qr">Show QR code</button>
-                  </div>
-                  <div class="card handoff-card">
-                    <div class="hc-icon" style="margin-top:12px"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-camera"/></svg></div>
-                    <div class="hc-title">Use this computer</div>
-                    <div class="hc-desc">Use your webcam, or upload photos of your document instead.</div>
-                    <button class="btn btn-outline btn-sm" style="margin-top:6px" data-goto="d-doc">Use webcam</button>
-                  </div>
-                </div>
-                <div style="display:flex;justify-content:center;margin-top:12px">
-                  <button class="btn-ghost" style="color:var(--blue-500)" data-goto="d-crop"><svg viewBox="0 0 24 24" class="icon icon-sm" style="vertical-align:-3px"><use href="#i-upload"/></svg> No camera? Upload a photo of your document</button>
-                </div>
+                <button class="btn btn-primary" data-goto="d-cam">Start scanning <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
               </div>
 
               <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:var(--tint-pressed);font-size:11.5px;line-height:16px;color:var(--n-600)">
@@ -163,7 +134,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 1 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
               <div class="vela-steps">
                 <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
@@ -176,11 +147,6 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Quick actions</div>
             <div class="vela-actions" style="margin-top:10px">
-              <button class="vela-action" data-modal="m-qr">
-                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
-                <span>Continue on your phone<span class="va-sub">Scan a QR — phones scan sharper</span></span>
-                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
-              </button>
               <button class="vela-action" data-modal="m-share">
                 <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-share"/></svg></span>
                 <span>Share booking link<span class="va-sub">Let co-travellers register themselves</span></span>
@@ -189,16 +155,15 @@
             </div>
           </div>
           <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about check-in…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
+            <div class="vela-eyebrow">No camera?</div>
+            <div class="iv-qr" style="margin-top:10px">
+              <div class="vq-row">
+                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
+                <span class="vq-title">Use your phone instead<span class="va-sub">Scan this code to continue the verification on your mobile.</span></span>
               </div>
-              <div class="vela-chips">
-                <span class="chip">Which documents work?</span>
-                <span class="chip">Is my data safe?</span>
-              </div>
+              <button class="vq-box" data-goto="d-qr" title="Prototype: click to simulate scanning with your phone">
+                <div class="qr-mock"><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i></i></div>
+              </button>
             </div>
           </div>
         </aside>
@@ -208,47 +173,17 @@
     <!-- ═══ d-qr · ScanQRCodeView (desktop shows QR, waits for phone) ═══ -->
     <div class="flow-screen" id="d-qr" data-label="QR handoff — waiting for phone (simulated)" data-autonext="d-qr-done" data-autodelay="4200" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Continue on your <span class="hl">phone</span></div>
-              <p class="page-intro">This page updates live — as soon as you finish on the phone, you'll continue right here.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration"
+                 data-title="Continue on your {phone}"
+                 data-intro="This page updates live — as soon as you finish on the phone, you&#x27;ll continue right here."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
-              <div class="card glass">
+              <div class="card">
                 <div class="qr-panel">
                   <div class="qr-box">
                     <div class="qr-mock"><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -303,7 +238,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 1 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
               <div class="vela-steps">
                 <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
@@ -323,7 +258,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Quick actions</div>
             <div class="vela-actions" style="margin-top:10px">
-              <button class="vela-action" data-goto="d-doc">
+              <button class="vela-action" data-goto="d-cam">
                 <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-camera"/></svg></span>
                 <span>Use the webcam instead<span class="va-sub">If your phone isn’t handy</span></span>
                 <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
@@ -343,44 +278,15 @@
     <!-- ═══ d-qr-done ═══ -->
     <div class="flow-screen" id="d-qr-done" data-label="Phone finished — synced live" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>60%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:60%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <div class="desk-col">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Phone <span class="hl" style="color:var(--green-700)">finished</span> ✓</div>
-              <p class="page-intro">Your document and selfie were verified on the phone — everything synced here instantly.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration"
+                 data-title="Phone {finished} ✓"
+                 data-accent="ok"
+                 data-intro="Your document and selfie were verified on the phone — everything synced here instantly."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="card sync-card" style="border-color:rgba(53,229,188,0.45)">
                 <div class="sc-phone" style="background:var(--green-50);color:var(--green-700)"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-smartphone"/></svg></div>
@@ -409,7 +315,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 1 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
               <div class="vela-steps">
                 <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
@@ -429,7 +335,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Quick actions</div>
             <div class="vela-actions" style="margin-top:10px">
-              <button class="vela-action" data-goto="d-doc">
+              <button class="vela-action" data-goto="d-cam">
                 <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-camera"/></svg></span>
                 <span>Use the webcam instead<span class="va-sub">If your phone isn’t handy</span></span>
                 <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
@@ -449,45 +355,15 @@
     <!-- ═══ d-cam · webcam ═══ -->
     <div class="flow-screen" id="d-cam" data-label="Webcam capture (auto)" data-autonext="d-cam-captured" data-autodelay="3200" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Photo of the <span class="hl">front</span></div>
-              <p class="page-intro">Hold your passport up to the webcam — the photo is taken automatically when it's in focus.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Photo of the {front}"
+                 data-intro="Hold your passport up to the webcam — the photo is taken automatically when it&#x27;s in focus."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-cam">
                 <div class="mock-doc">
@@ -525,7 +401,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -560,44 +436,15 @@
     <!-- ═══ d-cam-captured ═══ -->
     <div class="flow-screen" id="d-cam-captured" data-label="Webcam photo captured" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Photo <span class="hl" style="color:var(--green-700)">captured</span></div>
-              <p class="page-intro">Sharp image, data readable — you can continue.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Photo {captured}"
+                 data-accent="ok"
+                 data-intro="Sharp image, data readable — you can continue."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-cam">
                 <div class="mock-doc">
@@ -633,7 +480,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -665,188 +512,19 @@
       </div>
     </div>
 
-    <!-- ═══ d-doc ═══ -->
-    <div class="flow-screen" id="d-doc" data-label="Choose document — branch point" style="flex:1">
-      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
-
-        <main class="desk-page">
-          <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
-          <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 1 of 4</div>
-              <div class="page-title">Choose your <span class="hl">document</span></div>
-              <p class="page-intro">Select your nationality and the ID you have with you.</p>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
-              <div class="card">
-                <div class="card-header">
-                  <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg></span>
-                  <span class="ch-label">Nationality</span>
-                </div>
-                <div class="card-body">
-                  <div class="field">
-                    <div class="input" style="justify-content:space-between">
-                      <span style="display:flex;align-items:center;gap:10px">🇪🇸 <span style="font-weight:500">Spain</span></span>
-                      <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-chevron-down"/></svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin:2px 4px 10px;display:flex;align-items:center;gap:8px">
-                  <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--blue-500)"><use href="#i-id-card"/></svg> Document type
-                </div>
-                <div class="rc-group">
-                  <div class="radio-card selected" data-set-doc="passport">
-                    <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book"/></svg></div>
-                    <div>
-                      <div class="rc-title">Passport</div>
-                      <div class="rc-desc">Single-sided · liveness selfie</div>
-                      <div class="rc-meta"><span class="badge badge-info"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-zap"/></svg> Recommended</span></div>
-                    </div>
-                    <div class="radio"></div>
-                  </div>
-                  <div class="radio-card" data-set-doc="dni">
-                    <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-id-card"/></svg></div>
-                    <div>
-                      <div class="rc-title">National ID card (DNI)</div>
-                      <div class="rc-desc">Front and back · quick selfie</div>
-                    </div>
-                    <div class="radio"></div>
-                  </div>
-                  <div class="radio-card" data-set-doc="dni">
-                    <div class="chip-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></div>
-                    <div>
-                      <div class="rc-title">Driving license</div>
-                      <div class="rc-desc">Front and back · quick selfie</div>
-                    </div>
-                    <div class="radio"></div>
-                  </div>
-                </div>
-              </div>
-              <button class="btn btn-primary btn-block" data-goto="d-cam">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
-            </div>
-          </div>
-        </main>
-
-        <aside class="vela-rail">
-          <div class="vela-head">
-            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
-            <div>
-              <div class="vela-name">Vela</div>
-              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Your verification</div>
-            <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 1 of 4</span></div>
-              <div class="vp-track"><div class="vp-fill" style="width:18%"></div></div>
-              <div class="vela-steps">
-                <div class="vs active"><span class="vs-dot"></span> Choose your document</div>
-                <div class="vs todo"><span class="vs-dot"></span> Scan your document</div>
-                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
-                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
-              </div>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Choosing your document</div>
-            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
-              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-zap"/></svg></span><span><span class="vt-title" style="display:block">Passport is fastest</span><span class="vt-desc">Single-sided — one photo and you’re done. ID cards need front and back.</span></span></div>
-              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Your data is safe</span><span class="vt-desc">Photos are encrypted, used only for this verification, and deleted afterwards per GDPR.</span></span></div>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about check-in…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Which documents work?</span>
-                <span class="chip">Is my data safe?</span>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-      </div>
-    </div>
-
     <!-- ═══ d-front-failed ═══ -->
     <div class="flow-screen" id="d-front-failed" data-label="Validation failed — retry detour" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Let’s try that <span class="hl" style="color:var(--red-soft)">again</span></div>
-              <p class="page-intro">The photo was too blurry to read. It happens — one more try.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Let’s try that {again}"
+                 data-accent="bad"
+                 data-intro="The photo was too blurry to read. It happens — one more try."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-cam">
                 <div class="mock-doc blurry">
@@ -890,7 +568,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -930,45 +608,15 @@
     <!-- ═══ d-back ═══ -->
     <div class="flow-screen" id="d-back" data-label="Webcam — back side (auto)" data-autonext="d-back-captured" data-autodelay="3000" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Now the <span class="hl">back</span> side</div>
-              <p class="page-intro">Flip your ID card over — we need the machine-readable zone at the bottom.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Now the {back} side"
+                 data-intro="Flip your ID card over — we need the machine-readable zone at the bottom."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-cam">
                 <div class="mock-doc backside">
@@ -1002,7 +650,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1027,45 +675,16 @@
     <!-- ═══ d-back-captured ═══ -->
     <div class="flow-screen" id="d-back-captured" data-label="Back captured" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Both sides <span class="hl" style="color:var(--green-700)">captured</span></div>
-              <p class="page-intro">Document read successfully — one quick selfie to go.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Both sides {captured}"
+                 data-accent="ok"
+                 data-intro="Document read successfully — one quick selfie to go."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-cam">
                 <div class="mock-doc backside">
@@ -1099,7 +718,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1124,45 +743,15 @@
     <!-- ═══ d-selfie ═══ -->
     <div class="flow-screen" id="d-selfie" data-label="Quick selfie (SelfieScanView, no liveness)" data-autonext="d-contact-email" data-autodelay="3200" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 3 of 4</div>
-              <div class="page-title">Take a quick <span class="hl">selfie</span></div>
-              <p class="page-intro">We match it with your document photo — the picture is taken automatically.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 3 of 4"
+                 data-title="Take a quick {selfie}"
+                 data-intro="We match it with your document photo — the picture is taken automatically."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-face">
                 <div class="mock-face"></div>
@@ -1191,7 +780,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 3 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1217,45 +806,15 @@
     <!-- ═══ d-live-1 ═══ -->
     <div class="flow-screen" id="d-live-1" data-label="Liveness 1 · position your face" data-autonext="d-live-2" data-autodelay="2600" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 3 of 4</div>
-              <div class="page-title">Center your <span class="hl">face</span></div>
-              <p class="page-intro">Keep your face inside the oval. The check starts automatically.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 3 of 4"
+                 data-title="Center your {face}"
+                 data-intro="Keep your face inside the oval. The check starts automatically."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-face">
                 <div class="mock-face"></div>
@@ -1284,7 +843,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 3 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1308,45 +867,15 @@
     <!-- ═══ d-live-2 ═══ -->
     <div class="flow-screen" id="d-live-2" data-label="Liveness 2 · turn your head" data-autonext="d-live-3" data-autodelay="2600" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 3 of 4</div>
-              <div class="page-title">Follow the <span class="hl">prompts</span></div>
-              <p class="page-intro">This proves it’s really you, live.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 3 of 4"
+                 data-title="Follow the {prompts}"
+                 data-intro="This proves it’s really you, live."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-face">
                 <div class="mock-face"></div>
@@ -1378,7 +907,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 3 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1402,45 +931,15 @@
     <!-- ═══ d-live-3 ═══ -->
     <div class="flow-screen" id="d-live-3" data-label="Liveness 3 · blink" data-autonext="d-live-passed" data-autodelay="2600" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 3 of 4</div>
-              <div class="page-title">Almost <span class="hl">there</span></div>
-              <p class="page-intro">Last challenge — blink slowly, twice.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 3 of 4"
+                 data-title="Almost {there}"
+                 data-intro="Last challenge — blink slowly, twice."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-face">
                 <div class="mock-face"></div>
@@ -1472,7 +971,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 3 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1496,45 +995,16 @@
     <!-- ═══ d-live-passed ═══ -->
     <div class="flow-screen" id="d-live-passed" data-label="Liveness passed" data-autonext="d-contact-email" data-autodelay="2600" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 3 of 4</div>
-              <div class="page-title">Liveness <span class="hl" style="color:var(--green-700)">passed</span></div>
-              <p class="page-intro">Matching your face with the document photo…</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 3 of 4"
+                 data-title="Liveness {passed}"
+                 data-accent="ok"
+                 data-intro="Matching your face with the document photo…"></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="desk-face">
                 <div class="mock-face" style="filter:blur(4px)"></div>
@@ -1567,7 +1037,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 3 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 3 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:70%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1591,45 +1061,15 @@
     <!-- ═══ d-contact-email ═══ -->
     <div class="flow-screen" id="d-contact-email" data-label="Verify your email — enter address (ContactsVerificationView)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 4 of 4 · contact 1 of 2</div>
-              <div class="page-title">Verify your <span class="hl">email</span></div>
-              <p class="page-intro">Booking updates and your virtual keys go here — let’s make sure it’s right.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 4 of 4 · contact 1 of 2"
+                 data-title="Verify your {email}"
+                 data-intro="Booking updates and your virtual keys go here — let’s make sure it’s right."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="field">
                 <label>Email</label>
@@ -1655,7 +1095,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 4 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1672,18 +1112,6 @@
               <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg></span><span><span class="vt-title" style="display:block">Never shared</span><span class="vt-desc">Your contact details go to your host only — never to third parties.</span></span></div>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about check-in…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">Why do you need my email?</span>
-              </div>
-            </div>
-          </div>
         </aside>
 
       </div>
@@ -1692,43 +1120,14 @@
     <!-- ═══ d-code-email ═══ -->
     <div class="flow-screen" id="d-code-email" data-label="Enter email code (ContactsVerificationCodes)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 4 of 4 · contact 1 of 2</div>
-              <div class="page-title">Check your <span class="hl">email</span></div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 4 of 4 · contact 1 of 2"
+                 data-title="Check your {email}">
               <p class="page-intro">Enter the 6-digit code we sent to <b style="color:var(--navy)">m•••a@gmail.com</b>.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
@@ -1769,7 +1168,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 4 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1794,43 +1193,14 @@
     <!-- ═══ d-code-email-error ═══ -->
     <div class="flow-screen" id="d-code-email-error" data-label="Wrong code — retry (invalid_verification_code)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 4 of 4 · contact 1 of 2</div>
-              <div class="page-title">Check your <span class="hl">email</span></div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 4 of 4 · contact 1 of 2"
+                 data-title="Check your {email}">
               <p class="page-intro">Enter the 6-digit code we sent to <b style="color:var(--navy)">m•••a@gmail.com</b>.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
@@ -1865,7 +1235,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 4 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1890,45 +1260,15 @@
     <!-- ═══ d-contact-phone ═══ -->
     <div class="flow-screen" id="d-contact-phone" data-label="Verify your phone — enter number (SMS)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 4 of 4 · contact 2 of 2</div>
-              <div class="page-title">Verify your <span class="hl">phone</span></div>
-              <p class="page-intro">Email verified ✓ — one more: your host uses this number only for urgent arrival updates.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 4 of 4 · contact 2 of 2"
+                 data-title="Verify your {phone}"
+                 data-intro="Email verified ✓ — one more: your host uses this number only for urgent arrival updates."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="field">
                 <label>Phone number</label>
@@ -1954,7 +1294,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 4 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -1978,43 +1318,14 @@
     <!-- ═══ d-code-phone ═══ -->
     <div class="flow-screen" id="d-code-phone" data-label="Enter SMS code" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 4 of 4 · contact 2 of 2</div>
-              <div class="page-title">Check your <span class="hl">messages</span></div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 4 of 4 · contact 2 of 2"
+                 data-title="Check your {messages}">
               <p class="page-intro">Enter the 6-digit code we sent by SMS to <b style="color:var(--navy)">+34 6•• ••• •78</b>.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
@@ -2052,7 +1363,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 4 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 4 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:90%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -2075,45 +1386,15 @@
     <!-- ═══ d-unavailable ═══ -->
     <div class="flow-screen" id="d-unavailable" data-label="Verification unavailable (IVUnavailableView)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration</div>
-              <div class="page-title">Verification <span class="hl">unavailable</span></div>
-              <p class="page-intro">This property verifies guests on the day of check-in.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration"
+                 data-title="Verification {unavailable}"
+                 data-intro="This property verifies guests on the day of check-in."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="card">
                 <div class="card-header">
@@ -2166,46 +1447,16 @@
 
     <!-- ═══ d-cam-denied ═══ -->
     <div class="flow-screen" id="d-cam-denied" data-label="Webcam blocked (permission denied)" style="flex:1">
-      <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+      <div class="desktop-shell" style="min-height:0;flex:1;grid-template-columns:266px minmax(0,1fr)">
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Camera access <span class="hl">needed</span></div>
-              <p class="page-intro">Your browser blocked the webcam. Allow access to scan your document — it takes 10 seconds.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Camera access {needed}"
+                 data-intro="Your browser blocked the webcam. Allow access to scan your document — it takes 10 seconds."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="denied-illustration">
                 <svg viewBox="0 0 24 24" class="icon" style="width:40px;height:40px"><use href="#i-camera-off"/></svg>
@@ -2245,49 +1496,6 @@
           </div>
         </main>
 
-        <aside class="vela-rail">
-          <div class="vela-head">
-            <div class="vela-avatar"><svg viewBox="0 0 24 24" class="icon" style="fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></div>
-            <div>
-              <div class="vela-name">Vela</div>
-              <div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Your verification</div>
-            <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
-              <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
-              <div class="vela-steps">
-                <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
-                <div class="vs active"><span class="vs-dot"></span> Scan your document</div>
-                <div class="vs todo"><span class="vs-dot"></span> Selfie & liveness</div>
-                <div class="vs todo"><span class="vs-dot"></span> Confirm details</div>
-              </div>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Camera blocked</div>
-            <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px">
-              <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-settings"/></svg></span><span><span class="vt-title" style="display:block">Re-enable it in your browser</span><span class="vt-desc">Click the camera icon in the address bar, allow access, then try again.</span></span></div>
-            </div>
-          </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Quick actions</div>
-            <div class="vela-actions" style="margin-top:10px">
-              <button class="vela-action" data-goto="d-qr">
-                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-smartphone"/></svg></span>
-                <span>Continue on your phone<span class="va-sub">No webcam needed</span></span>
-                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
-              </button>
-              <button class="vela-action" data-goto="d-crop">
-                <span class="va-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-upload"/></svg></span>
-                <span>Upload a photo instead<span class="va-sub">Pick a file from this computer</span></span>
-                <svg viewBox="0 0 24 24" class="icon icon-sm va-chev"><use href="#i-chevron-right"/></svg>
-              </button>
-            </div>
-          </div>
-        </aside>
 
       </div>
     </div>
@@ -2295,45 +1503,15 @@
     <!-- ═══ d-crop (front) — upload goes straight here from the native file picker ═══ -->
     <div class="flow-screen" id="d-crop" data-label="Upload — crop &amp; confirm (front)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Check the <span class="hl">front</span> side</div>
-              <p class="page-intro">Your photo is loaded — drag the corners so the document fills the frame.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Check the {front} side"
+                 data-intro="Your photo is loaded — drag the corners so the document fills the frame."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="crop-stage">
                 <div class="mock-doc">
@@ -2375,7 +1553,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -2392,19 +1570,6 @@
               <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg></span><span><span class="vt-title" style="display:block">One file per side</span><span class="vt-desc">ID cards need a separate photo of the back — we’ll ask for it next.</span></span></div>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about check-in…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">My photo keeps failing</span>
-                <span class="chip">Is my data safe?</span>
-              </div>
-            </div>
-          </div>
         </aside>
 
       </div>
@@ -2413,45 +1578,15 @@
     <!-- ═══ d-crop-back ═══ -->
     <div class="flow-screen" id="d-crop-back" data-label="Upload — crop &amp; confirm (back)" style="flex:1">
       <div class="desktop-shell with-rail" style="min-height:0;flex:1">
-        <aside class="sidebar">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
+        <aside class="sidebar" data-sidebar data-active="guests"></aside>
 
         <main class="desk-page">
           <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
           <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Now the <span class="hl">back</span> side</div>
-              <p class="page-intro">Front side saved ✓ — pick one more file and adjust the frame the same way.</p>
-            </div>
+            <div class="page-head" style="padding:0 0 4px" data-page-head
+                 data-kicker="Registration · Step 2 of 4"
+                 data-title="Now the {back} side"
+                 data-intro="Front side saved ✓ — pick one more file and adjust the frame the same way."></div>
             <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
               <div class="crop-stage">
                 <div class="mock-doc">
@@ -2491,7 +1626,7 @@
           <div class="vela-section">
             <div class="vela-eyebrow">Your verification</div>
             <div class="vela-progress" style="margin-top:10px">
-              <div class="vp-row"><span class="vp-title">Identity verification</span><span class="vp-count">Step 2 of 4</span></div>
+              <div class="vp-row"><span class="vp-title">Guest registration</span><span class="vp-count">Step 2 of 4</span></div>
               <div class="vp-track"><div class="vp-fill" style="width:45%"></div></div>
               <div class="vela-steps">
                 <div class="vs done"><span class="vs-dot"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg></span> Choose your document</div>
@@ -2508,111 +1643,8 @@
               <div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-id-card"/></svg></span><span><span class="vt-title" style="display:block">One file per side</span><span class="vt-desc">ID cards need a separate photo of the back — we’ll ask for it next.</span></span></div>
             </div>
           </div>
-          <div class="vela-section">
-            <div class="vela-eyebrow">Ask Vela</div>
-            <div class="vela-ask" style="margin-top:10px">
-              <div class="ask-input">
-                Ask anything about check-in…
-                <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-              </div>
-              <div class="vela-chips">
-                <span class="chip">My photo keeps failing</span>
-                <span class="chip">Is my data safe?</span>
-              </div>
-            </div>
-          </div>
         </aside>
 
-      </div>
-    </div>
-
-    <!-- ═══ d-upload — DEPRECATED: kept for reference only, no entry links point here ═══ -->
-    <div class="flow-screen" id="d-upload" data-label="Upload view — deprecated (kept for reference)" style="flex:1">
-      <div class="desktop-shell dep-wrap" style="min-height:0;flex:1">
-        <div class="dep-banner">
-          <span class="dep-tag">✕ Deprecated · not part of the flow</span>
-          <div class="dep-title">Separate "Upload your document" view</div>
-          <div class="dep-why">The real app has no upload screen — "Upload a file" opens the native file picker directly, one file per side, and the chosen photo lands on crop &amp; confirm (<code>CameraCapture.openFileDialog</code> → <code>PhotoUpload</code>). This page added an extra step and implied multi-file front/back detection that doesn't exist in the code.</div>
-          <button class="btn btn-primary btn-sm" data-goto="d-crop">See the replacement — crop &amp; confirm</button>
-        </div>
-        <aside class="sidebar dep-content">
-          <div class="sb-head">
-            <div class="sb-logo">V</div>
-            <div>
-              <div class="sb-prop">Villa Serena</div>
-              <div class="sb-ref">Booking · CHK-58291</div>
-            </div>
-          </div>
-          <div class="sb-progress">
-            <div class="sp-row"><span>Check-in progress</span><span>40%</span></div>
-            <div class="sp-track"><div class="sp-fill" style="width:40%"></div></div>
-          </div>
-          <div class="sb-group">Before you arrive</div>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-          <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge">2</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-          <div class="sb-group">Your stay</div>
-          <a class="sb-item" href="flow-remote-access-desktop.html#kd-keys"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-          <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-          <div class="sb-footer">
-            <div class="sb-avatar">MG</div>
-            <div>
-              <div class="sb-user">María García</div>
-              <div class="sb-mail">maria@gmail.com</div>
-            </div>
-            <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-          </div>
-        </aside>
-
-        <main class="desk-page dep-content">
-          <button class="back-pill" data-back><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-left"/></svg> Back</button>
-          <div class="desk-col" style="max-width:560px">
-            <div class="page-head" style="padding:0 0 4px">
-              <div class="kicker">Guest registration · Step 2 of 4</div>
-              <div class="page-title">Upload your <span class="hl">document</span></div>
-              <p class="page-intro">Drop photos or scans of your ID card — front and back. JPG, PNG or PDF, up to 10 MB.</p>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:16px;margin-top:22px">
-              <div class="dropzone">
-                <div class="dz-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-upload"/></svg></div>
-                <div class="dz-title">Drag &amp; drop, or <span class="hl">browse files</span></div>
-                <div class="dz-sub">All four corners visible · text readable · no glare</div>
-              </div>
-              <div class="card">
-                <div class="card-header">
-                  <span class="ch-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file"/></svg></span>
-                  <span class="ch-label">Uploaded files · 2 of 2</span>
-                </div>
-                <div class="upload-row">
-                  <div class="up-thumb"></div>
-                  <div>
-                    <div class="up-name">dni-front.jpg</div>
-                    <div class="up-meta">2.1 MB · front side</div>
-                  </div>
-                  <div class="up-state">
-                    <span class="badge badge-success"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg> Looks good</span>
-                  </div>
-                </div>
-                <div class="upload-row">
-                  <div class="up-thumb"></div>
-                  <div>
-                    <div class="up-name">dni-back.jpg</div>
-                    <div class="up-meta">1.8 MB · back side</div>
-                  </div>
-                  <div class="up-state">
-                    <span class="badge badge-success"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px"><use href="#i-check"/></svg> Looks good</span>
-                  </div>
-                </div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-                <button class="btn btn-primary btn-block" data-goto="d-complete">Continue <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button>
-                <button class="btn-ghost" style="color:var(--blue-500)" data-goto="d-cam"><svg viewBox="0 0 24 24" class="icon icon-sm" style="vertical-align:-3px"><use href="#i-camera"/></svg> Use the webcam instead</button>
-              </div>
-            </div>
-          </div>
-        </main>
       </div>
     </div>
 
@@ -2631,7 +1663,6 @@
       </div>
     </div>
 
-<div class="proto-modal" id="m-qr"><div class="pm-scrim"></div><div class="pm-card"><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Continue on your phone</div><div class="pm-desc">Scan with your phone camera — your verification continues there and this page updates live.</div><div class="pm-qr"><div class="qr-box-m"><div class="qr-cells-m"><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="off"></i><i></i><i class="off"></i><i class="off"></i><i></i><i></i><i></i><i></i><i class="off"></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="pm-steps"><div class="ps"><span class="ps-n">1</span><span>Open the <b>camera app</b> on your phone</span></div><div class="ps"><span class="ps-n">2</span><span>Point it at this code and tap the link</span></div><div class="ps"><span class="ps-n">3</span><span>Pick up <b>right where you left off</b></span></div></div></div><span class="pm-wait"><span class="spin"></span> Waiting for your phone… code expires in 9:41</span></div></div>
 <div class="proto-modal" id="m-share"><div class="pm-scrim"></div><div class="pm-card"><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Share booking link</div><div class="pm-desc">Anyone with this link can register guests for booking <b style="color:var(--navy)">CHK-58291</b>. It stops working after check-in.</div><div class="pm-link">guest.chekin.com/r/chk-58291<button class="pm-copy"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy</button></div><div class="pm-share-grid"><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span> WhatsApp</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span> Email</button><button class="pm-share-opt"><span class="so-ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></span> More</button></div></div></div>
 <div class="proto-modal" id="m-privacy"><div class="pm-scrim"></div><div class="pm-card"><button class="pm-close" data-modal-close>✕</button><div class="pm-title">How we treat your photos</div><div class="pm-desc">Identity photos are required by local law — here is exactly what happens to them.</div><div class="pm-list"><div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><span><b>Encrypted end to end.</b> In transit and at rest — nobody at the property sees the raw images.</span></div><div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M14 9h5"/><path d="M14 13h4"/></svg></span><span><b>Used only for this verification.</b> Matching your face to your document, nothing else.</span></div><div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></span><span><b>Deleted after your stay.</b> Removed automatically per GDPR retention rules.</span></div><div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span><span><b>Never shared</b> — except with authorities where the law requires guest registration.</span></div></div><div class="pm-actions"><button class="btn btn-primary" data-modal-close>Got it</button></div></div></div>
   </div>
@@ -2686,6 +1717,7 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

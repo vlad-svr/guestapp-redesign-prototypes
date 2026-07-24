@@ -1,0 +1,84 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Photography — one scene map, used everywhere a picture belongs.
+
+   The prototype used to stand a gradient plus an emoji where a photo goes:
+   a peach gradient with a 🥐 on the breakfast card, a blue one with a 🚕 on
+   the airport transfer. It reads as a placeholder, because it is one — and an
+   upsell that looks unfinished doesn't sell anything.
+
+   Every scene below is a real photograph. Add a `ph-*` class alongside the
+   existing cover class and the gradient is replaced:
+
+     <span class="of-photo ph-breakfast"> … </span>
+
+   Sizing, radius and overlays stay with the component; this file only supplies
+   the image. `--ph-*` custom properties are exposed so a component can compose
+   its own scrim over the photo without re-declaring the URL.
+
+   Every id here was checked twice: that it resolves (a mistyped Unsplash id
+   404s silently and leaves an empty box), and that the photograph is actually
+   of the thing it claims to be — several ids that loaded fine turned out to be
+   a camera, a gym and a jar of honey.
+
+   Hotlinked from Unsplash, matching the convention already used by the chat
+   flows. That means the prototype needs a network connection; it is fine on
+   GitHub Pages and fine locally, but an offline demo will show empty frames.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --ph-q: 640;              /* default width requested from the CDN */
+  --ph-fade: linear-gradient(180deg, rgba(10,10,40,0) 42%, rgba(10,10,40,0.55) 100%);
+}
+
+/* Base: anything carrying a ph-* class gets cover-positioned photography.
+   `background-color` stays as a load-time floor so the card never flashes
+   white before the image arrives. */
+[class*="ph-"] {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--n-100);
+}
+
+/* ── Stay & property ──────────────────────────────────────────────────── */
+.ph-home       { background-image: url("https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=640&q=70"); }
+.ph-livingroom { background-image: url("https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=640&q=70"); }
+.ph-checkin    { background-image: url("https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=640&q=70"); }
+.ph-checkout   { background-image: url("https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=640&q=70"); }
+.ph-parking    { background-image: url("https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=640&q=70"); }
+
+/* ── Food & drink ─────────────────────────────────────────────────────── */
+.ph-breakfast  { background-image: url("https://images.unsplash.com/photo-1509440159596-0249088772ff?w=640&q=70"); }
+.ph-coffee     { background-image: url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=640&q=70"); }
+.ph-food       { background-image: url("https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=640&q=70"); }
+.ph-wine       { background-image: url("https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=640&q=70"); }
+.ph-market     { background-image: url("https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=640&q=70"); }
+
+/* ── Barcelona & things to do ─────────────────────────────────────────── */
+.ph-city       { background-image: url("https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=640&q=70"); }
+.ph-gothic     { background-image: url("https://images.unsplash.com/photo-1562883676-8c7feb83f09b?w=640&q=70"); }
+.ph-gaudi      { background-image: url("https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?w=640&q=70"); }
+.ph-walking    { background-image: url("https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=640&q=70"); }
+.ph-museum     { background-image: url("https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=640&q=70"); }
+.ph-beach      { background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=640&q=70"); }
+.ph-park       { background-image: url("https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=640&q=70"); }
+.ph-night      { background-image: url("https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=640&q=70"); }
+
+/* ── Services ─────────────────────────────────────────────────────────── */
+.ph-spa        { background-image: url("https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=640&q=70"); }
+.ph-transfer   { background-image: url("https://images.unsplash.com/photo-1502877338535-766e1452684a?w=640&q=70"); }
+.ph-bike       { background-image: url("https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=640&q=70"); }
+.ph-sim        { background-image: url("https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=640&q=70"); }
+.ph-map        { background-image: url("https://images.unsplash.com/photo-1524661135-423995f22d0b?w=640&q=70"); }
+
+/* A scrim for cards that lay text directly over the photo. Opt-in, because
+   most cards keep their text in a body below the image and don't need it. */
+.ph-scrim { position: relative; }
+.ph-scrim::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ph-fade);
+  pointer-events: none;
+}
+.ph-scrim > * { position: relative; z-index: 1; }

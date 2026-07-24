@@ -132,7 +132,7 @@
     <a class="proto-link" href="flow-splash-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱</span> Splash screen — mobile</h3>
-      <p>Shown <b>beside today's splash, both clocked</b>. The shipped component holds every guest for <b>load + 5.0 s</b>, closes two curtains over its own logo at 4.3 s, and — if the auth request hangs — <b>never leaves</b>. Here the splash is a <b>handoff, not a gate</b>: it covers a shape-matched skeleton, leaves the instant the data lands (<code>max(load, 500 ms)</code>), stays silent below 1.2 s, admits slowness at 6 s, and hits a <b>watchdog</b> at 20 s. Seven states: fast, slow, taking-longer, can't-load, offline, host-branded and splash-disabled. A <b>Style</b> switch picks between <b>Classic</b> (the refined V1) and <b>Modern</b> (the glass/gradient rebuild) — same behaviour in both.</p>
+      <p><b>Clocked</b>, so the saving is watchable rather than claimed. The shipped component holds every guest for <b>load + 5.0 s</b>, closes two curtains over its own logo at 4.3 s, and — if the auth request hangs — <b>never leaves</b>. Here the splash is a <b>handoff, not a gate</b>: it covers a shape-matched skeleton, leaves the instant the data lands (<code>max(load, 500 ms)</code>), stays silent below 1.2 s, admits slowness at 6 s, and hits a <b>watchdog</b> at 20 s. Seven states: fast, slow, taking-longer, can't-load, offline, host-branded and splash-disabled. The <b>surface stays V1's</b> — flat brand ground, bare logo, three pulsing dots, and the two curtains — but the curtains now close on <b>data-ready</b> over a live screen instead of on a blind 5 s clock over a dead one.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-splash-desktop-v2.html">
@@ -156,19 +156,17 @@
     <a class="proto-link" href="home-desktop.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
       <h3><span class="ff">🖥</span> Home — desktop <span class="tag-current">Current</span></h3>
-      <p>Navy sidebar + main + right rail: hero with countdown, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards, plus a "Handpicked for your trip" 3-col grid with the Mozio wide banner + Airalo eSIM banner and a Free-offers FAB.</p>
+      <p>Navy sidebar + main + right rail: booking hero with the two key dates, checklist with progress ring, timeline and "next up" spotlight, upsell and host-contact cards, plus a "Handpicked for your trip" 3-col grid with the Mozio wide banner + Airalo eSIM banner and a Free-offers FAB.</p>
       <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
-    <a class="proto-link is-proposal" href="home-v2.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-home"/></svg></div>
-      <h3><span class="ff">📱</span> Home — mobile <span class="tag-proposal">Proposal</span></h3>
-      <p>The "check-in cockpit" rebuild: one <b>command hero</b> fuses greeting, a progress meter, the single <b>next action</b> and the reward it unlocks; below it an honest <b>step timeline</b>, an <b>"unlocks when you're done"</b> strip, and clearly-optional extras. Four states — in progress, complete, loading (skeleton) and menu drawer. Ships a <b>Standard · Liquid glass</b> switch that frosts the reading surfaces over color orbs.</p>
-      <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link is-proposal" href="home-desktop-v2.html">
+  </div>
+
+  <h3 class="feat">Staged journey</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="home-desktop-stages.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
-      <h3><span class="ff">🖥</span> Home — desktop <span class="tag-proposal">Proposal</span></h3>
-      <p>Navy sidebar + command hero (progress + next-action side by side), the step timeline, a 3-up unlocks row, a demoted optional-extras grid (Mozio + Airalo banners), and a host-contact right rail. The V2 concept on the desktop shell.</p>
+      <h3><span class="ff">🖥</span> Staged journey — desktop <span class="tag-proposal">Proposal</span></h3>
+      <p>The same Home, split into four stages — <b>Pre-stay, Check-in, Stay, Departure</b>. The booking hero stays constant; animated tabs above it switch stages, and each stage reveals only its own actions, so the screen carries a quarter of what it used to. Stages ahead of today are <b>locked until their date</b> and a date simulator walks them open. Kept beside Home rather than replacing it, so the flat and staged versions can be compared.</p>
       <span class="go">Open screens <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -193,27 +191,15 @@
   <div class="proto-links" style="margin-top:0">
 
 
-    <a class="proto-link" href="flow-search-mobile.html">
+    <a class="proto-link" href="flow-search-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">📱</span> Find booking — mobile <span class="tag-current">Current</span></h3>
-      <p>The very first step, before check-in: <code>pages/SearchReservation</code>. The property you're checking into is shown up front (catch a wrong link early), the two methods become <b>self-explaining cards</b> that advance on one tap, the booking code gets a real <b>"where do I find this?"</b> answer, the search runs as a reassuring <b>radar</b> → booking-found, and the dead-end "not found" becomes <b>next steps</b> (retry · other method · contact host). Plus the grouped create-reservation (property-link) form with "From your search" tags and the direct-link auto-search.</p>
-      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="flow-search-desktop.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">🖥</span> Find booking — desktop <span class="tag-current">Current</span></h3>
-      <p>The same search as a centred <b>pre-auth card</b> on the branded gradient — search happens before any reservation exists, so there's no sidebar or app shell yet. Method cards, booking-code with the help dialog, date + email, grouped create-reservation, the searching radar → found, the actionable not-found and the direct-link auto-search — all mirrored.</p>
-      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link is-proposal" href="flow-search-v2.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">📱</span> Find booking — mobile <span class="tag-proposal">Proposal</span></h3>
+      <h3><span class="ff">📱</span> Find booking — mobile</h3>
       <p>The arrival card. This screen is the <b>face of the property</b> — the first thing a guest ever sees of it — so the property becomes the hero: a photographic canvas carries the name, the place, the host and a rating, and the search floats over it on a frosted sheet. The booking code is entered into <b>segmented cells</b>, the wait becomes a <b>legible checklist</b> over the property being matched, and "found" pays off as a <b>boarding pass</b> with dates, nights and reference.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
-    <a class="proto-link is-proposal" href="flow-search-desktop-v2.html">
+    <a class="proto-link" href="flow-search-desktop-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">🖥</span> Find booking — desktop <span class="tag-proposal">Proposal</span></h3>
+      <h3><span class="ff">🖥</span> Find booking — desktop</h3>
       <p>The desktop half of the arrival card: the property holds a <b>full-height canvas</b> on the left — photo, host, a line from a past guest, the trust badges — while the search lives on a frosted card to the right. The canvas never leaves, so the guest can see where they're going while they search, while they wait, and when it's found.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
@@ -247,22 +233,6 @@
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">🖥</span> IV QR — desktop</h3>
       <p>The same flow on the door-mounted tablet. The entrance-QR arrival keeps the full-height property canvas (a wrong sticker is caught before a letter is typed); the in-app scanner and the shared IV steps render in the <b>real guestapp shell</b> — navy sidebar, "Back to summary", and a URL bar that moves from <code>/verify-on-housing</code> to <code>/:token/verification/qr-scan</code> as the guest crosses into their own session.</p>
-      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-  </div>
-
-  <h3 class="feat">Guests summary</h3>
-  <div class="proto-links" style="margin-top:0">
-    <a class="proto-link" href="flow-guests-v2.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-users"/></svg></div>
-      <h3><span class="ff">📱</span> Guests summary — mobile</h3>
-      <p>Shown <b>beside today's hub</b> for direct comparison. Deliberately the same shape — same header, sections and one-row-per-guest list — with the noise removed and the defects fixed: <b>one progress line + a segment per guest</b>, <b>action-named statuses</b> (Verify ID / Add details / Not started — never two rows both labelled "Incomplete"), a named slot for every missing guest, a docked CTA that says <b>which guest and which task</b>, and a <b>delete that asks first and can be undone</b>. Six states: partial, nobody registered, solo, all-done, skeleton, background refresh.</p>
-      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="flow-guests-desktop-v2.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
-      <h3><span class="ff">🖥</span> Guests summary — desktop</h3>
-      <p>The same roster as the navy-sidebar <b>“Guests”</b> destination: progress line, meter and list in a reading column, and the mobile dock reborn as a small <b>action ledger</b> — next guest, next task, and the reward it unlocks ("virtual keys unlock automatically"). Partial, nobody-registered, all-done and skeleton states.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -486,7 +456,7 @@
     <a class="proto-link" href="flow-faq-mobile.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱</span> FAQ &amp; language — mobile</h3>
-      <p>The FAQ grouped by check-in task with answers that end in the action they describe, search that auto-opens and highlights its matches, a no-results state with a way out (Ask Vela), and the language bottom sheet with a "Suggested" group — switching is instant, translated in place, no reload.</p>
+      <p>The FAQ grouped by check-in task with answers that end in the action they describe, search that auto-opens and highlights its matches, a no-results state with a way out (Vela tips), and the language bottom sheet with a "Suggested" group — switching is instant, translated in place, no reload.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-faq-desktop.html">
@@ -536,7 +506,7 @@
     <a class="proto-link" href="vela.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkle"/></svg></div>
       <h3>Vela helper</h3>
-      <p>The contextual assistant: glass rail on desktop, FAB + glass sheet on mobile — with Ask Vela input, quick actions (QR handoff, share link, guest count), progress, offers and guidebook blocks.</p>
+      <p>The contextual assistant: glass rail on desktop, FAB + glass sheet on mobile — with quick actions (QR handoff, share link, guest count), progress, offers and guidebook blocks — no chat, Vela is tips and shortcuts.</p>
       <span class="go">Open prototype <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="modals-demo.html">
@@ -559,10 +529,10 @@
   <h3 class="feat">Splash screen</h3>
   <div class="imp-grid" style="margin-bottom:8px">
     <div class="imp">
-      <span class="tag glass-t">Two treatments</span>
-      <h4>Classic and Modern — same component, same behaviour</h4>
-      <p class="was"><b>Now in code:</b> one look, and it is the look that produced the dead screen: a flat background, a logo, three dots, and two curtains closing on a blind five-second clock.</p>
-      <p class="now"><b>Proposed:</b> a <b>Style</b> switch offers two shippable surfaces. <b>Classic</b> is V1 with its four defects fixed and <i>nothing else touched</i> — flat brand ground, bare logo, the three dots, curtains removed. <b>Modern</b> rebuilds the surface in the <b>pre-auth idiom already used by Find booking and Sign-in</b>: branded gradient, colour orbs, film grain, a liquid-glass plate with one slow specular sweep, and the honest ring. The timing contract, the states, the handoff and the whole accessibility pass are <b>identical in both</b> — the choice is purely aesthetic. (The dots are honest too: indeterminate by construction, they can never imply a percentage, which is why Classic needs no ring.)</p>
+      <span class="tag glass-t">Surface</span>
+      <h4>The look does not change</h4>
+      <p class="was"><b>Now in code:</b> a flat brand ground, the logo, three pulsing dots, and two curtains that close over all of it.</p>
+      <p class="now"><b>Proposed:</b> a flat brand ground, the logo, three pulsing dots, and two curtains that close over all of it. The surface is <b>V1's, unchanged</b> — this screen is on for under a second, so there is nothing here worth redesigning. Every change in this section is <b>behavioural</b>: when things happen, what the guest is told, and what happens when it goes wrong.</p>
     </div>
     <div class="imp">
       <span class="tag ux-t">Speed</span>
@@ -578,15 +548,15 @@
     </div>
     <div class="imp">
       <span class="tag ux-t">Continuity</span>
-      <h4>The curtains close over a dead screen — so they're gone</h4>
-      <p class="was"><b>Now in code:</b> the curtains animate from <i>mount</i> over 5 s and are fully shut by 86 % (≈4.3 s), while dismissal waits for <code>load + 5000 ms</code>. Everything in between is an opaque rectangle of the brand colour — no logo, no loader, no text. On a 3 s load that is <b>3.7 s of nothing</b>. The V1 phone counts it out loud.</p>
-      <p class="now"><b>Proposed:</b> the splash sits <b>on top of a shape-matched skeleton</b> of the screen it is about to become. On ready the surface fades, the mark <b>travels to the header logo slot</b>, and the skeleton flips to content in the same frame. There is never a blank frame between splash and app.</p>
+      <h4>The curtains stay — they just stop closing over nothing</h4>
+      <p class="was"><b>Now in code:</b> the curtains animate from <i>mount</i> over 5 s and are fully shut by 86 % (≈4.3 s), while dismissal waits for <code>load + 5000 ms</code>. Everything in between is an opaque rectangle of the brand colour — no logo, no loader, no text. On a 3 s load that is <b>3.7 s of nothing</b>.</p>
+      <p class="now"><b>Proposed:</b> the same two curtains, started on <b>data-ready</b> instead of on mount. They close over a screen that is <b>already rendered behind them</b> — the splash sits on a shape-matched skeleton of what it is about to become — and the surface is gone <b>340 ms</b> later. The motion the guest recognises is kept; the dead rectangle it used to hide is not.</p>
     </div>
     <div class="imp">
       <span class="tag ux-t">Honesty</span>
-      <h4>A progress ring that can't lie</h4>
-      <p class="was"><b>Now in code:</b> three pulsing dots. They say something is happening, but not what, and not whether it is progressing — they look identical at 300 ms and at 30 s.</p>
-      <p class="now"><b>Proposed:</b> a ring that eases toward <b>90 % and stops</b>, reaching 100 % only when the data actually lands. Past 6 s it drops back to <b>indeterminate</b>: a stalled 90 % arc reads as "broken", a rotating one reads as "working". No fake progress bar, ever.</p>
+      <h4>A loader that can't lie</h4>
+      <p class="was"><b>Now in code:</b> three pulsing dots drawn with <code>box-shadow: 9999px</code> — a rendering trick that assistive tech cannot see at all, on an unlabelled <code>&lt;div&gt;</code>.</p>
+      <p class="now"><b>Proposed:</b> the same three dots, because they are <b>honest by construction</b> — indeterminate, and incapable of claiming a percentage they haven't earned. What changes is that they are real elements inside a labelled <code>role="status"</code> region, and that the <i>copy</i> carries the honesty: silent below 1.2 s, naming what is being fetched past it, and admitting slowness at 6 s. No fake progress bar, ever.</p>
     </div>
     <div class="imp">
       <span class="tag ux-t">Branding</span>
@@ -610,7 +580,7 @@
       <span class="tag ux-t">Defect</span>
       <h4>A <code>cubic-bezier</code> that has never rendered</h4>
       <p class="was"><b>Now in code:</b> <code>animation-timing-function: cubic-bezier(0, 1.23)</code> passes <b>two</b> arguments where CSS requires four. The declaration is invalid, browsers drop it, and the curtains silently fall back to <code>ease</code>. The intended overshoot has never once appeared on a guest's screen.</p>
-      <p class="now"><b>Proposed:</b> the curtains are removed entirely, and the bug goes with them. The V1 replica reproduces the <i>fallback</i>, not the intent — because the fallback is what ships.</p>
+      <p class="now"><b>Proposed:</b> the curtains become a <b>CSS transition</b> with a valid four-argument easing, so the intended motion actually renders — and, being a transition rather than a mount-time animation, it can only run when there is something to hand off to.</p>
     </div>
   </div>
 
@@ -648,7 +618,7 @@
       <span class="tag trust-t">Motivation</span>
       <h4>The account is sold, not just demanded</h4>
       <p class="was"><b>Now in code:</b> the create-account screen asks for an email with no reason given; "continue without logging in" sits below as an equal, unexplained option — so guests can't weigh the choice.</p>
-      <p class="now"><b>Proposed:</b> three plain-language <b>value bullets</b> (progress is saved · register everyone once · come back for keys &amp; guides) frame <i>why</i> an account is worth 20 seconds, and "continue without an account" stays available but honest. On desktop these live in a persistent <b>brand panel</b>.</p>
+      <p class="now"><b>Proposed:</b> three plain-language <b>value bullets</b> (progress is saved · register everyone once · every reservation&rsquo;s progress in one place) frame <i>why</i> an account is worth 20 seconds, and "continue without an account" stays available but honest. On desktop these live in a persistent <b>brand panel</b>.</p>
     </div>
     <div class="imp">
       <span class="tag ux-t">Onboarding</span>
@@ -689,12 +659,6 @@
       <h4>"Booking found" becomes something worth finding</h4>
       <p class="was"><b>Now in code:</b> the success state is the same modal with its text swapped to "Booking found!", then an immediate redirect. The one moment the guest is owed a reward passes in a second, showing nothing.</p>
       <p class="now"><b>Proposed / in V2:</b> a <b>boarding pass</b> — property strip, check-in and check-out dates with the night count between them, a copyable reference, the lead guest and party size, a QR block. Tear notches are masked out of the card so it reads as a real ticket on any background. The guest sees the stay we matched, and can check it's the right one before continuing.</p>
-    </div>
-    <div class="imp">
-      <span class="tag glass-t">Liquid glass</span>
-      <h4>Two glass versions, side-by-side switchable</h4>
-      <p class="was"><b>Now in code:</b> the pre-auth screens (search, errors) are flat solid cards with lots of empty margin — no considered treatment of depth or brand at the moment the guest first lands.</p>
-      <p class="now"><b>Proposed / in the prototype:</b> a <b>"Glass style: Full · Minimal"</b> toggle on the Find-booking &amp; Error pages. <b>Full</b> frosts the floating auth card, method cards, property chip and language pill over color orbs; <b>Minimal</b> reverts those to solids and keeps only baseline chrome glass. The choice persists across pages so the two can be compared directly — a decision aid, not a shipped feature.</p>
     </div>
     <div class="imp">
       <span class="tag ux-t">Clarity</span>
@@ -1081,16 +1045,10 @@
       <p class="now"><b>Proposed:</b> map blocks gain a <b>name + address and a Directions sheet</b> (Open in Google / Apple Maps); recommendations render as <b>place cards</b> with distance, walk time, rating and a Directions deep-link — the guidebook becomes a thing you use on the street, not just read.</p>
     </div>
     <div class="imp">
-      <span class="tag glass-t">Liquid glass</span>
-      <h4>Guidebooks ship with a Classic · Liquid-glass A/B switch</h4>
-      <p class="was"><b>Now in code:</b> there's one flat treatment — no way to weigh a restrained, chrome-only look against a glassier one on the same content.</p>
-      <p class="now"><b>Proposed / in the prototype:</b> a <b>"Version: Classic · Liquid glass"</b> toggle on both Guidebooks pages. <b>Classic</b> (default) is the shipped look — glass on chrome only, solid reading cards. <b>Liquid glass</b> (<code>html.glass-max</code>) frosts the reading surfaces (cards, search, map, place cards) over soft color orbs. The choice persists across mobile ↔ desktop — a decision aid, mirroring the Find-booking / Error switch.</p>
-    </div>
-    <div class="imp">
       <span class="tag ux-t">Honesty</span>
       <h4>PDF/HTML guides read like documents; dead ends get exits</h4>
       <p class="was"><b>Now in code:</b> <code>GuidebookPdfView</code> and <code>GuidebookHtmlView</code> drop the content into a bare iframe with no chrome; <code>UnavailableFeature</code> lists reasons but no next step, and the empty list is a blank card.</p>
-      <p class="now"><b>Proposed:</b> a <b>document toolbar</b> (page count · download · full screen) for PDFs and a "web page / auto-translated" badge for HTML; the not-available state turns each reason into a <b>deep-linked task</b> (finish registration) like the virtual-keys gate; and the empty state offers <b>Ask Vela / FAQ</b> instead of nothing.</p>
+      <p class="now"><b>Proposed:</b> a <b>document toolbar</b> (page count · download · full screen) for PDFs and a "web page / auto-translated" badge for HTML; the not-available state turns each reason into a <b>deep-linked task</b> (finish registration) like the virtual-keys gate; and the empty state offers <b>Vela tips / FAQ</b> instead of nothing.</p>
     </div>
   </div>
 
@@ -1300,12 +1258,6 @@
       <p class="was"><b>Now in code:</b> <code>RateForm</code> is a bare <code>&lt;RatingRadioGroup&gt;</code> + textarea; the submit is <code>disabled</code> until a star is picked <b>with no affordance</b> saying why, and there's no emotive confirmation of the choice.</p>
       <p class="now"><b>Proposed:</b> the row gives an <b>emotive read-out</b> (😞 Very poor … 🤩 Excellent!) announced via <code>aria-live</code>, is a real <code>role="radiogroup"</code> with <b>arrow-key / Enter / Space</b> support, and the submit only lights up — and routes by score — once a star is set.</p>
     </div>
-    <div class="imp">
-      <span class="tag glass-t">Liquid glass</span>
-      <h4>Check-out ships a Standard · Liquid-glass A/B switch</h4>
-      <p class="was"><b>Now in code:</b> the shipped rule keeps glass on chrome only, reading surfaces solid — there's no way to weigh a stronger, fully-frosted treatment against it on the same screens.</p>
-      <p class="now"><b>Proposed / in the prototype:</b> a <b>"Glass style: Standard · Liquid glass"</b> toggle (<code>checkout-toggle.js</code>) on both check-out pages. <b>Standard</b> is the default; <b>Liquid glass</b> (<code>html.glass-strong</code>) frosts the reading surfaces — checklist, add-ons, ledger, cards — over soft color orbs with deeper blur, while the navy sidebar and Vela rail stay as-is. Persists across mobile ↔ desktop; a decision aid, mirroring the Guidebooks switch.</p>
-    </div>
   </div>
 
   <h3 class="feat">FAQ & language</h3>
@@ -1326,7 +1278,7 @@
       <span class="tag ux-t">Recovery</span>
       <h4>FAQ no-results is an exit, not a dead end</h4>
       <p class="was"><b>Now in code:</b> the empty state is a SearchX icon plus "No results for … — try a different word"; there is no other way forward and no contact/escalation anywhere on the page.</p>
-      <p class="now"><b>Proposed:</b> the same empty state adds <b>"Ask Vela instead"</b> and "Browse all questions" — an unanswered question becomes a conversation, not a shrug.</p>
+      <p class="now"><b>Proposed:</b> the same empty state adds <b>"Vela tips"</b> and "Browse all questions" — an unanswered question becomes a conversation, not a shrug.</p>
     </div>
     <div class="imp">
       <span class="tag ux-t">Clarity</span>

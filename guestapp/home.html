@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="photos.css">
 <link rel="stylesheet" href="upsell.css">
-<link rel="stylesheet" href="home-glass.css">
 <style>
   /* ---------- Home-specific ---------- */
 
@@ -178,7 +178,26 @@
   .t-chip.todo { background: var(--n-75); color: var(--n-600); }
 
   /* Your stay cards */
+  /* Guidebooks — the home page lists the individual guidebooks instead of one
+     generic "Guidebooks" tile: a named book is a far stronger invitation than a
+     category. The format tag covers all three kinds the app serves — native
+     builder (Guide), a host's own web page (Web) and an uploaded PDF. */
+  .home-guides { padding: 2px 0; }
+  .home-guides .hgb-row { display: flex; align-items: center; gap: 11px; padding: 10px 14px; width: 100%; text-align: left; transition: background 0.15s; }
+  .home-guides .hgb-row + .hgb-row { border-top: 1px solid var(--border); }
+  .home-guides .hgb-row:hover { background: var(--n-50); }
+  .home-guides .hgb-ic { width: 34px; height: 34px; border-radius: 10px; background: var(--tint-info); color: var(--blue-500); display: grid; place-items: center; flex-shrink: 0; }
+  .home-guides .hgb-text { flex: 1; min-width: 0; }
+  /* Title and format tag share one line — the tag was costing a whole row per
+     guidebook for two words. */
+  .home-guides .hgb-title { display: inline; font-size: 13.5px; font-weight: 600; color: var(--navy); }
+  .home-guides .hgb-fmt { display: inline-flex; align-items: center; gap: 4px; margin-left: 7px; vertical-align: 1px; padding: 1px 6px; border-radius: 999px; background: var(--n-50); border: 1px solid var(--border-subtle); font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--n-600); }
+  .home-guides .hgb-fmt .icon { width: 9px; height: 9px; }
+  .home-guides .hgb-desc { display: block; font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
+  .home-guides .hgb-chev { color: var(--n-500); flex-shrink: 0; }
+
   .stay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stay-grid.solo { grid-template-columns: 1fr; }
   .stay-card {
     display: flex; flex-direction: column; align-items: center; text-align: center;
     padding: 18px 14px 16px; gap: 8px;
@@ -401,19 +420,59 @@
             <!-- Your stay -->
             <div class="fade-up d3">
               <div class="section-head" style="margin-bottom:10px"><h2>Your stay</h2></div>
-              <div class="stay-grid">
+              <div class="stay-grid solo">
                 <div class="card stay-card">
                   <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
                   <div class="sc-title">Virtual keys</div>
                   <div class="sc-desc">Unlocks after check-in is complete</div>
                   <a class="btn btn-outline btn-sm" href="flow-remote-access-mobile.html#k-gate"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-lock"/></svg> Why locked?</a>
                 </div>
-                <div class="card stay-card">
-                  <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
-                  <div class="sc-title">Guidebooks</div>
-                  <div class="sc-desc">WiFi, house rules &amp; local tips</div>
-                  <button class="btn btn-dark btn-sm">Explore</button>
-                </div>
+              </div>
+            </div>
+
+            <!-- Guidebooks — individual books, listed by name (no generic "Guidebooks" tile) -->
+            <div class="fade-up d4">
+              <div class="section-head" style="margin-bottom:10px">
+                <h2>Your guidebooks</h2>
+                <a class="counter" href="flow-guidebooks-mobile.html#g-list" style="color:var(--blue-500);font-weight:600">See all</a>
+              </div>
+              <div class="card home-guides">
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-guide">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-book-marked"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Welcome &amp; House Manual</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
+                    <span class="hgb-desc">How to get in, the Wi-Fi, appliances and house rules</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-recos">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-utensils"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Local Recommendations</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
+                    <span class="hgb-desc">Your host's own list of places within walking distance</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-html">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-landmark"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Getting Around Málaga</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Web</span>
+                    <span class="hgb-desc">Airport transfers, buses, the metro and parking</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-pdf">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-waves"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Beaches &amp; Day Trips</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg> PDF</span>
+                    <span class="hgb-desc">A printable guide to the coast near Marbella</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
               </div>
             </div>
 
@@ -425,7 +484,7 @@
               </div>
               <div class="home-reco">
                 <a class="reco-card tap" href="flow-upselling-mobile.html#u-detail">
-                  <span class="reco-photo" style="background:linear-gradient(135deg,#fde8d0,#f7c8a0)">🥐
+                  <span class="reco-photo ph-breakfast">
                     <span class="reco-chip">Food &amp; drinks</span>
                   </span>
                   <span class="reco-body">
@@ -435,7 +494,7 @@
                   </span>
                 </a>
                 <a class="reco-card tap" href="flow-upselling-mobile.html#u-request">
-                  <span class="reco-photo" style="background:linear-gradient(135deg,#d7e8ff,#fdeeba)">🌤
+                  <span class="reco-photo ph-checkin">
                     <span class="reco-chip">Check-in &amp; out</span>
                   </span>
                   <span class="reco-body">
@@ -450,12 +509,11 @@
                   <span class="mz-head">
                     <span class="mz-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
                     <span class="mz-titles">
-                      <span class="mz-title">Airport &amp; City Transfers <span class="mozio-tag">🔥 Hot deal</span></span>
+                      <span class="mz-title">Airport &amp; City Transfers</span>
                       <span class="mz-partner"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Powered by Mozio · books on the partner site</span>
                     </span>
                   </span>
                   <span class="mz-sub">Prebook airport shuttles, taxis, buses &amp; private transfers — anytime, everywhere.</span>
-                  <span class="mz-accent">✨ Discover unbeatable rates</span>
                   <span class="mz-pills">
                     <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Free cancellation</span>
                     <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> 24/7 support</span>
@@ -478,7 +536,7 @@
                 </a>
 
                 <a class="reco-card tap" href="flow-upselling-mobile.html#u-list">
-                  <span class="reco-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+                  <span class="reco-photo ph-walking">
                     <span class="reco-chip free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
                   </span>
                   <span class="reco-body">
@@ -488,7 +546,7 @@
                   </span>
                 </a>
                 <a class="reco-card tap" href="flow-upselling-mobile.html#u-list">
-                  <span class="reco-photo" style="background:linear-gradient(135deg,#d8f5e3,#a8e6cf)">🧖
+                  <span class="reco-photo ph-spa">
                     <span class="reco-chip">Wellness</span>
                   </span>
                   <span class="reco-body">
@@ -515,7 +573,7 @@
             <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Keys</a>
           </nav>
         </div>
-      </div>
+</div>
     </div>
 
     <!-- ══════════ SCREEN 2: HOME, all done ══════════ -->
@@ -575,19 +633,59 @@
 
             <div class="fade-up d2">
               <div class="section-head" style="margin-bottom:10px"><h2>Your stay</h2></div>
-              <div class="stay-grid">
+              <div class="stay-grid solo">
                 <div class="card stay-card" style="border-color:rgba(56,91,248,0.4)">
                   <div class="sc-icon" style="background:var(--blue-500);color:#fff;box-shadow:var(--shadow-brand)"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-key"/></svg></div>
                   <div class="sc-title">Virtual keys</div>
                   <div class="sc-desc">Main door &amp; apartment 2B</div>
                   <a class="btn btn-primary btn-sm" href="flow-remote-access-mobile.html#k-keys">Open door</a>
                 </div>
-                <div class="card stay-card">
-                  <div class="sc-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-book-open"/></svg></div>
-                  <div class="sc-title">Guidebooks</div>
-                  <div class="sc-desc">WiFi, house rules &amp; local tips</div>
-                  <button class="btn btn-dark btn-sm">Explore</button>
-                </div>
+              </div>
+            </div>
+
+            <!-- Guidebooks — individual books, listed by name (no generic "Guidebooks" tile) -->
+            <div class="fade-up d4">
+              <div class="section-head" style="margin-bottom:10px">
+                <h2>Your guidebooks</h2>
+                <a class="counter" href="flow-guidebooks-mobile.html#g-list" style="color:var(--blue-500);font-weight:600">See all</a>
+              </div>
+              <div class="card home-guides">
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-guide">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-book-marked"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Welcome &amp; House Manual</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
+                    <span class="hgb-desc">How to get in, the Wi-Fi, appliances and house rules</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-recos">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-utensils"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Local Recommendations</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guide</span>
+                    <span class="hgb-desc">Your host's own list of places within walking distance</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-html">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-landmark"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Getting Around Málaga</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-globe"/></svg> Web</span>
+                    <span class="hgb-desc">Airport transfers, buses, the metro and parking</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
+                <a class="hgb-row" href="flow-guidebooks-mobile.html#g-pdf">
+                  <span class="hgb-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-waves"/></svg></span>
+                  <span class="hgb-text">
+                    <span class="hgb-title">Beaches &amp; Day Trips</span>
+                    <span class="hgb-fmt"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg> PDF</span>
+                    <span class="hgb-desc">A printable guide to the coast near Marbella</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" class="icon icon-sm hgb-chev"><use href="#i-chevron-right"/></svg>
+                </a>
               </div>
             </div>
 
@@ -598,7 +696,7 @@
               </div>
               <div class="home-reco">
                 <a class="reco-card tap" href="flow-upselling-mobile.html#u-detail">
-                  <span class="reco-photo" style="background:linear-gradient(135deg,#ffd9a0,#f5a9b8)">🌇
+                  <span class="reco-photo ph-checkout">
                     <span class="reco-chip">Check-in &amp; out</span>
                   </span>
                   <span class="reco-body">
@@ -608,7 +706,7 @@
                   </span>
                 </a>
                 <a class="reco-card tap" href="flow-upselling-mobile.html#u-list">
-                  <span class="reco-photo" style="background:linear-gradient(135deg,#d4f8e8,#9ae6b4)">🚶
+                  <span class="reco-photo ph-walking">
                     <span class="reco-chip free"><svg viewBox="0 0 24 24" class="icon"><use href="#i-gift"/></svg> Free</span>
                   </span>
                   <span class="reco-body">
@@ -621,12 +719,11 @@
                   <span class="mz-head">
                     <span class="mz-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-car"/></svg></span>
                     <span class="mz-titles">
-                      <span class="mz-title">Airport &amp; City Transfers <span class="mozio-tag">🔥 Hot deal</span></span>
+                      <span class="mz-title">Airport &amp; City Transfers</span>
                       <span class="mz-partner"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Powered by Mozio · books on the partner site</span>
                     </span>
                   </span>
                   <span class="mz-sub">Prebook airport shuttles, taxis, buses &amp; private transfers — anytime, everywhere.</span>
-                  <span class="mz-accent">✨ Discover unbeatable rates</span>
                   <span class="mz-pills">
                     <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-circle"/></svg> Free cancellation</span>
                     <span class="mz-pill"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg> 24/7 support</span>
@@ -650,7 +747,7 @@
             <a class="nav-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Keys</a>
           </nav>
         </div>
-      </div>
+</div>
     </div>
 
     <!-- ══════════ SCREEN 3: MENU DRAWER OPEN ══════════ -->
@@ -702,43 +799,9 @@
 
           <!-- drawer -->
           <div class="drawer-scrim"></div>
-          <aside class="sidebar mobile-drawer">
-            <button class="drawer-close"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
-            <div class="sb-head">
-              <div class="sb-logo">V</div>
-              <div>
-                <div class="sb-prop">Villa Serena</div>
-                <div class="sb-ref">Booking · CHK-58291</div>
-              </div>
-            </div>
-            <div class="sb-progress">
-              <div class="sp-row"><span>Check-in progress</span><span>50%</span></div>
-              <div class="sp-track"><div class="sp-fill" style="width:50%"></div></div>
-            </div>
-            <div class="sb-group">Before you arrive</div>
-            <a class="sb-item active"><svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg> Home</a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> Guest registration <span class="sb-badge teal">✓</span></a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-credit-card"/></svg> Payments <span class="sb-badge teal">✓</span></a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield"/></svg> Property protection <span class="sb-badge warn">!</span></a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-coins"/></svg> Tourist taxes <span class="sb-badge">1</span></a>
-            <div class="sb-group">Your stay</div>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-key"/></svg> Virtual keys</a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-book-open"/></svg> Guidebooks</a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-compass"/></svg> Experiences</a>
-            <div class="sb-group">Help</div>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-message"/></svg> Chat with host</a>
-            <a class="sb-item"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg> FAQ &amp; support</a>
-            <div class="sb-footer">
-              <div class="sb-avatar">MG</div>
-              <div>
-                <div class="sb-user">María García</div>
-                <div class="sb-mail">maria@gmail.com</div>
-              </div>
-              <button class="sb-logout"><svg viewBox="0 0 24 24" class="icon"><use href="#i-log-out"/></svg></button>
-            </div>
-          </aside>
+          <aside class="sidebar mobile-drawer" data-sidebar data-active="home"></aside>
         </div>
-      </div>
+</div>
     </div>
 
   </div>
@@ -746,6 +809,12 @@
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
+    <g id="i-book-marked"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
+    <g id="i-utensils"><path d="M3 2v7a3 3 0 0 0 3 3 3 3 0 0 0 3-3V2"/><path d="M6 2v20"/><path d="M18 2v20"/><path d="M18 9c1.5 0 3-1.5 3-4s-1.5-3-3-3"/></g>
+    <g id="i-landmark"><path d="M3 22h18"/><path d="M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="m12 2 9 5H3z"/></g>
+    <g id="i-waves"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></g>
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></g>
     <g id="i-menu"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></g>
     <g id="i-map-pin"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
     <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
@@ -776,7 +845,7 @@
     <g id="i-car"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></g>
   </defs>
 </svg>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
-<script src="home-glass.js" defer></script>
 </body>
 </html>

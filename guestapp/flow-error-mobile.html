@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass-lite">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +36,7 @@
           <div class="tb-sub">Secure check-in</div>
         </div>
         <span class="tb-action"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</span>
-      </div>
+            </div>
       <div class="sr-state">
         <div class="err-art link">
           <span class="err-ring"></span><span class="err-ring r2"></span>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="err-actions">
-          <a class="btn btn-primary" href="flow-search-mobile.html#sr-method">Find my booking instead <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
+          <a class="btn btn-primary" href="flow-search-v2.html#s2-method">Find my booking instead <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
           <button class="btn btn-outline" data-modal="m-contact-host"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg> Contact your host</button>
         </div>
         <span class="sim-note">shown for a bad/missing token or a failed auth-init (ConnectionErrorsHandler) and by DirectReservationView when the deep-link params are missing</span>
@@ -69,7 +69,7 @@
           <div class="tb-sub">Secure check-in</div>
         </div>
         <span class="tb-action"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</span>
-      </div>
+            </div>
       <div class="sr-state">
         <div class="err-art rate">
           <span class="err-ring"></span><span class="err-ring r2"></span>
@@ -87,7 +87,7 @@
         </div>
 
         <div class="err-actions">
-          <a class="btn btn-primary" href="flow-search-mobile.html#sr-method">Try again <svg viewBox="0 0 24 24" class="icon"><use href="#i-refresh"/></svg></a>
+          <a class="btn btn-primary" href="flow-search-v2.html#s2-method">Try again <svg viewBox="0 0 24 24" class="icon"><use href="#i-refresh"/></svg></a>
         </div>
         <span class="sim-note">real trigger: authError → title "Too many requests" + description; currently no timer and no retry — the guest just waits blind</span>
       </div>
@@ -103,7 +103,7 @@
           <div class="tb-sub">Secure check-in</div>
         </div>
         <span class="tb-action"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</span>
-      </div>
+            </div>
       <div class="sr-state">
         <div class="err-art crash">
           <span class="err-ring"></span><span class="err-ring r2"></span>
@@ -119,7 +119,7 @@
         </div>
 
         <div class="err-actions">
-          <button class="btn btn-primary" onclick="location.href='flow-search-mobile.html#sr-method'"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Reload &amp; try again</button>
+          <button class="btn btn-primary" onclick="location.href='flow-search-v2.html#s2-method'"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Reload &amp; try again</button>
           <button class="btn btn-outline" data-modal="m-support"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg> Contact support</button>
         </div>
         <span class="sim-note">maps ErrorFallback (Sentry boundary) — was "⚠ Something went wrong" text only; the ref is what support needs to trace it</span>
@@ -143,7 +143,7 @@
             <span class="ec-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cloud-off"/></svg></span>
             <div class="ec-title">We couldn't load your check-in</div>
             <div class="ec-text">The connection to the check-in service was interrupted. Please try again in a moment.</div>
-            <a class="btn btn-primary btn-sm" href="flow-search-mobile.html#sr-method"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Try again</a>
+            <a class="btn btn-primary btn-sm" href="flow-search-v2.html#s2-method"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Try again</a>
             <span class="ec-brand"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Powered by Chekin</span>
           </div>
           <span class="sim-note">maps SDKErrorView — currently bare centered text with no action; the SDK also fires onConnectionError so the host site can react</span>
@@ -181,7 +181,8 @@
       </div>
     </div>
 
-  </div>
+  
+</div>
 </div>
 
 <svg width="0" height="0" style="position:absolute">
@@ -205,7 +206,6 @@
 </svg>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
-<script src="glass-toggle.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

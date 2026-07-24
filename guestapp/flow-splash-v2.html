@@ -12,8 +12,7 @@
 <body>
 <div class="proto-stage">
   <h1>Splash screen — the arrival moment (Mobile)</h1>
-  <p class="lede"><b>Today's splash on the left, the proposal on the right — both clocked.</b> A rebuild of <code>components/SplashScreen</code>. The shipped component holds the guest for <b>load&nbsp;+&nbsp;5.0&nbsp;s</b>, closes two curtains over its own logo at 4.3&nbsp;s, and — if the auth request hangs — never leaves. Here the splash is a <b>handoff, not a gate</b>: it covers the skeleton of the screen it is about to become, leaves the instant the data lands, and when the data never lands it says so and offers a way out.</p>
-  <p class="lede" style="margin-top:0"><b>Two treatments, one behaviour.</b> The <b>Style</b> switch picks between <b>Classic</b> — the refined V1: flat brand background, bare logo, three pulsing dots, curtains removed — and <b>Modern</b> — the pre-auth idiom already used by Find booking and Sign-in: branded gradient, colour orbs, film grain, a liquid-glass plate and the honest progress ring. <b>Every fix ships in both.</b> Mock data only.</p>
+  <p class="lede"><b>The splash is a handoff, not a gate.</b> A rebuild of <code>components/SplashScreen</code>, clocked. The shipped component holds the guest for <b>load&nbsp;+&nbsp;5.0&nbsp;s</b>, closes two curtains over its own logo at 4.3&nbsp;s, and — if the auth request hangs — never leaves. Here it covers the skeleton of the screen it is about to become, leaves the instant the data lands, and when the data never lands it says so and offers a way out. The surface stays V1's; everything that changes is behaviour.</p>
 
   <div class="flow-hud">
     <button class="fh-chip" data-scenario="sp-fast">Fast load (the 90% case)</button>
@@ -30,91 +29,9 @@
   <div class="proto-row">
 
     <!-- ══════════════════════════════════════════════════════════════════
-         V1 — today's splash, reproduced from SplashScreen.tsx + styled.ts.
-         Static and inert: it has its own replay controls, because the
-         *timing* is the defect and the scenario chips can't show it.
-         ══════════════════════════════════════════════════════════════════ -->
-    <div class="phone-col sp-col" data-v1 data-v1-load="750">
-      <div class="phone-label">V1 · today (as shipped)</div>
-      <div class="phone">
-        <div class="screen">
-          <div class="sp-screen">
-
-            <!-- The app, already loaded and waiting behind the curtain. -->
-            <div class="sp-under is-live">
-              <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
-              <div class="sp-skel-topbar">
-                <div class="sp-skel-logo" style="opacity:1">C</div>
-                <div>
-                  <div class="sp-topbar-title">Casa Valencia</div>
-                  <div class="sp-topbar-sub">Booking VLC-4471</div>
-                </div>
-              </div>
-              <div class="sp-real">
-                <h1>Welcome, Marta</h1>
-                <p class="sp-real-sub">2 of 4 guests registered</p>
-                <div class="sp-real-hero">
-                  <div class="h-k">Next up</div>
-                  <div class="h-t">Register your guests</div>
-                  <div class="h-s">Check-in opens in 3 days</div>
-                </div>
-                <div class="sp-real-row">
-                  <span class="r-ic"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-users"/></svg></span>
-                  <div><div class="r-t">Guest registration</div><div class="r-s">2 of 4 done</div></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- The splash exactly as it ships. -->
-            <div class="v1-splash">
-              <div class="v1-curtain top"></div>
-              <div class="v1-logo"><span>chekin</span></div>
-              <div class="v1-dots"><i></i><i></i><i></i></div>
-              <div class="v1-curtain bottom"></div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="sp-caption">
-        <span class="sp-clock" data-v1-clock><i class="dot"></i> Splash visible <b data-v1-clock-value>0.0s</b></span>
-        <div class="flow-hud" style="margin-top:0">
-          <button class="fh-chip on" data-v1-replay="750">▶ Fast load (0.75 s)</button>
-          <button class="fh-chip" data-v1-replay="3000">▶ Slow load (3.0 s)</button>
-        </div>
-        <div class="sp-bug" data-v1-dead hidden>
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
-          <p>Curtains closed at <b>4.3 s</b>. For the next <b data-v1-dead-value>0.0s</b> the guest is looking at a solid rectangle of the brand colour — no logo, no loader, no text, no way out.</p>
-        </div>
-        <span class="sim-note">simulated network · the 5 s timer starts <i>after</i> the data arrives</span>
-      </div>
-
-      <div class="sp-buglist" style="margin-top:16px">
-        <div class="sp-bug">
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
-          <p><b>The 5 s tax.</b> <code>SHOW_MODAL_AFTER_SPLASH_TIMEOUT&nbsp;=&nbsp;5000</code> — and the timer only <i>starts</i> once <code>hideSplashScreen</code> flips true. Total splash time is <code>load&nbsp;+&nbsp;5000 ms</code> on every cold start, forever, for everyone.</p>
-        </div>
-        <div class="sp-bug">
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
-          <p><b>The infinite splash.</b> That timer is the component's <i>only</i> timer, and it is gated behind the data having already arrived. If the auth request hangs — offline, captive portal, dead API — <code>hideSplashScreen</code> never flips, and the splash never unmounts. There is no watchdog.</p>
-        </div>
-        <div class="sp-bug">
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
-          <p><b>The late splash.</b> <code>isSplashScreenEnabled</code> reads <code>splash_screen_enabled</code> from branding, which arrives <i>after</i> first paint. So the app renders, and <i>then</i> the splash slams down on top of it. The logo and the brand colours land late too, on top of the default ones.</p>
-        </div>
-        <div class="sp-bug">
-          <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
-          <p><b>Dead CSS.</b> <code>animation-timing-function: cubic-bezier(0, 1.23)</code> takes two arguments where CSS requires four, so the declaration is dropped and the curtains silently fall back to <code>ease</code>. The intended overshoot has never once rendered.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════════════════════
-         V2 — the proposal. Driven by the scenario chips above.
+         One phone, driven by the scenario chips above.
          ══════════════════════════════════════════════════════════════════ -->
     <div class="phone-col sp-col">
-      <div class="phone-label">Proposal · Classic or Modern</div>
       <div class="phone">
         <div class="screen">
 
@@ -154,13 +71,10 @@
 
             <!-- role="status" + aria-busy: announced once, never focus-trapping. -->
             <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
-              <span class="sp-grain" aria-hidden="true"></span>
+              <span class="sp-curtain top" aria-hidden="true"></span>
+              <span class="sp-curtain bottom" aria-hidden="true"></span>
               <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
               <div class="sp-mark">
-                <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                  <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                  <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-                </svg>
                 <div class="sp-plate">
                   <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
                   <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
@@ -208,13 +122,10 @@
             </div>
 
             <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
-              <span class="sp-grain" aria-hidden="true"></span>
+              <span class="sp-curtain top" aria-hidden="true"></span>
+              <span class="sp-curtain bottom" aria-hidden="true"></span>
               <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▯▯ ᯤ ▭</span></div>
               <div class="sp-mark">
-                <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                  <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                  <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-                </svg>
                 <div class="sp-plate">
                   <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
                   <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
@@ -263,13 +174,10 @@
             </div>
 
             <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
-              <span class="sp-grain" aria-hidden="true"></span>
+              <span class="sp-curtain top" aria-hidden="true"></span>
+              <span class="sp-curtain bottom" aria-hidden="true"></span>
               <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▯▯ ᯤ ▭</span></div>
               <div class="sp-mark">
-                <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                  <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                  <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-                </svg>
                 <div class="sp-plate">
                   <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
                   <span class="sp-logo sp-logo-host" aria-hidden="true">Casa Valencia</span>
@@ -313,13 +221,10 @@
             <!-- No longer role=status: this is a resolved, actionable state, so it
                  gets a heading and real buttons rather than a live-region update. -->
             <div class="sp-stage" data-sp-stage>
-              <span class="sp-grain" aria-hidden="true"></span>
+              <span class="sp-curtain top" aria-hidden="true"></span>
+              <span class="sp-curtain bottom" aria-hidden="true"></span>
               <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
               <div class="sp-mark is-error">
-                <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                  <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                  <circle class="sp-ring-arc" cx="55" cy="55" r="50" style="--sp-p:1"/>
-                </svg>
                 <div class="sp-plate">
                   <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
                 </div>
@@ -371,13 +276,10 @@
             </div>
 
             <div class="sp-stage" data-sp-stage>
-              <span class="sp-grain" aria-hidden="true"></span>
+              <span class="sp-curtain top" aria-hidden="true"></span>
+              <span class="sp-curtain bottom" aria-hidden="true"></span>
               <div class="statusbar"><span>9:41</span><span class="sb-icons">▯▯▯ ⚠ ▭</span></div>
               <div class="sp-mark is-offline">
-                <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                  <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                  <circle class="sp-ring-arc" cx="55" cy="55" r="50" style="--sp-p:1"/>
-                </svg>
                 <div class="sp-plate">
                   <span class="sp-logo sp-logo-default" aria-hidden="true">C</span>
                 </div>
@@ -427,13 +329,10 @@
             </div>
 
             <div class="sp-stage" data-sp-stage role="status" aria-live="polite" aria-busy="true">
-              <span class="sp-grain" aria-hidden="true"></span>
+              <span class="sp-curtain top" aria-hidden="true"></span>
+              <span class="sp-curtain bottom" aria-hidden="true"></span>
               <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
               <div class="sp-mark">
-                <svg class="sp-ring" data-sp-ring viewBox="0 0 110 110" aria-hidden="true">
-                  <circle class="sp-ring-track" cx="55" cy="55" r="50"/>
-                  <circle class="sp-ring-arc" cx="55" cy="55" r="50"/>
-                </svg>
                 <!-- Both marks share one grid cell. The swap is a cross-fade in a
                      reserved 96px box — never a reflow, never a pop. -->
                 <div class="sp-plate">
@@ -496,7 +395,7 @@
 
       <div class="sp-caption">
         <span class="sp-clock" data-sp-clock><i class="dot"></i> Splash visible <b data-sp-clock-value>0.0s</b></span>
-        <span class="sim-note">held for <b>max(load, 500 ms)</b> — never a fixed toll</span>
+        <span class="sim-note">held for <b>max(load, 500 ms)</b> + a <b>340 ms</b> curtain — never a fixed toll</span>
       </div>
 
       <div class="sp-buglist" style="margin-top:16px">
@@ -518,16 +417,6 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <!-- The progress arc's stroke. A gradient reads as light travelling round
-         the mark; a flat stroke reads as a bar bent into a circle. -->
-    <linearGradient id="spRingGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#8ca5ff"/>
-      <stop offset="100%" stop-color="#ffffff"/>
-    </linearGradient>
-    <linearGradient id="spRingGradLight" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#385bf8"/>
-      <stop offset="100%" stop-color="#8ca5ff"/>
-    </linearGradient>
     <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
     <g id="i-refresh"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
     <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
@@ -540,7 +429,6 @@
 
 <script src="flow.js" defer></script>
 <script src="splash-v2.js" defer></script>
-<script src="splash-toggle.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

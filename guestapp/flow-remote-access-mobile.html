@@ -38,11 +38,10 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Virtual keys</div>
-        <div class="page-title">You're all set to get <span class="hl">in</span></div>
-        <p class="page-intro">Your phone opens both doors. Follow them in order — street entrance first, then your apartment.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Virtual keys"
+           data-title="You&#x27;re all set to get {in}"
+           data-intro="Your phone opens both doors. Follow them in order — street entrance first, then your apartment."></div>
       <div class="content">
         <details class="instr">
           <summary>
@@ -74,7 +73,7 @@
                 <div class="door-code">
                   <span>
                     <span class="dc-label">Entry code</span>
-                    <span class="dc-val">4471#</span>
+                    <span class="dc-caps" aria-label="Entry code 4471#"><i>4</i><i>4</i><i>7</i><i>1</i><i>#</i></span>
                   </span>
                   <button class="dc-copy" data-copy="Entry code copied" data-copy-label="Copy"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-copy"/></svg><span class="cc-txt">Copy</span></button>
                 </div>
@@ -201,11 +200,10 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Virtual keys</div>
-        <div class="page-title">Keys ready — <span class="hl">almost</span> time</div>
-        <p class="page-intro">Everything's set. The property opens access at check-in time — your codes and remote unlock switch on then.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Virtual keys"
+           data-title="Keys ready — {almost} time"
+           data-intro="Everything&#x27;s set. The property opens access at check-in time — your codes and remote unlock switch on then."></div>
       <div class="content">
         <div class="win-note">
           <svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg>
@@ -268,11 +266,10 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Virtual keys</div>
-        <div class="page-title">Open with the <span class="hl">Keyless</span> app</div>
-        <p class="page-intro">This building uses Keyless for entry. Install their app once and unlock with your booking reference — you keep access for the whole stay.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Virtual keys"
+           data-title="Open with the {Keyless} app"
+           data-intro="This building uses Keyless for entry. Install their app once and unlock with your booking reference — you keep access for the whole stay."></div>
       <div class="content">
         <div class="card" style="padding:18px 16px;display:flex;flex-direction:column;gap:16px">
           <div class="partner-tag"><svg viewBox="0 0 24 24" class="icon"><use href="#i-external"/></svg> Powered by Keyless · opens in their app</div>
@@ -327,11 +324,10 @@
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
-      <div class="page-head">
-        <div class="kicker">Virtual keys</div>
-        <div class="page-title">Every door, <span class="hl">one place</span></div>
-        <p class="page-intro">This property has several smart doors. Open the entrance first, then whichever room you need.</p>
-      </div>
+      <div class="page-head" data-page-head
+           data-kicker="Virtual keys"
+           data-title="Every door, {one place}"
+           data-intro="This property has several smart doors. Open the entrance first, then whichever room you need."></div>
       <div class="content">
         <div class="door now">
           <div class="door-top">
@@ -481,19 +477,6 @@
             <span><span class="vt-title" style="display:block">Do I need to lock up?</span><span class="vt-desc">No — smart locks re-lock on their own. There's no physical key to lose or return.</span></span>
           </div>
         </div>
-        <div class="vela-section">
-          <div class="vela-eyebrow">Ask Vela</div>
-          <div class="vela-ask" style="margin-top:10px">
-            <div class="ask-input">
-              Ask anything about your keys…
-              <span class="send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-up"/></svg></span>
-            </div>
-            <div class="vela-chips">
-              <span class="chip">The code isn't working</span>
-              <span class="chip">Can my partner get in too?</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -634,6 +617,7 @@
 </script>
 <script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
+<script src="chrome.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>
