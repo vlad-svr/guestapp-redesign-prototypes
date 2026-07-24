@@ -74,7 +74,33 @@
         <span class="grow"></span>
         <div class="search-box">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input class="input" id="prop-search" type="search" placeholder="Search properties…" aria-label="Search properties" style="width:230px;">
+          <input class="input" id="prop-search" type="search" placeholder="Search properties…" aria-label="Search properties" style="width:250px;">
+        </div>
+        <div style="position:relative;">
+          <button class="tbtn" data-menu="#prop-filter-menu" aria-haspopup="menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+            Filters
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="menu" id="prop-filter-menu" role="menu" style="top:44px;right:0;min-width:210px;">
+            <button role="menuitem" data-toast="Filtered by type — Apartment">Type: Apartment</button>
+            <button role="menuitem" data-toast="Filtered by country — Portugal">Country: Portugal</button>
+            <button role="menuitem" data-toast="Filtered to properties with a broken integration">Broken integrations only</button>
+            <hr>
+            <button role="menuitem" data-toast="Filters cleared">Clear filters</button>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <button class="tbtn tbtn--icon" data-menu="#prop-more-menu" aria-haspopup="menu" aria-label="More actions">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>
+          </button>
+          <div class="menu" id="prop-more-menu" role="menu" style="top:44px;right:0;min-width:220px;">
+            <button role="menuitem" data-toast="Property list exported (.xlsx)">Export property list</button>
+            <button role="menuitem" data-toast="Sync started for all connected PMS properties">Sync all from PMS</button>
+            <button role="menuitem" data-toast="Column picker would open — choose which columns to show">Customize columns…</button>
+            <hr>
+            <button role="menuitem" data-toast="Bulk setup wizard would open for the 4 unfinished properties">Finish setup for all…</button>
+          </div>
         </div>
       </div>
 

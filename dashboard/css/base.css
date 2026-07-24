@@ -2,7 +2,32 @@
    Base reset + app shell layout
    ============================================================ */
 
+/* ProximaNova — the real app faces, served from prototype/fonts */
+@font-face {
+  font-family: ProximaNova; font-style: normal; font-weight: 300; font-display: swap;
+  src: url('../fonts/ProximaNova-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: ProximaNova; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../fonts/ProximaNova-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: ProximaNova; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('../fonts/ProximaNova-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: ProximaNova; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('../fonts/ProximaNova-Semibold.woff2') format('woff2');
+}
+@font-face {
+  font-family: ProximaNova; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('../fonts/ProximaNova-Bold.woff2') format('woff2');
+}
+
 *, *::before, *::after { box-sizing: border-box; }
+
+/* The UA [hidden] rule loses to any author display declaration (.empty, .row…) */
+[hidden] { display: none !important; }
 
 html { -webkit-text-size-adjust: 100%; }
 
