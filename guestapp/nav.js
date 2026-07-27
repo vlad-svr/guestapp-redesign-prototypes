@@ -428,13 +428,11 @@
         { hash: 'err-link', label: 'Invalid link (→ search)' },
         { hash: 'err-rate', label: 'Too many requests (countdown)' },
         { hash: 'err-crash', label: 'Something went wrong (ref)' },
-        { hash: 'err-embedded', label: 'SDK embedded (host site)' },
       ]},
       { file: 'flow-error-desktop.html', label: 'Error states — desktop', icon: '🖥', subs: [
         { hash: 'erd-link', label: 'Invalid link (→ search)' },
         { hash: 'erd-rate', label: 'Too many requests (countdown)' },
         { hash: 'erd-crash', label: 'Something went wrong (ref)' },
-        { hash: 'erd-embedded', label: 'SDK embedded (host site)' },
       ]},
     ]},
     { group: 'Building blocks', items: [

@@ -886,6 +886,11 @@ owns its third column (chat's `ctx-rail`, the travel guide's `tg-rail`), Vela he
 **that** rail rather than displacing it; where there was no rail, the shell gains
 `with-rail` and a real `.vela-rail`.
 
+**FAQ is deliberately Vela-free** (`flow-faq-*`). A "here to help" rail beside the help
+page is Vela restating the page — the same anti-pattern as a rail that paraphrases a
+decline screen. The FAQ *is* the help; its escape hatches (ask your host, browse all) live
+in the page, and the language picker is a modal, not rail content.
+
 **Home is deliberately Vela-free** (`home.html`, `home-desktop.html`,
 `home-desktop-stages.html`). Home is not a task — it is the map of the tasks, and it
 already answers "what do I do next" with the checklist spotlight, the progress ring and
@@ -1326,6 +1331,10 @@ footer, universal-link footer, kiosko header only).
 
 | Element | Real source | Treatment |
 |---|---|---|
+Each task section is **one box**: the label is a `card-header` inside the `.faq-acc`
+card, not a floating eyebrow above a separate card — the same merged-header pattern the
+registration roster uses. One section, one surface.
+
 | Question set | `Questions.tsx` — 6 general + conditional: IV pair (`isIVEnabled`), taxes (`data.taxes.active`), pay-later (`arePaymentsAvailable`); minors answer swaps to the Spain variant ("from age 14") when Spain + police active | grouped under **task section labels** (improvement — real list is flat): Your data & registration · Identity verification · Taxes & payments; a `sim-note` states the conditionality |
 | Answers | `renderRichText` (line breaks + Privacy-Policy link slots) | prose + `a.inline` privacy links; task-describing answers close with a **`.fq-action` pill into that task** (improvement): share link → `flow-registration.html#r-hub`, IV → `flow-iv-mobile.html#s-start`, taxes → `flow-taxes-mobile.html#t-setup`, payments → `flow-payments-mobile.html#p-cart` |
 | Search | filters question + answer plain text (`searchText`), **auto-opens** matches, highlights via `highlightNode` | pill search; `h-search` shows query "minors" → 2 matches open with `<mark>` on the term; count line "2 articles · matching “minors”"; ✕ clears → `h-faq` |
@@ -1939,6 +1948,29 @@ Chrome: a slim glass brand top bar (Chekin mark + language) on `err-link/rate/cr
 
 ---
 
+### 19.1 Invalid link — a state with no action
+
+The link never resolved, so **there is no reservation, no known host, and no route**. Two
+CTAs were removed once that was traced through:
+
+- **"Contact your host"** — we have not matched a booking, so there is no host to name.
+  Its dialog invented an address (`host@casamarbella.com`) for a reservation we never had.
+- **"Find my booking"** — every route in the app is nested under `/:token/`
+  (`Routes.tsx`, `PATHS.home = '/:token/'`), and that includes all five
+  `searchReservation` routes. A broken token means find-booking is as unreachable as home.
+  The button pointed at a URL that cannot be constructed.
+
+So this screen carries **no CTA at all**, and that is the honest answer rather than a
+gap: the only actor who can fix a truncated link is the person who sent it. The checklist
+does the work — paste the whole link, or ask the sender to resend. It is the one screen in
+the prototype exempt from §19's "always offer a way out" rule, because there is no way out
+to offer.
+
+**Also removed:** the SDK-embedded variant (`err-embedded` / `erd-embedded`) — see §36 for
+the SDK shell.
+
+---
+
 ## §20 Error & recovery — desktop
 
 **Prototype:** `flow-error-desktop.html` (loads `search.css` + `err.css`)
@@ -2122,6 +2154,27 @@ when false none of these routes exist and the guest goes straight to Home/regist
    "Continue without an account", and the trade named out loud underneath ("Check in now.
    Nothing is saved for your next stay."). Naming the cost is the point: an escape that
    hides its consequence is not an honest one.
+
+   The same card appears on **both** `a-signin` and `a-login` (and their desktop twins).
+   A returning guest who can't remember the password is the guest most likely to abandon,
+   and the reservation link works for them exactly as it does for a new guest — so the
+   opt-out belongs on the screen where the wall is, not only on the one before it.
+4. **The gradient is a hero band, not a full-height wash** (mobile). `.auth-stage` used to
+   paint `--gradient-hero` over the whole phone, which made every auth screen read as a
+   splash screen and left the card floating in the middle of a coloured field. It is now a
+   fixed band at the top with `--bg-page` underneath — the same hero/sheet model as the
+   arrival screen (`.s2-hero` + `.s2-sheet`). `--band` is set per screen so the card always
+   overlaps the band's bottom edge by ~10px: `108px` header only (`a-password`, `a-code`),
+   `.band-res 158px` with the reservation strip (`a-signin`, `a-login`), `.band-rail 150px`
+   with the onboarding rail. `a-welcome` keeps `.band-full` — it is one centred card with
+   nothing else on screen, where a band would read as a stray stripe. The two colour orbs
+   moved from absolute pseudo-elements into the band's own `radial-gradient` layers so they
+   are clipped by the band instead of bleeding onto the light area.
+5. **Onboarding choices are one grouped card, not three floating ones.** `.choice` matches
+   the IV document picker (`.doc-list`): a single bordered card, hairline rows, selection
+   carried by a tint plus a 3px left edge rather than a border swap, so nothing shifts when
+   the answer changes. Three separately-bordered cards read as three decisions; this step
+   is one decision with three answers.
 
 ### 23.2 Auth screens
 

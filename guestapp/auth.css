@@ -20,26 +20,38 @@
    All colors from shared.css tokens.
    ============================================================ */
 
-/* ---------- Pre-auth branded stage (inside the phone / browser) ---------- */
+/* ---------- Pre-auth branded stage (inside the phone / browser) ----------
+   The gradient is a HERO BAND, not a full-height wash — same model as the
+   arrival screen (.s2-hero / .s2-sheet in search-v2.css). A phone-tall gradient
+   made every auth screen feel like a splash screen and left the card floating
+   in the middle of it; a band gives the brand a top edge, the card a floor to
+   sit on, and the rest of the screen the ordinary page background the rest of
+   the app uses.
+
+   --band is set per screen by the modifiers below, sized so the card overlaps
+   the band's bottom edge by ~20px. The orbs are painted INTO the band as
+   radial layers rather than as absolute pseudo-elements, so they are clipped
+   by the band instead of bleeding across the light area. */
 .auth-stage {
+  --band: 108px;               /* header row only (password, code) */
   flex: 1;
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--gradient-hero);
+  background: var(--bg-page);
+  background-image:
+    radial-gradient(220px 190px at 4% -25%, rgba(79, 107, 255, 0.85), transparent 72%),
+    radial-gradient(240px 200px at 98% 125%, rgba(53, 229, 188, 0.55), transparent 70%),
+    var(--gradient-hero);
+  background-repeat: no-repeat;
+  background-size: 100% var(--band);
   overflow: hidden;
 }
-.auth-stage::before,
-.auth-stage::after { /* soft color orbs behind the glass */
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(46px);
-  opacity: 0.6;
-  pointer-events: none;
-}
-.auth-stage::before { width: 240px; height: 240px; top: -40px; left: -60px; background: #4f6bff; }
-.auth-stage::after { width: 260px; height: 260px; bottom: 40px; right: -70px; background: #35e5bc; }
+.auth-stage.band-res { --band: 158px; }   /* header + reservation strip */
+.auth-stage.band-rail { --band: 150px; }  /* header + onboarding step rail */
+/* Welcome is a single centred card with nothing else on screen — a band behind
+   it would read as a stray stripe, so that one moment keeps the full bleed. */
+.auth-stage.band-full { --band: 100%; }
 .auth-scroll {
   position: relative; z-index: 1;
   flex: 1; overflow-y: auto;
@@ -264,33 +276,53 @@
 .onb-step .os-now { font-size: 12px; font-weight: 700; }
 .onb-step .os-count { font-size: 11px; color: rgba(255,255,255,0.72); font-variant-numeric: tabular-nums; }
 
-/* Choice card (reservation type / lead guest) */
-.choice { display: flex; flex-direction: column; gap: 10px; }
+/* Choice card (reservation type / lead guest)
+   ONE grouped card with hairline rows, exactly like the IV document picker
+   (.doc-list in ivd.css / iv.css). Three floating bordered cards read as three
+   separate decisions; a single card with a marked row reads as one decision with
+   three answers — which is what this step is. Selection is carried by a 3px left
+   edge + tint rather than a border swap, so the row doesn't shift or grow. */
+.choice {
+  display: flex; flex-direction: column;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;             /* clips the selected row's left edge at the corners */
+}
 .choice-card {
-  display: flex; align-items: center; gap: 13px;
-  padding: 14px 15px; border-radius: var(--r-lg);
-  background: var(--n-0); border: 1.5px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  background: transparent;
+  border: none; border-top: 1px solid var(--border);
   text-align: left; width: 100%;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  position: relative;
+  transition: background 0.15s;
 }
-.choice-card:hover { border-color: var(--blue-300); }
-.choice-card.on { border-color: var(--blue-500); background: var(--tint-pressed); box-shadow: var(--shadow-focus); }
+.choice-card:first-child { border-top: none; }
+.choice-card:hover { background: var(--n-50); }
+.choice-card.on { background: var(--tint-pressed); }
+.choice-card.on::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--blue-500);
+}
 .choice-card .cc-ic {
-  width: 44px; height: 44px; border-radius: 12px;
-  background: var(--tint-info); color: var(--blue-500);
+  width: 38px; height: 38px; border-radius: 11px;
+  background: var(--tint-pressed); color: var(--blue-500);
   display: grid; place-items: center; flex-shrink: 0;
+  font-size: 12.5px; font-weight: 700;   /* the lead-guest rows use this tile for initials */
 }
-.choice-card.on .cc-ic { background: var(--blue-500); color: #fff; }
 .choice-card .cc-main { flex: 1; min-width: 0; }
-.choice-card .cc-t { display: block; font-size: 14.5px; font-weight: 700; color: var(--navy); }
-.choice-card .cc-s { display: block; font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+.choice-card .cc-t { display: block; font-size: 14px; font-weight: 600; color: var(--navy); }
+.choice-card .cc-s { display: block; font-size: 11.5px; line-height: 16px; color: var(--text-secondary); }
 .choice-card .cc-radio {
-  width: 22px; height: 22px; border-radius: 50%;
-  border: 2px solid var(--n-300); flex-shrink: 0;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--n-200); flex-shrink: 0;
+  background: var(--n-0);
   display: grid; place-items: center;
 }
 .choice-card.on .cc-radio { border-color: var(--blue-500); }
-.choice-card.on .cc-radio::after { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--blue-500); }
+.choice-card.on .cc-radio::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--blue-500); }
 .choice-card .cc-crown { color: var(--amber-500); flex-shrink: 0; }
 .choice-card .cc-crown .icon { fill: var(--amber-500); stroke: var(--amber-700); width: 20px; height: 20px; }
 
@@ -466,8 +498,7 @@
    keeping only the brand gradient (chrome-only glass per rule 1). The
    frosted rules above are the inert base this skin overrides.
    ============================================================ */
-html.glass-lite .auth-stage::before,
-html.glass-lite .auth-stage::after,
+html.glass-lite .auth-stage { background-image: var(--gradient-hero); }
 html.glass-lite .auth-brandpanel::before,
 html.glass-lite .auth-brandpanel::after { display: none; }
 

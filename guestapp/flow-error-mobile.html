@@ -19,7 +19,6 @@
     <button class="fh-chip on" data-scenario="err-link">▶ Invalid link</button>
     <button class="fh-chip" data-scenario="err-rate">Too many requests</button>
     <button class="fh-chip" data-scenario="err-crash">Something went wrong</button>
-    <button class="fh-chip" data-scenario="err-embedded">SDK embedded</button>
     <button class="fh-restart" data-restart>↺ Restart</button>
     <span class="fh-label"></span>
   </div>
@@ -42,18 +41,13 @@
           <span class="err-ring"></span><span class="err-ring r2"></span>
           <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-unlink"/></svg></span>
         </div>
-        <div class="ss-title">This link isn't valid</div>
-        <div class="ss-sub">The check-in link looks incomplete or altered, so we can't open the reservation. It usually means the link got cut off when it was copied.</div>
+        <div class="ss-title">This link isn&#x27;t valid</div>
+        <div class="ss-sub">The check-in link looks incomplete or altered, so we can&#x27;t open the reservation. It usually means the link got cut off when it was copied.</div>
 
         <div class="err-checklist">
-          <div class="ec-head">Two quick things to check</div>
-          <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Paste the <b>whole link</b> your host sent — nothing cut off, no extra spaces.</span></div>
-          <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>If it still fails, <b>ask your host to resend</b> the reservation link.</span></div>
-        </div>
-
-        <div class="err-actions">
-          <a class="btn btn-primary" href="flow-search-v2.html#s2-method">Find my booking instead <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></a>
-          <button class="btn btn-outline" data-modal="m-contact-host"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg> Contact your host</button>
+          <div class="ec-head">Before you try again</div>
+          <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Paste the <b>whole link</b> — copying often clips the end or adds a space.</span></div>
+          <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Still not working? <b>Ask whoever sent it to resend</b> — links expire and can be edited in transit.</span></div>
         </div>
         <span class="sim-note">shown for a bad/missing token or a failed auth-init (ConnectionErrorsHandler) and by DirectReservationView when the deep-link params are missing</span>
       </div>
@@ -126,45 +120,7 @@
       </div>
     </div>
 
-    <!-- ═══ err-embedded · SDKErrorView — inside a host website ═══ -->
-    <div class="screen flow-screen" id="err-embedded" data-label="SDK embedded error (host site)">
-      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
-      <div class="host-frame">
-        <div class="host-topbar">
-          <span class="ht-logo">stay<span>host</span></span>
-          <span class="ht-nav"><span>Trips</span><span>Help</span></span>
-        </div>
-        <div class="host-body">
-          <div class="host-hero">Complete your check-in</div>
-          <div class="host-line w70"></div>
-          <div class="host-line w50"></div>
-          <div class="host-embed-label">Chekin widget</div>
-          <div class="embed-card">
-            <span class="ec-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-cloud-off"/></svg></span>
-            <div class="ec-title">We couldn't load your check-in</div>
-            <div class="ec-text">The connection to the check-in service was interrupted. Please try again in a moment.</div>
-            <a class="btn btn-primary btn-sm" href="flow-search-v2.html#s2-method"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Try again</a>
-            <span class="ec-brand"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg> Powered by Chekin</span>
-          </div>
-          <span class="sim-note">maps SDKErrorView — currently bare centered text with no action; the SDK also fires onConnectionError so the host site can react</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- ═══ m-contact-host · sheet ═══ -->
-    <div class="proto-modal sheet" id="m-contact-host">
-      <div class="pm-scrim"></div>
-      <div class="pm-card">
-        <div class="pm-grabber"></div>
-        <div class="pm-title">Contact your host</div>
-        <p class="pm-desc">Ask them to resend your check-in link — then open it fresh.</p>
-        <div class="pm-list">
-          <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span><span><b>host@casamarbella.com</b></span></div>
-          <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg></span><span>Message through your booking platform's inbox.</span></div>
-        </div>
-        <div class="pm-actions"><button class="btn btn-primary" data-modal-close>Close</button></div>
-      </div>
-    </div>
 
     <!-- ═══ m-support · sheet ═══ -->
     <div class="proto-modal sheet" id="m-support">

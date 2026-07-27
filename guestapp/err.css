@@ -45,6 +45,7 @@
   50% { transform: scale(1.08); opacity: 0.3; }
 }
 
+
 /* ---------- Actions (the whole point — errors were a dead end) ---------- */
 .err-actions {
   display: flex; flex-direction: column; gap: 10px;
@@ -80,7 +81,7 @@
   background: var(--green-50); color: var(--green-700);
   display: grid; place-items: center; flex-shrink: 0;
 }
-.err-checklist .ec-row .ec-ic .icon { width: 13px; height: 13px; }
+.err-checklist .ec-row .ec-ic .icon { width: 13px; height: 13px; stroke-width: 3; }
 
 /* ---------- Rate-limit countdown (transient → invite a retry) ---------- */
 .err-countdown {
