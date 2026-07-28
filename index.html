@@ -65,9 +65,19 @@
   .choice--guestapp .icon { background: #e8fcf7; color: #0f9f80; }
   .choice--sdk .icon { background: #eef0f6; color: #505077; }
   .choice--sdk-guestapp .icon { background: #e3efff; color: var(--blue); }
-  .choice h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  .choice h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .choice p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
   .choice .meta { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+
+  .badge-deprecated {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #b23f00; background: #fff1e8; border: 1px solid #ffd9c2;
+    padding: 3px 8px; border-radius: 999px;
+  }
+  .choice--deprecated { opacity: 0.68; }
+  .choice--deprecated:hover, .choice--deprecated:focus-visible { opacity: 1; }
+  .choice--deprecated .icon { background: #f1f1f4; color: var(--ink-3); }
+  .choice--deprecated .cta { color: var(--ink-2); }
   .choice .cta {
     display: inline-flex; align-items: center; gap: 7px; margin-top: 4px;
     font-size: 14px; font-weight: 600; color: var(--blue);
@@ -88,14 +98,14 @@
   <p class="lead">Static, clickable redesign prototypes built on the Chekin design system — mock data only, no app logic. Pick a surface to explore.</p>
 
   <div class="choices">
-    <a class="choice choice--dashboard" href="dashboard/index.html">
+    <a class="choice choice--dashboard choice--deprecated" href="dashboard-deprecated/index.html">
       <span class="icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
       </span>
-      <h2>Dashboard</h2>
-      <p>The host-side property management app, redesigned: action-queue Home, bookings pipeline with KPI filters, property workspace with separated setting views, unified documents &amp; billing.</p>
-      <span class="meta">8 pages · 7 switchable design variants · UX audit included</span>
-      <span class="cta">Open dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      <h2>Dashboard <span class="badge-deprecated">Deprecated</span></h2>
+      <p>The first host-side dashboard redesign — action-queue Home, bookings pipeline, property workspace, unified documents &amp; billing. Kept for reference; a new dashboard prototype is being built on the Fable design and will replace it.</p>
+      <span class="meta">Archived · superseded by the upcoming dashboard prototype</span>
+      <span class="cta">Open archived dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
     </a>
 
     <a class="choice choice--guestapp" href="guestapp/index.html">

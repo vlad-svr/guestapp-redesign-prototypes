@@ -4,7 +4,7 @@ Static HTML/CSS mockups (no build, no app logic, mock data) of redesigned Chekin
 
 Four prototypes live here, behind a common chooser at the root `index.html` ([GitHub Pages](https://vlad-svr.github.io/guestapp-redesign-prototypes/)):
 
-- **`dashboard/`** — the host-side property management app: action-queue Home, bookings pipeline with clickable KPI filters, table-based properties, property workspace and workspace settings with separated views, unified documents hub, billing, 7 switchable design variants. See `dashboard/UX-AUDIT.md` for the audit and "what changed and why".
+- **`dashboard-deprecated/`** — _(deprecated)_ the first host-side dashboard redesign: action-queue Home, bookings pipeline with clickable KPI filters, table-based properties, property workspace and workspace settings with separated views, unified documents hub, billing, 7 switchable design variants. See `dashboard-deprecated/UX-AUDIT.md` for the audit and "what changed and why". Kept for reference — a new dashboard prototype is being built on the Fable design and will supersede it.
 - **`guestapp/`** — the guest-side Redesign 2.0 flows documented below.
 - **`guestapp/sdk/`** — the **embeddable Guest SDK (ChekinPro)** in a neutral skin, shown inside a mock partner website.
 - **`guestapp/sdk-guestapp/`** — the same SDK flows in the guestapp's design language. See below.
