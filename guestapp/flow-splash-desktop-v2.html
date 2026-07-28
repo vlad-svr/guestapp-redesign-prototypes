@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass-lite">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +7,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<!-- search.css + err.css carry the pre-auth shell the ErrorView states below
+     are built on; glass-lite on <html> is the flat variant of that shell. -->
+<link rel="stylesheet" href="search.css">
+<link rel="stylesheet" href="err.css">
 <link rel="stylesheet" href="splash-v2.css">
+<style>
+  /* the error states are full-height flow screens inside the browser frame,
+     and the support dialog is scoped to that frame rather than the viewport */
+  .browser { display: flex; flex-direction: column; position: relative; }
+</style>
 </head>
 <body>
 <div class="proto-stage">
   <h1>Splash screen — the arrival moment (Desktop · SDK · Kiosk)</h1>
   <p class="lede">The same handoff at three sizes. On a laptop the splash dissolves into the <b>navy-sidebar shell</b>, and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b> — it has no business painting over the host's own page. On the kiosk it is read from a metre away, and it has <b>nowhere to fly to</b>, so it simply settles. Mock data only.</p>
+  <p class="lede">The <b>error &amp; recovery</b> states sit in this flow too — the arrival is where they happen, and the 20&nbsp;s watchdog above lands on one of them. On desktop they are a centred <b>glass card</b> on the branded gradient: errors happen pre-auth, before any app shell exists, so they reuse the Find-booking pre-auth shell rather than the sidebar.</p>
 
   <div class="flow-hud">
     <button class="fh-chip" data-scenario="spd-fast">Fast load</button>
     <button class="fh-chip" data-scenario="spd-slow">Slow connection</button>
     <button class="fh-chip" data-scenario="spd-error">Can't load</button>
     <button class="fh-chip" data-scenario="spd-sdk">SDK — embedded in a client site</button>
+    <button class="fh-chip" data-scenario="erd-link">Invalid link</button>
+    <button class="fh-chip" data-scenario="erd-rate">Too many requests</button>
+    <button class="fh-chip" data-scenario="erd-crash">Something went wrong</button>
     <button class="fh-restart" data-restart>↻ Restart</button>
     <span class="fh-label"></span>
   </div>
@@ -171,7 +184,7 @@
       <div class="flow-screen sp-desk-frame" id="spd-error"
            data-label="Can't load — the watchdog lands here, never on a frozen spinner"
            data-sp-ladder="error"
-           data-sp-announce="We couldn't load your check-in. Three ways to continue are available.">
+           data-sp-announce="We couldn't load your check-in. You can try again.">
 
         <div class="sp-under" data-sp-under></div>
 
@@ -179,9 +192,19 @@
           <span class="sp-curtain top" aria-hidden="true"></span>
           <span class="sp-curtain bottom" aria-hidden="true"></span>
 
-          <div class="sp-mark is-error">
-            <div class="sp-plate"><span class="sp-logo sp-logo-default" aria-hidden="true">C</span></div>
-            <span class="sp-badge err" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg></span>
+          <!-- Same pre-auth header as the erd-* states below: this is a
+               resolved error, not a loading surface, so it says who is asking
+               and lets the guest change language while they are stuck. -->
+          <div class="sr-brandmark"><span class="bm-logo">C</span> Chekin</div>
+          <div class="sr-lang"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-globe"/></svg> English</div>
+
+          <!-- The same variant mark the erd-* states use, rather than the brand
+               plate with an error sticker on it: the host's logo is not the
+               subject of this screen, the failure is. Identity has moved to the
+               brandmark above. -->
+          <div class="err-art crash" aria-hidden="true">
+            <span class="err-ring"></span><span class="err-ring r2"></span>
+            <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg></span>
           </div>
           <span class="sp-dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <div class="sp-copy">
@@ -193,15 +216,6 @@
               <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg>
               Try again
             </button>
-            <button class="btn btn-outline btn-block">
-              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-search"/></svg>
-              Find my booking
-            </button>
-            <button class="btn btn-ghost">Message your host, Elena</button>
-            <span class="sp-ref">
-              <code>CHK-8F2A-41D9</code>
-              <button data-sp-copy aria-label="Copy error reference CHK-8F2A-41D9">Copy</button>
-            </span>
           </div>
           <div class="sp-trust">
             <span class="sp-trust-row">
@@ -287,6 +301,111 @@
         <p class="sr-only" data-sp-live aria-live="polite"></p>
       </div>
 
+      <!-- ══════════════════════════════════════════════════════════════════
+           Error &amp; recovery — pages/ErrorView and ErrorFallback.
+           No splash ladder runs on these three: they are resolved states,
+           reached either from a bad link or from the watchdog above. Errors
+           happen pre-auth, so the shell is the centred glass card, not the
+           sidebar app shell.
+           ══════════════════════════════════════════════════════════════════ -->
+
+      <!-- ─────────────── Invalid / broken link (ErrorView default) ─────────────── -->
+      <div class="flow-screen sp-err-frame" id="erd-link" data-label="Link not valid — route into search">
+        <div class="sr-standalone">
+          <div class="sr-brandmark"><span class="bm-logo">C</span> Chekin</div>
+          <div class="sr-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> English</div>
+          <div class="sr-card">
+            <div class="sr-state">
+              <div class="err-art link">
+                <span class="err-ring"></span><span class="err-ring r2"></span>
+                <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-unlink"/></svg></span>
+              </div>
+              <div class="ss-title">This link isn&#x27;t valid</div>
+              <div class="ss-sub">The check-in link looks incomplete or altered, so we can&#x27;t open the reservation. It usually means the link got cut off when it was copied.</div>
+
+              <div class="err-checklist">
+                <div class="ec-head">Before you try again</div>
+                <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Paste the <b>whole link</b> — copying often clips the end or adds a space.</span></div>
+                <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Still not working? <b>Ask whoever sent it to resend</b> — links expire and can be edited in transit.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="sr-foot-note"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · powered by Chekin</div>
+        </div>
+      </div>
+
+      <!-- ─────────────── Too many requests (ErrorView variant) ─────────────── -->
+      <div class="flow-screen sp-err-frame" id="erd-rate" data-label="Too many requests — countdown + retry">
+        <div class="sr-standalone">
+          <div class="sr-brandmark"><span class="bm-logo">C</span> Chekin</div>
+          <div class="sr-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> English</div>
+          <div class="sr-card">
+            <div class="sr-state">
+              <div class="err-art rate">
+                <span class="err-ring"></span><span class="err-ring r2"></span>
+                <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg></span>
+              </div>
+              <div class="ss-title">Just a moment</div>
+              <div class="ss-sub">We've had a lot of requests from this device in a short time. This is a temporary safety limit — your check-in is completely fine.</div>
+              <div class="err-countdown">
+                <span class="ec-dial" style="--p:62%"><span class="ec-time">1:47</span></span>
+                <span class="ec-copy">
+                  <span class="ec-t">You can try again shortly</span>
+                  <span class="ec-s">The button turns on automatically when the wait is up.</span>
+                </span>
+              </div>
+              <div class="err-actions">
+                <a class="btn btn-primary" href="flow-search-desktop-v2.html#sd2-method">Try again <svg viewBox="0 0 24 24" class="icon"><use href="#i-refresh"/></svg></a>
+              </div>
+            </div>
+          </div>
+          <div class="sr-foot-note"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · powered by Chekin</div>
+        </div>
+      </div>
+
+      <!-- ─────────────── Something went wrong (ErrorFallback boundary) ─────────────── -->
+      <div class="flow-screen sp-err-frame" id="erd-crash" data-label="Something went wrong — reload + support ref">
+        <div class="sr-standalone">
+          <div class="sr-brandmark"><span class="bm-logo">C</span> Chekin</div>
+          <div class="sr-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> English</div>
+          <div class="sr-card">
+            <div class="sr-state">
+              <div class="err-art crash">
+                <span class="err-ring"></span><span class="err-ring r2"></span>
+                <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg></span>
+              </div>
+              <div class="ss-title">Something went wrong</div>
+              <div class="ss-sub">An unexpected error interrupted your check-in. Reloading fixes it almost every time — nothing you entered is lost.</div>
+              <div class="err-ref">
+                <span>Error ref</span>
+                <span class="er-code">CHK-9F3A2</span>
+                <button class="er-copy"><svg viewBox="0 0 24 24" class="icon"><use href="#i-copy"/></svg> Copy</button>
+              </div>
+              <div class="err-actions">
+                <button class="btn btn-primary" onclick="location.href='flow-search-desktop-v2.html#sd2-method'"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Reload &amp; try again</button>
+                <button class="btn btn-outline" data-modal="md-support"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg> Contact support</button>
+              </div>
+            </div>
+          </div>
+          <div class="sr-foot-note"><svg viewBox="0 0 24 24" class="icon"><use href="#i-lock"/></svg> Secure check-in · powered by Chekin</div>
+        </div>
+      </div>
+
+      <!-- ═══ md-support · dialog ═══ -->
+      <div class="proto-modal" id="md-support">
+        <div class="pm-scrim"></div>
+        <div class="pm-card">
+          <button class="pm-close" data-modal-close><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-x"/></svg></button>
+          <div class="pm-title">Contact support</div>
+          <p class="pm-desc">Quote your error reference so we can trace exactly what happened.</p>
+          <div class="pm-list">
+            <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-hash"/></svg></span><span>Error ref <b>CHK-9F3A2</b></span></div>
+            <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span><span><b>support@chekin.com</b></span></div>
+          </div>
+          <div class="pm-actions"><button class="btn btn-primary" data-modal-close>Close</button></div>
+        </div>
+      </div>
+
     </div>
 
     <div class="sp-caption">
@@ -334,9 +453,20 @@
     <g id="i-wifi-off"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></g>
     <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
     <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <!-- error &amp; recovery states -->
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-unlink"><path d="m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71"/><path d="m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71"/><line x1="8" x2="8" y1="2" y2="5"/><line x1="2" x2="5" y1="8" y2="8"/><line x1="16" x2="16" y1="19" y2="22"/><line x1="19" x2="22" y1="16" y2="16"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-message"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></g>
+    <g id="i-hash"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
   </defs>
 </svg>
 
+<script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="splash-v2.js" defer></script>
 <script src="nav.js" defer></script>

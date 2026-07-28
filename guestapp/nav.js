@@ -8,7 +8,7 @@
     { group: 'Overview', items: [
       { file: 'index.html', label: 'Overview & rationale', icon: '⌂' },
     ]},
-    { group: 'Splash screen', items: [
+    { group: 'Splash screen & errors', items: [
       { file: 'flow-splash-v2.html', label: 'Splash screen — mobile', icon: '📱', by: 'opus', subs: [
         { hash: 'sp-fast', label: 'Fast load (the 90% case)' },
         { hash: 'sp-slow', label: 'Slow connection' },
@@ -17,12 +17,19 @@
         { hash: 'sp-offline', label: 'Offline' },
         { hash: 'sp-brand', label: 'Host-branded' },
         { hash: 'sp-off', label: 'Splash disabled' },
+        // Error & recovery lives in this flow: same arrival, failed instead.
+        { hash: 'err-link', label: 'Error — invalid link (→ search)' },
+        { hash: 'err-rate', label: 'Error — too many requests' },
+        { hash: 'err-crash', label: 'Error — something went wrong' },
       ]},
       { file: 'flow-splash-desktop-v2.html', label: 'Splash screen — desktop', icon: '🖥', by: 'opus', subs: [
         { hash: 'spd-fast', label: 'Fast load' },
         { hash: 'spd-slow', label: 'Slow connection' },
         { hash: 'spd-error', label: "Can't load" },
         { hash: 'spd-sdk', label: 'SDK — embedded in a client site' },
+        { hash: 'erd-link', label: 'Error — invalid link (→ search)' },
+        { hash: 'erd-rate', label: 'Error — too many requests' },
+        { hash: 'erd-crash', label: 'Error — something went wrong' },
       ]},
     ]},
     { group: 'Home', items: [
@@ -421,18 +428,6 @@
         { hash: 'hd-search', label: 'Search with matches' },
         { hash: 'hd-lang', label: 'Language dialog' },
         { hash: 'hd-es', label: 'Switched to Español' },
-      ]},
-    ]},
-    { group: 'Error & recovery', items: [
-      { file: 'flow-error-mobile.html', label: 'Error states — mobile', icon: '📱', subs: [
-        { hash: 'err-link', label: 'Invalid link (→ search)' },
-        { hash: 'err-rate', label: 'Too many requests (countdown)' },
-        { hash: 'err-crash', label: 'Something went wrong (ref)' },
-      ]},
-      { file: 'flow-error-desktop.html', label: 'Error states — desktop', icon: '🖥', subs: [
-        { hash: 'erd-link', label: 'Invalid link (→ search)' },
-        { hash: 'erd-rate', label: 'Too many requests (countdown)' },
-        { hash: 'erd-crash', label: 'Something went wrong (ref)' },
       ]},
     ]},
     { group: 'Building blocks', items: [

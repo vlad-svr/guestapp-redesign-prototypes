@@ -127,18 +127,18 @@
   <h2 class="sec" style="margin-top:36px">Prototypes by feature</h2>
   <p class="sec-sub"><b><span class="tag-proposal" style="margin-left:0">Proposal</span></b> marks a redesign proposal shown beside the <b><span class="tag-current" style="margin-left:0">Current</span></b> shipped variant — proposals are not the main variant. One canonical prototype per feature and form factor. <b>📱 Mobile</b> and <b>🖥 Desktop</b> sit together under each feature. Most are click-through flows (scenario switcher, auto-advancing camera/sync steps, branches follow your choices); a couple are static screen sets, labelled as such.</p>
 
-  <h3 class="feat">Splash screen</h3>
+  <h3 class="feat">Splash screen &amp; error recovery</h3>
   <div class="proto-links" style="margin-top:0">
     <a class="proto-link" href="flow-splash-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱</span> Splash screen — mobile</h3>
-      <p><b>Clocked</b>, so the saving is watchable rather than claimed. The shipped component holds every guest for <b>load + 5.0 s</b>, closes two curtains over its own logo at 4.3 s, and — if the auth request hangs — <b>never leaves</b>. Here the splash is a <b>handoff, not a gate</b>: it covers a shape-matched skeleton, leaves the instant the data lands (<code>max(load, 500 ms)</code>), stays silent below 1.2 s, admits slowness at 6 s, and hits a <b>watchdog</b> at 20 s. Seven states: fast, slow, taking-longer, can't-load, offline, host-branded and splash-disabled. The <b>surface stays V1's</b> — flat brand ground, bare logo, three pulsing dots, and the two curtains — but the curtains now close on <b>data-ready</b> over a live screen instead of on a blind 5 s clock over a dead one.</p>
+      <p><b>Clocked</b>, so the saving is watchable rather than claimed. The shipped component holds every guest for <b>load + 5.0 s</b>, closes two curtains over its own logo at 4.3 s, and — if the auth request hangs — <b>never leaves</b>. Here the splash is a <b>handoff, not a gate</b>: it covers a shape-matched skeleton, leaves the instant the data lands (<code>max(load, 500 ms)</code>), stays silent below 1.2 s, admits slowness at 6 s, and hits a <b>watchdog</b> at 20 s. Seven splash states: fast, slow, taking-longer, can't-load, offline, host-branded and splash-disabled. The <b>surface stays V1's</b> — flat brand ground, bare logo, three pulsing dots, and the two curtains — but the curtains now close on <b>data-ready</b> over a live screen instead of on a blind 5 s clock over a dead one. The three <b>full-page error states</b> live in the same flow, because they are the same arrival gone wrong: a <b>broken link</b> routes into booking search (+ what-to-check), <b>too many requests</b> shows a countdown that invites a retry, and a <b>crash</b> (<code>ErrorFallback</code>) hands over a copyable error reference.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-splash-desktop-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-monitor"/></svg></div>
       <h3><span class="ff">🖥</span> Splash screen — desktop · SDK · kiosk</h3>
-      <p>The same handoff at three sizes. On a laptop it dissolves into the <b>navy-sidebar shell</b> and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b>, never the host's page. On the unattended <b>kiosk</b> the watchdog matters most — today a hung request leaves a lobby screen showing a solid blue rectangle until someone reboots it.</p>
+      <p>The same handoff at three sizes. On a laptop it dissolves into the <b>navy-sidebar shell</b> and the mark lands on the sidebar's brand tile. Embedded in a client's website via the SDK it is <b>scoped to the widget box</b>, never the host's page. On the unattended <b>kiosk</b> the watchdog matters most — today a hung request leaves a lobby screen showing a solid blue rectangle until someone reboots it. The same three <b>error states</b> close the flow, as a centred <b>glass card</b> on the branded gradient: errors happen pre-auth, so they reuse the Find-booking shell rather than the app shell.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -483,22 +483,6 @@
     </a>
   </div>
 
-  <h3 class="feat">Error &amp; recovery</h3>
-  <div class="proto-links" style="margin-top:0">
-    <a class="proto-link" href="flow-error-mobile.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">📱</span> Error states — mobile</h3>
-      <p>The full-page <code>ErrorView</code>, redesigned so it's never a dead end. Each real case gets its own mark and its own exit: a <b>broken link</b> routes into booking search (+ contact host, what-to-check), <b>too many requests</b> shows a countdown that invites a retry, a <b>crash</b> (<code>ErrorFallback</code>) hands over a copyable error reference, and the <b>SDK embedded</b> error (<code>SDKErrorView</code>) gets a compact recoverable card shown inside a mock host site.</p>
-      <span class="go">Run states <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-    <a class="proto-link" href="flow-error-desktop.html">
-      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">🖥</span> Error states — desktop</h3>
-      <p>The same four states as a centred <b>glass card</b> on the branded gradient — errors happen pre-auth, so they reuse the Find-booking pre-auth shell rather than the app shell. SDK embedded shown inside a wider mock host page.</p>
-      <span class="go">Run states <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
-    </a>
-  </div>
-
   <h2 class="sec">Building blocks</h2>
   <p class="sec-sub">Shared primitives and behaviors used across the flows above.</p>
 
@@ -526,7 +510,7 @@
   <h2 class="sec">What changed and why</h2>
   <p class="sec-sub">Each improvement maps to a concrete gap found in the current redesign-2.0 code.</p>
 
-  <h3 class="feat">Splash screen</h3>
+  <h3 class="feat">Splash screen &amp; error recovery</h3>
   <div class="imp-grid" style="margin-bottom:8px">
     <div class="imp">
       <span class="tag glass-t">Surface</span>
@@ -581,6 +565,36 @@
       <h4>A <code>cubic-bezier</code> that has never rendered</h4>
       <p class="was"><b>Now in code:</b> <code>animation-timing-function: cubic-bezier(0, 1.23)</code> passes <b>two</b> arguments where CSS requires four. The declaration is invalid, browsers drop it, and the curtains silently fall back to <code>ease</code>. The intended overshoot has never once appeared on a guest's screen.</p>
       <p class="now"><b>Proposed:</b> the curtains become a <b>CSS transition</b> with a valid four-argument easing, so the intended motion actually renders — and, being a transition rather than a mount-time animation, it can only run when there is something to hand off to.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Recovery</span>
+      <h4>The error page stops being a dead end</h4>
+      <p class="was"><b>Now in code:</b> <code>ErrorView</code> is a house icon + title + two lines of text and <b>no actions at all</b> — a guest who hits a broken link or a rate-limit is simply stuck, with hardcoded hex colors off the token system.</p>
+      <p class="now"><b>Proposed:</b> the same title/text/secondText, now with a <b>recovery block</b> — the broken-link case offers <b>"Find my booking"</b> (into the search flow) + contact host + a what-to-check list; every variant has a real way forward, tokenized and on-brand. It lives in this flow because it <i>is</i> this flow: the watchdog above lands here.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Differentiation</span>
+      <h4>Each error looks like what it actually is</h4>
+      <p class="was"><b>Now in code:</b> <code>ConnectionErrorsHandler</code> passes three very different situations — invalid link, a transient <b>"Too many requests"</b>, and (via <code>ErrorFallback</code>) a hard crash — through <b>one identical house-icon layout</b>.</p>
+      <p class="now"><b>Proposed:</b> a <b>variant mark + tint</b> per case (broken-link blue · clock amber · alert red), so a temporary rate-limit never reads as a broken link, and a crash never reads as "your fault".</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Transient</span>
+      <h4>"Too many requests" gets a countdown, not a blind wait</h4>
+      <p class="was"><b>Now in code:</b> the rate-limit variant says "wait a few minutes and try again" with <b>no timer and no retry</b> — the guest reloads blindly and can re-trip the limit.</p>
+      <p class="now"><b>Proposed:</b> a <b>countdown dial</b> ("try again shortly", button auto-enables when the wait is up) and a reassurance line that the check-in itself is fine — turning a scary-sounding limit into a short, honest pause.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Supportability</span>
+      <h4>A crash hands over something support can trace</h4>
+      <p class="was"><b>Now in code:</b> <code>ErrorFallback</code> is "⚠ Something went wrong" text (Sentry catches it silently); the guest has nothing to quote and no clear next step.</p>
+      <p class="now"><b>Proposed:</b> a <b>copyable error reference</b> (CHK-9F3A2), a primary <b>Reload &amp; try again</b>, and a Contact-support path that pre-fills that reference — so a stuck guest and support meet on the same thread.</p>
+    </div>
+    <div class="imp">
+      <span class="tag ux-t">Embedded</span>
+      <h4>The SDK error is recoverable in the host page</h4>
+      <p class="was"><b>Now in code:</b> <code>SDKErrorView</code> is bare centered text inside the client's iframe — no icon, no retry, and the surrounding host site gives no clue what happened.</p>
+      <p class="now"><b>Proposed:</b> a compact branded <b>error card with a Try-again</b> (the SDK still fires <code>onConnectionError</code> so the host can react) — the SDK-scoped splash on the desktop page shows the same containment rule for the loading half.</p>
     </div>
   </div>
 
@@ -1307,40 +1321,6 @@
       <h4>Slide-to-open, made tactile and accident-proof</h4>
       <p class="was"><b>Now in code:</b> OpenDoorSwitch exists but is a plain draggable; the code lock shows a copy button only for Keyless — the standard KeyBox code has none.</p>
       <p class="now"><b>Proposed:</b> the <b>slide-to-open is the hero</b> of each live door — a deliberate, single-purpose gesture (drag or tap) that opens the OpenLockStatusModal (opening → "You're in" → re-locks itself), with a clear connection-issue recovery. Every keypad code gets a <b>one-tap copy</b>, and multi-lock buildings (Salto) list each door in one place, an offline lock shown honestly with Retry rather than a silent failure.</p>
-    </div>
-  </div>
-
-  <h3 class="feat">Error & recovery</h3>
-  <div class="imp-grid" style="margin-bottom:8px">
-    <div class="imp">
-      <span class="tag ux-t">Recovery</span>
-      <h4>The error page stops being a dead end</h4>
-      <p class="was"><b>Now in code:</b> <code>ErrorView</code> is a house icon + title + two lines of text and <b>no actions at all</b> — a guest who hits a broken link or a rate-limit is simply stuck, with hardcoded hex colors off the token system.</p>
-      <p class="now"><b>Proposed:</b> the same title/text/secondText, now with a <b>recovery block</b> — the broken-link case offers <b>"Find my booking"</b> (into the search flow) + contact host + a what-to-check list; every variant has a real way forward, tokenized and on-brand.</p>
-    </div>
-    <div class="imp">
-      <span class="tag ux-t">Differentiation</span>
-      <h4>Each error looks like what it actually is</h4>
-      <p class="was"><b>Now in code:</b> <code>ConnectionErrorsHandler</code> passes three very different situations — invalid link, a transient <b>"Too many requests"</b>, and (via <code>ErrorFallback</code>) a hard crash — through <b>one identical house-icon layout</b>.</p>
-      <p class="now"><b>Proposed:</b> a <b>variant mark + tint</b> per case (broken-link blue · clock amber · alert red), so a temporary rate-limit never reads as a broken link, and a crash never reads as "your fault".</p>
-    </div>
-    <div class="imp">
-      <span class="tag trust-t">Transient</span>
-      <h4>"Too many requests" gets a countdown, not a blind wait</h4>
-      <p class="was"><b>Now in code:</b> the rate-limit variant says "wait a few minutes and try again" with <b>no timer and no retry</b> — the guest reloads blindly and can re-trip the limit.</p>
-      <p class="now"><b>Proposed:</b> a <b>countdown dial</b> ("try again shortly", button auto-enables when the wait is up) and a reassurance line that the check-in itself is fine — turning a scary-sounding limit into a short, honest pause.</p>
-    </div>
-    <div class="imp">
-      <span class="tag ux-t">Supportability</span>
-      <h4>A crash hands over something support can trace</h4>
-      <p class="was"><b>Now in code:</b> <code>ErrorFallback</code> is "⚠ Something went wrong" text (Sentry catches it silently); the guest has nothing to quote and no clear next step.</p>
-      <p class="now"><b>Proposed:</b> a <b>copyable error reference</b> (CHK-9F3A2), a primary <b>Reload &amp; try again</b>, and a Contact-support path that pre-fills that reference — so a stuck guest and support meet on the same thread.</p>
-    </div>
-    <div class="imp">
-      <span class="tag ux-t">Embedded</span>
-      <h4>The SDK error is recoverable in the host page</h4>
-      <p class="was"><b>Now in code:</b> <code>SDKErrorView</code> is bare centered text inside the client's iframe — no icon, no retry, and the surrounding host site gives no clue what happened.</p>
-      <p class="now"><b>Proposed:</b> a compact branded <b>error card with a Try-again</b> (the SDK still fires <code>onConnectionError</code> so the host can react), shown here inside a mock host website so the in-context treatment is clear.</p>
     </div>
   </div>
 

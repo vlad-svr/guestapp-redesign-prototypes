@@ -93,6 +93,7 @@
    26px upward shift, dragging the footer on top of the error screen's actions.
    It gets its z-index at its own rule. */
 .sp-stage > .sp-mark,
+.sp-stage > .err-art,
 .sp-stage > .sp-copy,
 .sp-stage > .sp-actions { position: relative; z-index: 2; }
 
@@ -689,7 +690,56 @@
 .sp-kiosk .sp-dots i { width: 14px; height: 14px; }
 
 /* ─────────────────────────────────────────────────────────────
-   10 · Reduced motion
+   10 · Error & recovery — the other end of the same arrival
+   The three full-page ErrorView cases live in this flow: everything that
+   can happen between opening the link and landing on Home belongs to the
+   arrival moment, and the watchdog above already lands on one of them.
+   They keep the pre-auth surface they were built on (search.css
+   `.sr-state` / `.sr-standalone` / `.sr-card`, plus err.css for the
+   variant art), so all that is needed here is flow-screen sizing inside
+   the phone and browser frames. Both splash pages load
+   shared.css → search.css → err.css → splash-v2.css and carry
+   `html.glass-lite`, which is what keeps search.css off `.phone`.
+   ───────────────────────────────────────────────────────────── */
+.sp-err-screen { flex: 1; flex-direction: column; min-height: 0; }
+.sp-err-frame { flex: 1; flex-direction: column; min-height: 720px; }
+
+/* On desktop the error views take the Can't-load stage's treatment: the same
+   flat ground with no card between the guest and the message, and the same
+   type scale. They are the same surface reached for a different reason, so
+   there is no reason for one of them to be a panel and the other bare ground.
+   `.sr-brandmark` / `.sr-lang` stay — that header is the point of the shell.
+   The three-class selectors are deliberate: they have to outrank
+   `html.glass-lite .sr-*` (0,2,1) from search.css. */
+.sp-col .sp-err-frame .sr-standalone { background: #f4f6f8; }
+.sp-col .sp-err-frame .sr-card {
+  max-width: 520px;
+  min-height: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* The footnote duplicated what the card already said; the stage next door
+   carries the trust line, so here it is just noise under a message. */
+.sp-col .sp-err-frame .sr-foot-note { display: none; }
+/* Matches `.sp-desk-frame` — 21px title, 13.5/20 body, 380px measure. */
+.sp-err-frame .sr-state .ss-title {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
+}
+.sp-err-frame .sr-state .ss-sub {
+  font-size: 13.5px;
+  line-height: 20px;
+  max-width: 380px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11 · Reduced motion
    shared.css already disables all animation/transition under
    prefers-reduced-motion. These rules make the *result* correct rather than
    merely still: the mark must not be frozen mid-flight, and the dots must

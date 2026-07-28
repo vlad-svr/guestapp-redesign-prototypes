@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="glass-lite">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<!-- search.css + err.css carry the pre-auth shell the ErrorView states below
+     are built on; glass-lite on <html> keeps search.css off .phone. -->
+<link rel="stylesheet" href="search.css">
+<link rel="stylesheet" href="err.css">
 <link rel="stylesheet" href="splash-v2.css">
 </head>
 <body>
 <div class="proto-stage">
   <h1>Splash screen — the arrival moment (Mobile)</h1>
   <p class="lede"><b>The splash is a handoff, not a gate.</b> A rebuild of <code>components/SplashScreen</code>, clocked. The shipped component holds the guest for <b>load&nbsp;+&nbsp;5.0&nbsp;s</b>, closes two curtains over its own logo at 4.3&nbsp;s, and — if the auth request hangs — never leaves. Here it covers the skeleton of the screen it is about to become, leaves the instant the data lands, and when the data never lands it says so and offers a way out. The surface stays V1's; everything that changes is behaviour.</p>
+  <p class="lede">The <b>error &amp; recovery</b> states sit in this flow too — the arrival is where they happen, and the 20&nbsp;s watchdog above lands on one of them. Last three chips: <code>ErrorView</code>'s two real variants and the <code>ErrorFallback</code> crash, each with its own mark and its own exit.</p>
 
   <div class="flow-hud">
     <button class="fh-chip" data-scenario="sp-fast">Fast load (the 90% case)</button>
@@ -22,6 +27,9 @@
     <button class="fh-chip" data-scenario="sp-offline">Offline</button>
     <button class="fh-chip" data-scenario="sp-brand">Host-branded</button>
     <button class="fh-chip" data-scenario="sp-off">Splash disabled</button>
+    <button class="fh-chip" data-scenario="err-link">Invalid link</button>
+    <button class="fh-chip" data-scenario="err-rate">Too many requests</button>
+    <button class="fh-chip" data-scenario="err-crash">Something went wrong</button>
     <button class="fh-restart" data-restart>↻ Restart</button>
     <span class="fh-label"></span>
   </div>
@@ -390,6 +398,124 @@
             <p class="sr-only" data-sp-live aria-live="polite"></p>
           </div>
 
+          <!-- ══════════════════════════════════════════════════════════════
+               Error &amp; recovery — pages/ErrorView and ErrorFallback.
+               No splash ladder runs on these three: they are resolved
+               states, reached either from a bad link or from the watchdog
+               above. Each gets its own mark and its own exit; none of them
+               is a dead end.
+               ══════════════════════════════════════════════════════════════ -->
+
+          <!-- ─────────────── Invalid / broken link (ErrorView default) ─────────────── -->
+          <div class="flow-screen sp-err-screen" id="err-link" data-label="Link not valid — route into search">
+            <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+            <div class="topbar">
+              <span class="back-btn" style="cursor:default;background:var(--gradient-brand);color:#fff;font-weight:700">C</span>
+              <div class="tb-titles">
+                <div class="tb-title">Chekin</div>
+                <div class="tb-sub">Secure check-in</div>
+              </div>
+              <span class="tb-action"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</span>
+            </div>
+            <div class="sr-state">
+              <div class="err-art link">
+                <span class="err-ring"></span><span class="err-ring r2"></span>
+                <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-unlink"/></svg></span>
+              </div>
+              <div class="ss-title">This link isn&#x27;t valid</div>
+              <div class="ss-sub">The check-in link looks incomplete or altered, so we can&#x27;t open the reservation. It usually means the link got cut off when it was copied.</div>
+
+              <div class="err-checklist">
+                <div class="ec-head">Before you try again</div>
+                <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Paste the <b>whole link</b> — copying often clips the end or adds a space.</span></div>
+                <div class="ec-row"><span class="ec-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span><span>Still not working? <b>Ask whoever sent it to resend</b> — links expire and can be edited in transit.</span></div>
+              </div>
+              <span class="sim-note">shown for a bad/missing token or a failed auth-init (ConnectionErrorsHandler) and by DirectReservationView when the deep-link params are missing</span>
+            </div>
+          </div>
+
+          <!-- ─────────────── Too many requests (ErrorView variant) ─────────────── -->
+          <div class="flow-screen sp-err-screen" id="err-rate" data-label="Too many requests — countdown + retry">
+            <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+            <div class="topbar">
+              <span class="back-btn" style="cursor:default;background:var(--gradient-brand);color:#fff;font-weight:700">C</span>
+              <div class="tb-titles">
+                <div class="tb-title">Chekin</div>
+                <div class="tb-sub">Secure check-in</div>
+              </div>
+              <span class="tb-action"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</span>
+            </div>
+            <div class="sr-state">
+              <div class="err-art rate">
+                <span class="err-ring"></span><span class="err-ring r2"></span>
+                <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg></span>
+              </div>
+              <div class="ss-title">Just a moment</div>
+              <div class="ss-sub">We've had a lot of requests from this device in a short time. This is a temporary safety limit — your check-in is completely fine.</div>
+
+              <div class="err-countdown">
+                <span class="ec-dial" style="--p:62%"><span class="ec-time">1:47</span></span>
+                <span class="ec-copy">
+                  <span class="ec-t">You can try again shortly</span>
+                  <span class="ec-s">The button turns on automatically when the wait is up.</span>
+                </span>
+              </div>
+
+              <div class="err-actions">
+                <a class="btn btn-primary" href="flow-search-v2.html#s2-method">Try again <svg viewBox="0 0 24 24" class="icon"><use href="#i-refresh"/></svg></a>
+              </div>
+              <span class="sim-note">real trigger: authError → title "Too many requests" + description; currently no timer and no retry — the guest just waits blind</span>
+            </div>
+          </div>
+
+          <!-- ─────────────── Something went wrong (ErrorFallback boundary) ─────────────── -->
+          <div class="flow-screen sp-err-screen" id="err-crash" data-label="Something went wrong — reload + support ref">
+            <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+            <div class="topbar">
+              <span class="back-btn" style="cursor:default;background:var(--gradient-brand);color:#fff;font-weight:700">C</span>
+              <div class="tb-titles">
+                <div class="tb-title">Chekin</div>
+                <div class="tb-sub">Secure check-in</div>
+              </div>
+              <span class="tb-action"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> EN</span>
+            </div>
+            <div class="sr-state">
+              <div class="err-art crash">
+                <span class="err-ring"></span><span class="err-ring r2"></span>
+                <span class="err-badge"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg></span>
+              </div>
+              <div class="ss-title">Something went wrong</div>
+              <div class="ss-sub">An unexpected error interrupted your check-in. Reloading fixes it almost every time — nothing you entered is lost.</div>
+
+              <div class="err-ref">
+                <span>Error ref</span>
+                <span class="er-code">CHK-9F3A2</span>
+                <button class="er-copy"><svg viewBox="0 0 24 24" class="icon"><use href="#i-copy"/></svg> Copy</button>
+              </div>
+
+              <div class="err-actions">
+                <button class="btn btn-primary" onclick="location.href='flow-search-v2.html#s2-method'"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-refresh"/></svg> Reload &amp; try again</button>
+                <button class="btn btn-outline" data-modal="m-support"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-message"/></svg> Contact support</button>
+              </div>
+              <span class="sim-note">maps ErrorFallback (Sentry boundary) — was "⚠ Something went wrong" text only; the ref is what support needs to trace it</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ═══ m-support · sheet ═══ -->
+        <div class="proto-modal sheet" id="m-support">
+          <div class="pm-scrim"></div>
+          <div class="pm-card">
+            <div class="pm-grabber"></div>
+            <div class="pm-title">Contact support</div>
+            <p class="pm-desc">Quote your error reference so we can trace exactly what happened.</p>
+            <div class="pm-list">
+              <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-hash"/></svg></span><span>Error ref <b>CHK-9F3A2</b></span></div>
+              <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-mail"/></svg></span><span><b>support@chekin.com</b></span></div>
+            </div>
+            <div class="pm-actions"><button class="btn btn-primary" data-modal-close>Close</button></div>
+          </div>
         </div>
       </div>
 
@@ -424,9 +550,19 @@
     <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
     <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>
     <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <!-- error &amp; recovery states -->
+    <g id="i-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>
+    <g id="i-unlink"><path d="m18.84 12.25 1.72-1.71h-.02a5.004 5.004 0 0 0-.12-7.07 5.006 5.006 0 0 0-6.95 0l-1.72 1.71"/><path d="m5.17 11.75-1.71 1.71a5.004 5.004 0 0 0 .12 7.07 5.006 5.006 0 0 0 6.95 0l1.71-1.71"/><line x1="8" x2="8" y1="2" y2="5"/><line x1="2" x2="5" y1="8" y2="8"/><line x1="16" x2="16" y1="19" y2="22"/><line x1="19" x2="22" y1="16" y2="16"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></g>
+    <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+    <g id="i-message"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></g>
+    <g id="i-hash"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></g>
+    <g id="i-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>
   </defs>
 </svg>
 
+<script src="modals.js" defer></script>
 <script src="flow.js" defer></script>
 <script src="splash-v2.js" defer></script>
 <script src="nav.js" defer></script>

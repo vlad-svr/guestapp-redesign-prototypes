@@ -212,15 +212,23 @@
   function run(screen) {
     clearAll();
 
+    var pill = scopeOf(screen).querySelector('[data-sp-clock]');
+
     var name = screen.getAttribute('data-sp-ladder');
-    if (!name) return;
+    /* A screen in this flow that isn't a splash at all — the ErrorView states.
+       Nothing to time, so the caption clock must stop claiming a duration. */
+    if (!name) {
+      var idle = scopeOf(screen).querySelector('[data-sp-clock-value]');
+      if (idle) idle.textContent = '—';
+      if (pill) pill.classList.remove('is-done', 'is-bad');
+      return;
+    }
     var ladder = LADDERS[name] || [];
 
     /* Reset the screen to its first frame. */
     var stage = screen.querySelector('[data-sp-stage]');
     var under = screen.querySelector('[data-sp-under]');
     var line = screen.querySelector('[data-sp-line]');
-    var pill = scopeOf(screen).querySelector('[data-sp-clock]');
 
     if (stage) stage.classList.remove('is-gone', 'is-closing', 'branded', 'on-dark');
     if (under) under.classList.remove('is-live');
@@ -273,8 +281,11 @@
   });
 
   /* ── Screen activation ───────────────────────────────────────────────── */
+  /* Any active screen in this flow, splash or not — `run` decides what to do
+     with it. Deep-linking straight to an error state (#err-link) lands here
+     before the observer exists, so the filtering cannot live in the query. */
   function activeScreen() {
-    return document.querySelector('.flow-screen.active[data-sp-ladder], .flow-screen.active[data-sp-announce]');
+    return document.querySelector('.flow-screen.active');
   }
 
   function onActivate() {

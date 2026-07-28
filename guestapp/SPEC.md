@@ -38,8 +38,8 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-remote-access-mobile.html`, `keys.css` (+`pay.css`) | §15 Remote access — mobile |
 > | `flow-remote-access-desktop.html`, `keys.css` (+`pay.css`, `payd.css`) | §16 Remote access — desktop |
 > | `flow-search-v2.html`, `flow-search-desktop-v2.html`, `search-v2.css`, `search-v2.js` | §17.0 Find booking (**proposal**) |
-> | `flow-error-mobile.html`, `err.css` (+`search.css`) | §19 Error & recovery — mobile |
-> | `flow-error-desktop.html`, `err.css` (+`search.css`) | §20 Error & recovery — desktop |
+> | `flow-splash-v2.html` (`#err-*`), `err.css` (+`search.css`) | §19 Error & recovery — mobile |
+> | `flow-splash-desktop-v2.html` (`#erd-*`), `err.css` (+`search.css`) | §20 Error & recovery — desktop |
 > | `flow-guidebooks-mobile.html`, `guide.css` | §21 Guidebooks — mobile |
 > | `flow-guidebooks-desktop.html`, `guide.css` | §22 Guidebooks — desktop |
 > | `flow-auth-mobile.html`, `auth.css` | §23 Sign in & onboarding — mobile |
@@ -900,7 +900,7 @@ in the rail as the escape hatch.
 
 **Boundary — no booking, no Vela.** Vela answers *about this reservation*, so it is absent
 from the surfaces reached before one is matched: pre-auth (`flow-auth-*`), find-booking
-(`flow-search-*`), splash (`flow-splash-*`), standalone errors (`flow-error-*` — these
+(`flow-search-*`), splash and the standalone errors that share it (`flow-splash-*` — these
 render the Chekin brandmark, not the property, because the link never resolved), the
 property-link housing guidebooks (§31, no reservation by design) and the shared kiosk
 (§32). Offering help there would promise context the app does not have.
@@ -1910,7 +1910,9 @@ a language pill, and a "Secure check-in" footnote — matching the real standalo
 `components/ConnectionErrorsHandler/ConnectionErrorsHandler.tsx` (selects the variant),
 `components/ErrorFallback/ErrorFallback.tsx` (Sentry error boundary),
 `pages/SDKErrorView/SDKErrorView.tsx` (embedded)
-· **Prototype:** `flow-error-mobile.html` (loads `search.css` + `err.css`)
+· **Prototype:** `flow-splash-v2.html`, scenarios `#err-link` / `#err-rate` / `#err-crash`
+(loads `search.css` + `err.css`; the error states share the splash flow because the
+§36 watchdog lands on them)
 
 `ErrorView` is a generic full-page error (props `title` / `text` / `secondText`, default
 "Link not valid"). `ConnectionErrorsHandler` renders it for a bad/missing token or failed
@@ -1973,7 +1975,8 @@ the SDK shell.
 
 ## §20 Error & recovery — desktop
 
-**Prototype:** `flow-error-desktop.html` (loads `search.css` + `err.css`)
+**Prototype:** `flow-splash-desktop-v2.html`, scenarios `#erd-link` / `#erd-rate` /
+`#erd-crash` (loads `search.css` + `err.css`)
 
 Desktop mirrors §19 as a centered **`.sr-card`** on the branded gradient (same pre-auth
 glass shell as §18 — errors happen before an app shell exists), with brandmark + language
