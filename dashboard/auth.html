@@ -1231,8 +1231,14 @@
 
   /* ── Boot: hash deep-link ── */
   var initial = location.hash.slice(1);
+  if (initial === 'r-pmsdetail' && !state.pms) {
+    state.pms = 'guesty';
+    setChip('pms', PMS.guesty.n);
+    renderPmsDetail('guesty');
+  }
   show(document.querySelector('[data-screen="' + initial + '"]') ? initial : 'login');
 })();
 </script>
+<script src="ds/_screens.js"></script>
 </body>
 </html>
