@@ -74,6 +74,11 @@
     color: #b23f00; background: #fff1e8; border: 1px solid #ffd9c2;
     padding: 3px 8px; border-radius: 999px;
   }
+  .badge-new {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #0f7a5f; background: #e8fcf7; border: 1px solid #b6f0e2;
+    padding: 3px 8px; border-radius: 999px;
+  }
   .choice--deprecated { opacity: 0.68; }
   .choice--deprecated:hover, .choice--deprecated:focus-visible { opacity: 1; }
   .choice--deprecated .icon { background: #f1f1f4; color: var(--ink-3); }
@@ -98,6 +103,16 @@
   <p class="lead">Static, clickable redesign prototypes built on the Chekin design system — mock data only, no app logic. Pick a surface to explore.</p>
 
   <div class="choices">
+    <a class="choice choice--dashboard" href="dashboard/index.html">
+      <span class="icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      </span>
+      <h2>Dashboard <span class="badge-new">New</span></h2>
+      <p>The next host-side dashboard, rebuilt on the Fable design — deep-navy sidebar, welcome hero with a setup ring, today's agenda and Ask&nbsp;Vela. The base we're growing the new prototype from.</p>
+      <span class="meta">In progress · Fable-based rebuild · ProximaNova</span>
+      <span class="cta">Open dashboard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+    </a>
+
     <a class="choice choice--dashboard choice--deprecated" href="dashboard-deprecated/index.html">
       <span class="icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
