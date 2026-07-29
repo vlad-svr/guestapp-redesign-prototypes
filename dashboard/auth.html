@@ -196,30 +196,33 @@
   .btn.block{width:100%}
 
   /* Layout variants: boxed (card, centered) vs plain (no card, left) */
-  body.v-plain .screen.boxed{align-items:flex-start;text-align:left;justify-content:flex-start;padding-bottom:0}
+  /* Left-aligned content, but the column itself stays centred on the page */
+  body.v-plain .screen.boxed{align-items:flex-start;text-align:left;justify-content:flex-start;padding-bottom:0;width:100%;max-width:440px;margin-left:auto;margin-right:auto}
   body.v-plain .screen.boxed .lead{margin-left:0;margin-right:0}
   body.v-plain .screen.boxed .bigmark{margin-left:0;margin-right:0}
   body.v-plain .acard{max-width:440px;background:none;border:none;padding:0;border-radius:0}
   body.v-plain .acard .terms{text-align:left}
   body.v-plain .acard-alt{text-align:left}
-  /* Plain fields: bold label above a plainly bordered input (guestapp style) */
-  body.v-plain .field{margin-bottom:20px}
-  body.v-plain .fs{display:flex;flex-direction:column;min-height:0}
-  body.v-plain .fs > fieldset{display:none}
-  body.v-plain .fs > label{order:-1;position:static;max-width:none;margin:0 0 8px;padding:0;color:var(--text-dark);font:700 14px var(--font-primary);cursor:pointer;transition:color .12s}
-  body.v-plain .fs input,body.v-plain .fs select{height:52px;border:1.5px solid var(--stroke-gray-light);border-radius:12px;background:#fff;font:500 15px var(--font-primary)}
-  body.v-plain .fs input::placeholder{opacity:1}
-  body.v-plain .fs input:focus,body.v-plain .fs select:focus{border-color:var(--text-brand);border-width:2px}
-  body.v-plain .fs .eye{top:auto;bottom:0;height:52px;transform:none}
-  body.v-plain .fs.dial select{height:52px;margin-top:0}
-  body.v-plain .phone-row{align-items:flex-end}
+  /* Label variant: bold label above a plainly bordered input (guestapp style).
+     Independent of the card variant — either label style works in either box. */
+  body.l-top .field{margin-bottom:20px}
+  body.l-top .fs{display:flex;flex-direction:column;min-height:0}
+  body.l-top .fs > fieldset{display:none}
+  body.l-top .fs > label{order:-1;position:static;max-width:none;margin:0 0 8px;padding:0;color:var(--text-dark);font:700 14px var(--font-primary);cursor:pointer;transition:color .12s}
+  body.l-top .fs input,body.l-top .fs select{height:52px;border:1.5px solid var(--stroke-gray-light);border-radius:12px;background:#fff;font:500 15px var(--font-primary)}
+  body.l-top .fs input::placeholder{opacity:1}
+  body.l-top .fs input:focus,body.l-top .fs select:focus{border-color:var(--text-brand);border-width:2px}
+  body.l-top .fs .eye{top:auto;bottom:0;height:52px;transform:none}
+  body.l-top .fs.dial select{height:52px;margin-top:0}
+  body.l-top .phone-row{align-items:flex-end}
   /* Label the whole row, not just the number box */
-  body.v-plain .phone-row .fs:not(.dial) > label{margin-left:-110px}
-  body.v-plain .field.invalid .fs input{border-color:var(--text-danger)}
-  body.v-plain .field.invalid .fs > label{color:var(--text-danger)}
+  body.l-top .phone-row .fs:not(.dial) > label{margin-left:-110px}
+  body.l-top .field.invalid .fs input{border-color:var(--text-danger)}
+  body.l-top .field.invalid .fs > label{color:var(--text-danger)}
   .vswitch{position:fixed;right:152px;bottom:22px;z-index:200;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--stroke-gray-light);border-radius:999px;padding:3px}
-  .vswitch .vlab{font:700 10px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium);padding:0 8px 0 12px}
-  .vswitch button{border:none;background:none;color:var(--text-gray-dark);padding:7px 14px;border-radius:999px;cursor:pointer;font:600 12px var(--font-primary)}
+  .vswitch .vlab{font:700 10px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium);padding:0 7px 0 11px}
+  .vswitch .vsep{width:1px;align-self:stretch;margin:4px 3px;background:var(--stroke-gray-lighter)}
+  .vswitch button{border:none;background:none;color:var(--text-gray-dark);padding:7px 12px;border-radius:999px;cursor:pointer;font:600 12px var(--font-primary)}
   .vswitch button.on{background:var(--bg-dark);color:#fff}
 
   @media (max-width:1100px){
@@ -497,10 +500,14 @@
   </div>
 </div>
 
-<div class="vswitch" role="group" aria-label="Form layout variant">
-  <span class="vlab">Form</span>
+<div class="vswitch" role="group" aria-label="Form design variants">
+  <span class="vlab">Card</span>
   <button id="v-boxed" type="button" class="on">Boxed</button>
   <button id="v-plain" type="button">Plain</button>
+  <span class="vsep"></span>
+  <span class="vlab">Label</span>
+  <button id="l-float" type="button" class="on">Floating</button>
+  <button id="l-top" type="button">Top</button>
 </div>
 
 <script>
@@ -597,18 +604,27 @@
     setTimeout(function () { window.location.href = 'index.html'; }, 1100);
   });
 
-  /* ── Layout variant switcher (boxed card vs plain form) ── */
-  var vBoxed = document.getElementById('v-boxed');
-  var vPlain = document.getElementById('v-plain');
-  function setVariant(v) {
-    document.body.classList.toggle('v-plain', v === 'plain');
-    vBoxed.classList.toggle('on', v !== 'plain');
-    vPlain.classList.toggle('on', v === 'plain');
-    try { localStorage.setItem('chekin_auth_variant', v); } catch (e) {}
+  /* ── Design variant switches: card style and label style, independent ── */
+  function variant(opts) {
+    var on = document.getElementById(opts.onId);
+    var off = document.getElementById(opts.offId);
+    function set(v) {
+      var alt = v === opts.altValue;
+      document.body.classList.toggle(opts.altClass, alt);
+      on.classList.toggle('on', !alt);
+      off.classList.toggle('on', alt);
+      try { localStorage.setItem(opts.key, v); } catch (e) {}
+    }
+    on.addEventListener('click', function () { set(opts.defValue); });
+    off.addEventListener('click', function () { set(opts.altValue); });
+    var saved;
+    try { saved = localStorage.getItem(opts.key); } catch (e) {}
+    set(saved === opts.altValue ? opts.altValue : opts.defValue);
   }
-  vBoxed.addEventListener('click', function () { setVariant('boxed'); });
-  vPlain.addEventListener('click', function () { setVariant('plain'); });
-  try { setVariant(localStorage.getItem('chekin_auth_variant') || 'boxed'); } catch (e) {}
+  variant({ onId: 'v-boxed', offId: 'v-plain', defValue: 'boxed', altValue: 'plain',
+            altClass: 'v-plain', key: 'chekin_auth_card' });
+  variant({ onId: 'l-float', offId: 'l-top', defValue: 'floating', altValue: 'top',
+            altClass: 'l-top', key: 'chekin_auth_label' });
 
   /* ── Two-factor ── */
   var otpBox = document.getElementById('otp');
