@@ -14,9 +14,7 @@
       ['#reset-success', 'Reset success']
     ]},
     { label: 'Create account', page: 'auth.html', items: [
-      ['#r-email', '1 · Email'],
-      ['#r-name', '2 · Name & password'],
-      ['#r-phone', '3 · Phone'],
+      ['#r-account', 'Account form'],
       ['#r-welcome', 'Account created →']
     ]},
     { label: 'Guided setup', page: 'onboarding.html', items: [

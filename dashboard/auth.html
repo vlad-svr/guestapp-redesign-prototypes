@@ -81,6 +81,9 @@
 
   /* Forms */
   .form-narrow{max-width:440px}
+  .form-grid{max-width:620px;display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+  .form-grid .full{grid-column:1/-1}
+  @media (max-width:840px){.form-grid{grid-template-columns:1fr;max-width:440px}}
   .field{margin-bottom:16px}
   .field label{display:block;font:600 13px var(--font-primary);margin-bottom:7px}
   .field .inp{position:relative}
@@ -183,7 +186,7 @@
     <!-- register: account creation, then the guided-setup journey ahead -->
     <div class="rail-mode" data-railmode="register">
       <div class="steps">
-        <div class="rstep active" data-rail="account"><span class="bub">1</span><div class="txt"><div class="t">Create your account</div><div class="d">Email, name, password &amp; phone.</div></div></div>
+        <div class="rstep active" data-rail="account"><span class="bub">1</span><div class="txt"><div class="t">Create your account</div><div class="d">One short form — email, name, password &amp; phone.</div></div></div>
         <div class="rstep" data-rail="s1"><span class="bub">2</span><div class="txt"><div class="t">Where you operate</div><div class="d">We tailor legal modules to your market.</div></div></div>
         <div class="rstep" data-rail="s2"><span class="bub">3</span><div class="txt"><div class="t">Your portfolio</div><div class="d">So the dashboard fits your scale.</div></div></div>
         <div class="rstep" data-rail="s3"><span class="bub">4</span><div class="txt"><div class="t">How you manage bookings</div><div class="d">PMS sync, OTA calendars or manual.</div></div></div>
@@ -198,7 +201,7 @@
   <!-- ───── Content ───── -->
   <div class="content">
     <div class="cbar"><i id="cbar" style="width:5%"></i></div>
-    <div class="topalt" id="topalt">New to Chekin?<button data-go="r-email">Register for free</button></div>
+    <div class="topalt" id="topalt">New to Chekin?<button data-go="r-account">Register for free</button></div>
     <div class="cwrap">
 
       <!-- ── Login ── -->
@@ -326,72 +329,48 @@
         </div>
       </section>
 
-      <!-- ── Register 1 · email ── -->
-      <section class="screen" data-screen="r-email" data-mode="register" data-progress="6">
+      <!-- ── Register · one account form ── -->
+      <section class="screen" data-screen="r-account" data-mode="register" data-progress="8">
         <p class="stepno">Create your account</p>
         <h1>Let's get you set up</h1>
-        <p class="lead">Start your 14-day free trial — no credit card needed.</p>
-        <div class="form-narrow">
-          <div class="field">
+        <p class="lead">Start your 14-day free trial — no credit card needed. Takes about a minute; the questions about your business come next.</p>
+        <div class="form-grid">
+          <div class="field full">
             <label for="re-email">Work email</label>
-            <input id="re-email" type="email" placeholder="name@company.com">
+            <input id="re-email" type="email" placeholder="name@company.com" autocomplete="email">
+            <p class="err">Enter a valid email address.</p>
           </div>
-        </div>
-        <div class="cfoot">
-          <button class="btn primary" id="re-email-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-        </div>
-      </section>
-
-      <!-- ── Register 2 · name + password ── -->
-      <section class="screen" data-screen="r-name" data-mode="register" data-progress="10">
-        <p class="stepno">Create your account</p>
-        <h1>Introduce yourself</h1>
-        <p class="lead">Your name and a password to protect the account.</p>
-        <div class="form-narrow">
           <div class="field">
             <label for="rn-name">Full name</label>
-            <input id="rn-name" type="text" placeholder="e.g. Marta Ferreira">
+            <input id="rn-name" type="text" placeholder="e.g. Marta Ferreira" autocomplete="name">
           </div>
           <div class="field">
+            <label for="rp-phone">Phone number</label>
+            <div style="display:flex;gap:10px;">
+              <select id="rp-code" style="width:96px;flex:none;" aria-label="Country code">
+                <option>+34</option><option>+39</option><option>+351</option><option>+33</option><option>+49</option><option>+43</option><option>+385</option><option>+30</option><option>+44</option><option>+1</option>
+              </select>
+              <input id="rp-phone" type="tel" placeholder="600 000 000" style="flex:1;" autocomplete="tel">
+            </div>
+          </div>
+          <div class="field full">
             <label for="rn-pass">Password</label>
             <div class="inp">
               <input id="rn-pass" type="password" placeholder="Set your password" autocomplete="new-password">
               <button class="eye" data-eye="rn-pass" aria-label="Show password"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
             <div class="strength" id="rn-strength"><i></i><i></i><i></i><i></i></div>
-            <p class="hint">Use 8+ characters with a mix of letters and numbers.</p>
+            <p class="hint">8+ characters with a mix of letters and numbers. We use your phone only for account security and urgent check-in alerts.</p>
           </div>
         </div>
+        <p class="terms">By creating an account you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
         <div class="cfoot">
-          <button class="btn ghost" data-go="r-email"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="rn-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <button class="btn primary" id="racct-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <button class="btn ghost" data-go="login">I already have an account</button>
         </div>
       </section>
 
-      <!-- ── Register 3 · phone ── -->
-      <section class="screen" data-screen="r-phone" data-mode="register" data-progress="14">
-        <p class="stepno">Create your account</p>
-        <h1>Phone number</h1>
-        <p class="lead">We use this to secure your account and reach you if a guest check-in needs attention.</p>
-        <div class="form-narrow">
-          <div class="field">
-            <label for="rp-phone">Phone number</label>
-            <div style="display:flex;gap:10px;">
-              <select id="rp-code" style="width:110px;flex:none;" aria-label="Country code">
-                <option>+34</option><option>+39</option><option>+351</option><option>+33</option><option>+49</option><option>+43</option><option>+385</option><option>+30</option><option>+44</option><option>+1</option>
-              </select>
-              <input id="rp-phone" type="tel" placeholder="600 000 000" style="flex:1;">
-            </div>
-          </div>
-          <p class="terms">By continuing you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
-        </div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-name"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="phone-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-        </div>
-      </section>
-
-      <!-- ── Register 4 · welcome → guided setup ── -->
+      <!-- ── Register · welcome → guided setup ── -->
       <section class="screen" data-screen="r-welcome" data-mode="register" data-progress="18">
         <div class="bigmark"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
         <p class="stepno">Account created</p>
@@ -576,40 +555,37 @@
   rpConfirm.addEventListener('input', updateReset);
   rpSubmit.addEventListener('click', function () { show('reset-success'); });
 
-  /* ── Register: account creation only ── */
-  var reEmail = document.getElementById('re-email');
-  var reNext = document.getElementById('re-email-next');
-  reEmail.addEventListener('input', function () { reNext.disabled = !validEmail(reEmail.value); });
-  reNext.addEventListener('click', function () {
-    state.email = reEmail.value.trim();
-    show('r-name');
-  });
-
+  /* ── Register: one form, account creation only ── */
   bindStrength('rn-pass', 'rn-strength');
+  var reEmail = document.getElementById('re-email');
   var rnName = document.getElementById('rn-name');
   var rnPass = document.getElementById('rn-pass');
-  var rnNext = document.getElementById('rn-next');
-  function updateName() { rnNext.disabled = !(rnName.value.trim().length >= 2 && rnPass.value.length >= 8); }
-  rnName.addEventListener('input', updateName);
-  rnPass.addEventListener('input', updateName);
-  rnNext.addEventListener('click', function () {
-    state.name = rnName.value.trim().split(' ')[0];
-    show('r-phone');
+  var rpPhone = document.getElementById('rp-phone');
+  var acctNext = document.getElementById('racct-next');
+
+  function updateAccount() {
+    acctNext.disabled = !(validEmail(reEmail.value) &&
+      rnName.value.trim().length >= 2 &&
+      rnPass.value.length >= 8 &&
+      rpPhone.value.replace(/\D/g, '').length >= 6);
+  }
+  [reEmail, rnName, rnPass, rpPhone].forEach(function (i) { i.addEventListener('input', updateAccount); });
+  reEmail.addEventListener('blur', function () {
+    reEmail.closest('.field').classList.toggle('invalid', reEmail.value.length > 0 && !validEmail(reEmail.value));
   });
 
-  var rpPhone = document.getElementById('rp-phone');
-  var phoneNext = document.getElementById('phone-next');
-  rpPhone.addEventListener('input', function () { phoneNext.disabled = rpPhone.value.replace(/\D/g, '').length < 6; });
-  phoneNext.addEventListener('click', function () {
-    phoneNext.disabled = true;
-    phoneNext.textContent = 'Creating your account…';
+  acctNext.addEventListener('click', function () {
+    state.email = reEmail.value.trim();
+    state.name = rnName.value.trim().split(' ')[0];
+    acctNext.disabled = true;
+    acctNext.textContent = 'Creating your account…';
     setTimeout(function () {
       if (state.name) {
         document.getElementById('welcome-title').textContent = 'Hey ' + state.name + ', welcome to Chekin! 👋';
       }
       try { localStorage.setItem('chekin_account_name', state.name || ''); } catch (err) {}
-      phoneNext.disabled = false;
-      phoneNext.innerHTML = 'Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+      acctNext.disabled = false;
+      acctNext.innerHTML = 'Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
       show('r-welcome');
     }, 900);
   });
