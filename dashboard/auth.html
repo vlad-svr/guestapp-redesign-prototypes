@@ -199,10 +199,25 @@
   body.v-plain .screen.boxed{align-items:flex-start;text-align:left;justify-content:flex-start;padding-bottom:0}
   body.v-plain .screen.boxed .lead{margin-left:0;margin-right:0}
   body.v-plain .screen.boxed .bigmark{margin-left:0;margin-right:0}
-  body.v-plain .acard{max-width:440px;background:none;border:none;box-shadow:none;padding:0;border-radius:0}
+  body.v-plain .acard{max-width:440px;background:none;border:none;padding:0;border-radius:0}
   body.v-plain .acard .terms{text-align:left}
   body.v-plain .acard-alt{text-align:left}
-  .vswitch{position:fixed;left:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--stroke-gray-light);border-radius:999px;padding:3px}
+  /* Plain fields: bold label above a plainly bordered input (guestapp style) */
+  body.v-plain .field{margin-bottom:20px}
+  body.v-plain .fs{display:flex;flex-direction:column;min-height:0}
+  body.v-plain .fs > fieldset{display:none}
+  body.v-plain .fs > label{order:-1;position:static;max-width:none;margin:0 0 8px;padding:0;color:var(--text-dark);font:700 14px var(--font-primary);cursor:pointer;transition:color .12s}
+  body.v-plain .fs input,body.v-plain .fs select{height:52px;border:1.5px solid var(--stroke-gray-light);border-radius:12px;background:#fff;font:500 15px var(--font-primary)}
+  body.v-plain .fs input::placeholder{opacity:1}
+  body.v-plain .fs input:focus,body.v-plain .fs select:focus{border-color:var(--text-brand);border-width:2px}
+  body.v-plain .fs .eye{top:auto;bottom:0;height:52px;transform:none}
+  body.v-plain .fs.dial select{height:52px;margin-top:0}
+  body.v-plain .phone-row{align-items:flex-end}
+  /* Label the whole row, not just the number box */
+  body.v-plain .phone-row .fs:not(.dial) > label{margin-left:-110px}
+  body.v-plain .field.invalid .fs input{border-color:var(--text-danger)}
+  body.v-plain .field.invalid .fs > label{color:var(--text-danger)}
+  .vswitch{position:fixed;right:152px;bottom:22px;z-index:200;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--stroke-gray-light);border-radius:999px;padding:3px}
   .vswitch .vlab{font:700 10px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium);padding:0 8px 0 12px}
   .vswitch button{border:none;background:none;color:var(--text-gray-dark);padding:7px 14px;border-radius:999px;cursor:pointer;font:600 12px var(--font-primary)}
   .vswitch button.on{background:var(--bg-dark);color:#fff}
@@ -737,9 +752,13 @@
     }, 900);
   });
 
-  /* ── Boot: hash deep-link ── */
-  var initial = location.hash.slice(1);
-  show(document.querySelector('[data-screen="' + initial + '"]') ? initial : 'login');
+  /* ── Boot + hash deep-link ── */
+  function routeFromHash() {
+    var id = location.hash.slice(1);
+    show(document.querySelector('[data-screen="' + id + '"]') ? id : 'login');
+  }
+  window.addEventListener('hashchange', routeFromHash);
+  routeFromHash();
 })();
 </script>
 <script src="ds/_screens.js"></script>

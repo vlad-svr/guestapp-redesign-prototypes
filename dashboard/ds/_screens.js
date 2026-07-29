@@ -99,9 +99,19 @@
     var href = link.getAttribute('href');
     var targetPage = href.split(/[?#]/)[0];
     if (targetPage === here) {
+      /* Same page: pick the cheapest move that actually lands. Setting the
+         hash and calling reload() in the same tick races — the reload can
+         win and reload the old URL — so only reload when nothing else
+         would change. */
       e.preventDefault();
-      location.href = href;
-      location.reload();
+      var url = new URL(href, location.href);
+      if (url.search !== location.search) {
+        location.href = url.href;
+      } else if (url.hash !== location.hash) {
+        location.hash = url.hash;
+      } else {
+        location.reload();
+      }
     }
     close();
   });
