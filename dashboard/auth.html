@@ -123,12 +123,31 @@
   .otp-err.on{display:block}
   .resend-row{display:flex;gap:6px;margin-top:16px;font:500 13px var(--font-primary);color:var(--text-gray-dark)}
 
+  [hidden]{display:none!important}
   .strength{display:flex;gap:5px;margin-top:8px}
   .strength i{height:4px;flex:1;border-radius:2px;background:var(--stroke-gray-lighter);transition:background .2s}
   .strength.s1 i:nth-child(1){background:var(--text-danger)}
   .strength.s2 i:nth-child(-n+2){background:var(--text-warn)}
   .strength.s3 i:nth-child(-n+3){background:var(--success)}
   .strength.s4 i{background:var(--success)}
+
+  /* Register: single account form */
+  .cfoot.tight{margin-top:0;padding-top:24px}
+  .sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:620px;height:46px;border:1.5px solid var(--stroke-gray-light);border-radius:10px;background:#fff;font:600 14px var(--font-primary);color:var(--text-dark);cursor:pointer;transition:border-color .12s,box-shadow .12s}
+  .sso:hover{border-color:var(--stroke-gray-medium);box-shadow:0 2px 8px rgba(22,22,67,.06)}
+  .sso img,.sso svg{width:18px;height:18px}
+  .or{display:flex;align-items:center;gap:14px;max-width:620px;margin:20px 0;font:600 11px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium)}
+  .or::before,.or::after{content:'';flex:1;height:1px;background:var(--stroke-gray-lighter)}
+  .reqs{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
+  .req{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--bg-neutral-light);font:500 11.5px var(--font-primary);color:var(--text-gray-dark);transition:background .15s,color .15s}
+  .req svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:3}
+  .req.ok{background:var(--bg-success-light);color:var(--success);font-weight:600}
+  .pw-row{display:flex;align-items:baseline;justify-content:space-between}
+  .pw-row .slabel{font:600 11.5px var(--font-primary);color:var(--text-gray-medium)}
+  .pw-row .slabel.w1{color:var(--text-danger)}
+  .pw-row .slabel.w2{color:var(--text-warn)}
+  .pw-row .slabel.w3,.pw-row .slabel.w4{color:var(--success)}
+  @media (max-width:840px){.sso,.or{max-width:440px}}
 
   .bigmark{width:56px;height:56px;border-radius:16px;background:var(--bg-success-light);display:grid;place-items:center;margin-bottom:20px}
   .bigmark svg{width:26px;height:26px;stroke:var(--success);fill:none;stroke-width:2.4}
@@ -333,11 +352,16 @@
       <section class="screen" data-screen="r-account" data-mode="register" data-progress="8">
         <p class="stepno">Create your account</p>
         <h1>Let's get you set up</h1>
-        <p class="lead">Start your 14-day free trial — no credit card needed. Takes about a minute; the questions about your business come next.</p>
+        <p class="lead">Start your 14-day free trial — no credit card needed. About a minute; the questions about your business come next.</p>
+        <button class="sso" id="racct-google" type="button">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81Z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.13 0-5.78-2.11-6.72-4.95H1.28v3.1A12 12 0 0 0 12 24Z"/><path fill="#FBBC05" d="M5.28 14.28a7.2 7.2 0 0 1 0-4.56v-3.1H1.28a12 12 0 0 0 0 10.76l4-3.1Z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.43-3.43A11.97 11.97 0 0 0 12 0 12 12 0 0 0 1.28 6.62l4 3.1C6.22 6.88 8.87 4.77 12 4.77Z"/></svg>
+          Sign up with Google
+        </button>
+        <div class="or">or register with email</div>
         <div class="form-grid">
           <div class="field full">
             <label for="re-email">Work email</label>
-            <input id="re-email" type="email" placeholder="name@company.com" autocomplete="email">
+            <input id="re-email" type="email" placeholder="name@company.com" autocomplete="email" data-autofocus>
             <p class="err">Enter a valid email address.</p>
           </div>
           <div class="field">
@@ -352,22 +376,29 @@
               </select>
               <input id="rp-phone" type="tel" placeholder="600 000 000" style="flex:1;" autocomplete="tel">
             </div>
+            <p class="hint">Only for account security and urgent check-in alerts — never marketing.</p>
           </div>
           <div class="field full">
-            <label for="rn-pass">Password</label>
+            <div class="pw-row">
+              <label for="rn-pass">Password</label>
+              <span class="slabel" id="rn-slabel" aria-live="polite"></span>
+            </div>
             <div class="inp">
               <input id="rn-pass" type="password" placeholder="Set your password" autocomplete="new-password">
               <button class="eye" data-eye="rn-pass" aria-label="Show password"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
-            <div class="strength" id="rn-strength"><i></i><i></i><i></i><i></i></div>
-            <p class="hint">8+ characters with a mix of letters and numbers. We use your phone only for account security and urgent check-in alerts.</p>
+            <div class="strength" id="rn-strength" hidden><i></i><i></i><i></i><i></i></div>
+            <div class="reqs">
+              <span class="req" id="req-len"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>8+ characters</span>
+              <span class="req" id="req-mix"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Letters &amp; numbers</span>
+            </div>
           </div>
         </div>
-        <p class="terms">By creating an account you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
-        <div class="cfoot">
+        <div class="cfoot tight" style="flex-wrap:wrap;align-items:center;">
           <button class="btn primary" id="racct-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-          <button class="btn ghost" data-go="login">I already have an account</button>
+          <span class="muted-note">Already have an account? <button class="linklike" data-go="login">Log in</button></span>
         </div>
+        <p class="terms" style="margin-top:18px;">By creating an account you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
       </section>
 
       <!-- ── Register · welcome → guided setup ── -->
@@ -424,6 +455,8 @@
     document.getElementById('cbar').style.width = (target.getAttribute('data-progress') || 5) + '%';
     if (history.replaceState) history.replaceState(null, '', '#' + id);
     window.scrollTo(0, 0);
+    var af = target.querySelector('[data-autofocus]');
+    if (af) { af.focus({ preventScroll: true }); return; }
     var h = target.querySelector('h1');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
   }
@@ -556,7 +589,6 @@
   rpSubmit.addEventListener('click', function () { show('reset-success'); });
 
   /* ── Register: one form, account creation only ── */
-  bindStrength('rn-pass', 'rn-strength');
   var reEmail = document.getElementById('re-email');
   var rnName = document.getElementById('rn-name');
   var rnPass = document.getElementById('rn-pass');
@@ -572,6 +604,38 @@
   [reEmail, rnName, rnPass, rpPhone].forEach(function (i) { i.addEventListener('input', updateAccount); });
   reEmail.addEventListener('blur', function () {
     reEmail.closest('.field').classList.toggle('invalid', reEmail.value.length > 0 && !validEmail(reEmail.value));
+  });
+
+  /* Password feedback: meter appears on first keystroke; pills tick live */
+  var rnMeter = document.getElementById('rn-strength');
+  var rnLabel = document.getElementById('rn-slabel');
+  var SLABELS = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+  rnPass.addEventListener('input', function () {
+    var v = rnPass.value, s = v.length ? Math.max(1, strengthOf(v)) : 0;
+    rnMeter.hidden = v.length === 0;
+    rnMeter.className = 'strength s' + s;
+    rnLabel.textContent = v.length ? SLABELS[s] : '';
+    rnLabel.className = 'slabel w' + s;
+    document.getElementById('req-len').classList.toggle('ok', v.length >= 8);
+    document.getElementById('req-mix').classList.toggle('ok', /[A-Za-z]/.test(v) && /\d/.test(v));
+  });
+
+  /* Enter submits once everything is valid */
+  document.querySelector('[data-screen="r-account"]').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !acctNext.disabled && e.target.tagName !== 'BUTTON') acctNext.click();
+  });
+
+  /* Google SSO (simulated) — skips the form entirely */
+  var gBtn = document.getElementById('racct-google');
+  gBtn.addEventListener('click', function () {
+    gBtn.disabled = true;
+    gBtn.innerHTML = 'Connecting to Google…';
+    setTimeout(function () {
+      state.name = 'Marta';
+      document.getElementById('welcome-title').textContent = 'Hey Marta, welcome to Chekin! 👋';
+      try { localStorage.setItem('chekin_account_name', 'Marta'); } catch (err) {}
+      show('r-welcome');
+    }, 1100);
   });
 
   acctNext.addEventListener('click', function () {
