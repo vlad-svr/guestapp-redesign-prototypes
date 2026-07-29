@@ -13,25 +13,17 @@
       ['#reset', 'Reset password'],
       ['#reset-success', 'Reset success']
     ]},
-    { label: 'Registration', page: 'auth.html', items: [
+    { label: 'Create account', page: 'auth.html', items: [
       ['#r-email', '1 · Email'],
       ['#r-name', '2 · Name & password'],
-      ['#r-welcome', 'Welcome'],
-      ['#r-ptype', '3 · Property type'],
-      ['#r-count', '4 · Number of properties'],
-      ['#r-country', '5 · Country'],
-      ['#r-phone', '6 · Phone'],
-      ['#r-focus', '7 · Focus'],
-      ['#r-connectpms', '8 · Connect PMS?'],
-      ['#r-pms', '9 · PMS picker'],
-      ['#r-pmsdetail', 'PMS credentials + guide'],
-      ['#r-finish', 'Go live']
+      ['#r-phone', '3 · Phone'],
+      ['#r-welcome', 'Account created →']
     ]},
     { label: 'Guided setup', page: 'onboarding.html', items: [
-      ['?step=1', '1 · Countries'],
-      ['?step=2', '2 · Portfolio'],
-      ['?step=3', '3 · Bookings & PMS'],
-      ['?step=4', '4 · Priorities'],
+      ['?step=1', '1 · Where you operate'],
+      ['?step=2', '2 · Your portfolio'],
+      ['?step=3', '3 · Bookings & PMS + connect'],
+      ['?step=4', '4 · What matters most'],
       ['?step=5', '5 · Your plan']
     ]},
     { label: 'App', page: 'index.html', items: [

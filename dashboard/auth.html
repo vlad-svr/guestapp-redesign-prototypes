@@ -11,10 +11,8 @@
     --bg-screen:#FAFBFF;
     --bg-white:#FFFFFF;
     --bg-neutral-light:#F4F6F8;
-    --bg-sky-light:#EFF6FF;
     --bg-blue-light:#F0F3FF;
     --bg-success-light:#E8FCF7;
-    --warn-bg:#FFF4E5;
     --stroke-gray-lighter:#E8E9F1;
     --stroke-gray-light:#DEDEEB;
     --stroke-gray-medium:#CECEDE;
@@ -41,14 +39,13 @@
   .rail .logo{height:24px;filter:brightness(0) invert(1);align-self:flex-start;margin-bottom:44px}
   .rail-mode{display:none;flex-direction:column;flex:1;min-height:0}
   .rail-mode.on{display:flex}
-  /* auth variant — trust panel */
   .rail-hero h2{font:700 24px/32px var(--font-primary);letter-spacing:-.015em;margin:0 0 26px;color:#fff}
   .trust{display:flex;flex-direction:column;gap:16px}
   .trow{display:flex;gap:12px;align-items:flex-start}
   .trow .b{width:24px;height:24px;border-radius:50%;background:rgba(53,229,188,.16);color:var(--icon-success-light);display:grid;place-items:center;flex-shrink:0}
   .trow .b svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:3}
   .trow .t{font:500 13.5px/19px var(--font-primary);color:#C9D0FF;padding-top:2px}
-  /* register variant — steps + chips */
+
   .rail .steps{display:flex;flex-direction:column;gap:4px}
   .rstep{display:flex;align-items:flex-start;gap:14px;padding:10px 0;position:relative}
   .rstep + .rstep::before{content:"";position:absolute;left:13px;top:-16px;width:2px;height:22px;background:rgba(255,255,255,.12)}
@@ -61,15 +58,11 @@
   .rstep.active .txt .t{color:#fff}
   .rstep.active .txt .d{max-height:40px;opacity:1}
   .rstep.done .txt .t{color:#AEB7F5}
-  .plan-so-far{margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
-  .plan-so-far .h{font:700 10px var(--font-primary);text-transform:uppercase;letter-spacing:.09em;color:#8B93C9;margin-bottom:10px}
-  .pchips{display:flex;flex-wrap:wrap;gap:6px;min-height:26px}
-  .pchip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);font:600 11.5px var(--font-primary);color:#DDE1FF;animation:chipIn .25s ease}
-  @keyframes chipIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  .rail .nextup{margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font:500 12.5px/18px var(--font-primary);color:#8B93C9}
+  .rail .nextup b{color:#DDE1FF;font-weight:600}
   .rail .help{margin-top:20px;font:500 12.5px var(--font-primary);color:#8B93C9}
   .rail .help a{color:#AEB7F5;font-weight:600;text-decoration:none;cursor:pointer}
-  .rail-mode.on .help{margin-top:auto}
-  .rail-mode[data-railmode="register"].on .help{margin-top:20px}
+  .rail-mode[data-railmode="auth"] .help{margin-top:auto}
 
   /* ───────── Content ───────── */
   .content{display:flex;flex-direction:column;min-width:0}
@@ -105,6 +98,8 @@
   .linklike:hover{text-decoration:underline}
   .muted-note{font:400 12.5px/18px var(--font-primary);color:var(--text-gray-medium)}
   .row-between{display:flex;align-items:center;justify-content:space-between;margin:2px 0 18px}
+  .terms{font:400 12px/18px var(--font-primary);color:var(--text-gray-medium);margin-top:14px;max-width:440px}
+  .terms a{color:var(--text-gray-dark);font-weight:600;text-decoration:none}
 
   .captcha{display:flex;align-items:center;gap:11px;border:1.5px solid var(--stroke-gray-lighter);border-radius:10px;background:var(--bg-neutral-light);padding:12px 14px;margin-bottom:18px;font:500 13px var(--font-primary);color:var(--text-gray-dark)}
   .captcha .spin{width:18px;height:18px;border-radius:50%;border:2.5px solid var(--stroke-gray-medium);border-top-color:var(--text-brand);animation:rot 1s linear infinite;flex-shrink:0}
@@ -137,72 +132,18 @@
   .bigmark.mail{background:var(--bg-blue-light)}
   .bigmark.mail svg{stroke:var(--text-brand)}
 
-  /* Selectable cards (from the Fable DS) */
-  .cards{display:grid;gap:14px}
-  .cards.c2{grid-template-columns:1fr 1fr}
-  .cards.c3{grid-template-columns:repeat(3,1fr)}
-  .card{position:relative;background:#fff;border:1.5px solid var(--stroke-gray-lighter);border-radius:var(--radius-lg);padding:18px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;box-shadow:var(--shadow-card)}
-  .card:hover{border-color:var(--stroke-gray-medium);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-  .card.sel{border-color:var(--text-brand);box-shadow:0 0 0 3px rgba(56,92,248,.14),var(--shadow-card)}
-  .card .tick{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--stroke-gray-medium);display:grid;place-items:center;background:#fff;transition:all .15s}
-  .card .tick svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3.2;opacity:0}
-  .card.sel .tick{background:var(--text-brand);border-color:var(--text-brand)}
-  .card.sel .tick svg{opacity:1}
-
-  /* Property-type pills */
-  .ptypes{display:flex;gap:10px;flex-wrap:wrap}
-  .ptype{display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border:1.5px solid var(--stroke-gray-lighter);border-radius:12px;background:#fff;font:600 14px var(--font-primary);color:var(--text-dark);cursor:pointer;transition:all .13s;box-shadow:var(--shadow-card)}
-  .ptype .em{font-size:17px;line-height:1}
-  .ptype:hover{border-color:var(--stroke-gray-medium);transform:translateY(-1px)}
-  .ptype.sel{border-color:var(--text-brand);background:var(--bg-blue-light);color:var(--text-brand);box-shadow:0 0 0 3px rgba(56,92,248,.12)}
-
-  /* Portfolio size cards */
-  .size{display:flex;flex-direction:column;gap:6px;padding:20px;text-align:left}
-  .size .n{font:700 22px var(--font-primary);letter-spacing:-.01em}
-  .size .t{font:600 13.5px var(--font-primary)}
-  .size .d{font:400 12.5px/17px var(--font-primary);color:var(--text-gray-medium)}
-
-  /* Manage-style rows (connect PMS choice, focus) */
-  .manage{display:flex;gap:16px;padding:20px;align-items:flex-start}
-  .manage .ic{width:44px;height:44px;border-radius:12px;background:var(--bg-blue-light);color:var(--text-brand);display:grid;place-items:center;flex-shrink:0;font-size:20px}
-  .manage .ic.green{background:var(--bg-success-light);color:var(--success)}
-  .manage .ic.violet{background:#EDE9FF;color:#6B4FD8}
-  .manage .t{font:600 15px var(--font-primary);margin-bottom:4px}
-  .manage .d{font:400 13px/18px var(--font-primary);color:var(--text-gray-dark)}
-  .manage .eta{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font:600 11.5px var(--font-primary);color:var(--success);background:var(--bg-success-light);padding:3px 9px;border-radius:999px}
-
-  /* PMS grid (Fable .pms chips) */
-  .pms-search{position:relative;max-width:440px;margin-bottom:16px}
-  .pms-search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text-gray-medium);fill:none;stroke-width:2}
-  .pms-search input{width:100%;height:44px;padding:0 14px 0 38px;border-radius:10px;border:1.5px solid var(--stroke-gray-light);font:500 13.5px var(--font-primary);outline:none;background:#fff}
-  .pms-search input:focus{border-color:var(--text-brand);box-shadow:0 0 0 3px rgba(56,92,248,.12)}
-  .pmsgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .pms{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid var(--stroke-gray-lighter);border-radius:10px;background:#fff;cursor:pointer;font:600 13.5px var(--font-primary);transition:all .13s;text-align:left}
-  .pms:hover{border-color:var(--stroke-gray-medium)}
-  .pms.sel{border-color:var(--text-brand);background:var(--bg-blue-light);color:var(--text-brand)}
-  .pms .lg{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#fff;font:800 12px var(--font-primary);flex-shrink:0}
-  .pms .sub{display:block;font:400 11px var(--font-primary);color:var(--text-gray-medium);margin-top:1px}
-
-  /* PMS detail */
-  .pms-detail{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
-  .pd-form{background:#fff;border:1.5px solid var(--stroke-gray-lighter);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-card)}
-  .pd-form h3{font:700 15px var(--font-primary);margin:0 0 16px;display:flex;align-items:center;gap:10px}
-  .pd-form .lg{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font:800 12px var(--font-primary);color:#fff}
-  .pd-note{display:flex;gap:10px;background:var(--warn-bg);border-radius:10px;padding:11px 13px;font:500 12.5px/18px var(--font-primary);color:var(--text-warn);margin-bottom:16px}
-  .pd-note svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px}
-  .pd-easy{display:flex;gap:10px;background:var(--bg-success-light);border-radius:10px;padding:12px 13px;font:500 13px/19px var(--font-primary);color:var(--success);margin-bottom:16px}
-  .pd-easy svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4;flex-shrink:0;margin-top:1px}
-  .pd-info h3{font:700 15px var(--font-primary);margin:0 0 8px}
-  .pd-info p{font:400 13.5px/20px var(--font-primary);color:var(--text-gray-dark);margin:0 0 14px}
-  .pd-info a{color:var(--text-brand);font-weight:600;text-decoration:none}
-  .pd-info ul{margin:0 0 16px;padding-left:18px;font:400 13px/21px var(--font-primary);color:var(--text-gray-dark)}
-  .pd-video-label{font:700 10.5px var(--font-primary);color:var(--text-gray-medium);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px}
-  .pd-video{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--stroke-gray-lighter);box-shadow:var(--shadow-card);aspect-ratio:16/9;background:var(--bg-dark)}
-  .pd-video iframe{width:100%;height:100%;border:none;display:block}
+  /* Welcome hand-off */
+  .nextsteps{display:flex;flex-direction:column;gap:0;max-width:520px;margin-bottom:8px}
+  .ns{display:flex;gap:14px;padding:13px 4px;border-bottom:1px solid var(--stroke-gray-lighter)}
+  .ns:last-child{border-bottom:none}
+  .ns .no{width:26px;height:26px;border-radius:50%;background:var(--bg-blue-light);color:var(--text-brand);display:grid;place-items:center;font:700 12px var(--font-primary);flex-shrink:0}
+  .ns .t{font:600 14px/19px var(--font-primary)}
+  .ns .d{font:400 12.5px/17px var(--font-primary);color:var(--text-gray-dark);margin-top:2px}
+  .ns .eta{margin-left:auto;flex-shrink:0;font:600 11.5px var(--font-primary);color:var(--text-gray-medium);padding-top:4px;white-space:nowrap}
 
   /* Buttons + footer */
   .cfoot{display:flex;align-items:center;gap:12px;padding-top:36px;margin-top:auto}
-  .btn{height:44px;padding:0 22px;border-radius:var(--radius-md);font:600 14px var(--font-primary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;transition:transform .12s,box-shadow .12s,background .15s}
+  .btn{height:44px;padding:0 22px;border-radius:var(--radius-md);font:600 14px var(--font-primary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;transition:transform .12s,box-shadow .12s,background .15s;text-decoration:none}
   .btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4}
   .btn.primary{background:var(--text-brand);color:#fff;box-shadow:0 4px 12px rgba(56,92,248,.28)}
   .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(56,92,248,.36)}
@@ -210,63 +151,10 @@
   .btn.ghost{background:transparent;color:var(--text-gray-dark);border:1px solid var(--stroke-gray-light)}
   .btn.ghost:hover{background:var(--bg-neutral-light);color:var(--text-dark)}
   .btn.block{width:100%}
-  .cfoot .skip{margin-left:auto;font:600 13px var(--font-primary);color:var(--text-gray-medium);cursor:pointer;background:none;border:none}
-  .cfoot .skip:hover{color:var(--text-dark)}
-
-  /* Overlays (Fable modal) */
-  .overlay{position:fixed;inset:0;background:rgba(22,22,67,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
-  .overlay.on{display:flex;animation:fadeIn .2s ease}
-  @keyframes fadeIn{from{opacity:0}}
-  .modal{background:#fff;border-radius:var(--radius-xl);max-width:470px;width:100%;padding:28px;box-shadow:var(--shadow-hover)}
-  .modal h3{font:700 17px var(--font-primary);margin:0 0 12px}
-  .modal p{font:400 13.5px/20px var(--font-primary);color:var(--text-gray-dark);margin:0 0 14px}
-  .modal .gdpr{font:400 10.5px/15px var(--font-primary);color:var(--text-gray-medium);background:var(--bg-neutral-light);border-radius:10px;padding:10px 12px;max-height:110px;overflow-y:auto;margin-bottom:14px}
-  .modal .consent{display:flex;gap:10px;align-items:flex-start;font:500 13px/19px var(--font-primary);margin-bottom:18px;cursor:pointer}
-  .modal .consent input{width:16px;height:16px;margin-top:2px;accent-color:var(--text-brand)}
-  .modal .mfoot{display:flex;justify-content:flex-end;gap:10px}
-  .oauth-sim{text-align:center;padding:10px 0}
-  .oauth-sim .spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--stroke-gray-lighter);border-top-color:var(--text-brand);animation:rot 1s linear infinite;margin:0 auto 16px}
-  .oauth-consent .scopes{text-align:left;background:var(--bg-neutral-light);border-radius:10px;padding:12px 14px;font:500 13px/22px var(--font-primary);color:var(--text-gray-dark);margin-bottom:18px}
-  .oauth-consent .scopes svg{width:14px;height:14px;stroke:var(--success);fill:none;stroke-width:2.6;vertical-align:-2px;margin-right:7px}
-
-  /* Finish — staged ring + mini dashboard preview */
-  .finish-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
-  .ring{width:120px;height:120px;position:relative;margin-bottom:24px}
-  .ring svg{transform:rotate(-90deg)}
-  .ring .track{stroke:var(--stroke-gray-lighter)}
-  .ring .arc{stroke:url(#fgrad);stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.3,.9,.3,1)}
-  .ring .pct{position:absolute;inset:0;display:grid;place-items:center;font:700 24px var(--font-primary)}
-  .finish-msg{font:600 16px var(--font-primary);min-height:24px;margin-bottom:6px}
-  .finish-sub{font:400 13.5px var(--font-primary);color:var(--text-gray-medium);margin-bottom:26px}
-  .finish-cta{display:none;gap:12px}
-  .finish-cta.on{display:flex;animation:stepIn .35s ease}
-  .preview{border:1px solid var(--stroke-gray-lighter);border-radius:var(--radius-xl);background:#fff;box-shadow:var(--shadow-hover);overflow:hidden}
-  .preview .ph{font:700 10.5px var(--font-primary);text-transform:uppercase;letter-spacing:.08em;color:var(--text-gray-medium);padding:12px 18px;border-bottom:1px solid var(--stroke-gray-lighter);display:flex;align-items:center;gap:8px}
-  .preview .ph .dotr{width:7px;height:7px;border-radius:50%;background:#FF5F57}
-  .preview .ph .doty{width:7px;height:7px;border-radius:50%;background:#FEBC2E}
-  .preview .ph .dotg{width:7px;height:7px;border-radius:50%;background:#28C840}
-  .preview .pbody{padding:16px}
-  .mini-hero{border-radius:12px;background:linear-gradient(135deg,#1B1B5A 0%,#23235D 42%,#2E3FB0 100%);color:#fff;padding:16px 18px}
-  .mini-hero .g{font:500 10px var(--font-primary);color:#B9C2FF}
-  .mini-hero .h{font:700 16px var(--font-primary);margin-top:3px}
-  .mini-hero .rail2{display:flex;flex-direction:column;gap:7px;margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.14)}
-  .mini-hero .r2{display:flex;align-items:center;gap:8px;font:500 11px var(--font-primary);color:#C9D0FF}
-  .mini-hero .r2 .b{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font:700 9px var(--font-primary);flex-shrink:0;background:rgba(255,255,255,.12);color:#AEB7F5}
-  .mini-hero .r2.first .b{background:#fff;color:#1B1B5A}
-  .mini-hero .r2.first{color:#fff;font-weight:600}
-  .mods{margin-top:14px}
-  .mods .mh{font:700 10px var(--font-primary);text-transform:uppercase;letter-spacing:.08em;color:var(--text-gray-medium);margin-bottom:8px}
-  .mods .mchips{display:flex;flex-wrap:wrap;gap:6px}
-  .mchip{display:inline-flex;align-items:center;gap:5px;font:600 11px var(--font-primary);padding:4px 10px;border-radius:999px;background:var(--bg-blue-light);color:var(--text-brand)}
-  .mchip.off{background:var(--bg-neutral-light);color:var(--text-gray-medium)}
-  .mchip svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.6}
 
   @media (max-width:1100px){
     .shell{grid-template-columns:1fr}
     .rail{display:none}
-    .pmsgrid{grid-template-columns:repeat(3,1fr)}
-    .cards.c2,.cards.c3{grid-template-columns:1fr}
-    .pms-detail,.finish-grid{grid-template-columns:1fr}
     .cwrap,.topalt{padding-left:24px;padding-right:24px}
   }
 </style>
@@ -279,6 +167,7 @@
   <aside class="rail">
     <img class="logo" src="ds/assets/logos/chekin-wordmark.png" alt="Chekin">
 
+    <!-- auth: trust panel -->
     <div class="rail-mode" data-railmode="auth">
       <div class="rail-hero">
         <h2>Automate, monetize and improve your guests' experience.</h2>
@@ -291,17 +180,17 @@
       <div class="help">Questions? <a>Talk to us — we reply in ~3 min</a></div>
     </div>
 
+    <!-- register: account creation, then the guided-setup journey ahead -->
     <div class="rail-mode" data-railmode="register">
       <div class="steps">
-        <div class="rstep" data-rail="account"><span class="bub">1</span><div class="txt"><div class="t">Create your account</div><div class="d">Email, name &amp; password.</div></div></div>
-        <div class="rstep" data-rail="business"><span class="bub">2</span><div class="txt"><div class="t">About your business</div><div class="d">Properties, country &amp; goals.</div></div></div>
-        <div class="rstep" data-rail="pms"><span class="bub">3</span><div class="txt"><div class="t">Connect your PMS</div><div class="d">Import everything automatically.</div></div></div>
-        <div class="rstep" data-rail="finish"><span class="bub">4</span><div class="txt"><div class="t">Go live</div><div class="d">Your dashboard is prepared.</div></div></div>
+        <div class="rstep active" data-rail="account"><span class="bub">1</span><div class="txt"><div class="t">Create your account</div><div class="d">Email, name, password &amp; phone.</div></div></div>
+        <div class="rstep" data-rail="s1"><span class="bub">2</span><div class="txt"><div class="t">Where you operate</div><div class="d">We tailor legal modules to your market.</div></div></div>
+        <div class="rstep" data-rail="s2"><span class="bub">3</span><div class="txt"><div class="t">Your portfolio</div><div class="d">So the dashboard fits your scale.</div></div></div>
+        <div class="rstep" data-rail="s3"><span class="bub">4</span><div class="txt"><div class="t">How you manage bookings</div><div class="d">PMS sync, OTA calendars or manual.</div></div></div>
+        <div class="rstep" data-rail="s4"><span class="bub">5</span><div class="txt"><div class="t">What matters most</div><div class="d">We put your priority front and centre.</div></div></div>
+        <div class="rstep" data-rail="s5"><span class="bub">6</span><div class="txt"><div class="t">Your plan</div><div class="d">A dashboard built for you.</div></div></div>
       </div>
-      <div class="plan-so-far">
-        <div class="h">Your setup so far</div>
-        <div class="pchips" id="rail-chips"></div>
-      </div>
+      <div class="nextup">First we create your account — then <b>five quick questions</b> tailor the dashboard to your business.</div>
       <div class="help">Already have an account? <a data-go="login">Log in</a></div>
     </div>
   </aside>
@@ -437,9 +326,9 @@
         </div>
       </section>
 
-      <!-- ── Register: email ── -->
-      <section class="screen" data-screen="r-email" data-mode="register" data-rail-group="account" data-progress="8">
-        <p class="stepno">Create account · Step 1 of 9</p>
+      <!-- ── Register 1 · email ── -->
+      <section class="screen" data-screen="r-email" data-mode="register" data-progress="6">
+        <p class="stepno">Create your account</p>
         <h1>Let's get you set up</h1>
         <p class="lead">Start your 14-day free trial — no credit card needed.</p>
         <div class="form-narrow">
@@ -453,9 +342,9 @@
         </div>
       </section>
 
-      <!-- ── Register: name + password ── -->
-      <section class="screen" data-screen="r-name" data-mode="register" data-rail-group="account" data-progress="16">
-        <p class="stepno">Create account · Step 2 of 9</p>
+      <!-- ── Register 2 · name + password ── -->
+      <section class="screen" data-screen="r-name" data-mode="register" data-progress="10">
+        <p class="stepno">Create your account</p>
         <h1>Introduce yourself</h1>
         <p class="lead">Your name and a password to protect the account.</p>
         <div class="form-narrow">
@@ -479,262 +368,48 @@
         </div>
       </section>
 
-      <!-- ── Register: welcome ── -->
-      <section class="screen" data-screen="r-welcome" data-mode="register" data-rail-group="account" data-progress="24">
-        <p class="stepno">Welcome</p>
-        <h1 id="welcome-title">Hey there, welcome to Chekin! 👋</h1>
-        <p class="lead">Get ready to save thousands of hours by automating your property check-in process. A few quick questions and we'll tailor everything to your business.</p>
-        <div class="cfoot">
-          <button class="btn primary" data-go="r-ptype">Let's go <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-        </div>
-      </section>
-
-      <!-- ── Register: property type ── -->
-      <section class="screen" data-screen="r-ptype" data-mode="register" data-rail-group="business" data-progress="32">
-        <p class="stepno">About your business · Step 3 of 9</p>
-        <h1>Property type</h1>
-        <p class="lead">Choose the option that best describes your accommodation.</p>
-        <div class="ptypes" id="ptype-chips">
-          <button class="ptype" data-value="Vacation Rental"><span class="em">🏖️</span> Vacation Rental</button>
-          <button class="ptype" data-value="Hotel, Hostel"><span class="em">🏨</span> Hotel, Hostel</button>
-          <button class="ptype" data-value="Villa"><span class="em">🏡</span> Villa</button>
-          <button class="ptype" data-value="Camping"><span class="em">🏕️</span> Camping</button>
-        </div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-welcome"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="ptype-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-        </div>
-      </section>
-
-      <!-- ── Register: portfolio size ── -->
-      <section class="screen" data-screen="r-count" data-mode="register" data-rail-group="business" data-progress="40">
-        <p class="stepno">About your business · Step 4 of 9</p>
-        <h1>Number of properties</h1>
-        <p class="lead">Tell us how many units or listings you manage.</p>
-        <div class="cards c2" id="count-cards" style="max-width:620px;">
-          <div class="card size" data-value="1-5" tabindex="0"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">1–5</span><span class="t">Just getting started</span><span class="d">Perfect for independent hosts.</span></div>
-          <div class="card size" data-value="6-20" tabindex="0"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">6–20</span><span class="t">Growing portfolio</span><span class="d">You're scaling up operations.</span></div>
-          <div class="card size" data-value="21-100" tabindex="0"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">21–100</span><span class="t">Professional manager</span><span class="d">Automation matters at this size.</span></div>
-          <div class="card size" data-value="100+" tabindex="0"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">100+</span><span class="t">Large operation</span><span class="d">Enterprise-grade workflows.</span></div>
-        </div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-ptype"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="count-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-        </div>
-      </section>
-
-      <!-- ── Register: country ── -->
-      <section class="screen" data-screen="r-country" data-mode="register" data-rail-group="business" data-progress="48">
-        <p class="stepno">About your business · Step 5 of 9</p>
-        <h1>Country</h1>
-        <p class="lead">Select the country where your business operates.</p>
-        <div class="form-narrow">
-          <div class="field">
-            <label for="rc-country">Country</label>
-            <select id="rc-country">
-              <option value="">Select Country</option>
-              <option>Spain</option><option>Italy</option><option>Portugal</option><option>France</option>
-              <option>Germany</option><option>Austria</option><option>Croatia</option><option>Greece</option>
-              <option>United Kingdom</option><option>United States</option><option>UAE</option><option>Mexico</option>
-            </select>
-          </div>
-        </div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-count"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="country-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-        </div>
-      </section>
-
-      <!-- ── Register: phone ── -->
-      <section class="screen" data-screen="r-phone" data-mode="register" data-rail-group="business" data-progress="56">
-        <p class="stepno">About your business · Step 6 of 9</p>
+      <!-- ── Register 3 · phone ── -->
+      <section class="screen" data-screen="r-phone" data-mode="register" data-progress="14">
+        <p class="stepno">Create your account</p>
         <h1>Phone number</h1>
-        <p class="lead">We'll use this to verify your account and support you if needed.</p>
+        <p class="lead">We use this to secure your account and reach you if a guest check-in needs attention.</p>
         <div class="form-narrow">
           <div class="field">
             <label for="rp-phone">Phone number</label>
             <div style="display:flex;gap:10px;">
-              <select id="rp-code" style="width:110px;flex:none;">
+              <select id="rp-code" style="width:110px;flex:none;" aria-label="Country code">
                 <option>+34</option><option>+39</option><option>+351</option><option>+33</option><option>+49</option><option>+43</option><option>+385</option><option>+30</option><option>+44</option><option>+1</option>
               </select>
               <input id="rp-phone" type="tel" placeholder="600 000 000" style="flex:1;">
             </div>
           </div>
+          <p class="terms">By continuing you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
         </div>
         <div class="cfoot">
-          <button class="btn ghost" data-go="r-country"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="phone-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <button class="btn ghost" data-go="r-name"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
+          <button class="btn primary" id="phone-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
         </div>
       </section>
 
-      <!-- ── Register: focus ── -->
-      <section class="screen" data-screen="r-focus" data-mode="register" data-rail-group="business" data-progress="64">
-        <p class="stepno">About your business · Step 7 of 9</p>
-        <h1>What would you like to focus on first?</h1>
-        <p class="lead">Help us tailor the best experience for you.</p>
-        <div class="cards c3" id="focus-cards">
-          <div class="card manage" data-value="Automated compliance" tabindex="0" style="flex-direction:column;gap:10px;"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ic green">🛡️</span><div><div class="t">Automated compliance</div><div class="d">Police reporting &amp; guest registration on autopilot.</div></div></div>
-          <div class="card manage" data-value="Branded check-in" tabindex="0" style="flex-direction:column;gap:10px;"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ic">✨</span><div><div class="t">Branded check-in</div><div class="d">Your logo and colors on the guest journey.</div></div></div>
-          <div class="card manage" data-value="Automated remote access" tabindex="0" style="flex-direction:column;gap:10px;"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ic violet">🔑</span><div><div class="t">Automated remote access</div><div class="d">Door codes sent when check-in completes.</div></div></div>
-          <div class="card manage" data-value="Property Protection" tabindex="0" style="flex-direction:column;gap:10px;"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ic">🏠</span><div><div class="t">Property protection</div><div class="d">Deposits &amp; damage protection built in.</div></div></div>
-          <div class="card manage" data-value="Processing payments" tabindex="0" style="flex-direction:column;gap:10px;"><span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ic green">💳</span><div><div class="t">Processing payments</div><div class="d">Tourist taxes &amp; upsells collected for you.</div></div></div>
+      <!-- ── Register 4 · welcome → guided setup ── -->
+      <section class="screen" data-screen="r-welcome" data-mode="register" data-progress="18">
+        <div class="bigmark"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <p class="stepno">Account created</p>
+        <h1 id="welcome-title">Hey there, welcome to Chekin! 👋</h1>
+        <p class="lead">Your account is ready. Now five quick questions so we can switch on exactly what your business needs — and nothing more.</p>
+        <div class="nextsteps">
+          <div class="ns"><span class="no">1</span><div><div class="t">Where you operate</div><div class="d">We tailor legal modules to your market.</div></div><span class="eta">~30 s</span></div>
+          <div class="ns"><span class="no">2</span><div><div class="t">Your portfolio</div><div class="d">So the dashboard fits your scale.</div></div><span class="eta">~20 s</span></div>
+          <div class="ns"><span class="no">3</span><div><div class="t">How you manage bookings</div><div class="d">Connect your PMS or import calendars.</div></div><span class="eta">~2 min</span></div>
+          <div class="ns"><span class="no">4</span><div><div class="t">What matters most</div><div class="d">We put your priority front and centre.</div></div><span class="eta">~20 s</span></div>
+          <div class="ns"><span class="no">5</span><div><div class="t">Your plan</div><div class="d">A dashboard built for you.</div></div><span class="eta">review</span></div>
         </div>
         <div class="cfoot">
-          <button class="btn ghost" data-go="r-phone"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="btn primary" id="focus-next" disabled>Continue <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <a class="btn primary" href="onboarding.html">Start setup <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="btn ghost" href="index.html">Skip — take me to the dashboard</a>
         </div>
       </section>
 
-      <!-- ── Register: connect PMS choice ── -->
-      <section class="screen" data-screen="r-connectpms" data-mode="register" data-rail-group="pms" data-progress="72">
-        <p class="stepno">Connect PMS · Step 8 of 9</p>
-        <h1>Connect PMS</h1>
-        <p class="lead">Choose how you'd like to connect your PMS to continue.</p>
-        <div class="cards c2">
-          <div class="card manage" data-pmschoice="connect" tabindex="0">
-            <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="ic">🔌</span>
-            <div>
-              <div class="t">Connect my PMS</div>
-              <div class="d">I will connect my PMS and import my properties automatically.</div>
-              <span class="eta"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4;"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg> ~2 min with credentials ready</span>
-            </div>
-          </div>
-          <div class="card manage" data-pmschoice="skip" tabindex="0">
-            <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
-            <span class="ic green">✍️</span>
-            <div>
-              <div class="t">Continue without PMS</div>
-              <div class="d">I will add my properties manually, won't connect my PMS for now.</div>
-              <span class="eta"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.4;"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg> Fastest way to explore</span>
-            </div>
-          </div>
-        </div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-focus"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-        </div>
-      </section>
-
-      <!-- ── Register: PMS picker ── -->
-      <section class="screen" data-screen="r-pms" data-mode="register" data-rail-group="pms" data-progress="80">
-        <p class="stepno">Connect PMS · Step 9 of 9</p>
-        <h1>Which PMS do you use?</h1>
-        <p class="lead">We integrate with 35+ property management systems.</p>
-        <div class="pms-search">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input id="pms-search" type="search" placeholder="Search your PMS…" aria-label="Search PMS">
-        </div>
-        <div class="pmsgrid" id="pms-grid"></div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-connectpms"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="skip" data-go="r-finish" data-skip-pms>I'll connect it later</button>
-        </div>
-      </section>
-
-      <!-- ── Register: PMS second step ── -->
-      <section class="screen" data-screen="r-pmsdetail" data-mode="register" data-rail-group="pms" data-progress="88">
-        <p class="stepno" id="pd-stepno">Connect PMS</p>
-        <h1 id="pd-title">Connect your PMS</h1>
-        <p class="lead" id="pd-lead">Enter your credentials so we can import your properties and bookings.</p>
-        <div class="pms-detail">
-          <div class="pd-form" id="pd-form"></div>
-          <div class="pd-info" id="pd-info"></div>
-        </div>
-        <div class="cfoot">
-          <button class="btn ghost" data-go="r-pms"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 19l-7-7 7-7"/></svg> Back</button>
-          <button class="skip" data-go="r-finish" data-skip-pms>Skip for now</button>
-        </div>
-      </section>
-
-      <!-- ── Register: finish ── -->
-      <section class="screen" data-screen="r-finish" data-mode="register" data-rail-group="finish" data-progress="100">
-        <p class="stepno">Go live</p>
-        <h1 id="finish-h1">Preparing your workspace</h1>
-        <p class="lead">We're wiring everything to the answers you just gave.</p>
-        <div class="finish-grid">
-          <div>
-            <div class="ring">
-              <svg width="120" height="120" viewBox="0 0 120 120">
-                <defs><linearGradient id="fgrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#385CF8"/><stop offset="1" stop-color="#35E5BC"/></linearGradient></defs>
-                <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="9"/>
-                <circle class="arc" id="finish-arc" cx="60" cy="60" r="52" fill="none" stroke-width="9" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
-              </svg>
-              <span class="pct" id="finish-pct">0%</span>
-            </div>
-            <p class="finish-msg" id="finish-msg">Checking your configuration…</p>
-            <p class="finish-sub" id="finish-sub">This takes a few seconds.</p>
-            <div class="finish-cta" id="finish-cta">
-              <a class="btn primary" href="onboarding.html">Start the guided setup <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-              <a class="btn ghost" href="index.html">Skip to dashboard</a>
-            </div>
-          </div>
-          <div class="preview">
-            <div class="ph"><span class="dotr"></span><span class="doty"></span><span class="dotg"></span> Your dashboard preview</div>
-            <div class="pbody">
-              <div class="mini-hero">
-                <div class="g" id="mini-date">Your first-run home</div>
-                <div class="h" id="mini-hello">Welcome back 👋</div>
-                <div class="rail2">
-                  <div class="r2 first"><span class="b">3</span> Connect a channel</div>
-                  <div class="r2"><span class="b">4</span> Police reporting</div>
-                  <div class="r2"><span class="b">5</span> Test guest flow</div>
-                </div>
-              </div>
-              <div class="mods">
-                <div class="mh">Modules tuned to your answers</div>
-                <div class="mchips" id="mini-mods">
-                  <span class="mchip"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Online check-in</span>
-                  <span class="mchip off">Upselling</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-</div>
-
-<!-- OAuth simulation overlay -->
-<div class="overlay" id="oauth-overlay">
-  <div class="modal">
-    <div class="oauth-sim" id="oauth-redirecting">
-      <div class="spin"></div>
-      <h3 id="oauth-redirect-title">Redirecting to your PMS…</h3>
-      <p class="muted-note">You'll authorize Chekin on their site and come straight back.</p>
-    </div>
-    <div class="oauth-consent" id="oauth-consent" style="display:none;">
-      <h3 id="oauth-consent-title">Authorize Chekin</h3>
-      <p id="oauth-consent-sub">Chekin is requesting access to your account:</p>
-      <div class="scopes">
-        <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Read your properties and units</div>
-        <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Read and manage reservations</div>
-        <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Read guest details for check-in</div>
-      </div>
-      <div class="mfoot">
-        <button class="btn ghost" id="oauth-cancel">Cancel</button>
-        <button class="btn primary" id="oauth-authorize">Authorize</button>
-      </div>
-    </div>
-    <div class="oauth-sim" id="oauth-returning" style="display:none;">
-      <div class="spin"></div>
-      <h3>Returning to Chekin…</h3>
-      <p class="muted-note">Exchanging the authorization code securely.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Partner data-sharing consent modal (GDPR) -->
-<div class="overlay" id="consent-overlay">
-  <div class="modal">
-    <h3 id="consent-title">You are one step closer to your free account</h3>
-    <p id="consent-sub">The partner team will contact you to start the account creation process and give you an onboarding of their product. In the meantime, you can continue using Chekin and explore its features.</p>
-    <div class="gdpr">CONTROLLER: Chekin Soluciones Digitales, S.L | MAIN PURPOSE: To manage the potential commercial relationship between the parties and to answer queries and send you information about our products or services. | DATA TRANSFER: If you expressly consent, your data will be processed by the partner. | RIGHTS: You may exercise your rights of access, rectification, deletion and portability of your data, of limitation and opposition to their processing, as well as not to be subject to decisions based solely on the automated processing of your data, or request information about the processing at gdpr@chekin.com. | ADDITIONAL INFORMATION: You can find more information in our Privacy Policy at chekin.com/en/terms and chekin.com/en/privacy.</div>
-    <label class="consent"><input type="checkbox" id="consent-check"><span id="consent-label">I declare that I have understood the information provided and agree to share my personal data with the partner.</span></label>
-    <div class="mfoot">
-      <button class="btn ghost" id="consent-cancel">Cancel</button>
-      <button class="btn primary" id="consent-confirm" disabled>Confirm</button>
     </div>
   </div>
 </div>
@@ -743,72 +418,7 @@
 (function () {
   'use strict';
 
-  /* ── PMS catalogue (from the onboarding/PMS sheet) ── */
-  var PMS = {
-    guesty:    { n: 'Guesty', c: '#0B2F55', kind: 'none', video: 'Z3eAVpF5xkY', site: 'guesty.com',
-      desc: 'Guesty simplifies managing hospitality businesses with its all-in-one platform, automating operations to save time and increase revenue.',
-      benefits: ['Flexible solutions for every business', 'Unlock your listings’ true potential', 'Boost operational productivity'] },
-    cloudbeds: { n: 'Cloudbeds', c: '#1A5EFF', kind: 'oauth', video: 'zUlBKUhQTZY', site: 'cloudbeds.com',
-      desc: 'The Cloudbeds Hospitality Platform integrates operations, revenue management, distribution channels, and growth marketing tools.',
-      benefits: ['Streamline operations and automate workflows', 'Modernize your guest experience', 'Data delivered, insights revealed'] },
-    lodgify:   { n: 'Lodgify', c: '#E2001A', kind: 'form', video: '4_pz38vRROM', site: 'lodgify.com',
-      fields: [['api_key', 'API key', 'Paste the API key from Lodgify → Settings → Public API']],
-      desc: 'Lodgify is vacation rental software that lets you create a website, sync availability across channels and manage all bookings in one place.',
-      benefits: ['Channel manager for Airbnb, Booking.com & Vrbo', 'Direct booking website included', 'Automated guest communication'] },
-    smoobu:    { n: 'Smoobu', c: '#2F6FED', kind: 'oauth', video: '7IBjUKv70Ao', site: 'smoobu.com',
-      desc: 'Smoobu is the all-in-one software for short-term and vacation rentals: channel manager, PMS, website builder and guest guide in one subscription.',
-      benefits: ['Real-time sync across all portals', 'One calendar for every booking', 'Guest guide & online check-in links'] },
-    hostaway:  { n: 'Hostaway', c: '#F5A623', kind: 'form', video: 'lsqJOm-TsIg', site: 'hostaway.com',
-      fields: [['client_id', 'Client ID', ''], ['client_secret', 'Client secret', 'Create both under Hostaway → Marketplace → Chekin']],
-      desc: 'Hostaway is the fast-growing vacation rental platform combining channel management, automation and analytics for professional managers.',
-      benefits: ['Deep channel integrations', 'Powerful automations & workflows', 'Reporting built for scale'] },
-    avantio:   { n: 'Avantio', c: '#FF5A28', kind: 'form', video: null, site: 'avantio.com',
-      fields: [['pms_username', 'Avantio username', ''], ['pms_password', 'Avantio password', '']],
-      note: 'You must request these credentials by opening a ticket from your Avantio account.',
-      desc: 'Avantio’s property management software is an all-in-one solution, available in 7 languages, supporting agencies across the globe.',
-      benefits: ['Fully customisable, ready to integrate', 'Streamlines processes to maximize revenue', 'Global agency support'] },
-    mews:      { n: 'Mews', c: '#0E1E3A', kind: 'form', video: 'VlTgepMeJKM', site: 'mews.com',
-      fields: [['access_token', 'Access token', 'Mews → Marketplace → Chekin → generate token']],
-      desc: 'Mews is a leading hospitality cloud transforming how hotels operate, with open APIs and an ecosystem of hundreds of integrations.',
-      benefits: ['API-first hospitality cloud', 'Automated billing & payments', 'Hundreds of marketplace apps'] },
-    beds24:    { n: 'Beds24', c: '#009FE3', kind: 'none', video: 'M8PfpaU90Hc', site: 'beds24.com',
-      desc: 'Beds24 is the all-in-one solution for holiday rentals and hotels: bookings, listings, calendars, payments and guest communication.',
-      benefits: ['Channel manager for all major portals', 'Secure payment collection', 'Workflow automation everywhere'] },
-    apaleo:    { n: 'Apaleo', c: '#6C4CF1', kind: 'oauth', video: 'UdKDVOHH1FE', site: 'apaleo.com',
-      desc: 'More than a PMS, Apaleo is the API-first property management software empowering hotel & apartment groups.',
-      benefits: ['Adapts to all hotel sizes', 'Seamless third-party integrations', 'Efficient multi-property scaling'] },
-    siteminder:{ n: 'SiteMinder', c: '#C8102E', kind: 'none', video: 'SpawZtV4eLc', site: 'siteminder.com',
-      desc: 'SiteMinder is the world’s leading hotel distribution and revenue platform — Chekin connects through your SiteMinder channel directly.',
-      benefits: ['No extra credentials needed', 'Bookings flow in automatically', 'Works with 30+ SiteMinder-connected PMSs'] },
-    avalon:    { n: 'Avalon', c: '#0F9F80', kind: 'form', video: null, site: null,
-      fields: [['x_api_key', 'API key', ''], ['base_url', 'Base URL', 'e.g. https://pms.yourhotel.com'], ['hotel_name', 'Hotel name', 'Exactly as configured in Avalon']],
-      desc: 'Avalon PMS integration imports your properties and reservations directly from your Avalon instance.',
-      benefits: ['Direct API connection', 'Reservations sync automatically'] },
-    amenitiz:  { n: 'Amenitiz', c: '#12B5A5', kind: 'consent', video: null, site: 'amenitiz.com',
-      desc: 'Amenitiz is the all-in-one hotel management platform for independent hoteliers — a Chekin partner.',
-      benefits: ['Partner-assisted onboarding', 'The Amenitiz team contacts you to set everything up'] },
-    octorate:  { n: 'Octorate', c: '#FF8C00', kind: 'form', video: 'G1cKQ3g5-3Y', site: 'octorate.com',
-      fields: [['api_key', 'API key', 'Octorate → Integrations → Chekin']],
-      desc: 'Octorate is an all-in-one cloud solution for hotels, B&Bs and vacation rentals: channel manager, booking engine and PMS.',
-      benefits: ['All-in-one cloud suite', 'Fast channel synchronisation'] },
-    other:     { n: 'Other PMS', c: '#6B6B95', kind: 'contact', video: null, site: null,
-      desc: 'Don’t see your PMS? Tell us which one you use — our team will contact you about the integration. You can start without it today.',
-      benefits: [] }
-  };
-  var PMS_ORDER = ['guesty', 'cloudbeds', 'lodgify', 'smoobu', 'hostaway', 'avantio', 'mews', 'beds24', 'apaleo', 'siteminder', 'avalon', 'amenitiz', 'octorate', 'other'];
-  var KIND_LABEL = { none: 'Connects instantly', form: 'API credentials', oauth: 'Via OAuth', consent: 'Partner setup', contact: 'Tell us' };
-
-  var state = { name: '', email: '', pms: null };
-
-  /* ── Rail chips ("Your setup so far") ── */
-  var CHIP_ORDER = ['ptype', 'count', 'country', 'focus', 'pms'];
-  var chips = {};
-  function setChip(key, label) {
-    chips[key] = label;
-    var box = document.getElementById('rail-chips');
-    box.innerHTML = CHIP_ORDER.filter(function (k) { return chips[k]; })
-      .map(function (k) { return '<span class="pchip">' + chips[k] + '</span>'; }).join('');
-  }
+  var state = { name: '', email: '' };
 
   /* ── Screen router ── */
   function show(id) {
@@ -823,19 +433,16 @@
     });
     document.getElementById('topalt').style.display = mode === 'auth' ? 'flex' : 'none';
     if (mode === 'register') {
-      var group = target.getAttribute('data-rail-group');
-      var RAIL_ORDER = ['account', 'business', 'pms', 'finish'];
-      var gi = RAIL_ORDER.indexOf(group);
-      document.querySelectorAll('.rstep').forEach(function (r) {
-        var ri = RAIL_ORDER.indexOf(r.getAttribute('data-rail'));
-        r.classList.toggle('active', ri === gi);
-        r.classList.toggle('done', ri < gi);
-        if (ri < gi) r.querySelector('.bub').innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
-        else r.querySelector('.bub').textContent = ri + 1;
-      });
+      var done = id === 'r-welcome';
+      var accountStep = document.querySelector('.rstep[data-rail="account"]');
+      accountStep.classList.toggle('done', done);
+      accountStep.classList.toggle('active', !done);
+      accountStep.querySelector('.bub').innerHTML = done
+        ? '<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>'
+        : '1';
+      document.querySelector('.rstep[data-rail="s1"]').classList.toggle('active', done);
     }
     document.getElementById('cbar').style.width = (target.getAttribute('data-progress') || 5) + '%';
-    if (id === 'r-finish') runFinish();
     if (history.replaceState) history.replaceState(null, '', '#' + id);
     window.scrollTo(0, 0);
     var h = target.querySelector('h1');
@@ -845,11 +452,10 @@
   document.addEventListener('click', function (e) {
     var go = e.target.closest('[data-go]');
     if (!go) return;
-    if (go.hasAttribute('data-skip-pms')) state.pms = null;
     show(go.getAttribute('data-go'));
   });
 
-  /* ── Shared helpers ── */
+  /* ── Helpers ── */
   function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
   document.querySelectorAll('[data-eye]').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -970,7 +576,7 @@
   rpConfirm.addEventListener('input', updateReset);
   rpSubmit.addEventListener('click', function () { show('reset-success'); });
 
-  /* ── Register: account steps ── */
+  /* ── Register: account creation only ── */
   var reEmail = document.getElementById('re-email');
   var reNext = document.getElementById('re-email-next');
   reEmail.addEventListener('input', function () { reNext.disabled = !validEmail(reEmail.value); });
@@ -978,6 +584,7 @@
     state.email = reEmail.value.trim();
     show('r-name');
   });
+
   bindStrength('rn-pass', 'rn-strength');
   var rnName = document.getElementById('rn-name');
   var rnPass = document.getElementById('rn-pass');
@@ -987,255 +594,28 @@
   rnPass.addEventListener('input', updateName);
   rnNext.addEventListener('click', function () {
     state.name = rnName.value.trim().split(' ')[0];
-    document.getElementById('welcome-title').textContent = 'Hey ' + state.name + ', welcome to Chekin! 👋';
-    document.getElementById('mini-hello').textContent = 'Welcome, ' + state.name + ' 👋';
-    show('r-welcome');
+    show('r-phone');
   });
-
-  /* ── Property type pills ── */
-  var ptypeBox = document.getElementById('ptype-chips');
-  var ptypeNext = document.getElementById('ptype-next');
-  ptypeBox.addEventListener('click', function (e) {
-    var chip = e.target.closest('.ptype');
-    if (!chip) return;
-    ptypeBox.querySelectorAll('.ptype').forEach(function (c) { c.classList.toggle('sel', c === chip); });
-    setChip('ptype', chip.getAttribute('data-value'));
-    ptypeNext.disabled = false;
-  });
-  ptypeNext.addEventListener('click', function () { show('r-count'); });
-
-  /* ── Card groups ── */
-  function bindCards(containerId, nextBtnId, nextScreen, chipKey) {
-    var box = document.getElementById(containerId);
-    var next = document.getElementById(nextBtnId);
-    box.addEventListener('click', function (e) {
-      var card = e.target.closest('.card');
-      if (!card) return;
-      box.querySelectorAll('.card').forEach(function (c) { c.classList.toggle('sel', c === card); });
-      if (chipKey) setChip(chipKey, card.getAttribute('data-value'));
-      next.disabled = false;
-    });
-    box.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      var card = e.target.closest('.card');
-      if (!card) return;
-      e.preventDefault();
-      card.click();
-    });
-    next.addEventListener('click', function () { show(nextScreen); });
-  }
-  bindCards('count-cards', 'count-next', 'r-country', 'count');
-  bindCards('focus-cards', 'focus-next', 'r-connectpms', 'focus');
-
-  var rcCountry = document.getElementById('rc-country');
-  var countryNext = document.getElementById('country-next');
-  rcCountry.addEventListener('change', function () {
-    countryNext.disabled = !rcCountry.value;
-    if (rcCountry.value) setChip('country', rcCountry.value);
-  });
-  countryNext.addEventListener('click', function () { show('r-phone'); });
 
   var rpPhone = document.getElementById('rp-phone');
   var phoneNext = document.getElementById('phone-next');
   rpPhone.addEventListener('input', function () { phoneNext.disabled = rpPhone.value.replace(/\D/g, '').length < 6; });
-  phoneNext.addEventListener('click', function () { show('r-focus'); });
-
-  document.querySelectorAll('[data-pmschoice]').forEach(function (card) {
-    card.addEventListener('click', function () {
-      card.parentElement.querySelectorAll('.card').forEach(function (c) { c.classList.toggle('sel', c === card); });
-      setTimeout(function () {
-        if (card.getAttribute('data-pmschoice') === 'connect') show('r-pms');
-        else { state.pms = null; setChip('pms', 'No PMS — manual'); show('r-finish'); }
-      }, 220);
-    });
-  });
-
-  /* ── PMS picker (Fable .pms chips) ── */
-  var pmsGrid = document.getElementById('pms-grid');
-  function initialsOf(n) { return n.split(/\s+/).map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase(); }
-  function renderPmsGrid(q) {
-    q = (q || '').toLowerCase();
-    pmsGrid.innerHTML = PMS_ORDER.filter(function (k) {
-      return !q || PMS[k].n.toLowerCase().indexOf(q) >= 0;
-    }).map(function (k) {
-      var p = PMS[k];
-      return '<button class="pms" data-pms="' + k + '">' +
-        '<span class="lg" style="background:' + p.c + ';">' + initialsOf(p.n) + '</span>' +
-        '<span>' + p.n + '<span class="sub">' + KIND_LABEL[p.kind] + '</span></span></button>';
-    }).join('') || '<p class="muted-note">No PMS matches — pick "Other PMS" and our team will help.</p>';
-  }
-  renderPmsGrid('');
-  document.getElementById('pms-search').addEventListener('input', function (e) { renderPmsGrid(e.target.value); });
-  pmsGrid.addEventListener('click', function (e) {
-    var chip = e.target.closest('[data-pms]');
-    if (!chip) return;
-    state.pms = chip.getAttribute('data-pms');
-    setChip('pms', PMS[state.pms].n);
-    renderPmsDetail(state.pms);
-    show('r-pmsdetail');
-  });
-
-  /* ── PMS detail (the 2nd step) ── */
-  function renderPmsDetail(key) {
-    var p = PMS[key];
-    document.getElementById('pd-stepno').textContent = 'Connect PMS · ' + p.n;
-    document.getElementById('pd-title').textContent = 'Connect ' + p.n;
-    var leads = {
-      form: 'Enter your ' + p.n + ' credentials so we can import your properties and bookings.',
-      oauth: 'Authorize Chekin in your ' + p.n + ' account — no credentials to copy.',
-      none: p.n + ' connects without any extra credentials.',
-      consent: p.n + ' onboarding is partner-assisted — confirm and their team contacts you.',
-      contact: 'Tell us which PMS you use and our team will reach out about the integration.'
-    };
-    document.getElementById('pd-lead').textContent = leads[p.kind];
-
-    var logo = '<span class="lg" style="background:' + p.c + ';">' + initialsOf(p.n) + '</span>';
-    var f = '<h3>' + logo + ' ' + p.n + '</h3>';
-    if (p.kind === 'form') {
-      if (p.note) f += '<div class="pd-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><span>' + p.note + '</span></div>';
-      p.fields.forEach(function (fl, i) {
-        f += '<div class="field"><label for="pf-' + i + '">' + fl[1] + '</label><input id="pf-' + i + '" data-pms-field type="text" placeholder="' + (fl[1].indexOf('assword') > 0 ? '••••••••' : 'Paste it here') + '">' + (fl[2] ? '<p class="hint">' + fl[2] + '</p>' : '') + '</div>';
-      });
-      f += '<button class="btn primary block" id="pd-connect" disabled>Connect ' + p.n + '</button>';
-    } else if (p.kind === 'oauth') {
-      f += '<div class="pd-easy"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Secure OAuth connection — you approve access on ' + p.n + '’s own site, and we never see your password.</span></div>';
-      f += '<button class="btn primary block" id="pd-oauth">Connect with ' + p.n + ' <svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></button>';
-    } else if (p.kind === 'none') {
-      f += '<div class="pd-easy"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>No credentials needed — bookings flow in automatically once connected.</span></div>';
-      f += '<button class="btn primary block" id="pd-connect-none">Connect ' + p.n + '</button>';
-    } else if (p.kind === 'consent') {
-      f += '<div class="pd-easy"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Partner-assisted setup: the ' + p.n + ' team gets in touch and onboards you personally.</span></div>';
-      f += '<button class="btn primary block" id="pd-consent">Continue with ' + p.n + '</button>';
-    } else {
-      f += '<div class="field"><label for="pf-other">Your PMS name</label><input id="pf-other" data-pms-field type="text" placeholder="e.g. MyPMS Pro"></div>';
-      f += '<button class="btn primary block" id="pd-connect" disabled>Request integration</button>';
-    }
-    document.getElementById('pd-form').innerHTML = f;
-
-    var info = '<h3>About ' + p.n + '</h3><p>' + p.desc + (p.site ? ' <a href="https://' + p.site + '" target="_blank" rel="noopener">' + p.site + '</a>' : '') + '</p>';
-    if (p.benefits.length) {
-      info += '<h3 style="font-size:13px;">Benefits of integrating Chekin and ' + p.n + '</h3><ul>' + p.benefits.map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul>';
-    }
-    if (p.video) {
-      info += '<p class="pd-video-label">How to connect ' + p.n + ' with Chekin</p>' +
-        '<div class="pd-video"><iframe src="https://www.youtube.com/embed/' + p.video + '" title="How to connect ' + p.n + ' with Chekin" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>';
-    }
-    document.getElementById('pd-info').innerHTML = info;
-
-    var connect = document.getElementById('pd-connect');
-    if (connect) {
-      var fields = Array.prototype.slice.call(document.querySelectorAll('[data-pms-field]'));
-      fields.forEach(function (i) {
-        i.addEventListener('input', function () {
-          connect.disabled = !fields.every(function (x) { return x.value.trim().length > 0; });
-        });
-      });
-      connect.addEventListener('click', function () {
-        connect.disabled = true;
-        connect.textContent = 'Connecting…';
-        setTimeout(function () { show('r-finish'); }, 900);
-      });
-    }
-    var connectNone = document.getElementById('pd-connect-none');
-    if (connectNone) connectNone.addEventListener('click', function () { show('r-finish'); });
-    var oauthBtn = document.getElementById('pd-oauth');
-    if (oauthBtn) oauthBtn.addEventListener('click', function () { runOauth(p); });
-    var consentBtn = document.getElementById('pd-consent');
-    if (consentBtn) consentBtn.addEventListener('click', function () { openConsent(p); });
-  }
-
-  /* ── OAuth simulation ── */
-  var oauthOverlay = document.getElementById('oauth-overlay');
-  function runOauth(p) {
-    document.getElementById('oauth-redirect-title').textContent = 'Redirecting to ' + p.n + '…';
-    document.getElementById('oauth-consent-sub').textContent = 'Chekin is requesting access to your ' + p.n + ' account:';
-    document.getElementById('oauth-redirecting').style.display = '';
-    document.getElementById('oauth-consent').style.display = 'none';
-    document.getElementById('oauth-returning').style.display = 'none';
-    oauthOverlay.classList.add('on');
+  phoneNext.addEventListener('click', function () {
+    phoneNext.disabled = true;
+    phoneNext.textContent = 'Creating your account…';
     setTimeout(function () {
-      document.getElementById('oauth-redirecting').style.display = 'none';
-      document.getElementById('oauth-consent').style.display = '';
-    }, 1100);
-  }
-  document.getElementById('oauth-cancel').addEventListener('click', function () { oauthOverlay.classList.remove('on'); });
-  document.getElementById('oauth-authorize').addEventListener('click', function () {
-    document.getElementById('oauth-consent').style.display = 'none';
-    document.getElementById('oauth-returning').style.display = '';
-    setTimeout(function () {
-      oauthOverlay.classList.remove('on');
-      show('r-finish');
-    }, 1200);
+      if (state.name) {
+        document.getElementById('welcome-title').textContent = 'Hey ' + state.name + ', welcome to Chekin! 👋';
+      }
+      try { localStorage.setItem('chekin_account_name', state.name || ''); } catch (err) {}
+      phoneNext.disabled = false;
+      phoneNext.innerHTML = 'Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+      show('r-welcome');
+    }, 900);
   });
-
-  /* ── Partner consent modal ── */
-  var consentOverlay = document.getElementById('consent-overlay');
-  var consentCheck = document.getElementById('consent-check');
-  var consentConfirm = document.getElementById('consent-confirm');
-  function openConsent(p) {
-    document.getElementById('consent-title').textContent = 'You are one step closer to your free ' + p.n + ' account';
-    document.getElementById('consent-sub').textContent = 'The ' + p.n + ' team will contact you to start the account creation process and give you an onboarding of their product. In the meantime, you can continue using Chekin and explore its features.';
-    document.getElementById('consent-label').textContent = 'I declare that I have understood the information provided and agree to share my personal data with ' + p.n + '.';
-    consentCheck.checked = false;
-    consentConfirm.disabled = true;
-    consentOverlay.classList.add('on');
-  }
-  consentCheck.addEventListener('change', function () { consentConfirm.disabled = !consentCheck.checked; });
-  document.getElementById('consent-cancel').addEventListener('click', function () { consentOverlay.classList.remove('on'); });
-  consentConfirm.addEventListener('click', function () {
-    consentOverlay.classList.remove('on');
-    show('r-finish');
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      oauthOverlay.classList.remove('on');
-      consentOverlay.classList.remove('on');
-    }
-  });
-
-  /* ── Finish (staged pending + preview) ── */
-  var finishRan = false;
-  function runFinish() {
-    if (finishRan) return;
-    finishRan = true;
-    var msgs = ['Checking your configuration…', 'Setting up your account…'];
-    if (state.pms && PMS[state.pms]) msgs.push('Importing your properties from ' + PMS[state.pms].n + '…');
-    msgs.push('Preparing your dashboard…');
-    var arc = document.getElementById('finish-arc');
-    var pct = document.getElementById('finish-pct');
-    var msg = document.getElementById('finish-msg');
-    var mods = document.getElementById('mini-mods');
-    var focusChip = chips.focus ? '<span class="mchip"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> ' + chips.focus + '</span>' : '';
-    var pmsChip = state.pms && PMS[state.pms]
-      ? '<span class="mchip"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> ' + PMS[state.pms].n + ' sync</span>'
-      : '<span class="mchip off">PMS — connect later</span>';
-    mods.innerHTML = '<span class="mchip"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Online check-in</span>' + focusChip + pmsChip;
-    var C = 326.7;
-    var i = 0;
-    function tick() {
-      msg.textContent = msgs[i];
-      var progress = (i + 1) / msgs.length;
-      arc.style.strokeDashoffset = String(C * (1 - progress));
-      pct.textContent = Math.round(progress * 100) + '%';
-      i++;
-      if (i < msgs.length) setTimeout(tick, 1100);
-      else setTimeout(function () {
-        document.getElementById('finish-h1').textContent = (state.name ? state.name + ', your' : 'Your') + ' workspace is ready 🎉';
-        msg.textContent = 'Everything is configured.';
-        document.getElementById('finish-sub').textContent = 'Next: a short guided setup gets your first property live.';
-        document.getElementById('finish-cta').classList.add('on');
-      }, 800);
-    }
-    tick();
-  }
 
   /* ── Boot: hash deep-link ── */
   var initial = location.hash.slice(1);
-  if (initial === 'r-pmsdetail' && !state.pms) {
-    state.pms = 'guesty';
-    setChip('pms', PMS.guesty.n);
-    renderPmsDetail('guesty');
-  }
   show(document.querySelector('[data-screen="' + initial + '"]') ? initial : 'login');
 })();
 </script>

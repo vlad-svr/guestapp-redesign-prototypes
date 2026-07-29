@@ -135,6 +135,48 @@
   .pms.sel{border-color:var(--text-brand);background:var(--bg-blue-light);color:var(--text-brand)}
   .pms .lg{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#fff;font:800 12px var(--font-primary);flex-shrink:0}
 
+  /* Step 3b — PMS connect (credentials / OAuth / guide) */
+  .pms-connect{margin-top:18px;display:none}
+  .pms-connect.on{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;animation:stepIn .3s ease}
+  .pc-form{background:#fff;border:1.5px solid var(--stroke-gray-lighter);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-card)}
+  .pc-form h4{font:700 14px var(--font-primary);margin:0 0 14px;display:flex;align-items:center;gap:9px}
+  .pc-form .lg{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font:800 11px var(--font-primary);color:#fff}
+  .pc-field{margin-bottom:13px}
+  .pc-field label{display:block;font:600 12.5px var(--font-primary);margin-bottom:6px}
+  .pc-field input{width:100%;height:40px;padding:0 12px;border-radius:9px;border:1.5px solid var(--stroke-gray-light);font:500 13px var(--font-primary);outline:none;color:var(--text-dark)}
+  .pc-field input:focus{border-color:var(--text-brand);box-shadow:0 0 0 3px rgba(56,92,248,.12)}
+  .pc-field .hint{font:400 11.5px/16px var(--font-primary);color:var(--text-gray-medium);margin-top:5px}
+  .pc-note{display:flex;gap:9px;background:#FFF4E5;border-radius:9px;padding:10px 12px;font:500 12px/17px var(--font-primary);color:#B86A00;margin-bottom:13px}
+  .pc-note svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px}
+  .pc-easy{display:flex;gap:9px;background:var(--bg-success-light);border-radius:9px;padding:11px 12px;font:500 12.5px/18px var(--font-primary);color:var(--success);margin-bottom:13px}
+  .pc-easy svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.4;flex-shrink:0;margin-top:1px}
+  .pc-btn{width:100%;height:42px;border:none;border-radius:var(--radius-md);background:var(--text-brand);color:#fff;font:600 13.5px var(--font-primary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(56,92,248,.28)}
+  .pc-btn:disabled{background:var(--stroke-gray-medium);box-shadow:none;cursor:not-allowed}
+  .pc-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.4}
+  .pc-btn.done{background:var(--success);box-shadow:none}
+  .pc-info h4{font:700 14px var(--font-primary);margin:0 0 7px}
+  .pc-info p{font:400 13px/19px var(--font-primary);color:var(--text-gray-dark);margin:0 0 12px}
+  .pc-info a{color:var(--text-brand);font-weight:600;text-decoration:none}
+  .pc-info ul{margin:0 0 14px;padding-left:17px;font:400 12.5px/20px var(--font-primary);color:var(--text-gray-dark)}
+  .pc-vlabel{font:700 10px var(--font-primary);color:var(--text-gray-medium);text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px}
+  .pc-video{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--stroke-gray-lighter);aspect-ratio:16/9;background:#161643}
+  .pc-video iframe{width:100%;height:100%;border:none;display:block}
+
+  .ovl{position:fixed;inset:0;background:rgba(22,22,67,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:80;padding:20px}
+  .ovl.on{display:flex}
+  .ovl .box{background:#fff;border-radius:var(--radius-xl);max-width:460px;width:100%;padding:26px;box-shadow:var(--shadow-hover)}
+  .ovl h4{font:700 16px var(--font-primary);margin:0 0 10px}
+  .ovl p{font:400 13px/19px var(--font-primary);color:var(--text-gray-dark);margin:0 0 14px}
+  .ovl .spin2{width:32px;height:32px;border-radius:50%;border:3px solid var(--stroke-gray-lighter);border-top-color:var(--text-brand);animation:rot2 1s linear infinite;margin:0 auto 14px}
+  @keyframes rot2{to{transform:rotate(360deg)}}
+  .ovl .scopes{background:var(--bg-neutral-light);border-radius:9px;padding:11px 13px;font:500 12.5px/21px var(--font-primary);color:var(--text-gray-dark);margin-bottom:16px}
+  .ovl .scopes svg{width:13px;height:13px;stroke:var(--success);fill:none;stroke-width:2.6;vertical-align:-2px;margin-right:6px}
+  .ovl .gdpr{font:400 10px/14px var(--font-primary);color:var(--text-gray-medium);background:var(--bg-neutral-light);border-radius:9px;padding:10px 12px;max-height:104px;overflow-y:auto;margin-bottom:13px}
+  .ovl .cons{display:flex;gap:9px;align-items:flex-start;font:500 12.5px/18px var(--font-primary);margin-bottom:16px;cursor:pointer}
+  .ovl .cons input{width:15px;height:15px;margin-top:2px;accent-color:var(--text-brand)}
+  .ovl .foot{display:flex;justify-content:flex-end;gap:9px}
+  .ovl .foot .btn{height:40px;padding:0 18px}
+
   /* Step 4 — priority */
   .prio{display:flex;gap:16px;padding:20px;align-items:flex-start}
   .prio .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex-shrink:0}
@@ -307,6 +349,7 @@
         <div class="pms-pick" id="pmsPick">
           <div class="rh">Which one? (120+ supported — pick yours)</div>
           <div class="pmsgrid" id="pmsGrid"></div>
+          <div class="pms-connect" id="pmsConnect"></div>
         </div>
       </section>
 
@@ -387,6 +430,45 @@
   </div>
 </div>
 
+<div class="ovl" id="oauthOvl">
+  <div class="box">
+    <div id="oauthStep1" style="text-align:center">
+      <div class="spin2"></div>
+      <h4 id="oauthT1">Redirecting to your PMS…</h4>
+      <p>You'll authorize Chekin on their site and come straight back.</p>
+    </div>
+    <div id="oauthStep2" style="display:none">
+      <h4 id="oauthT2">Authorize Chekin</h4>
+      <p id="oauthP2">Chekin is requesting access to your account:</p>
+      <div class="scopes">
+        <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Read your properties and units</div>
+        <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Read and manage reservations</div>
+        <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Read guest details for check-in</div>
+      </div>
+      <div class="foot">
+        <button class="btn ghost" id="oauthCancel">Cancel</button>
+        <button class="btn primary" id="oauthOk">Authorize</button>
+      </div>
+    </div>
+    <div id="oauthStep3" style="display:none;text-align:center">
+      <div class="spin2"></div>
+      <h4>Returning to Chekin…</h4>
+      <p>Exchanging the authorization code securely.</p>
+    </div>
+  </div>
+</div>
+<div class="ovl" id="consOvl">
+  <div class="box">
+    <h4 id="consT">You are one step closer to your free account</h4>
+    <p id="consP">The partner team will contact you to start the account creation process and give you an onboarding of their product.</p>
+    <div class="gdpr">CONTROLLER: Chekin Soluciones Digitales, S.L | MAIN PURPOSE: To manage the potential commercial relationship between the parties and to answer queries and send you information about our products or services. | DATA TRANSFER: If you expressly consent, your data will be processed by the partner. | RIGHTS: You may exercise your rights of access, rectification, deletion and portability of your data, of limitation and opposition to their processing, or request information about the processing at gdpr@chekin.com. | ADDITIONAL INFORMATION: See our Privacy Policy at chekin.com/en/privacy.</div>
+    <label class="cons"><input type="checkbox" id="consChk"><span id="consL">I declare that I have understood the information provided and agree to share my personal data with the partner.</span></label>
+    <div class="foot">
+      <button class="btn ghost" id="consCancel">Cancel</button>
+      <button class="btn primary" id="consOk" disabled>Confirm</button>
+    </div>
+  </div>
+</div>
 <script>
 (function(){
   /* ───── Data ───── */
@@ -405,14 +487,35 @@
     { code:'MX', flag:'🇲🇽', name:'Mexico',      reg:false, scheme:null,             tax:false },
   ];
   const PMS = [
-    { id:'guesty',   name:'Guesty',    bg:'#0B3954' },
-    { id:'hostaway', name:'Hostaway',  bg:'#F5A623' },
-    { id:'lodgify',  name:'Lodgify',   bg:'#5A31F4' },
-    { id:'smoobu',   name:'Smoobu',    bg:'#00A699' },
-    { id:'avantio',  name:'Avantio',   bg:'#E4572E' },
-    { id:'cloudbeds',name:'Cloudbeds', bg:'#1789FC' },
-    { id:'octorate', name:'Octorate',  bg:'#7C3AED' },
-    { id:'other',    name:'Other…',    bg:'#6B6B95' },
+    { id:'guesty',   name:'Guesty',    bg:'#0B3954', kind:'none',  video:'Z3eAVpF5xkY', site:'guesty.com',
+      desc:'Guesty simplifies managing hospitality businesses with its all-in-one platform, automating operations to save time and increase revenue.',
+      benefits:['Flexible solutions for every business','Unlock your listings\u2019 true potential','Boost operational productivity'] },
+    { id:'hostaway', name:'Hostaway',  bg:'#F5A623', kind:'form',  video:'lsqJOm-TsIg', site:'hostaway.com',
+      fields:[['client_id','Client ID',''],['client_secret','Client secret','Create both under Hostaway \u2192 Marketplace \u2192 Chekin']],
+      desc:'Hostaway is the fast-growing vacation rental platform combining channel management, automation and analytics for professional managers.',
+      benefits:['Deep channel integrations','Powerful automations & workflows','Reporting built for scale'] },
+    { id:'lodgify',  name:'Lodgify',   bg:'#5A31F4', kind:'form',  video:'4_pz38vRROM', site:'lodgify.com',
+      fields:[['api_key','API key','Paste the key from Lodgify \u2192 Settings \u2192 Public API']],
+      desc:'Lodgify is vacation rental software that lets you create a website, sync availability across channels and manage all bookings in one place.',
+      benefits:['Channel manager for Airbnb, Booking.com & Vrbo','Direct booking website included','Automated guest communication'] },
+    { id:'smoobu',   name:'Smoobu',    bg:'#00A699', kind:'oauth', video:'7IBjUKv70Ao', site:'smoobu.com',
+      desc:'Smoobu is the all-in-one software for short-term and vacation rentals: channel manager, PMS, website builder and guest guide.',
+      benefits:['Real-time sync across all portals','One calendar for every booking','Guest guide & online check-in links'] },
+    { id:'avantio',  name:'Avantio',   bg:'#E4572E', kind:'form',  video:null, site:'avantio.com',
+      fields:[['pms_username','Avantio username',''],['pms_password','Avantio password','']],
+      note:'You must request these credentials by opening a ticket from your Avantio account.',
+      desc:'Avantio\u2019s property management software is an all-in-one solution, available in 7 languages, supporting agencies across the globe.',
+      benefits:['Fully customisable, ready to integrate','Streamlines processes to maximize revenue'] },
+    { id:'cloudbeds',name:'Cloudbeds', bg:'#1789FC', kind:'oauth', video:'zUlBKUhQTZY', site:'cloudbeds.com',
+      desc:'The Cloudbeds Hospitality Platform integrates operations, revenue management, distribution channels and growth marketing tools.',
+      benefits:['Streamline operations and automate workflows','Modernize your guest experience','Data delivered, insights revealed'] },
+    { id:'octorate', name:'Octorate',  bg:'#7C3AED', kind:'form',  video:'G1cKQ3g5-3Y', site:'octorate.com',
+      fields:[['api_key','API key','Octorate \u2192 Integrations \u2192 Chekin']],
+      desc:'Octorate is an all-in-one cloud solution for hotels, B&Bs and vacation rentals: channel manager, booking engine and PMS.',
+      benefits:['All-in-one cloud suite','Fast channel synchronisation'] },
+    { id:'other',    name:'Other\u2026',    bg:'#6B6B95', kind:'contact', video:null, site:null,
+      desc:'Don\u2019t see your PMS? Tell us which one you use \u2014 our team will contact you about the integration. You can start without it today.',
+      benefits:[] },
   ];
 
   /* ───── State ───── */
@@ -535,17 +638,104 @@
       $$('#pmsGrid .pms').forEach(x => x.classList.remove('sel'));
       el.classList.add('sel');
       state.pms = p;
+      renderPmsConnect(p);
       refresh();
     });
     pmsGrid.appendChild(el);
   });
+
+  /* ── PMS connect: credentials / OAuth / partner consent + guide ── */
+  const pmsConnect = $('#pmsConnect');
+  function renderPmsConnect(p){
+    if (!p){ pmsConnect.classList.remove('on'); pmsConnect.innerHTML = ''; return; }
+    const logo = `<span class="lg" style="background:${p.bg}">${p.name[0]}</span>`;
+    let f = `<h4>${logo} Connect ${p.name}</h4>`;
+    if (p.kind === 'form'){
+      if (p.note) f += `<div class="pc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg><span>${p.note}</span></div>`;
+      p.fields.forEach((fl, i) => {
+        f += `<div class="pc-field"><label for="pcf-${i}">${fl[1]}</label><input id="pcf-${i}" data-pcf type="text" placeholder="${/assword/.test(fl[1]) ? '••••••••' : 'Paste it here'}">${fl[2] ? `<p class="hint">${fl[2]}</p>` : ''}</div>`;
+      });
+      f += `<button class="pc-btn" id="pcGo" disabled>Connect ${p.name}</button>`;
+    } else if (p.kind === 'oauth'){
+      f += `<div class="pc-easy"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Secure OAuth — you approve access on ${p.name}'s own site, and we never see your password.</span></div>`;
+      f += `<button class="pc-btn" id="pcOauth">Connect with ${p.name} <svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></button>`;
+    } else if (p.kind === 'none'){
+      f += `<div class="pc-easy"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>No credentials needed — your bookings flow in automatically once connected.</span></div>`;
+      f += `<button class="pc-btn" id="pcGoNone">Connect ${p.name}</button>`;
+    } else if (p.kind === 'consent'){
+      f += `<div class="pc-easy"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Partner-assisted setup: the ${p.name} team gets in touch and onboards you personally.</span></div>`;
+      f += `<button class="pc-btn" id="pcConsent">Continue with ${p.name}</button>`;
+    } else {
+      f += `<div class="pc-field"><label for="pcf-other">Your PMS name</label><input id="pcf-other" data-pcf type="text" placeholder="e.g. MyPMS Pro"></div>`;
+      f += `<button class="pc-btn" id="pcGo" disabled>Request integration</button>`;
+    }
+
+    let info = `<h4>About ${p.name}</h4><p>${p.desc}${p.site ? ` <a href="https://${p.site}" target="_blank" rel="noopener">${p.site}</a>` : ''}</p>`;
+    if (p.benefits && p.benefits.length){
+      info += `<h4 style="font-size:12.5px">Benefits of integrating Chekin and ${p.name}</h4><ul>${p.benefits.map(b => `<li>${b}</li>`).join('')}</ul>`;
+    }
+    if (p.video){
+      info += `<p class="pc-vlabel">How to connect ${p.name} with Chekin</p><div class="pc-video"><iframe src="https://www.youtube.com/embed/${p.video}" title="How to connect ${p.name} with Chekin" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+    }
+
+    pmsConnect.innerHTML = `<div class="pc-form">${f}</div><div class="pc-info">${info}</div>`;
+    pmsConnect.classList.add('on');
+
+    const done = btn => { btn.classList.add('done'); btn.disabled = true; btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> ${p.name} connected`; state.pmsConnected = true; };
+    const go = $('#pcGo');
+    if (go){
+      const fields = $$('[data-pcf]');
+      fields.forEach(i => i.addEventListener('input', () => { go.disabled = !fields.every(x => x.value.trim()); }));
+      go.addEventListener('click', () => { go.disabled = true; go.textContent = 'Connecting…'; setTimeout(() => done(go), 900); });
+    }
+    const goNone = $('#pcGoNone');
+    if (goNone) goNone.addEventListener('click', () => { goNone.disabled = true; goNone.textContent = 'Connecting…'; setTimeout(() => done(goNone), 800); });
+    const oauthBtn = $('#pcOauth');
+    if (oauthBtn) oauthBtn.addEventListener('click', () => runOauth(p, () => done(oauthBtn)));
+    const consentBtn = $('#pcConsent');
+    if (consentBtn) consentBtn.addEventListener('click', () => openConsent(p, () => done(consentBtn)));
+  }
+
+  /* OAuth simulation */
+  const oauthOvl = $('#oauthOvl');
+  let oauthDone = null;
+  function runOauth(p, cb){
+    oauthDone = cb;
+    $('#oauthT1').textContent = `Redirecting to ${p.name}…`;
+    $('#oauthT2').textContent = `Authorize Chekin`;
+    $('#oauthP2').textContent = `Chekin is requesting access to your ${p.name} account:`;
+    $('#oauthStep1').style.display = ''; $('#oauthStep2').style.display = 'none'; $('#oauthStep3').style.display = 'none';
+    oauthOvl.classList.add('on');
+    setTimeout(() => { $('#oauthStep1').style.display = 'none'; $('#oauthStep2').style.display = ''; }, 1000);
+  }
+  $('#oauthCancel').addEventListener('click', () => oauthOvl.classList.remove('on'));
+  $('#oauthOk').addEventListener('click', () => {
+    $('#oauthStep2').style.display = 'none'; $('#oauthStep3').style.display = '';
+    setTimeout(() => { oauthOvl.classList.remove('on'); if (oauthDone) oauthDone(); }, 1100);
+  });
+
+  /* Partner GDPR consent */
+  const consOvl = $('#consOvl'), consChk = $('#consChk'), consOk = $('#consOk');
+  let consDone = null;
+  function openConsent(p, cb){
+    consDone = cb;
+    $('#consT').textContent = `You are one step closer to your free ${p.name} account`;
+    $('#consP').textContent = `The ${p.name} team will contact you to start the account creation process and give you an onboarding of their product.`;
+    $('#consL').textContent = `I declare that I have understood the information provided and agree to share my personal data with ${p.name}.`;
+    consChk.checked = false; consOk.disabled = true;
+    consOvl.classList.add('on');
+  }
+  consChk.addEventListener('change', () => { consOk.disabled = !consChk.checked; });
+  $('#consCancel').addEventListener('click', () => consOvl.classList.remove('on'));
+  consOk.addEventListener('click', () => { consOvl.classList.remove('on'); if (consDone) consDone(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape'){ oauthOvl.classList.remove('on'); consOvl.classList.remove('on'); } });
   $$('#manageCards .card').forEach(c => {
     const pick = () => {
       $$('#manageCards .card').forEach(x => x.classList.remove('sel'));
       c.classList.add('sel');
       state.manage = c.dataset.manage;
       $('#pmsPick').classList.toggle('on', state.manage === 'pms');
-      if (state.manage !== 'pms') { state.pms = null; $$('#pmsGrid .pms').forEach(x => x.classList.remove('sel')); }
+      if (state.manage !== 'pms') { state.pms = null; state.pmsConnected = false; $$('#pmsGrid .pms').forEach(x => x.classList.remove('sel')); renderPmsConnect(null); }
       refresh();
     };
     c.addEventListener('click', pick);
