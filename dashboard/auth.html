@@ -81,9 +81,6 @@
 
   /* Forms */
   .form-narrow{max-width:440px}
-  .form-grid{max-width:620px;display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
-  .form-grid .full{grid-column:1/-1}
-  @media (max-width:840px){.form-grid{grid-template-columns:1fr;max-width:440px}}
   .field{margin-bottom:16px}
   .field label{display:block;font:600 13px var(--font-primary);margin-bottom:7px}
   .field .inp{position:relative}
@@ -131,12 +128,15 @@
   .strength.s3 i:nth-child(-n+3){background:var(--success)}
   .strength.s4 i{background:var(--success)}
 
-  /* Register: single account form */
-  .cfoot.tight{margin-top:0;padding-top:24px}
-  .sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:620px;height:46px;border:1.5px solid var(--stroke-gray-light);border-radius:10px;background:#fff;font:600 14px var(--font-primary);color:var(--text-dark);cursor:pointer;transition:border-color .12s,box-shadow .12s}
+  /* Register: single account form, boxed */
+  .acard{max-width:460px;background:var(--bg-white);border:1px solid var(--stroke-gray-lighter);border-radius:var(--radius-xl);box-shadow:0 10px 30px rgba(22,22,67,.06),0 1px 3px rgba(22,22,67,.04);padding:26px 28px 24px}
+  .acard .btn.primary{width:100%;justify-content:center;margin-top:8px}
+  .acard .terms{margin:14px 0 0;max-width:none;text-align:center}
+  .acard-alt{max-width:460px;text-align:center;margin-top:18px}
+  .sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:46px;border:1.5px solid var(--stroke-gray-light);border-radius:10px;background:#fff;font:600 14px var(--font-primary);color:var(--text-dark);cursor:pointer;transition:border-color .12s,box-shadow .12s}
   .sso:hover{border-color:var(--stroke-gray-medium);box-shadow:0 2px 8px rgba(22,22,67,.06)}
   .sso img,.sso svg{width:18px;height:18px}
-  .or{display:flex;align-items:center;gap:14px;max-width:620px;margin:20px 0;font:600 11px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium)}
+  .or{display:flex;align-items:center;gap:14px;margin:18px 0;font:600 11px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium)}
   .or::before,.or::after{content:'';flex:1;height:1px;background:var(--stroke-gray-lighter)}
   .reqs{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}
   .req{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--bg-neutral-light);font:500 11.5px var(--font-primary);color:var(--text-gray-dark);transition:background .15s,color .15s}
@@ -147,7 +147,6 @@
   .pw-row .slabel.w1{color:var(--text-danger)}
   .pw-row .slabel.w2{color:var(--text-warn)}
   .pw-row .slabel.w3,.pw-row .slabel.w4{color:var(--success)}
-  @media (max-width:840px){.sso,.or{max-width:440px}}
 
   .bigmark{width:56px;height:56px;border-radius:16px;background:var(--bg-success-light);display:grid;place-items:center;margin-bottom:20px}
   .bigmark svg{width:26px;height:26px;stroke:var(--success);fill:none;stroke-width:2.4}
@@ -353,13 +352,13 @@
         <p class="stepno">Create your account</p>
         <h1>Let's get you set up</h1>
         <p class="lead">Start your 14-day free trial — no credit card needed. About a minute; the questions about your business come next.</p>
-        <button class="sso" id="racct-google" type="button">
-          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81Z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.13 0-5.78-2.11-6.72-4.95H1.28v3.1A12 12 0 0 0 12 24Z"/><path fill="#FBBC05" d="M5.28 14.28a7.2 7.2 0 0 1 0-4.56v-3.1H1.28a12 12 0 0 0 0 10.76l4-3.1Z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.43-3.43A11.97 11.97 0 0 0 12 0 12 12 0 0 0 1.28 6.62l4 3.1C6.22 6.88 8.87 4.77 12 4.77Z"/></svg>
-          Sign up with Google
-        </button>
-        <div class="or">or register with email</div>
-        <div class="form-grid">
-          <div class="field full">
+        <div class="acard">
+          <button class="sso" id="racct-google" type="button">
+            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81Z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.13 0-5.78-2.11-6.72-4.95H1.28v3.1A12 12 0 0 0 12 24Z"/><path fill="#FBBC05" d="M5.28 14.28a7.2 7.2 0 0 1 0-4.56v-3.1H1.28a12 12 0 0 0 0 10.76l4-3.1Z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.43-3.43A11.97 11.97 0 0 0 12 0 12 12 0 0 0 1.28 6.62l4 3.1C6.22 6.88 8.87 4.77 12 4.77Z"/></svg>
+            Sign up with Google
+          </button>
+          <div class="or">or register with email</div>
+          <div class="field">
             <label for="re-email">Work email</label>
             <input id="re-email" type="email" placeholder="name@company.com" autocomplete="email" data-autofocus>
             <p class="err">Enter a valid email address.</p>
@@ -378,7 +377,7 @@
             </div>
             <p class="hint">Only for account security and urgent check-in alerts — never marketing.</p>
           </div>
-          <div class="field full">
+          <div class="field">
             <div class="pw-row">
               <label for="rn-pass">Password</label>
               <span class="slabel" id="rn-slabel" aria-live="polite"></span>
@@ -393,12 +392,10 @@
               <span class="req" id="req-mix"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Letters &amp; numbers</span>
             </div>
           </div>
-        </div>
-        <div class="cfoot tight" style="flex-wrap:wrap;align-items:center;">
           <button class="btn primary" id="racct-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
-          <span class="muted-note">Already have an account? <button class="linklike" data-go="login">Log in</button></span>
+          <p class="terms">By creating an account you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
         </div>
-        <p class="terms" style="margin-top:18px;">By creating an account you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
+        <p class="muted-note acard-alt">Already have an account? <button class="linklike" data-go="login">Log in</button></p>
       </section>
 
       <!-- ── Register · welcome → guided setup ── -->
