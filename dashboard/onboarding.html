@@ -136,8 +136,7 @@
   .pms .lg{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:#fff;font:800 12px var(--font-primary);flex-shrink:0}
 
   /* Step 3b — PMS connect (credentials / OAuth / guide) */
-  .pms-connect{margin-top:18px;display:none}
-  .pms-connect.on{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;animation:stepIn .3s ease}
+  .pms-connect{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
   .pc-form{background:#fff;border:1.5px solid var(--stroke-gray-lighter);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-card)}
   .pc-form h4{font:700 14px var(--font-primary);margin:0 0 14px;display:flex;align-items:center;gap:9px}
   .pc-form .lg{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font:800 11px var(--font-primary);color:#fff}
@@ -349,8 +348,15 @@
         <div class="pms-pick" id="pmsPick">
           <div class="rh">Which one? (120+ supported — pick yours)</div>
           <div class="pmsgrid" id="pmsGrid"></div>
-          <div class="pms-connect" id="pmsConnect"></div>
         </div>
+      </section>
+
+      <!-- STEP 3b · Connect the chosen PMS (only when a PMS is selected) -->
+      <section class="panel" data-panel="6">
+        <div class="stepno">Connect your PMS</div>
+        <h1 id="pcTitle">Connect your PMS</h1>
+        <p class="lead" id="pcLead">Enter your credentials so we can import your properties and bookings.</p>
+        <div class="pms-connect on" id="pmsConnect"></div>
       </section>
 
       <!-- STEP 4 · Priority -->
@@ -550,6 +556,9 @@
   SIZE_SETS.other = SIZE_SETS.vr;
   let step = 1;
   const TOTAL = 5;
+  const LAST = 5;
+  const RAIL_OF = { 1:1, 2:2, 3:3, 6:3, 4:4, 5:5 };
+  function flow(){ return (state.manage === 'pms' && state.pms) ? [1,2,3,6,4,5] : [1,2,3,4,5]; }
 
   const $ = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
@@ -646,8 +655,17 @@
 
   /* ── PMS connect: credentials / OAuth / partner consent + guide ── */
   const pmsConnect = $('#pmsConnect');
+  const PC_LEAD = {
+    form:    p => `Enter your ${p.name} credentials so we can import your properties and bookings.`,
+    oauth:   p => `Authorize Chekin in your ${p.name} account — there are no credentials to copy.`,
+    none:    p => `${p.name} connects without any extra credentials.`,
+    consent: p => `${p.name} onboarding is partner-assisted — confirm and their team gets in touch.`,
+    contact: p => `Tell us which PMS you use and our team will reach out about the integration.`
+  };
   function renderPmsConnect(p){
-    if (!p){ pmsConnect.classList.remove('on'); pmsConnect.innerHTML = ''; return; }
+    if (!p){ pmsConnect.innerHTML = ''; return; }
+    $('#pcTitle').textContent = `Connect ${p.name}`;
+    $('#pcLead').textContent = (PC_LEAD[p.kind] || PC_LEAD.form)(p);
     const logo = `<span class="lg" style="background:${p.bg}">${p.name[0]}</span>`;
     let f = `<h4>${logo} Connect ${p.name}</h4>`;
     if (p.kind === 'form'){
@@ -679,7 +697,6 @@
     }
 
     pmsConnect.innerHTML = `<div class="pc-form">${f}</div><div class="pc-info">${info}</div>`;
-    pmsConnect.classList.add('on');
 
     const done = btn => { btn.classList.add('done'); btn.disabled = true; btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> ${p.name} connected`; state.pmsConnected = true; };
     const go = $('#pcGo');
@@ -900,28 +917,44 @@
     if (step === 1) return state.countries.length > 0;
     if (step === 2) return !!state.size && !!state.ptype;
     if (step === 3) return state.manage && (state.manage !== 'pms' || !!state.pms);
+    if (step === 6) return true; // connecting is optional — you can finish it later
     if (step === 4) return state.prios.length > 0; // regulated markets always have compliance locked in
     return true;
   }
+  function syncStepLabels(){
+    const f = flow();
+    f.forEach((pid, idx) => {
+      const el = document.querySelector(`.panel[data-panel="${pid}"] .stepno`);
+      if (!el) return;
+      el.textContent = pid === 6
+        ? `Step ${idx + 1} of ${f.length} · Connect`
+        : `Step ${idx + 1} of ${f.length}`;
+    });
+  }
   function refresh(){
     $('#btnNext').disabled = !valid();
+    syncStepLabels();
     renderChips();
   }
   function show(n){
-    step = Math.max(1, Math.min(TOTAL, n));
+    const f = flow();
+    step = f.indexOf(n) >= 0 ? n : f[0];
+    const i = f.indexOf(step);
     $$('.panel').forEach(p => p.classList.toggle('on', +p.dataset.panel === step));
+    const rs = RAIL_OF[step];
     $$('#railSteps .rstep').forEach(r => {
       const s = +r.dataset.s;
-      r.classList.toggle('done', s < step);
-      r.classList.toggle('active', s === step);
-      if (s < step) r.querySelector('.bub').innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>';
+      r.classList.toggle('done', s < rs);
+      r.classList.toggle('active', s === rs);
+      if (s < rs) r.querySelector('.bub').innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>';
       else r.querySelector('.bub').textContent = s;
     });
-    $('#cbar').style.width = (step / TOTAL * 100) + '%';
-    $('#btnBack').style.visibility = step > 1 ? 'visible' : 'hidden';
-    $('#btnSkip').style.display = step === TOTAL ? 'none' : '';
+    syncStepLabels();
+    $('#cbar').style.width = ((i + 1) / f.length * 100) + '%';
+    $('#btnBack').style.visibility = i > 0 ? 'visible' : 'hidden';
+    $('#btnSkip').style.display = step === LAST ? 'none' : '';
     if (step === 4) setupPrioStep();
-    if (step === TOTAL){
+    if (step === LAST){
       renderPlan();
       $('#btnNext').innerHTML = 'Go to my dashboard<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
     } else {
@@ -951,10 +984,14 @@
     } catch(e){}
   }
   $('#btnNext').addEventListener('click', () => {
-    if (step === TOTAL){ savePlan(); goTop('firstrun'); return; }
-    show(step + 1);
+    if (step === LAST){ savePlan(); goTop('firstrun'); return; }
+    const f = flow();
+    show(f[f.indexOf(step) + 1]);
   });
-  $('#btnBack').addEventListener('click', () => show(step - 1));
+  $('#btnBack').addEventListener('click', () => {
+    const f = flow();
+    show(f[Math.max(0, f.indexOf(step) - 1)]);
+  });
   $('#btnSkip').addEventListener('click', () => goTop('fable'));
 
   /* ───── Demo presets: ?demo=compliance|ops|cleaning ───── */
