@@ -24,8 +24,6 @@
     --text-danger:#DF0044;
     --success:#0F9F80;
     --icon-success-light:#35E5BC;
-    --shadow-card:0 1px 3px rgba(22,22,67,.04),0 1px 2px rgba(22,22,67,.03);
-    --shadow-hover:0 12px 28px rgba(56,92,248,.12),0 2px 6px rgba(22,22,67,.05);
     --radius-sm:6px;--radius-md:8px;--radius-lg:14px;--radius-xl:18px;
   }
   *{box-sizing:border-box}
@@ -83,19 +81,42 @@
   .screen.boxed{align-items:center;text-align:center;justify-content:center;padding-bottom:28px}
   .screen.boxed .lead{margin-left:auto;margin-right:auto}
   .screen.boxed .bigmark{margin-left:auto;margin-right:auto}
-  .field{margin-bottom:16px}
-  .field label{display:block;font:600 13px var(--font-primary);margin-bottom:7px}
-  .field .inp{position:relative}
-  .field input,.field select{width:100%;height:44px;padding:0 14px;border-radius:10px;border:1.5px solid var(--stroke-gray-light);font:500 13.5px var(--font-primary);color:var(--text-dark);outline:none;background:#fff}
-  .field input:focus,.field select:focus{border-color:var(--text-brand);box-shadow:0 0 0 3px rgba(56,92,248,.12)}
-  .field input::placeholder{color:var(--text-gray-medium)}
-  .field .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:none;background:none;cursor:pointer;color:var(--text-gray-medium);display:grid;place-items:center;border-radius:8px}
-  .field .eye:hover{color:var(--text-dark);background:var(--bg-neutral-light)}
-  .field .eye svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9}
-  .field .hint{font:400 12px/17px var(--font-primary);color:var(--text-gray-medium);margin-top:6px}
-  .field .err{display:none;font:500 12.5px var(--font-primary);color:var(--text-danger);margin-top:6px}
-  .field.invalid input{border-color:var(--text-danger);box-shadow:0 0 0 3px rgba(223,0,68,.1)}
+  .field{margin-bottom:22px}
+  .field .hint{font:400 12px/17px var(--font-primary);color:var(--text-gray-medium);margin-top:7px}
+  .field .err{display:none;font:500 12.5px var(--font-primary);color:var(--text-danger);margin-top:7px}
   .field.invalid .err{display:block}
+
+  /* Floating-label field — notched outline, mirrors @chekinapp/ui Input */
+  .fs{position:relative;display:block;min-height:48px;text-align:left}
+  .fs input,.fs select{width:100%;height:48px;margin:0;padding:0 16px;border:0;border-radius:6px;background:transparent;font:500 16px var(--font-primary);color:var(--text-dark);outline:none}
+  .fs input::placeholder{color:var(--text-gray-medium);opacity:0;transition:opacity .1s}
+  .fs input:focus::placeholder{opacity:1}
+  .fs > fieldset{position:absolute;top:-5px;left:0;right:0;bottom:0;margin:0;padding:0 13px;border:1.5px solid var(--stroke-gray-light);border-radius:6px;pointer-events:none;transition:border-color .12s}
+  .fs > fieldset > legend{visibility:hidden;display:block;float:none;width:auto;max-width:.01px;height:11px;padding:0;white-space:nowrap;font-size:.75em;transition:max-width 50ms ease-out}
+  .fs > fieldset > legend > span{visibility:visible;display:inline-block;padding:0 5px;font:600 14px var(--font-primary);opacity:0}
+  .fs > label{position:absolute;top:12px;left:13px;padding:0 3px;max-width:calc(100% - 26px);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--text-gray-medium);font:500 16px var(--font-primary);cursor:text;transition:top .1s ease-in,font-size .1s ease-in,color .12s}
+  /* raised: focused, or holding a value */
+  .fs input:focus ~ label,
+  .fs input:not(:placeholder-shown) ~ label,
+  .fs.raised > label{top:-10px;padding:0 5px;font:600 14px var(--font-primary)}
+  .fs input:focus ~ fieldset > legend,
+  .fs input:not(:placeholder-shown) ~ fieldset > legend,
+  .fs.raised > fieldset > legend{max-width:100%;transition-duration:.1s;transition-delay:50ms}
+  .fs input:not(:placeholder-shown) ~ fieldset{border-color:var(--stroke-gray-medium)}
+  .fs input:focus ~ label{color:var(--text-brand)}
+  .fs input:focus ~ fieldset{border-color:var(--text-brand);border-width:2px}
+  .field.invalid .fs > fieldset{border-color:var(--text-danger)}
+  .field.invalid .fs > label{color:var(--text-danger)}
+  .fs .eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:none;background:none;cursor:pointer;color:var(--text-gray-medium);display:grid;place-items:center;border-radius:8px}
+  .fs .eye:hover{color:var(--text-dark);background:var(--bg-neutral-light)}
+  .fs .eye svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9}
+  .fs.has-eye input{padding-right:46px}
+  /* Dial-code select sits label-less beside the phone input */
+  .fs.dial{width:100px;flex:none}
+  .fs.dial select{height:53px;margin-top:-5px;padding:0 8px 0 14px;cursor:pointer}
+  .fs.dial:focus-within > fieldset{border-color:var(--text-brand);border-width:2px}
+  .phone-row{display:flex;gap:10px;align-items:flex-start}
+  .phone-row .fs:not(.dial){flex:1;min-width:0}
   .linklike{font:600 13px var(--font-primary);color:var(--text-brand);background:none;border:none;cursor:pointer;padding:0}
   .linklike:hover{text-decoration:underline}
   .muted-note{font:400 12.5px/18px var(--font-primary);color:var(--text-gray-medium)}
@@ -114,9 +135,9 @@
 
   /* OTP */
   .otp{display:flex;gap:10px;margin:2px 0 4px}
-  .otp input{width:52px;height:60px;text-align:center;font:700 22px var(--font-primary);border:1.5px solid var(--stroke-gray-light);border-radius:12px;outline:none;color:var(--text-dark);background:#fff;transition:border-color .12s,box-shadow .12s}
-  .otp input:focus{border-color:var(--text-brand);box-shadow:0 0 0 3px rgba(56,92,248,.12)}
-  .otp.error input{border-color:var(--text-danger);box-shadow:0 0 0 3px rgba(223,0,68,.1);animation:shake .3s ease}
+  .otp input{width:52px;height:60px;text-align:center;font:700 22px var(--font-primary);border:1.5px solid var(--stroke-gray-light);border-radius:12px;outline:none;color:var(--text-dark);background:#fff;transition:border-color .12s}
+  .otp input:focus{border-color:var(--text-brand);border-width:2px}
+  .otp.error input{border-color:var(--text-danger);animation:shake .3s ease}
   @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
   .otp-err{display:none;font:500 13px var(--font-primary);color:var(--text-danger);margin-top:10px}
   .otp-err.on{display:block}
@@ -131,12 +152,12 @@
   .strength.s4 i{background:var(--success)}
 
   /* Boxed auth/register card */
-  .acard{width:100%;max-width:460px;text-align:left;background:var(--bg-white);border:1px solid var(--stroke-gray-lighter);border-radius:var(--radius-xl);box-shadow:0 10px 30px rgba(22,22,67,.06),0 1px 3px rgba(22,22,67,.04);padding:26px 28px 24px}
+  .acard{width:100%;max-width:460px;text-align:left;background:var(--bg-white);border:1px solid var(--stroke-gray-lighter);border-radius:var(--radius-xl);padding:26px 28px 24px}
   .acard .btn.primary{width:100%;justify-content:center;margin-top:8px}
   .acard .terms{margin:14px 0 0;max-width:none;text-align:center}
   .acard-alt{max-width:460px;text-align:center;margin-top:18px}
-  .sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:46px;border:1.5px solid var(--stroke-gray-light);border-radius:10px;background:#fff;font:600 14px var(--font-primary);color:var(--text-dark);cursor:pointer;transition:border-color .12s,box-shadow .12s}
-  .sso:hover{border-color:var(--stroke-gray-medium);box-shadow:0 2px 8px rgba(22,22,67,.06)}
+  .sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:46px;border:1.5px solid var(--stroke-gray-light);border-radius:10px;background:#fff;font:600 14px var(--font-primary);color:var(--text-dark);cursor:pointer;transition:border-color .12s,background .12s}
+  .sso:hover{border-color:var(--stroke-gray-medium);background:var(--bg-neutral-light)}
   .sso img,.sso svg{width:18px;height:18px}
   .or{display:flex;align-items:center;gap:14px;margin:18px 0;font:600 11px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium)}
   .or::before,.or::after{content:'';flex:1;height:1px;background:var(--stroke-gray-lighter)}
@@ -144,11 +165,10 @@
   .req{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--bg-neutral-light);font:500 11.5px var(--font-primary);color:var(--text-gray-dark);transition:background .15s,color .15s}
   .req svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:3}
   .req.ok{background:var(--bg-success-light);color:var(--success);font-weight:600}
-  .pw-row{display:flex;align-items:baseline;justify-content:space-between}
-  .pw-row .slabel{font:600 11.5px var(--font-primary);color:var(--text-gray-medium)}
-  .pw-row .slabel.w1{color:var(--text-danger)}
-  .pw-row .slabel.w2{color:var(--text-warn)}
-  .pw-row .slabel.w3,.pw-row .slabel.w4{color:var(--success)}
+  .reqs .slabel{margin-left:auto;align-self:center;font:600 11.5px var(--font-primary);color:var(--text-gray-medium)}
+  .reqs .slabel.w1{color:var(--text-danger)}
+  .reqs .slabel.w2{color:var(--text-warn)}
+  .reqs .slabel.w3,.reqs .slabel.w4{color:var(--success)}
 
   .bigmark{width:56px;height:56px;border-radius:16px;background:var(--bg-success-light);display:grid;place-items:center;margin-bottom:20px}
   .bigmark svg{width:26px;height:26px;stroke:var(--success);fill:none;stroke-width:2.4}
@@ -166,11 +186,11 @@
 
   /* Buttons + footer */
   .cfoot{display:flex;align-items:center;gap:12px;padding-top:36px;margin-top:auto}
-  .btn{height:44px;padding:0 22px;border-radius:var(--radius-md);font:600 14px var(--font-primary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;transition:transform .12s,box-shadow .12s,background .15s;text-decoration:none}
+  .btn{height:44px;padding:0 22px;border-radius:var(--radius-md);font:600 14px var(--font-primary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;transition:background .15s;text-decoration:none}
   .btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4}
-  .btn.primary{background:var(--text-brand);color:#fff;box-shadow:0 4px 12px rgba(56,92,248,.28)}
-  .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(56,92,248,.36)}
-  .btn.primary:disabled{background:var(--stroke-gray-medium);box-shadow:none;cursor:not-allowed;transform:none}
+  .btn.primary{background:var(--text-brand);color:#fff}
+  .btn.primary:hover{background:#2B4BE0}
+  .btn.primary:disabled{background:var(--stroke-gray-medium);cursor:not-allowed}
   .btn.ghost{background:transparent;color:var(--text-gray-dark);border:1px solid var(--stroke-gray-light)}
   .btn.ghost:hover{background:var(--bg-neutral-light);color:var(--text-dark)}
   .btn.block{width:100%}
@@ -182,7 +202,7 @@
   body.v-plain .acard{max-width:440px;background:none;border:none;box-shadow:none;padding:0;border-radius:0}
   body.v-plain .acard .terms{text-align:left}
   body.v-plain .acard-alt{text-align:left}
-  .vswitch{position:fixed;left:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--stroke-gray-lighter);border-radius:999px;padding:3px;box-shadow:0 10px 26px rgba(22,22,67,.14)}
+  .vswitch{position:fixed;left:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--stroke-gray-light);border-radius:999px;padding:3px}
   .vswitch .vlab{font:700 10px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium);padding:0 8px 0 12px}
   .vswitch button{border:none;background:none;color:var(--text-gray-dark);padding:7px 14px;border-radius:999px;cursor:pointer;font:600 12px var(--font-primary)}
   .vswitch button.on{background:var(--bg-dark);color:#fff}
@@ -248,13 +268,17 @@
           </button>
           <div class="or">or log in with email</div>
           <div class="field">
-            <label for="li-email">Email</label>
-            <input id="li-email" type="email" placeholder="Enter your email" autocomplete="username">
+            <div class="fs">
+              <input id="li-email" type="email" placeholder="name@company.com" autocomplete="username">
+              <fieldset><legend><span>Email</span></legend></fieldset>
+              <label for="li-email">Email</label>
+            </div>
           </div>
           <div class="field">
-            <label for="li-pass">Password</label>
-            <div class="inp">
+            <div class="fs has-eye">
               <input id="li-pass" type="password" placeholder="Enter password" autocomplete="current-password">
+              <fieldset><legend><span>Password</span></legend></fieldset>
+              <label for="li-pass">Password</label>
               <button class="eye" data-eye="li-pass" aria-label="Show password"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
           </div>
@@ -306,8 +330,11 @@
         <p class="lead">Enter your email to recover your password.</p>
         <div class="acard">
           <div class="field">
-            <label for="rec-email">Your recovery email</label>
-            <input id="rec-email" type="email" placeholder="Enter recovery email">
+            <div class="fs">
+              <input id="rec-email" type="email" placeholder="name@company.com">
+              <fieldset><legend><span>Your recovery email</span></legend></fieldset>
+              <label for="rec-email">Your recovery email</label>
+            </div>
           </div>
           <button class="btn primary block" id="rec-send" disabled>Send Recovery Link</button>
           <div class="resend-row">
@@ -338,17 +365,21 @@
         <p class="lead">Set a new password to log in to your account.</p>
         <div class="acard">
           <div class="field">
-            <label for="rp-pass">New password</label>
-            <div class="inp">
+            <div class="fs has-eye">
               <input id="rp-pass" type="password" placeholder="Set your password" autocomplete="new-password">
+              <fieldset><legend><span>New password</span></legend></fieldset>
+              <label for="rp-pass">New password</label>
               <button class="eye" data-eye="rp-pass" aria-label="Show password"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
             <div class="strength" id="rp-strength"><i></i><i></i><i></i><i></i></div>
             <p class="hint">Use 8+ characters with a mix of letters and numbers.</p>
           </div>
           <div class="field" id="rp-confirm-field">
-            <label for="rp-confirm">Confirm password</label>
-            <input id="rp-confirm" type="password" placeholder="Repeat password" autocomplete="new-password">
+            <div class="fs">
+              <input id="rp-confirm" type="password" placeholder="Repeat password" autocomplete="new-password">
+              <fieldset><legend><span>Confirm password</span></legend></fieldset>
+              <label for="rp-confirm">Confirm password</label>
+            </div>
             <p class="err">Passwords don't match.</p>
           </div>
           <button class="btn primary block" id="rp-submit" disabled>Reset password</button>
@@ -378,37 +409,48 @@
           </button>
           <div class="or">or register with email</div>
           <div class="field">
-            <label for="re-email">Work email</label>
-            <input id="re-email" type="email" placeholder="name@company.com" autocomplete="email" data-autofocus>
+            <div class="fs">
+              <input id="re-email" type="email" placeholder="name@company.com" autocomplete="email" data-autofocus>
+              <fieldset><legend><span>Work email</span></legend></fieldset>
+              <label for="re-email">Work email</label>
+            </div>
             <p class="err">Enter a valid email address.</p>
           </div>
           <div class="field">
-            <label for="rn-name">Full name</label>
-            <input id="rn-name" type="text" placeholder="e.g. Marta Ferreira" autocomplete="name">
+            <div class="fs">
+              <input id="rn-name" type="text" placeholder="e.g. Marta Ferreira" autocomplete="name">
+              <fieldset><legend><span>Full name</span></legend></fieldset>
+              <label for="rn-name">Full name</label>
+            </div>
           </div>
           <div class="field">
-            <label for="rp-phone">Phone number</label>
-            <div style="display:flex;gap:10px;">
-              <select id="rp-code" style="width:96px;flex:none;" aria-label="Country code">
-                <option>+34</option><option>+39</option><option>+351</option><option>+33</option><option>+49</option><option>+43</option><option>+385</option><option>+30</option><option>+44</option><option>+1</option>
-              </select>
-              <input id="rp-phone" type="tel" placeholder="600 000 000" style="flex:1;" autocomplete="tel">
+            <div class="phone-row">
+              <div class="fs dial">
+                <select id="rp-code" aria-label="Country code">
+                  <option>+34</option><option>+39</option><option>+351</option><option>+33</option><option>+49</option><option>+43</option><option>+385</option><option>+30</option><option>+44</option><option>+1</option>
+                </select>
+                <fieldset><legend></legend></fieldset>
+              </div>
+              <div class="fs">
+                <input id="rp-phone" type="tel" placeholder="600 000 000" autocomplete="tel">
+                <fieldset><legend><span>Phone number</span></legend></fieldset>
+                <label for="rp-phone">Phone number</label>
+              </div>
             </div>
             <p class="hint">Only for account security and urgent check-in alerts — never marketing.</p>
           </div>
           <div class="field">
-            <div class="pw-row">
-              <label for="rn-pass">Password</label>
-              <span class="slabel" id="rn-slabel" aria-live="polite"></span>
-            </div>
-            <div class="inp">
+            <div class="fs has-eye">
               <input id="rn-pass" type="password" placeholder="Set your password" autocomplete="new-password">
+              <fieldset><legend><span>Password</span></legend></fieldset>
+              <label for="rn-pass">Password</label>
               <button class="eye" data-eye="rn-pass" aria-label="Show password"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
             </div>
             <div class="strength" id="rn-strength" hidden><i></i><i></i><i></i><i></i></div>
             <div class="reqs">
               <span class="req" id="req-len"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>8+ characters</span>
               <span class="req" id="req-mix"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Letters &amp; numbers</span>
+              <span class="slabel" id="rn-slabel" aria-live="polite"></span>
             </div>
           </div>
           <button class="btn primary" id="racct-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
