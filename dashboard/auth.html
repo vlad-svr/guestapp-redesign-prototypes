@@ -178,13 +178,23 @@
   .bigmark.mail svg{stroke:var(--text-brand)}
 
   /* Welcome hand-off */
-  .nextsteps{display:flex;flex-direction:column;gap:0;max-width:520px;margin-bottom:8px}
-  .ns{display:flex;gap:14px;padding:13px 4px;border-bottom:1px solid var(--stroke-gray-lighter)}
-  .ns:last-child{border-bottom:none}
-  .ns .no{width:26px;height:26px;border-radius:50%;background:var(--bg-blue-light);color:var(--text-brand);display:grid;place-items:center;font:700 12px var(--font-primary);flex-shrink:0}
-  .ns .t{font:600 14px/19px var(--font-primary)}
+  .nexthead{display:flex;align-items:baseline;gap:10px;margin-bottom:2px}
+  .nexthead .nh-t{font:700 13px var(--font-primary);color:var(--text-dark)}
+  .nexthead .nh-eta{margin-left:auto;font:600 11.5px var(--font-primary);color:var(--text-gray-medium);white-space:nowrap}
+  .nextsteps{list-style:none;display:flex;flex-direction:column;margin:0 0 20px;padding:0}
+  .ns{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--stroke-gray-lighter)}
+  .ns:last-child{border-bottom:none;padding-bottom:2px}
+  .ns .no{width:24px;height:24px;border-radius:50%;background:var(--bg-blue-light);color:var(--text-brand);display:grid;place-items:center;font:700 11.5px var(--font-primary);flex-shrink:0;margin-top:1px}
+  .ns-b{flex:1;min-width:0}
+  .ns-h{display:flex;align-items:baseline;gap:10px}
+  .ns .t{font:600 14px/19px var(--font-primary);color:var(--text-dark)}
   .ns .d{font:400 12.5px/17px var(--font-primary);color:var(--text-gray-dark);margin-top:2px}
-  .ns .eta{margin-left:auto;flex-shrink:0;font:600 11.5px var(--font-primary);color:var(--text-gray-medium);padding-top:4px;white-space:nowrap}
+  .ns .eta{margin-left:auto;flex-shrink:0;font:600 11px var(--font-primary);color:var(--text-gray-medium);white-space:nowrap}
+  /* The payoff step reads as the destination, not another chore */
+  .ns.final .no{background:var(--bg-success-light);color:var(--success)}
+  .ns.final .no svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:3}
+  .skiplink{display:block;text-align:center;margin-top:14px;font:600 13px var(--font-primary);color:var(--text-gray-dark);text-decoration:none}
+  .skiplink:hover{color:var(--text-dark);text-decoration:underline}
 
   /* Buttons + footer */
   .cfoot{display:flex;align-items:center;gap:12px;padding-top:36px;margin-top:auto}
@@ -480,21 +490,50 @@
       </section>
 
       <!-- ── Register · welcome → guided setup ── -->
-      <section class="screen" data-screen="r-welcome" data-mode="register" data-progress="18">
+      <section class="screen boxed" data-screen="r-welcome" data-mode="register" data-progress="18">
         <div class="bigmark"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
         <p class="stepno">Account created</p>
         <h1 id="welcome-title">Hey there, welcome to Chekin! 👋</h1>
-        <p class="lead">Your account is ready. Now five quick questions so we can switch on exactly what your business needs — and nothing more.</p>
-        <div class="nextsteps">
-          <div class="ns"><span class="no">1</span><div><div class="t">Where you operate</div><div class="d">We tailor legal modules to your market.</div></div><span class="eta">~30 s</span></div>
-          <div class="ns"><span class="no">2</span><div><div class="t">Your portfolio</div><div class="d">So the dashboard fits your scale.</div></div><span class="eta">~20 s</span></div>
-          <div class="ns"><span class="no">3</span><div><div class="t">How you manage bookings</div><div class="d">Connect your PMS or import calendars.</div></div><span class="eta">~2 min</span></div>
-          <div class="ns"><span class="no">4</span><div><div class="t">What matters most</div><div class="d">We put your priority front and centre.</div></div><span class="eta">~20 s</span></div>
-          <div class="ns"><span class="no">5</span><div><div class="t">Your plan</div><div class="d">A dashboard built for you.</div></div><span class="eta">review</span></div>
-        </div>
-        <div class="cfoot">
-          <a class="btn primary" href="onboarding.html">Start setup <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-          <a class="btn ghost" href="index.html">Skip — take me to the dashboard</a>
+        <p class="lead">Your account is ready. Five quick questions and we'll switch on exactly what your business needs — nothing more.</p>
+        <div class="acard">
+          <div class="nexthead">
+            <span class="nh-t">What's next</span>
+            <span class="nh-eta">about 3 minutes</span>
+          </div>
+          <ol class="nextsteps">
+            <li class="ns"><span class="no">1</span>
+              <div class="ns-b">
+                <div class="ns-h"><span class="t">Where you operate</span><span class="eta">30 s</span></div>
+                <div class="d">We tailor legal modules to your market.</div>
+              </div>
+            </li>
+            <li class="ns"><span class="no">2</span>
+              <div class="ns-b">
+                <div class="ns-h"><span class="t">Your portfolio</span><span class="eta">20 s</span></div>
+                <div class="d">So the dashboard fits your scale.</div>
+              </div>
+            </li>
+            <li class="ns"><span class="no">3</span>
+              <div class="ns-b">
+                <div class="ns-h"><span class="t">How you manage bookings</span><span class="eta">2 min</span></div>
+                <div class="d">Connect your PMS or import calendars.</div>
+              </div>
+            </li>
+            <li class="ns"><span class="no">4</span>
+              <div class="ns-b">
+                <div class="ns-h"><span class="t">What matters most</span><span class="eta">20 s</span></div>
+                <div class="d">We put your priority front and centre.</div>
+              </div>
+            </li>
+            <li class="ns final"><span class="no"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <div class="ns-b">
+                <div class="ns-h"><span class="t">Your dashboard is ready</span></div>
+                <div class="d">Built around the answers you just gave.</div>
+              </div>
+            </li>
+          </ol>
+          <a class="btn primary block" href="onboarding.html">Start setup <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+          <a class="skiplink" href="index.html">Skip — take me to the dashboard</a>
         </div>
       </section>
 
