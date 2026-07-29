@@ -80,7 +80,9 @@
   @keyframes stepIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
   /* Forms */
-  .form-narrow{max-width:440px}
+  .screen.boxed{align-items:center;text-align:center;justify-content:center;padding-bottom:28px}
+  .screen.boxed .lead{margin-left:auto;margin-right:auto}
+  .screen.boxed .bigmark{margin-left:auto;margin-right:auto}
   .field{margin-bottom:16px}
   .field label{display:block;font:600 13px var(--font-primary);margin-bottom:7px}
   .field .inp{position:relative}
@@ -128,8 +130,8 @@
   .strength.s3 i:nth-child(-n+3){background:var(--success)}
   .strength.s4 i{background:var(--success)}
 
-  /* Register: single account form, boxed */
-  .acard{max-width:460px;background:var(--bg-white);border:1px solid var(--stroke-gray-lighter);border-radius:var(--radius-xl);box-shadow:0 10px 30px rgba(22,22,67,.06),0 1px 3px rgba(22,22,67,.04);padding:26px 28px 24px}
+  /* Boxed auth/register card */
+  .acard{width:100%;max-width:460px;text-align:left;background:var(--bg-white);border:1px solid var(--stroke-gray-lighter);border-radius:var(--radius-xl);box-shadow:0 10px 30px rgba(22,22,67,.06),0 1px 3px rgba(22,22,67,.04);padding:26px 28px 24px}
   .acard .btn.primary{width:100%;justify-content:center;margin-top:8px}
   .acard .terms{margin:14px 0 0;max-width:none;text-align:center}
   .acard-alt{max-width:460px;text-align:center;margin-top:18px}
@@ -172,6 +174,18 @@
   .btn.ghost{background:transparent;color:var(--text-gray-dark);border:1px solid var(--stroke-gray-light)}
   .btn.ghost:hover{background:var(--bg-neutral-light);color:var(--text-dark)}
   .btn.block{width:100%}
+
+  /* Layout variants: boxed (card, centered) vs plain (no card, left) */
+  body.v-plain .screen.boxed{align-items:flex-start;text-align:left;justify-content:flex-start;padding-bottom:0}
+  body.v-plain .screen.boxed .lead{margin-left:0;margin-right:0}
+  body.v-plain .screen.boxed .bigmark{margin-left:0;margin-right:0}
+  body.v-plain .acard{max-width:440px;background:none;border:none;box-shadow:none;padding:0;border-radius:0}
+  body.v-plain .acard .terms{text-align:left}
+  body.v-plain .acard-alt{text-align:left}
+  .vswitch{position:fixed;left:22px;bottom:22px;z-index:200;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--stroke-gray-lighter);border-radius:999px;padding:3px;box-shadow:0 10px 26px rgba(22,22,67,.14)}
+  .vswitch .vlab{font:700 10px var(--font-primary);letter-spacing:.07em;text-transform:uppercase;color:var(--text-gray-medium);padding:0 8px 0 12px}
+  .vswitch button{border:none;background:none;color:var(--text-gray-dark);padding:7px 14px;border-radius:999px;cursor:pointer;font:600 12px var(--font-primary)}
+  .vswitch button.on{background:var(--bg-dark);color:#fff}
 
   @media (max-width:1100px){
     .shell{grid-template-columns:1fr}
@@ -223,11 +237,16 @@
     <div class="cwrap">
 
       <!-- ── Login ── -->
-      <section class="screen" data-screen="login" data-mode="auth" data-progress="6">
+      <section class="screen boxed" data-screen="login" data-mode="auth" data-progress="6">
         <p class="stepno">Sign in</p>
         <h1>Welcome back!</h1>
         <p class="lead">Log in to your account and continue to offer your guests the best experience.</p>
-        <div class="form-narrow">
+        <div class="acard">
+          <button class="sso" id="li-google" type="button">
+            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.39 3.62v3h3.87c2.26-2.09 3.57-5.16 3.57-8.81Z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.93-2.91l-3.87-3c-1.07.72-2.44 1.14-4.06 1.14-3.13 0-5.78-2.11-6.72-4.95H1.28v3.1A12 12 0 0 0 12 24Z"/><path fill="#FBBC05" d="M5.28 14.28a7.2 7.2 0 0 1 0-4.56v-3.1H1.28a12 12 0 0 0 0 10.76l4-3.1Z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.43-3.43A11.97 11.97 0 0 0 12 0 12 12 0 0 0 1.28 6.62l4 3.1C6.22 6.88 8.87 4.77 12 4.77Z"/></svg>
+            Log in with Google
+          </button>
+          <div class="or">or log in with email</div>
           <div class="field">
             <label for="li-email">Email</label>
             <input id="li-email" type="email" placeholder="Enter your email" autocomplete="username">
@@ -254,11 +273,11 @@
       </section>
 
       <!-- ── Two-factor ── -->
-      <section class="screen" data-screen="twofactor" data-mode="auth" data-progress="10">
+      <section class="screen boxed" data-screen="twofactor" data-mode="auth" data-progress="10">
         <p class="stepno">Sign in · Security</p>
         <h1>Two-Factor Authentication</h1>
         <p class="lead">To continue, please enter the 6-digit verification code sent to your account email.</p>
-        <div class="form-narrow">
+        <div class="acard">
           <div class="otp" id="otp">
             <input inputmode="numeric" maxlength="1" aria-label="Digit 1">
             <input inputmode="numeric" maxlength="1" aria-label="Digit 2">
@@ -281,11 +300,11 @@
       </section>
 
       <!-- ── Password recovery ── -->
-      <section class="screen" data-screen="recovery" data-mode="auth" data-progress="6">
+      <section class="screen boxed" data-screen="recovery" data-mode="auth" data-progress="6">
         <p class="stepno">Sign in · Recovery</p>
         <h1>Password recovery</h1>
         <p class="lead">Enter your email to recover your password.</p>
-        <div class="form-narrow">
+        <div class="acard">
           <div class="field">
             <label for="rec-email">Your recovery email</label>
             <input id="rec-email" type="email" placeholder="Enter recovery email">
@@ -298,12 +317,12 @@
       </section>
 
       <!-- ── Check email ── -->
-      <section class="screen" data-screen="check-email" data-mode="auth" data-progress="6">
+      <section class="screen boxed" data-screen="check-email" data-mode="auth" data-progress="6">
         <div class="bigmark mail"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m2 7 10 7L22 7"/></svg></div>
         <p class="stepno">Sign in · Recovery</p>
         <h1>Check your email</h1>
         <p class="lead">We sent an email with a link to reset your password to <b id="check-email-addr">you@company.com</b>.</p>
-        <div class="form-narrow">
+        <div class="acard">
           <button class="btn primary block" data-go="reset">Open the link from the email (demo)</button>
           <div class="resend-row">
             <span>Wrong address?</span>
@@ -313,11 +332,11 @@
       </section>
 
       <!-- ── Reset password ── -->
-      <section class="screen" data-screen="reset" data-mode="auth" data-progress="6">
+      <section class="screen boxed" data-screen="reset" data-mode="auth" data-progress="6">
         <p class="stepno">Sign in · Recovery</p>
         <h1>Reset your password</h1>
         <p class="lead">Set a new password to log in to your account.</p>
-        <div class="form-narrow">
+        <div class="acard">
           <div class="field">
             <label for="rp-pass">New password</label>
             <div class="inp">
@@ -337,18 +356,18 @@
       </section>
 
       <!-- ── Reset success ── -->
-      <section class="screen" data-screen="reset-success" data-mode="auth" data-progress="6">
+      <section class="screen boxed" data-screen="reset-success" data-mode="auth" data-progress="6">
         <div class="bigmark"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
         <p class="stepno">Sign in · Recovery</p>
         <h1>Password successfully reset</h1>
         <p class="lead">You can now log in with your new password.</p>
-        <div class="form-narrow">
+        <div class="acard">
           <button class="btn primary block" data-go="login">Back to login</button>
         </div>
       </section>
 
       <!-- ── Register · one account form ── -->
-      <section class="screen" data-screen="r-account" data-mode="register" data-progress="8">
+      <section class="screen boxed" data-screen="r-account" data-mode="register" data-progress="8">
         <p class="stepno">Create your account</p>
         <h1>Let's get you set up</h1>
         <p class="lead">Start your 14-day free trial — no credit card needed. About a minute; the questions about your business come next.</p>
@@ -419,6 +438,12 @@
 
     </div>
   </div>
+</div>
+
+<div class="vswitch" role="group" aria-label="Form layout variant">
+  <span class="vlab">Form</span>
+  <button id="v-boxed" type="button" class="on">Boxed</button>
+  <button id="v-plain" type="button">Plain</button>
 </div>
 
 <script>
@@ -508,6 +533,25 @@
     show('twofactor');
     otpInputs[0].focus();
   });
+  var liGoogle = document.getElementById('li-google');
+  liGoogle.addEventListener('click', function () {
+    liGoogle.disabled = true;
+    liGoogle.innerHTML = 'Connecting to Google…';
+    setTimeout(function () { window.location.href = 'index.html'; }, 1100);
+  });
+
+  /* ── Layout variant switcher (boxed card vs plain form) ── */
+  var vBoxed = document.getElementById('v-boxed');
+  var vPlain = document.getElementById('v-plain');
+  function setVariant(v) {
+    document.body.classList.toggle('v-plain', v === 'plain');
+    vBoxed.classList.toggle('on', v !== 'plain');
+    vPlain.classList.toggle('on', v === 'plain');
+    try { localStorage.setItem('chekin_auth_variant', v); } catch (e) {}
+  }
+  vBoxed.addEventListener('click', function () { setVariant('boxed'); });
+  vPlain.addEventListener('click', function () { setVariant('plain'); });
+  try { setVariant(localStorage.getItem('chekin_auth_variant') || 'boxed'); } catch (e) {}
 
   /* ── Two-factor ── */
   var otpBox = document.getElementById('otp');
