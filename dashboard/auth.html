@@ -242,6 +242,45 @@
     .rail{display:none}
     .cwrap,.topalt{padding-left:24px;padding-right:24px}
   }
+
+  /* ───────── Mobile: full-bleed form, CTA docked to the bottom ───────── */
+  @media (max-width:640px){
+    .cwrap{padding:22px 20px 24px;max-width:none}
+    .topalt{padding:14px 20px 0;font-size:12.5px}
+    h1{font:700 24px/31px var(--font-primary)}
+    .lead{font:400 14.5px/22px var(--font-primary);margin-bottom:24px}
+    .screen{justify-content:flex-start}
+    /* The card's chrome costs ~56px of a 375px screen — drop it and let the
+       form run full-bleed. Boxed and Plain converge here by design. */
+    .screen.boxed{align-items:stretch;text-align:left;justify-content:flex-start;padding-bottom:0;max-width:none;margin:0}
+    .screen.boxed .lead,.screen.boxed .bigmark{margin-left:0;margin-right:0}
+    .acard,body.v-plain .acard{max-width:none;background:none;border:none;padding:0;border-radius:0}
+    .acard .terms,.acard-alt,body.v-plain .acard .terms,body.v-plain .acard-alt{text-align:left}
+    .sso,.or{max-width:none}
+    .field{margin-bottom:18px}
+    .otp{gap:7px}
+    .otp input{width:100%;height:56px;font-size:20px;padding:0}
+    .bigmark{width:48px;height:48px;border-radius:14px;margin-bottom:16px}
+    .bigmark svg{width:22px;height:22px}
+
+    /* The dock: the screen's primary action, always reachable without scrolling */
+    .cta{position:fixed;left:0;right:0;bottom:0;z-index:120;display:flex;flex-direction:column;gap:2px;
+         padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+         background:var(--bg-white);border-top:1px solid var(--field-line)}
+    .cta .btn{width:100%;height:50px}
+    .cta .btn[style]{margin-top:0!important}
+    .cta .skiplink{margin-top:6px}
+    /* Clear the dock exactly — its height varies (a skip link rides along on
+       the welcome screen), so show() measures it into --dock-h */
+    .cwrap{padding-bottom:calc(var(--dock-h,72px) + 24px)}
+
+    /* Prototype chrome stacks above the dock instead of under it */
+    .vswitch{right:auto;left:12px;bottom:calc(var(--dock-h,72px) + 62px);padding:2px}
+    .vswitch .vlab{padding:0 4px 0 8px;font-size:9px}
+    .vswitch button{padding:6px 9px;font-size:11px}
+    .scr-fab{bottom:calc(var(--dock-h,72px) + 12px)!important}
+    .scr-menu{bottom:calc(var(--dock-h,72px) + 62px)!important;max-height:52vh}
+  }
 </style>
 </head>
 <body>
@@ -322,7 +361,9 @@
             <span class="ct">Verifying…</span>
             <span class="cf">CLOUDFLARE</span>
           </div>
-          <button class="btn primary block" id="li-submit" disabled>Login</button>
+          <div class="cta">
+            <button class="btn primary block" id="li-submit" disabled>Login</button>
+          </div>
         </div>
       </section>
 
@@ -342,7 +383,9 @@
           </div>
           <p class="otp-err" id="otp-err">Invalid code. Please try again.</p>
           <p class="muted-note" style="margin-top:10px;">Demo: any code verifies · <b>111111</b> shows the error state</p>
-          <button class="btn primary block" id="otp-submit" disabled style="margin-top:18px;">Verify</button>
+          <div class="cta">
+            <button class="btn primary block" id="otp-submit" disabled style="margin-top:18px;">Verify</button>
+          </div>
           <div class="resend-row">
             <span>Didn't receive a code?</span>
             <button class="linklike" id="resend">Resend code</button>
@@ -366,7 +409,9 @@
               <label for="rec-email">Your recovery email</label>
             </div>
           </div>
-          <button class="btn primary block" id="rec-send" disabled>Send Recovery Link</button>
+          <div class="cta">
+            <button class="btn primary block" id="rec-send" disabled>Send Recovery Link</button>
+          </div>
           <div class="resend-row">
             <button class="linklike" data-go="login" style="color:var(--text-gray-medium);">Back</button>
           </div>
@@ -380,7 +425,9 @@
         <h1>Check your email</h1>
         <p class="lead">We sent an email with a link to reset your password to <b id="check-email-addr">you@company.com</b>.</p>
         <div class="acard">
-          <button class="btn primary block" data-go="reset">Open the link from the email (demo)</button>
+          <div class="cta">
+            <button class="btn primary block" data-go="reset">Open the link from the email (demo)</button>
+          </div>
           <div class="resend-row">
             <span>Wrong address?</span>
             <button class="linklike" data-go="recovery">Try again</button>
@@ -412,7 +459,9 @@
             </div>
             <p class="err">Passwords don't match.</p>
           </div>
-          <button class="btn primary block" id="rp-submit" disabled>Reset password</button>
+          <div class="cta">
+            <button class="btn primary block" id="rp-submit" disabled>Reset password</button>
+          </div>
         </div>
       </section>
 
@@ -423,7 +472,9 @@
         <h1>Password successfully reset</h1>
         <p class="lead">You can now log in with your new password.</p>
         <div class="acard">
-          <button class="btn primary block" data-go="login">Back to login</button>
+          <div class="cta">
+            <button class="btn primary block" data-go="login">Back to login</button>
+          </div>
         </div>
       </section>
 
@@ -483,7 +534,9 @@
               <span class="slabel" id="rn-slabel" aria-live="polite"></span>
             </div>
           </div>
-          <button class="btn primary" id="racct-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          <div class="cta">
+            <button class="btn primary block" id="racct-next" disabled>Create account <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+          </div>
           <p class="terms">By creating an account you accept our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</p>
         </div>
         <p class="muted-note acard-alt">Already have an account? <button class="linklike" data-go="login">Log in</button></p>
@@ -532,8 +585,10 @@
               </div>
             </li>
           </ol>
-          <a class="btn primary block" href="onboarding.html">Start setup <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-          <a class="skiplink" href="index.html">Skip — take me to the dashboard</a>
+          <div class="cta">
+            <a class="btn primary block" href="onboarding.html">Start setup <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+            <a class="skiplink" href="index.html">Skip — take me to the dashboard</a>
+          </div>
         </div>
       </section>
 
@@ -582,11 +637,21 @@
     document.getElementById('cbar').style.width = (target.getAttribute('data-progress') || 5) + '%';
     if (history.replaceState) history.replaceState(null, '', '#' + id);
     window.scrollTo(0, 0);
+    syncDock();
     var af = target.querySelector('[data-autofocus]');
     if (af) { af.focus({ preventScroll: true }); return; }
     var h = target.querySelector('h1');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
   }
+
+  /* The docked CTA is fixed on mobile, so the scrolling content has to reserve
+     its exact height — it differs per screen (the welcome screen adds a skip
+     link) and after a label change reflows the button. */
+  function syncDock() {
+    var dock = document.querySelector('.screen.on .cta');
+    document.documentElement.style.setProperty('--dock-h', (dock ? dock.offsetHeight : 0) + 'px');
+  }
+  window.addEventListener('resize', syncDock);
 
   document.addEventListener('click', function (e) {
     var go = e.target.closest('[data-go]');
