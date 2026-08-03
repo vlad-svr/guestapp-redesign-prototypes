@@ -85,7 +85,7 @@
               <span class="pi-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-utensils"/></svg></span>
               <span class="pi-main">
                 <span class="pi-name" style="display:block">Breakfast basket</span>
-                <span class="pi-meta">1 guest · host confirms within 24&nbsp;h</span>
+                <span class="pi-meta">1 guest · first morning, 8:30–9:00</span>
               </span>
               <span class="pi-side">
                 <span class="pi-price"><span class="pi-amount">€12.50</span></span>
@@ -97,7 +97,7 @@
 
         <div>
           <div class="pay-sec">
-            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Card hold — not a charge
+            <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-shield"/></svg> Card holds — not charges
             <button class="sec-info" data-modal="m-hold"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-info"/></svg> How holds work</button>
           </div>
           <div class="hold-card">
@@ -108,6 +108,24 @@
               <button class="pi-edit" data-goto="p-deposit"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-pen"/></svg> Edit protection</button>
             </span>
             <span class="hc-chip">€300.00 hold</span>
+          </div>
+          <div class="hold-card" style="margin-top:10px">
+            <span class="pi-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg></span>
+            <span class="pi-main">
+              <span class="pi-name" style="display:block">Early check-in request</span>
+              <span class="pi-meta">Held since today, 10:24 · charged only if the host approves, released if not</span>
+              <a class="pi-edit" href="flow-upselling-mobile.html#u-track"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Track request</a>
+            </span>
+            <span class="hc-chip">€20.00 hold</span>
+          </div>
+          <div class="hold-card" style="margin-top:10px">
+            <span class="pi-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg></span>
+            <span class="pi-main">
+              <span class="pi-name" style="display:block">Sunset vineyard tour request</span>
+              <span class="pi-meta">In your cart — held when you pay, then sent to the host · remove free before paying</span>
+              <a class="pi-edit" href="flow-upselling-mobile.html#u-track"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-clock"/></svg> Track request</a>
+            </span>
+            <span class="hc-chip">€90.00 hold</span>
           </div>
         </div>
 
@@ -194,7 +212,7 @@
             <span class="pi-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-utensils"/></svg></span>
             <span>
               <span class="pl-name" style="display:block">Breakfast basket</span>
-              <span class="pl-meta">1 guest · host confirms within 24&nbsp;h</span>
+              <span class="pl-meta">1 guest · first morning, 8:30–9:00</span>
               <button class="pl-restore" data-goto="p-cart"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-undo"/></svg> Send back to cart</button>
             </span>
             <span class="pl-price">€12.50</span>
@@ -257,6 +275,28 @@
               </span>
               <span class="oh-side">
                 <span class="oh-amt" style="color:var(--n-600)">€300.00</span>
+                <span class="oh-badge hold">Hold</span>
+              </span>
+            </button>
+            <button class="oh-row">
+              <span class="pi-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg></span>
+              <span>
+                <span class="oh-name" style="display:block">Early check-in pre-authorization</span>
+                <span class="oh-meta">Waiting for the host · charged only if approved</span>
+              </span>
+              <span class="oh-side">
+                <span class="oh-amt" style="color:var(--n-600)">€20.00</span>
+                <span class="oh-badge hold">Hold</span>
+              </span>
+            </button>
+            <button class="oh-row">
+              <span class="pi-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-clock"/></svg></span>
+              <span>
+                <span class="oh-name" style="display:block">Vineyard tour pre-authorization</span>
+                <span class="oh-meta">Placed with your booking payment · waiting for the host</span>
+              </span>
+              <span class="oh-side">
+                <span class="oh-amt" style="color:var(--n-600)">€90.00</span>
                 <span class="oh-badge hold">Hold</span>
               </span>
             </button>

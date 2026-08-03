@@ -249,7 +249,10 @@
       { file: 'flow-upselling-mobile.html', label: 'Upselling flow — mobile', icon: '📱', subs: [
         { hash: 'u-list', label: 'Full flow (browse → book → cart)' },
         { hash: 'u-detail', label: 'Instant offer — add to cart' },
-        { hash: 'u-request', label: 'On-request offer — host approval' },
+        { hash: 'u-detail-time', label: 'Instant offer — time slots' },
+        { hash: 'u-request', label: 'On-request offer — hold + host approval' },
+        { hash: 'u-request-date', label: 'On-request — guests + date' },
+        { hash: 'u-request-nodates', label: 'On-request — not available' },
         { hash: 'u-track', label: 'My requests & cart' },
         { hash: 'u-rejected', label: 'Request declined' },
         { hash: 'u-empty', label: 'No extras' },
@@ -257,7 +260,10 @@
       { file: 'flow-upselling-desktop.html', label: 'Upselling flow — desktop', icon: '🖥', subs: [
         { hash: 'ud-list', label: 'Full flow (browse → book → cart)' },
         { hash: 'ud-detail', label: 'Instant offer — booking box' },
-        { hash: 'ud-request', label: 'On-request offer — host approval' },
+        { hash: 'ud-detail-time', label: 'Instant offer — time slots' },
+        { hash: 'ud-request', label: 'On-request offer — hold + host approval' },
+        { hash: 'ud-request-date', label: 'On-request — guests + date' },
+        { hash: 'ud-request-nodates', label: 'On-request — not available' },
         { hash: 'ud-track', label: 'My requests & cart' },
         { hash: 'ud-rejected', label: 'Request declined' },
       ]},
@@ -433,6 +439,7 @@
     { group: 'Building blocks', items: [
       { file: 'vela.html', label: 'Vela helper', icon: '✦' },
       { file: 'modals-demo.html', label: 'Modals & overlays', icon: '▣' },
+      { file: 'toast-tooltip-demo.html', label: 'Toasts & tooltips', icon: '◍' },
       { file: 'scroll-demo.html', label: 'Scroll behavior', icon: '↕' },
     ]},
   ];

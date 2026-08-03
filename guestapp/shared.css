@@ -328,10 +328,22 @@ a { text-decoration: none; color: inherit; }
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
   transition: transform 0.12s, box-shadow 0.15s, background 0.15s;
   user-select: none;
 }
 .btn:active { transform: scale(0.98); }
+/* disabled — the app disables primary CTAs until their form is complete
+   (e.g. OtpVerification's Verify button until all 6 digits are entered) */
+.btn:disabled,
+.btn.is-disabled {
+  background: var(--n-200);
+  color: var(--n-500);
+  border-color: transparent;
+  box-shadow: none;
+  cursor: default;
+  pointer-events: none;
+}
 .btn-primary {
   background: var(--blue-500);
   color: #fff;

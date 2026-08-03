@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toasts &amp; Tooltips — Redesign Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="feedback.css">
+</head>
+<body>
+<div class="proto-stage">
+  <h1>Toasts &amp; Tooltips — Redesign 2.0 Prototype</h1>
+  <p class="lede">One feedback system instead of four ad-hoc toasts and a hover-only tooltip: a dark-glass toast with a visible timer, an action slot (Undo / Retry), a stack cap and dedupe — pinned top on mobile, bottom-right on desktop. Tooltips show on hover <b>and keyboard focus</b>; on touch the same content becomes a tap popover or a bottom sheet.</p>
+  <span class="demo-note">◍ The buttons fire live toasts — hover one to pause it, swipe on the phone to dismiss</span>
+
+  <!-- ═══ Specimens: every variant is the same component ═══ -->
+  <div class="spec-board">
+    <h2>The system at a glance <span>status lives only in the icon accent and timer — the surface never changes</span></h2>
+    <div class="spec-grid">
+      <div class="spec-cell">
+        <div class="toast success"><span class="t-icon"><svg viewBox="0 0 24 24" class="icon icon-sm" style="stroke-width:2.6"><use href="#i-check"/></svg></span><span class="t-body"><span class="t-title">Late check-out added</span><span class="t-desc">You’ll see it in your cart at checkout.</span></span><button class="t-close"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-x"/></svg></button><i class="t-timer" style="animation:none;transform:scaleX(0.62)"></i></div>
+        <div class="spec-cap"><b>Success · 4 s.</b> Icon chip + title, optional one-line detail, hairline timer showing the time left.</div>
+      </div>
+      <div class="spec-cell">
+        <div class="toast undo"><span class="t-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-undo"/></svg></span><span class="t-body"><span class="t-title">Breakfast basket removed</span></span><button class="t-act"><svg viewBox="0 0 24 24" class="icon"><use href="#i-undo"/></svg><span class="t-act-label">Undo · 4</span></button><button class="t-close"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-x"/></svg></button><i class="t-timer" style="animation:none;transform:scaleX(0.8)"></i></div>
+        <div class="spec-cap"><b>Action · Undo.</b> Light destructive actions act first and offer a 5&nbsp;s way back — instead of a confirm dialog.</div>
+      </div>
+      <div class="spec-cell">
+        <div class="toast error"><span class="t-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-alert"/></svg></span><span class="t-body"><span class="t-title">We couldn’t save your guest details</span><span class="t-desc">Nothing was lost. <code>Ref 4F2A</code></span></span><button class="t-act"><svg viewBox="0 0 24 24" class="icon"><use href="#i-retry"/></svg><span class="t-act-label">Retry</span></button><button class="t-close" style="opacity:1"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-x"/></svg></button></div>
+        <div class="spec-cap"><b>Error · sticky.</b> No timer — it waits to be read. Human copy, a Retry, and a short ref for support instead of the raw API message.</div>
+      </div>
+      <div class="spec-cell">
+        <div class="toast warning"><span class="t-icon"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-alert"/></svg></span><span class="t-body"><span class="t-title">Tourist tax still due</span><span class="t-desc">Pay before Friday to keep your virtual keys active.</span></span><button class="t-close"><svg viewBox="0 0 24 24" class="icon" style="width:13px;height:13px"><use href="#i-x"/></svg></button><i class="t-timer" style="animation:none;transform:scaleX(0.45)"></i></div>
+        <div class="spec-cap"><b>Warning · 6 s.</b> Longer to read, longer on screen. Amber marks “action needed”, never an error.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Row 1: toasts, live ═══ -->
+  <div class="proto-row" style="align-items:stretch">
+    <div class="phone-col">
+      <div class="phone-label">Toasts — mobile · pinned under the glass bar</div>
+      <div class="phone t-frame" style="height:760px">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="topbar">
+            <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-left"/></svg></button>
+            <div class="tb-titles"><div class="tb-title">Add-ons</div><div class="tb-sub">Booking CHK-58291</div></div>
+          </div>
+          <div class="content" style="gap:8px;padding-top:16px">
+            <div class="fire-label">Outcome feedback</div>
+            <div class="fire-group">
+              <button class="btn btn-outline" data-toast="success"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> Success — added to cart</button>
+              <button class="btn btn-outline" data-toast="undo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-undo"/></svg> Remove — with 5 s Undo</button>
+            </div>
+            <div class="fire-label">Problems</div>
+            <div class="fire-group">
+              <button class="btn btn-outline" data-toast="error"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg> Error — sticky, with Retry</button>
+              <button class="btn btn-outline" data-toast="warning"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg> Warning — 6 s</button>
+            </div>
+            <div class="fire-label">Stack discipline</div>
+            <div class="fire-group">
+              <button class="btn btn-outline" data-toast="burst"><svg viewBox="0 0 24 24" class="icon"><use href="#i-bell"/></svg> Fire 4 — cap at 3 + Clear all</button>
+              <button class="btn btn-outline" data-toast="dedupe"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg> Same event twice — dedupe</button>
+              <div class="fire-hint">The second firing pulses the existing toast and re-arms its timer — no twins.</div>
+            </div>
+            <div class="fire-hint" style="margin-top:10px">Toasts drop in from the top: they never sit over the CTA dock below, and a sideways swipe dismisses them.</div>
+          </div>
+          <div class="cta-dock"><button class="btn btn-primary btn-block">Continue to payment</button></div>
+        </div>
+        <div class="toast-host at-top"><button class="toast-clear">Clear all</button></div>
+      </div>
+    </div>
+
+    <div class="phone-col" style="flex:1;max-width:640px">
+      <div class="phone-label">Toasts — desktop · bottom-right stack</div>
+      <div class="browser" style="width:100%;min-height:760px;display:flex;flex-direction:column">
+        <div class="browser-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">guest.chekin.com — toasts</span>
+          <span style="width:52px"></span>
+        </div>
+        <div class="desk-area t-frame">
+          <div class="da-inner">
+            <h2>Fire a toast</h2>
+            <p class="da-sub">The stack grows up from the corner, newest nearest the edge. <b>Hover any toast</b> — the timer bar (and dismissal) pause while you read; the close ✕ only reveals on hover, because the timer normally does that job.</p>
+            <div class="fire-row">
+              <button class="btn btn-outline" data-toast="success"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> Success</button>
+              <button class="btn btn-outline" data-toast="undo"><svg viewBox="0 0 24 24" class="icon"><use href="#i-undo"/></svg> Undo action</button>
+              <button class="btn btn-outline" data-toast="error"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg> Sticky error</button>
+              <button class="btn btn-outline" data-toast="warning"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert"/></svg> Warning</button>
+              <button class="btn btn-outline" data-toast="burst"><svg viewBox="0 0 24 24" class="icon"><use href="#i-bell"/></svg> Fire 4</button>
+              <button class="btn btn-outline" data-toast="dedupe"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg> Dedupe</button>
+            </div>
+            <div class="tipdemo-sec">
+              <div class="ts-label">Rules the component enforces</div>
+              <div class="spec-cap" style="max-width:480px">Success 4&nbsp;s · warning 6&nbsp;s · errors sticky until dismissed. Max 3 on screen — the oldest yields. The same toast id fired twice pulses instead of stacking. <code>role="status"</code> for outcomes, <code>role="alert"</code> for errors, so screen readers hear them without focus moving.</div>
+            </div>
+          </div>
+          <div class="toast-host at-br"><button class="toast-clear">Clear all</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Row 2: tooltips ═══ -->
+  <div class="proto-row" style="align-items:stretch">
+    <div class="phone-col">
+      <div class="phone-label">Touch — tap popovers &amp; sheet, never hover</div>
+      <div class="phone" style="height:760px">
+        <div class="screen">
+          <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <div class="topbar">
+            <button class="back-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-left"/></svg></button>
+            <div class="tb-titles"><div class="tb-title">Tourist taxes</div><div class="tb-sub">2 of 3 guests · 5 taxed nights</div></div>
+          </div>
+          <div class="content" style="padding-top:20px">
+            <div class="card">
+              <div class="card-body" style="display:flex;flex-direction:column;gap:16px">
+                <div class="field">
+                  <label style="display:flex;align-items:center;gap:5px">Document number
+                    <span class="pop"><button class="info-dot" data-pop aria-label="What is this?"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg></button>
+                      <span class="pop-b"><span class="tt">Where to find it</span>On a passport it’s the code at the top right of the photo page. On an EU ID card, the top corner on the front.</span>
+                    </span>
+                  </label>
+                  <div class="input" style="color:var(--text-tertiary)">e.g. PA0940211</div>
+                  <div class="hint">A tap on the ？ answers in place — no hover needed on touch.</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;padding:12px 0;border-top:1px solid var(--border)">
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;color:var(--navy)">Carlos · age 17</div>
+                    <div style="font-size:11.5px;color:var(--text-secondary);margin-top:1px">City tax — exempt</div>
+                  </div>
+                  <span class="badge badge-success">€ 0.00</span>
+                  <span class="pop"><button class="info-dot" data-pop aria-label="Why exempt?"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg></button>
+                    <span class="pop-b"><span class="tt">Why Carlos pays nothing</span>This property’s tourist tax applies from age 18. Under-18s stay on the bill at € 0.00 so the total matches the receipt.<button class="pop-more" data-modal="m-why">Full explanation <svg viewBox="0 0 24 24" class="icon"><use href="#i-arrow-right"/></svg></button></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body" style="display:flex;flex-direction:column;gap:9px">
+                <div class="ts-label" style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.11em;color:var(--text-tertiary)">Truncation on touch</div>
+                <span class="pop pop-left" style="align-self:flex-start"><button class="trunc-chip" data-pop style="max-width:100%"><span class="tx">Apartamento Mirador de la Sagrada Família — Àtic 2B</span><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg></button>
+                  <span class="pop-b" style="width:248px">Apartamento Mirador de la Sagrada Família — Àtic 2B</span>
+                </span>
+                <div class="spec-cap">A truncated value can’t rely on hover here — the full text is one tap away, on the value itself.</div>
+              </div>
+            </div>
+            <div class="fire-hint" style="margin:2px 2px 0">Anything longer than two sentences leaves the popover and becomes a bottom sheet → “Full explanation”.</div>
+          </div>
+        </div>
+        <div class="proto-modal sheet" id="m-why"><div class="pm-scrim"></div><div class="pm-card"><div class="pm-grabber"></div><button class="pm-close" data-modal-close>✕</button><div class="pm-title">Why Carlos doesn’t pay city tax</div><div class="pm-desc">The high-season tourist tax — <b style="color:var(--navy)">€ 3.10 per adult per night</b> — applies to guests aged 18 and over. Carlos is 17, so his nights are billed at € 0.00 under the <b style="color:var(--navy)">Under 18</b> exemption.</div><div class="pm-list"><div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span><span><b>He stays on the receipt.</b> The exemption is recorded, not hidden — totals match what the property files.</span></div><div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span><span><b>Nothing to prove at the door.</b> His registered birth date is the evidence; no documents are needed on arrival.</span></div></div><div class="pm-actions"><button class="btn btn-primary" data-modal-close>Got it</button></div></div></div>
+      </div>
+    </div>
+
+    <div class="phone-col" style="flex:1;max-width:640px">
+      <div class="phone-label">Desktop — hover and keyboard focus</div>
+      <div class="browser" style="width:100%;min-height:760px;display:flex;flex-direction:column">
+        <div class="browser-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">guest.chekin.com — tooltips</span>
+          <span style="width:52px"></span>
+        </div>
+        <div class="desk-area">
+          <div class="da-inner" style="max-width:580px">
+            <h2>Hover — or press Tab</h2>
+            <p class="da-sub">Every tooltip also shows on keyboard focus (the shipped Radix tooltip already can; the redesign makes every icon-only control a real, focusable button with a label). Quick in at ~120&nbsp;ms, instant out.</p>
+
+            <div class="tipdemo-sec" style="margin-top:6px">
+              <div class="ts-label">Icon-only controls always carry a label</div>
+              <div class="tipdemo-row">
+                <span class="tip tip-bottom"><button class="tool-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-share"/></svg></button><span class="tip-b">Share booking link</span></span>
+                <span class="tip tip-bottom"><button class="tool-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-copy"/></svg></button><span class="tip-b">Copy link</span></span>
+                <span class="tip tip-bottom"><button class="tool-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-qr"/></svg></button><span class="tip-b">Continue on your phone</span></span>
+                <span class="tip tip-bottom"><button class="tool-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-bell"/></svg></button><span class="tip-b">Notifications</span></span>
+              </div>
+            </div>
+
+            <div class="tipdemo-sec">
+              <div class="ts-label">Field explainer — rich tooltip</div>
+              <div class="field" style="max-width:360px">
+                <label style="display:flex;align-items:center;gap:5px">Document number
+                  <span class="tip tip-rich tip-right"><button class="info-dot" aria-label="Why we ask"><svg viewBox="0 0 24 24" class="icon"><use href="#i-help"/></svg></button>
+                    <span class="tip-b"><span class="tt">Why we ask</span>Spanish law (RD 933/2021) requires this number on the traveller report. It’s encrypted and deleted after your stay.</span>
+                  </span>
+                </label>
+                <div class="input" style="color:var(--text-tertiary)">e.g. PA0940211</div>
+              </div>
+              <div class="spec-cap" style="margin-top:8px">Short label = navy bubble. Anything with a title and a “why” = rich card, max ~250&nbsp;px, still one paragraph. Longer than that → it belongs in a modal.</div>
+            </div>
+
+            <div class="tipdemo-sec">
+              <div class="ts-label">Truncated values reveal themselves</div>
+              <span class="tip"><span class="trunc-chip" tabindex="0"><span class="tx">Apartamento Mirador de la Sagrada Família — Àtic 2B</span></span><span class="tip-b">Apartamento Mirador de la Sagrada Família — Àtic 2B</span></span>
+            </div>
+
+            <div class="tipdemo-sec">
+              <div class="ts-label">Placement — flips to stay inside the viewport</div>
+              <div class="tipdemo-row">
+                <span class="tip"><button class="btn btn-outline btn-sm">Top</button><span class="tip-b">Default placement</span></span>
+                <span class="tip tip-bottom"><button class="btn btn-outline btn-sm">Bottom</button><span class="tip-b">Below near the top edge</span></span>
+                <span class="tip tip-right"><button class="btn btn-outline btn-sm">Right</button><span class="tip-b">Beside compact controls</span></span>
+                <span class="tip tip-left"><button class="btn btn-outline btn-sm">Left</button><span class="tip-b">Near the right edge</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ What changed and why ═══ -->
+  <div class="sec-head">
+    <h2>What changed and why</h2>
+    <p>Each improvement maps to a concrete gap in the shipped app or a divergence inside this prototype set.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why">
+      <span class="tag surface-t">Surface</span>
+      <h4>One toast, not four</h4>
+      <p class="was"><b>Now:</b> the prototypes grew four one-off toasts (<code>dm-toast</code>, <code>pay-toast</code>, <code>es-toast</code>, <code>bx-toast</code>) with different positions and paddings, and the shipped app ships sonner’s stock <code>richColors</code> — flat green/red slabs that match nothing else in the design.</p>
+      <p class="now"><b>Proposed:</b> one component. Dark-glass surface (toasts are chrome, so glass is allowed over content), status carried <b>only</b> by the icon accent and timer color. Every flow fires the same thing.</p>
+    </div>
+    <div class="why">
+      <span class="tag ux-t">Placement</span>
+      <h4>Placement is a rule, not a choice</h4>
+      <p class="was"><b>Now:</b> <code>position="bottom-right"</code> everywhere. On a phone that corner is under the thumb, behind the CTA dock and the bottom nav — exactly where a toast gets covered or mis-tapped.</p>
+      <p class="now"><b>Proposed:</b> mobile pins under the glass top bar, desktop stays bottom-right. Callers can’t choose — the CTA dock and bottom nav are never covered, and a sideways swipe dismisses on touch.</p>
+    </div>
+    <div class="why">
+      <span class="tag ux-t">Timing</span>
+      <h4>Time you can see — and pause</h4>
+      <p class="was"><b>Now:</b> one invisible timer for everything: <code>duration={5000}</code>, errors included. A toast can vanish mid-read, and an error you looked away from is simply gone.</p>
+      <p class="now"><b>Proposed:</b> a hairline timer shows what’s left; hovering (or resting a finger) pauses it. Success 4&nbsp;s, warning 6&nbsp;s — and <b>errors never auto-dismiss</b>.</p>
+    </div>
+    <div class="why">
+      <span class="tag trust-t">Trust</span>
+      <h4>Errors speak human</h4>
+      <p class="was"><b>Now:</b> <code>toastResponseError(error)</code> pipes the raw API message to the guest — machine phrasing, sometimes untranslated, with no way forward.</p>
+      <p class="now"><b>Proposed:</b> what happened, in guest words + “nothing was lost” + a <b>Retry</b> action + a short <code>Ref</code> code support can actually use. The raw message goes to Sentry, not the toast.</p>
+    </div>
+    <div class="why">
+      <span class="tag ux-t">Discipline</span>
+      <h4>Undo beats confirm; the stack stays quiet</h4>
+      <p class="was"><b>Now:</b> up to five toasts stack (<code>visibleToasts={5}</code>), duplicates included, and there’s no action slot — so light removals either interrupt with a confirm or offer no way back.</p>
+      <p class="now"><b>Proposed:</b> act first with a 5&nbsp;s <b>Undo</b>; cap the stack at 3 with <b>Clear all</b>; a re-fired toast id pulses the existing toast instead of stacking a twin.</p>
+    </div>
+    <div class="why">
+      <span class="tag a11y-t">Access</span>
+      <h4>Tooltips that work without a mouse</h4>
+      <p class="was"><b>Now:</b> hover-only tooltips are dead weight on touch — the info just doesn’t exist on a phone, and truncated names stay unreadable.</p>
+      <p class="now"><b>Proposed:</b> desktop tooltips show on <b>keyboard focus</b> too; touch gets tap popovers (short) and bottom sheets (long); truncated values reveal on tap. Toasts announce as <code>role="status"</code> / <code>role="alert"</code>, and reduced-motion swaps animation for plain timeouts.</p>
+    </div>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+  <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+  <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+  <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+  <g id="i-undo"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></g>
+  <g id="i-retry"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
+  <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></g>
+  <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></g>
+  <g id="i-copy"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>
+  <g id="i-qr"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></g>
+  <g id="i-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></g>
+  <g id="i-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></g>
+  <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+</defs></svg>
+
+<script src="modals.js" defer></script>
+<script src="feedback-demo.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

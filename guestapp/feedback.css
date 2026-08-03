@@ -1,0 +1,402 @@
+/* ============================================================
+   Feedback layer — toasts & tooltips (toast-tooltip-demo.html)
+   Layered on shared.css. Tokens only, no new colors.
+
+   Toast: ONE pattern replacing the four ad-hoc toasts scattered
+   through the prototype (dm-toast / pay-toast / es-toast /
+   bx-toast) and the stock richColors sonner in the shipped app.
+   Surface is always dark glass; status lives ONLY in the icon
+   accent, so success/error/info all read as the same component.
+
+   Tooltip: navy bubble on hover AND focus (desktop). Touch has
+   no hover, so on mobile the same content moves into a tap
+   popover (short) or a bottom sheet (long) — never hover-only.
+   ============================================================ */
+
+/* ---------- Toast host ----------
+   Placement is a rule, not a per-call choice:
+   mobile = below the glass top bar (thumb + CTA dock stay clear),
+   desktop = bottom-right (matches the shipped Toaster position). */
+.t-frame { position: relative; }
+.toast-host {
+  position: absolute;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast-host.at-top { top: 100px; left: 12px; right: 12px; }
+.toast-host.at-br { bottom: 20px; right: 20px; width: 348px; max-width: calc(100% - 40px); }
+
+/* ---------- The toast itself ---------- */
+.toast {
+  --t-accent: var(--blue-light);
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 12px 13px 13px 14px;
+  border-radius: 14px;
+  background: rgba(21, 21, 63, 0.68);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  box-shadow: 0 14px 36px rgba(22, 22, 67, 0.32);
+  animation: toast-in 0.28s cubic-bezier(0.21, 1.02, 0.55, 1) both;
+  touch-action: pan-y;
+}
+.toast.success { --t-accent: var(--green-500); }
+.toast.info    { --t-accent: var(--blue-light); }
+.toast.warning { --t-accent: var(--amber-500); }
+.toast.error   { --t-accent: var(--red-soft); }
+.toast.undo    { --t-accent: var(--blue-light); }
+
+.toast .t-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  color: var(--t-accent);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.toast .t-body { flex: 1; min-width: 0; padding-top: 2px; }
+.toast .t-title { display: block; font-size: 12.5px; font-weight: 600; line-height: 17px; }
+.toast .t-desc {
+  display: block;
+  font-size: 11.5px; line-height: 16px;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 2px;
+  /* two lines max — anything longer belongs on a page, not in a toast */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.toast .t-desc code {
+  font-family: ui-monospace, monospace;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+/* Action slot — Undo / Retry / View. One action max. */
+.toast .t-act {
+  flex-shrink: 0;
+  align-self: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 11.5px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.toast .t-act:hover { background: rgba(255, 255, 255, 0.22); }
+.toast .t-act:disabled { opacity: 0.55; cursor: default; }
+.toast .t-act .icon { width: 13px; height: 13px; }
+
+.toast .t-close {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  margin: 0 -3px 0 -4px;
+  border-radius: 7px;
+  display: grid; place-items: center;
+  color: rgba(255, 255, 255, 0.55);
+  transition: background 0.15s, color 0.15s;
+}
+.toast .t-close:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
+/* desktop: close only reveals on hover/focus — the timer does the work */
+.toast-host.at-br .toast .t-close { opacity: 0; transition: opacity 0.15s; }
+.toast-host.at-br .toast:hover .t-close,
+.toast-host.at-br .toast:focus-within .t-close { opacity: 1; }
+
+/* Visible auto-dismiss timer. Hover (or a resting finger) pauses it —
+   the dismissal is driven by this bar's animationend, so pausing the
+   bar IS pausing the toast. Sticky toasts simply have no bar. */
+.toast .t-timer {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--t-accent);
+  opacity: 0.85;
+  transform-origin: left;
+  animation: t-timer linear both;
+}
+.toast:hover .t-timer { animation-play-state: paused; }
+@keyframes t-timer { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* Entry / exit / dedupe-pulse */
+@keyframes toast-in { from { opacity: 0; transform: translateY(-10px) scale(0.98); } to { opacity: 1; transform: none; } }
+.toast-host.at-br .toast { animation-name: toast-in-up; }
+@keyframes toast-in-up { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+.toast.leaving { animation: toast-out 0.18s ease both; pointer-events: none; }
+@keyframes toast-out { to { opacity: 0; transform: translateY(-6px) scale(0.97); } }
+/* the same event fired twice pulses the existing toast instead of stacking a twin */
+.toast.pulse { animation: toast-pulse 0.45s ease; }
+@keyframes toast-pulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.035); box-shadow: 0 14px 36px rgba(22, 22, 67, 0.32), 0 0 0 3px rgba(140, 165, 255, 0.35); }
+  100% { transform: scale(1); }
+}
+/* swipe-to-dismiss (mobile) */
+.toast.dragging { transition: none; animation: none; }
+.toast.swiped { transition: transform 0.18s ease, opacity 0.18s ease; pointer-events: none; }
+
+/* "Clear all" — appears once 2+ toasts stack; the stack itself caps at 3 */
+.toast-clear {
+  pointer-events: auto;
+  align-self: center;
+  height: 26px;
+  padding: 0 13px;
+  border-radius: 99px;
+  background: rgba(21, 21, 63, 0.5);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 10.5px; font-weight: 700;
+  display: none;
+}
+.toast-clear:hover { color: #fff; background: rgba(21, 21, 63, 0.66); }
+.toast-host.show-clear .toast-clear { display: inline-flex; align-items: center; }
+.toast-host.at-br .toast-clear { align-self: flex-end; }
+
+/* ---------- Specimen board (static anatomy row) ---------- */
+.spec-board {
+  width: min(1120px, 96vw);
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: 24px 28px 26px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.spec-board h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.spec-board h2 span { font-weight: 500; font-size: 12.5px; color: var(--text-secondary); margin-left: 8px; }
+.spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px 22px; align-items: start; }
+.spec-cell { display: flex; flex-direction: column; gap: 9px; }
+/* static specimens sit on the page, not in a host */
+.spec-cell .toast { animation: none; }
+.spec-cap { font-size: 11px; line-height: 16px; color: var(--text-tertiary); font-weight: 500; }
+.spec-cap b { color: var(--n-600); font-weight: 700; }
+
+/* ---------- Tooltip (desktop: hover + keyboard focus) ---------- */
+.tip { position: relative; display: inline-flex; }
+.tip .tip-b {
+  position: absolute;
+  z-index: 70;
+  left: 50%; bottom: calc(100% + 9px);
+  transform: translateX(-50%) translateY(3px);
+  width: max-content; max-width: 224px;
+  padding: 7px 11px;
+  border-radius: 9px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px; font-weight: 500; line-height: 15px;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(22, 22, 67, 0.28);
+  opacity: 0; visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.14s ease, transform 0.14s ease, visibility 0s linear 0.14s;
+}
+.tip .tip-b::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--navy);
+}
+.tip:hover .tip-b, .tip:focus-within .tip-b {
+  opacity: 1; visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition-delay: 0.12s; /* quick in, instant out */
+}
+/* placements */
+.tip.tip-bottom .tip-b { bottom: auto; top: calc(100% + 9px); transform: translateX(-50%) translateY(-3px); }
+.tip.tip-bottom .tip-b::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--navy); }
+.tip.tip-bottom:hover .tip-b, .tip.tip-bottom:focus-within .tip-b { transform: translateX(-50%) translateY(0); }
+.tip.tip-right .tip-b { left: calc(100% + 9px); bottom: auto; top: 50%; transform: translateY(-50%) translateX(-3px); }
+.tip.tip-right .tip-b::after { top: 50%; left: auto; right: 100%; transform: translateY(-50%); border-top-color: transparent; border-right-color: var(--navy); }
+.tip.tip-right:hover .tip-b, .tip.tip-right:focus-within .tip-b { transform: translateY(-50%) translateX(0); }
+.tip.tip-left .tip-b { left: auto; right: calc(100% + 9px); bottom: auto; top: 50%; transform: translateY(-50%) translateX(3px); }
+.tip.tip-left .tip-b::after { top: 50%; left: 100%; transform: translateY(-50%); border-top-color: transparent; border-left-color: var(--navy); }
+.tip.tip-left:hover .tip-b, .tip.tip-left:focus-within .tip-b { transform: translateY(-50%) translateX(0); }
+
+/* Rich tooltip — a titled card for "why do we need this" moments.
+   Light surface (it carries body text), no arrow, slightly wider. */
+.tip.tip-rich .tip-b {
+  background: var(--n-0);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(22, 22, 67, 0.18);
+  border-radius: 12px;
+  padding: 11px 13px 12px;
+  max-width: 248px;
+  font-size: 11.5px; line-height: 16px;
+}
+.tip.tip-rich .tip-b::after { display: none; }
+.tip .tt { display: block; font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+
+/* Info-dot trigger — a real button, so it focuses and taps */
+.info-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--n-500);
+  transition: color 0.15s, background 0.15s;
+}
+.info-dot .icon { width: 14px; height: 14px; }
+.info-dot:hover, .info-dot:focus-visible { color: var(--blue-500); background: var(--tint-pressed); outline: none; }
+
+/* Icon-only toolbar button (tooltip demo) */
+.tool-btn {
+  width: 38px; height: 38px;
+  border-radius: 11px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  color: var(--n-600);
+  display: grid; place-items: center;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.tool-btn:hover, .tool-btn:focus-visible { color: var(--blue-500); border-color: var(--blue-300); background: var(--tint-pressed); outline: none; }
+
+/* Truncation demo — the full value never depends on hover alone */
+.trunc-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  max-width: 240px;
+  height: 36px; padding: 0 13px;
+  border-radius: 10px;
+  background: var(--n-50);
+  border: 1px solid var(--border);
+  font-size: 12px; font-weight: 600; color: var(--navy);
+}
+.trunc-chip .tx { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0; }
+.trunc-chip .icon { width: 13px; height: 13px; color: var(--n-500); flex-shrink: 0; }
+
+/* ---------- Touch popover (mobile replacement for hover tooltips) ---------- */
+/* max-width so a wrapped trigger (the truncation chip) resolves its own
+   `max-width:100%` against the card, not against an unbounded inline box */
+.pop { position: relative; display: inline-flex; max-width: 100%; min-width: 0; }
+.pop .pop-b {
+  position: absolute;
+  z-index: 70;
+  top: calc(100% + 8px);
+  right: -6px;
+  width: 232px;
+  padding: 11px 13px 12px;
+  border-radius: 12px;
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(22, 22, 67, 0.2);
+  font-size: 11.5px; line-height: 16px; color: var(--text-secondary);
+  text-align: left;
+  opacity: 0; visibility: hidden;
+  transform: translateY(-3px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
+}
+.pop.open .pop-b { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.pop.pop-left .pop-b { right: auto; left: -6px; }
+.pop .pop-b .tt { display: block; font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.pop .pop-more {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 7px;
+  font-size: 11.5px; font-weight: 700; color: var(--blue-500);
+}
+.pop .pop-more .icon { width: 12px; height: 12px; }
+.pop.open .info-dot { color: var(--blue-500); background: var(--tint-pressed); }
+
+/* ---------- Demo scaffolding ---------- */
+.demo-note {
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 30px; padding: 0 14px;
+  border-radius: 99px;
+  background: var(--navy); color: #fff;
+  font-size: 11.5px; font-weight: 600;
+  margin: -6px auto 0;
+}
+.fire-group { display: flex; flex-direction: column; gap: 8px; }
+.fire-label {
+  font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.11em;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+}
+.fire-group .btn { justify-content: flex-start; gap: 10px; height: 44px; font-size: 13px; }
+.fire-group .btn .icon { width: 16px; height: 16px; color: var(--blue-500); }
+.fire-hint { font-size: 11px; line-height: 15px; color: var(--text-tertiary); margin: -2px 0 2px 2px; }
+
+.desk-area {
+  flex: 1;
+  display: flex; flex-direction: column;
+  background: var(--bg-page);
+}
+.desk-area .da-inner { max-width: 560px; margin: 42px auto 0; padding: 0 28px 28px; width: 100%; }
+.desk-area h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; color: var(--navy); }
+.desk-area .da-sub { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); margin: 6px 0 20px; }
+.fire-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.fire-row .btn { height: 40px; font-size: 12.5px; padding: 0 16px; }
+.fire-row .btn .icon { width: 15px; height: 15px; color: var(--blue-500); }
+
+/* tooltip demo sections inside frames */
+.tipdemo-sec { margin-top: 26px; }
+.tipdemo-sec .ts-label {
+  font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.11em;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+.tipdemo-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* "What changed and why" cards (mirrors index.html imp-grid) */
+.why-grid {
+  width: min(1120px, 96vw);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+}
+.why {
+  background: var(--n-0);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+.why .tag {
+  display: inline-flex; align-items: center;
+  height: 19px; padding: 0 9px;
+  border-radius: 99px;
+  font-size: 9.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  margin-bottom: 9px;
+}
+.why .tag.surface-t { background: var(--tint-pressed); color: var(--blue-500); }
+.why .tag.ux-t { background: var(--green-50); color: var(--green-800); }
+.why .tag.trust-t { background: var(--amber-50); color: var(--amber-700); }
+.why .tag.a11y-t { background: var(--tint-info); color: var(--blue-650); }
+.why h4 { font-size: 14px; font-weight: 700; color: var(--navy); }
+.why .was { font-size: 12px; line-height: 17px; color: var(--text-tertiary); margin-top: 7px; }
+.why .now { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: 6px; }
+.why b { color: var(--navy); font-weight: 700; }
+.why code {
+  font-family: ui-monospace, monospace;
+  font-size: 10.5px;
+  background: var(--n-75);
+  border-radius: 5px;
+  padding: 1px 5px;
+  color: var(--n-600);
+}
+.sec-head { width: min(1120px, 96vw); margin-top: 18px; }
+.sec-head h2 { font-size: 17px; font-weight: 700; color: var(--navy); }
+.sec-head p { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+  /* timers are driven by JS timeouts under reduced motion (feedback-demo.js) */
+  .toast .t-timer { display: none; }
+}

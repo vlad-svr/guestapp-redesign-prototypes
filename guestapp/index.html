@@ -332,13 +332,13 @@
     <a class="proto-link" href="flow-upselling-mobile.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱</span> Upselling flow — mobile</h3>
-      <p>Extras with the booking model made visible: every offer declares ⚡ Instant (straight to cart) or 🕗 On request (host confirms first) before you tap, a "My requests" view tracks the whole lifecycle on a 3-step tracker with dashed un-approved prices, declined requests quote the host and offer a plan B, and partner offers (eSIM, free tours) say up front that they book outside the app.</p>
+      <p>Extras with the booking model made visible: every offer declares ⚡ Instant (straight to cart) or 🕗 On request (card pre-authorized — right away or with the one cart payment, your choice — and charged only on the host's yes) before you tap, and <b>both booking forms appear in both lanes</b> — quantity steppers with a preferred-date day strip, and time-based radio slots where the price follows the hour ("From €15.00"). A "My requests" view tracks the whole lifecycle on a 3-step tracker where un-approved prices stay dashed (held, never charged), declined requests quote the host, release the hold and offer a plan B, and partner offers (eSIM, free tours) say up front that they book outside the app.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-upselling-desktop.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">🖥</span> Upselling flow — desktop</h3>
-      <p>Extras as a sidebar destination: a 3-column grid with lane chips and an exclusive featured card, detail pages with a sticky booking box (quantity, total, "nothing charged now" note), the request tracker inside the booking box for on-request offers, and a "My requests" ledger where waiting amounts stay dashed — with a stage-aware Vela rail on every step.</p>
+      <p>Extras as a sidebar destination: a 3-column grid with lane chips and an exclusive featured card, detail pages with a sticky booking box covering <b>both form shapes in both lanes</b> — quantity steppers, time-slot radios where the price follows the hour, and the guests + preferred-evening ask with its dashed held-now total — the request tracker and a fenced Stripe pre-authorization inside the booking box for on-request offers (held at request, charged only on approval), and a "My requests" ledger where waiting amounts stay dashed — with a stage-aware Vela rail on every step.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-book-experience-mobile.html">
@@ -497,6 +497,12 @@
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-layers"/></svg></div>
       <h3>Modals &amp; overlays</h3>
       <p>QR handoff, share booking link, photo privacy, skip confirmation, and the Vela sheet — dialogs on desktop, bottom/right sheets on mobile. Also wired to their real triggers inside the flows.</p>
+      <span class="go">Open demo <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="toast-tooltip-demo.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-bell"/></svg></div>
+      <h3>Toasts &amp; tooltips</h3>
+      <p>One feedback system: a dark-glass toast with a visible pausable timer, action slot (Undo / Retry), sticky errors with human copy, stack cap + dedupe — top on mobile, bottom-right on desktop. Tooltips show on hover <b>and focus</b>; on touch they become tap popovers and sheets.</p>
       <span class="go">Open demo <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="scroll-demo.html">
@@ -1343,6 +1349,7 @@
     <g id="i-layers"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></g>
     <g id="i-scroll"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/><path d="m5 8 7-7 7 7" opacity="0.4"/></g>
     <g id="i-sparkle"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></g>
+    <g id="i-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></g>
   </defs>
 </svg>
 <script src="nav.js" defer></script>

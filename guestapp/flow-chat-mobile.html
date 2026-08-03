@@ -12,12 +12,17 @@
 <body>
 <div class="proto-stage">
   <h1>Chat with host — Interactive Flow (Mobile)</h1>
-  <p class="lede">The bare "Talking with {property}" thread becomes a real conversation: a <b>host identity</b> with a photo, presence and response-time expectation; <b>grouped bubbles</b> with day separators and <b>delivery / read receipts</b>; a warm <b>first-message</b> state with tappable starter questions instead of "No messages yet"; a friendlier <b>identity check</b> that explains itself; plus honest <b>reconnecting</b>, <b>chat-off</b> and <b>register-first</b> states. Mock data only.</p>
+  <p class="lede">The bare "Talking with {property}" thread becomes a real conversation: a clear <b>property identity</b> (the thread has no named person — the app shows <code>housing.display_name</code>) with a photo and a response-time expectation; <b>grouped bubbles</b> with day separators and <b>delivery / read receipts</b>; <b>per-guest sender colors</b> when several guests share the booking; <b>photo, video and file</b> bubbles with pending previews and a <b>deleted-file placeholder</b>; a warm <b>first-message</b> state with tappable starter questions instead of "No messages yet"; a friendlier <b>identity check</b> that explains itself; plus honest <b>reconnecting</b>, <b>chat-off</b> and <b>register-first</b> states. Mock data only.</p>
 
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="c-conversation">▶ Conversation</button>
     <button class="fh-chip" data-scenario="c-empty">First message (empty)</button>
+    <button class="fh-chip" data-scenario="c-unread">New messages</button>
+    <button class="fh-chip" data-scenario="c-loading">Loading</button>
+    <button class="fh-chip" data-scenario="c-sending-code">Sending the code</button>
     <button class="fh-chip" data-scenario="c-verify">Verify it's you</button>
+    <button class="fh-chip" data-scenario="c-verify-error">Wrong code</button>
+    <button class="fh-chip" data-scenario="c-code-error">Code send failed</button>
     <button class="fh-chip" data-scenario="c-sending">Delivery &amp; read receipts</button>
     <button class="fh-chip" data-scenario="c-attach">Photos &amp; files</button>
     <button class="fh-chip" data-scenario="c-offline">Reconnecting</button>
@@ -34,17 +39,17 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="chat-head">
         <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
-        <div class="host-av">M<span class="presence-dot"></span></div>
+        <div class="host-av">V</div>
         <div class="ch-id">
-          <div class="ch-name">Marco <span class="verified" title="Verified host"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
-          <div class="ch-presence online"><span class="live-dot"></span> Active now · your host</div>
+          <div class="ch-name">Villa Serena <span class="verified" title="Verified host"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="ch-presence">Your host</div>
         </div>
         <button class="ch-act" title="Booking details" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="trip-strip">
-        <svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg>
-        <b>Villa Serena</b><span class="sep">·</span> Aug 12–16 <span class="sep">·</span> 2 guests
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Aug 12–16</span>
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> 2 guests</span>
       </div>
 
       <div class="chat-thread">
@@ -53,10 +58,10 @@
 
         <!-- host group -->
         <div class="msg-group">
-          <div class="grp-av host-av sm">M</div>
+          <div class="grp-av host-av sm">V</div>
           <div class="msg-stack">
-            <div class="grp-name">Marco · Host</div>
-            <div class="bubble host">Hi Sarah 👋 Welcome — I'm Marco, your host at Villa Serena. Anything you need before you arrive, just message me here.</div>
+            <div class="grp-name">Villa Serena · Host</div>
+            <div class="bubble host">Hi Sarah 👋 Welcome to Villa Serena! Anything you need before you arrive, just message us here.</div>
             <div class="bubble host">Check-in is from 15:00. I'll send the door code the morning of your arrival.</div>
             <div class="msg-meta"><span>18:24</span></div>
           </div>
@@ -74,9 +79,9 @@
 
         <!-- host group -->
         <div class="msg-group">
-          <div class="grp-av host-av sm">M</div>
+          <div class="grp-av host-av sm">V</div>
           <div class="msg-stack">
-            <div class="grp-name">Marco · Host</div>
+            <div class="grp-name">Villa Serena · Host</div>
             <div class="bubble host">Morning! Yes — 13:00 works, the villa will be ready. Here's the guidebook with the Wi-Fi and parking: <a href="flow-guidebooks-mobile.html">chekin.com/villa-serena/guide</a></div>
             <div class="msg-meta"><span>08:02</span></div>
           </div>
@@ -90,9 +95,19 @@
           </div>
         </div>
 
+        <!-- another guest on the same booking — own sender color -->
+        <div class="msg-group me other" style="--sender:hsl(290, 55%, 45%);--sender-2:hsl(290, 60%, 58%)">
+          <div class="grp-av guest-av">D</div>
+          <div class="msg-stack">
+            <div class="grp-name sender">Dan · your group</div>
+            <div class="bubble me">Dan here 👋 quick one — is there space to park a second car?</div>
+            <div class="msg-meta"><span>08:07</span><span class="status" title="Sent"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          </div>
+        </div>
+
         <!-- typing -->
         <div class="msg-group">
-          <div class="grp-av host-av sm">M</div>
+          <div class="grp-av host-av sm">V</div>
           <div class="msg-stack">
             <div class="bubble host typing"><i></i><i></i><i></i></div>
           </div>
@@ -104,13 +119,13 @@
         <div class="composer-row">
           <button class="comp-btn" title="Add photo or file" data-goto="c-attach"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
           <div class="comp-field">
-            <textarea rows="1" placeholder="Message Marco…" data-count></textarea>
+            <textarea rows="1" placeholder="Type a message..." data-count></textarea>
           </div>
           <button class="comp-send off" title="Send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-send"/></svg></button>
         </div>
       </div>
 
-      <span class="sim-note">grouped bubbles = consecutive msgs (avatar once); ✓✓ = read receipt (proposed); typing bubble = presence over WebSocket</span>
+      <span class="sim-note">grouped bubbles = consecutive msgs (avatar once); ✓✓ = read receipt (proposed); typing bubble = presence over WebSocket; guest side ≠ one person — each created_by gets a stable palette color (senderColors)</span>
     </div>
 
 
@@ -119,17 +134,17 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="chat-head">
         <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
-        <div class="host-av">M<span class="presence-dot away"></span></div>
+        <div class="host-av">V</div>
         <div class="ch-id">
-          <div class="ch-name">Marco <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="ch-name">Villa Serena <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
           <div class="ch-presence"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-clock"/></svg> Usually replies within an hour</div>
         </div>
         <button class="ch-act" title="Booking details" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
       <div class="trip-strip">
-        <svg viewBox="0 0 24 24" class="icon"><use href="#i-home"/></svg>
-        <b>Villa Serena</b><span class="sep">·</span> Aug 12–16 <span class="sep">·</span> 2 guests
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Aug 12–16</span>
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> 2 guests</span>
       </div>
 
       <div class="chat-thread">
@@ -137,9 +152,9 @@
         <div class="chat-day">Today</div>
 
         <div class="msg-group">
-          <div class="grp-av host-av sm">M</div>
+          <div class="grp-av host-av sm">V</div>
           <div class="msg-stack">
-            <div class="grp-name">Marco · Host</div>
+            <div class="grp-name">Villa Serena · Host</div>
             <div class="bubble host">Hi Sarah 👋 Welcome to Villa Serena! I'm here if you have any questions before or during your stay.</div>
             <div class="msg-meta"><span>08:00</span></div>
           </div>
@@ -161,7 +176,7 @@
         <div class="composer-row">
           <button class="comp-btn" title="Add photo or file"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
           <div class="comp-field">
-            <textarea rows="1" placeholder="Message Marco…" data-count></textarea>
+            <textarea rows="1" placeholder="Type a message..." data-count></textarea>
           </div>
           <button class="comp-send off" title="Send"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-send"/></svg></button>
         </div>
@@ -176,10 +191,10 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="chat-head">
         <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
-        <div class="host-av">M<span class="presence-dot"></span></div>
+        <div class="host-av">V</div>
         <div class="ch-id">
-          <div class="ch-name">Marco</div>
-          <div class="ch-presence">Villa Serena</div>
+          <div class="ch-name">Villa Serena</div>
+          <div class="ch-presence">Your host</div>
         </div>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
       </div>
@@ -193,14 +208,14 @@
           <span class="otp-cell filled">4</span>
           <span class="otp-cell filled">1</span>
           <span class="otp-cell filled">7</span>
-          <span class="otp-cell active"></span>
-          <span class="otp-cell"></span>
-          <span class="otp-cell"></span>
+          <span class="otp-cell filled">2</span>
+          <span class="otp-cell filled">9</span>
+          <span class="otp-cell filled">3</span>
         </div>
         <div class="v-err"></div>
 
         <button class="btn btn-primary btn-block" data-goto="c-conversation">Verify &amp; open chat</button>
-        <div class="v-resend">Didn't get it? <button>Resend in 0:24</button></div>
+        <div class="v-resend">Didn't get it? <span class="cooldown">Resend in 24s</span></div>
 
         <div class="v-why">
           <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
@@ -208,7 +223,187 @@
         </div>
       </div>
 
-      <span class="sim-note">OtpVerification — same 6-digit flow, reframed full-screen with rationale (was a bare dialog over a blurred thread)</span>
+      <span class="sim-note">OtpVerification — same 6-digit flow, reframed full-screen with rationale (was a bare dialog over a blurred thread). Verify is disabled until all 6 digits are in; during the cooldown "Resend in {{seconds}}s" is inert text, not a link</span>
+    </div>
+
+
+    <!-- ═══ c-unread · new-messages divider ═══ -->
+    <div class="screen flow-screen" id="c-unread" data-label="New messages — a Slack-style unread marker above the first message you haven't seen">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="chat-head">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="host-av">V</div>
+        <div class="ch-id">
+          <div class="ch-name">Villa Serena <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="ch-presence">Your host</div>
+        </div>
+        <button class="ch-act" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="trip-strip">
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Aug 12–16</span>
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> 2 guests</span>
+      </div>
+
+      <div class="chat-thread">
+        <div class="chat-day">Yesterday</div>
+
+        <!-- already read -->
+        <div class="msg-group me">
+          <div class="msg-stack">
+            <div class="bubble me">Great, see you tomorrow at 1!</div>
+            <div class="msg-meta"><span>18:40</span><span class="status read"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-check"/></svg></span></div>
+          </div>
+        </div>
+
+        <div class="chat-day">Today</div>
+
+        <!-- everything below arrived since the guest last opened the thread -->
+        <div class="chat-new"><span>New messages</span></div>
+
+        <div class="msg-group">
+          <div class="grp-av host-av sm">V</div>
+          <div class="msg-stack">
+            <div class="grp-name">Villa Serena · Host</div>
+            <div class="bubble host">Morning! Small change — the cleaner is finishing at 13:30, so the villa is ready from 14:00.</div>
+            <div class="bubble host">Your door code is 4417. It works from 14:00 until check-out.</div>
+            <div class="msg-meta"><span>09:12</span></div>
+          </div>
+        </div>
+
+        <div class="msg-group">
+          <div class="grp-av host-av sm">V</div>
+          <div class="msg-stack">
+            <div class="bubble host">Let me know when you're on your way 🙂</div>
+            <div class="msg-meta"><span>09:14</span></div>
+          </div>
+        </div>
+        <div class="chat-anchor" style="height:2px"></div>
+      </div>
+
+      <div class="composer">
+        <div class="composer-row">
+          <button class="comp-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
+          <div class="comp-field"><textarea rows="1" placeholder="Type a message..." data-count></textarea></div>
+          <button class="comp-send off"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-send"/></svg></button>
+        </div>
+      </div>
+
+      <span class="sim-note">unread marker — pinned to the cursor captured when the thread opened, so it holds still while you read (it doesn't chase the newest message). The app has no unread concept today: it always jumps to the bottom, so a guest returning to 5 messages can't tell where they left off</span>
+    </div>
+
+
+    <!-- ═══ c-verify-error · wrong code ═══ -->
+    <div class="screen flow-screen" id="c-verify-error" data-label="Wrong code — the OTP error state (red cells, message, resend now available)">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="chat-head">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="host-av">V</div>
+        <div class="ch-id">
+          <div class="ch-name">Villa Serena</div>
+          <div class="ch-presence">Your host</div>
+        </div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+
+      <div class="verify-wrap">
+        <div class="verify-icon"><svg viewBox="0 0 24 24" class="icon"><use href="#i-shield-check"/></svg></div>
+        <h2>Let's confirm it's you</h2>
+        <p class="v-sub">Your chat with the host is private. Enter the 6-digit code we sent to <b>s•••••h@gmail.com</b> to open it.</p>
+
+        <div class="otp-row" data-otp>
+          <span class="otp-cell err">4</span>
+          <span class="otp-cell err">1</span>
+          <span class="otp-cell err">7</span>
+          <span class="otp-cell err">2</span>
+          <span class="otp-cell err">9</span>
+          <span class="otp-cell err">1</span>
+        </div>
+        <div class="v-err">Invalid code</div>
+
+        <button class="btn btn-primary btn-block" disabled>Verify &amp; open chat</button>
+        <div class="v-resend">Didn't get it? <button data-goto="c-sending-code">Resend code</button></div>
+
+        <div class="v-why">
+          <svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg>
+          <span>We ask once per device so only the guest on this booking can read the conversation. It takes a few seconds.</span>
+        </div>
+      </div>
+
+      <span class="sim-note">otpError → red cells + "Invalid code"; the field clears (Verify disabled again) and once the cooldown has run out the resend becomes a real link</span>
+    </div>
+
+
+    <!-- ═══ c-sending-code · isSendingCode ═══ -->
+    <div class="screen flow-screen" id="c-sending-code" data-label="Sending the code — the wait before the OTP screen appears" data-autonext="c-verify" data-autodelay="2600">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="chat-head">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="ch-id"><div class="ch-name">Chat with host</div></div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+
+      <div class="chat-state">
+        <div class="spin-lg" style="margin-bottom:16px"></div>
+        <h2 style="font-size:16px">Sending verification code…</h2>
+        <p>We're sending it to <b style="color:var(--navy);font-weight:600">s•••••h@gmail.com</b>. This may take a few seconds.</p>
+      </div>
+
+      <span class="sim-note">isSendingCode (useChatOtp) → the app already renders this wait; it was missing from the prototype. Auto-advances to the OTP screen</span>
+    </div>
+
+
+    <!-- ═══ c-code-error · otpSendError ═══ -->
+    <div class="screen flow-screen" id="c-code-error" data-label="Code couldn't be sent — the send-failure state with a retry">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="chat-head">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="ch-id"><div class="ch-name">Chat with host</div></div>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+
+      <div class="chat-state err">
+        <div class="cs-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-alert-triangle"/></svg></div>
+        <h2>Failed to resend code</h2>
+        <p>We couldn't send the verification code just now. Please try again.</p>
+        <div class="cs-actions">
+          <button class="btn btn-primary" data-goto="c-sending-code">Retry sending code</button>
+        </div>
+      </div>
+
+      <span class="sim-note">otpSendError &amp;&amp; !showOtp → the API message (or "Failed to resend code…") with the "Retry sending code" button; also missing from the prototype until now</span>
+    </div>
+
+
+    <!-- ═══ c-loading · thread loading ═══ -->
+    <div class="screen flow-screen" id="c-loading" data-label="Loading the thread — header and composer are already there, only messages wait" data-autonext="c-conversation" data-autodelay="2200">
+      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+      <div class="chat-head">
+        <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
+        <div class="host-av">V</div>
+        <div class="ch-id">
+          <div class="ch-name">Villa Serena <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="ch-presence">Your host</div>
+        </div>
+        <button class="ch-act" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
+        <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+      </div>
+      <div class="trip-strip">
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Aug 12–16</span>
+        <span style="display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" class="icon"><use href="#i-users"/></svg> 2 guests</span>
+      </div>
+
+      <div class="chat-loading"><div class="spin-lg"></div></div>
+
+      <div class="composer">
+        <div class="composer-row">
+          <button class="comp-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
+          <div class="comp-field"><textarea rows="1" placeholder="Type a message..." data-count></textarea></div>
+          <button class="comp-send off"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-send"/></svg></button>
+        </div>
+      </div>
+
+      <span class="sim-note">ChatInterface isLoading (chat room + messages) → only the thread area shows the loader; the header and composer are already mounted. Auto-advances</span>
     </div>
 
 
@@ -217,10 +412,10 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="chat-head">
         <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
-        <div class="host-av">M<span class="presence-dot"></span></div>
+        <div class="host-av">V</div>
         <div class="ch-id">
-          <div class="ch-name">Marco <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
-          <div class="ch-presence online"><span class="live-dot"></span> Active now</div>
+          <div class="ch-name">Villa Serena <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="ch-presence">Your host</div>
         </div>
         <button class="ch-act" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
@@ -254,10 +449,31 @@
           </div>
         </div>
 
+        <!-- optimistic media: local preview shown dimmed until the server echo lands -->
+        <div class="msg-group me">
+          <div class="msg-stack">
+            <div class="bubble me media pending">
+              <img data-lightbox src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=480&q=70" alt="Bedside lamp photo">
+            </div>
+            <div class="msg-meta"><span class="status"><span class="spin"></span></span> Sending…</div>
+          </div>
+        </div>
+
         <!-- failed -->
         <div class="msg-group me">
           <div class="msg-stack">
             <div class="bubble me failed">One last thing, do you allow small dogs?</div>
+            <div class="msg-meta failed"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-alert-triangle"/></svg> Not delivered · <span class="retry">Retry</span></div>
+          </div>
+        </div>
+
+        <!-- failed with attachment: retry re-sends the text AND the files together -->
+        <div class="msg-group me">
+          <div class="msg-stack">
+            <div class="bubble me media failed">
+              <img data-lightbox src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=480&q=70" alt="Broken lamp photo">
+            </div>
+            <div class="bubble me failed">The bedside lamp isn't working — photo attached.</div>
             <div class="msg-meta failed"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-alert-triangle"/></svg> Not delivered · <span class="retry">Retry</span></div>
           </div>
         </div>
@@ -267,12 +483,12 @@
       <div class="composer">
         <div class="composer-row">
           <button class="comp-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
-          <div class="comp-field"><textarea rows="1" placeholder="Message Marco…" data-count></textarea></div>
+          <div class="comp-field"><textarea rows="1" placeholder="Type a message..." data-count></textarea></div>
           <button class="comp-send off"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-send"/></svg></button>
         </div>
       </div>
 
-      <span class="sim-note">message.status: Sending (optimistic) → Sent → Delivered → Read; failedMessageIds → the inline Retry (retryMessage)</span>
+      <span class="sim-note">message.status: Sending (optimistic, local previews dimmed) → Sent → Delivered → Read; failedMessageIds mutes the whole group; retryMessage re-sends text + temp_attachment_ids + local previews together</span>
     </div>
 
 
@@ -281,10 +497,10 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="chat-head">
         <a class="back-btn" data-goto="c-conversation"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
-        <div class="host-av">M<span class="presence-dot"></span></div>
+        <div class="host-av">V</div>
         <div class="ch-id">
-          <div class="ch-name">Marco <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
-          <div class="ch-presence online"><span class="live-dot"></span> Active now</div>
+          <div class="ch-name">Villa Serena <span class="verified"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          <div class="ch-presence">Your host</div>
         </div>
         <button class="ch-act" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
@@ -294,9 +510,9 @@
         <div class="chat-day">Today</div>
 
         <div class="msg-group">
-          <div class="grp-av host-av sm">M</div>
+          <div class="grp-av host-av sm">V</div>
           <div class="msg-stack">
-            <div class="grp-name">Marco · Host</div>
+            <div class="grp-name">Villa Serena · Host</div>
             <div class="bubble host">Here's the parking spot — it's number 4, just under the building.</div>
             <div class="bubble host media">
               <img data-lightbox src="https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=480&q=70" alt="Parking spot photo">
@@ -309,6 +525,10 @@
                 <span class="fc-dl"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-download"/></svg></span>
               </a>
             </div>
+            <div class="bubble host media">
+              <video controls preload="metadata" poster="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=480&q=70" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"></video>
+            </div>
+            <div class="bubble host">And a short video of how the gate opens 👆</div>
             <div class="msg-meta"><span>11:48</span></div>
           </div>
         </div>
@@ -320,6 +540,38 @@
               <div class="cap">Got it — we found it, thanks! The place looks lovely.</div>
             </div>
             <div class="msg-meta"><span>11:52</span><span class="status read"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check-check"/></svg></span></div>
+          </div>
+        </div>
+
+        <!-- another guest shares a file — their own sender color -->
+        <div class="msg-group me other" style="--sender:hsl(165, 55%, 35%);--sender-2:hsl(165, 55%, 46%)">
+          <div class="grp-av guest-av">A</div>
+          <div class="msg-stack">
+            <div class="grp-name sender">Ana · your group</div>
+            <div class="bubble me media">
+              <a class="file-card" href="#">
+                <span class="fc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-text"/></svg></span>
+                <span><span class="fc-name">booking-confirmation.pdf</span><span class="fc-meta">PDF · 82 KB</span></span>
+                <span class="fc-dl"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-download"/></svg></span>
+              </a>
+            </div>
+            <div class="msg-meta"><span>11:55</span><span class="status" title="Sent"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></span></div>
+          </div>
+        </div>
+
+        <!-- deleted attachment: the message survives, the file doesn't -->
+        <div class="msg-group">
+          <div class="grp-av host-av sm">V</div>
+          <div class="msg-stack">
+            <div class="grp-name">Villa Serena · Host</div>
+            <div class="bubble host">I've removed the door-code photo now that you're in 👍</div>
+            <div class="bubble host media">
+              <div class="file-card deleted">
+                <span class="fc-ic"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-x"/></svg></span>
+                <span><span class="fc-name">door-code.jpg</span><span class="fc-meta">This file was deleted</span></span>
+              </div>
+            </div>
+            <div class="msg-meta"><span>12:03</span></div>
           </div>
         </div>
         <div class="chat-anchor" style="height:2px"></div>
@@ -338,6 +590,12 @@
             <span class="pc-name">receipt.pdf</span>
             <button class="pc-x"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-x"/></svg></button>
           </div>
+          <div class="pending-chip err">
+            <span class="pc-file"><svg viewBox="0 0 24 24" class="icon"><use href="#i-file-x"/></svg></span>
+            <span class="pc-name">walkthrough.mov</span>
+            <span class="pc-err">Over 10 MB</span>
+            <button class="pc-x"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px"><use href="#i-x"/></svg></button>
+          </div>
         </div>
         <div class="composer-row">
           <button class="comp-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
@@ -346,7 +604,7 @@
         </div>
       </div>
 
-      <span class="sim-note">attachments (useChatAttachmentsEnabled): images open a lightbox; files render as a download card; pending uploads show a spinner (usePendingFiles)</span>
+      <span class="sim-note">attachments (useChatAttachmentsEnabled): images open a lightbox, videos play inline; files render as a download card; deleted files keep a placeholder; pending uploads show a spinner (usePendingFiles); processFile converts HEIC→JPEG, compresses images and rejects &gt;10 MB</span>
     </div>
 
 
@@ -355,10 +613,10 @@
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="chat-head">
         <a class="back-btn" href="home.html"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></a>
-        <div class="host-av">M<span class="presence-dot away"></span></div>
+        <div class="host-av">V</div>
         <div class="ch-id">
-          <div class="ch-name">Marco</div>
-          <div class="ch-presence">Villa Serena</div>
+          <div class="ch-name">Villa Serena</div>
+          <div class="ch-presence">Your host</div>
         </div>
         <button class="ch-act" data-modal="m-trip"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg></button>
         <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
@@ -368,9 +626,9 @@
       <div class="chat-thread">
         <div class="chat-day">Today</div>
         <div class="msg-group">
-          <div class="grp-av host-av sm">M</div>
+          <div class="grp-av host-av sm">V</div>
           <div class="msg-stack">
-            <div class="grp-name">Marco · Host</div>
+            <div class="grp-name">Villa Serena · Host</div>
             <div class="bubble host">No problem, take your time getting here 🙂</div>
             <div class="msg-meta"><span>13:20</span></div>
           </div>
@@ -387,7 +645,7 @@
       <div class="composer">
         <div class="composer-row">
           <button class="comp-btn"><svg viewBox="0 0 24 24" class="icon"><use href="#i-plus"/></svg></button>
-          <div class="comp-field"><textarea rows="1" placeholder="Message Marco…" data-count></textarea></div>
+          <div class="comp-field"><textarea rows="1" placeholder="Type a message..." data-count></textarea></div>
           <button class="comp-send off"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-send"/></svg></button>
         </div>
         <div class="comp-hint"><svg viewBox="0 0 24 24" class="icon"><use href="#i-wifi-off"/></svg> Offline — messages queue and send automatically when reconnected</div>
@@ -445,7 +703,7 @@
       <span class="sim-note">!hasLeadGuestEmail (default_invite_email) → names the lead guest and deep-links registration (was a generic UserX + line)</span>
     </div>
 
-  <div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><p class="vela-intro">Marco usually replies within the hour. If it can't wait, I can answer the common ones right now.</p><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><span><span class="vt-title" style="display:block">Typical reply: under an hour</span><span class="vt-desc">Between 22:00 and 08:00 expect the morning.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><span><span class="vt-title" style="display:block">Only you and your host see this</span><span class="vt-desc">Messages are tied to this booking and nobody else can read them.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-faq-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a><a class="vela-action" href="flow-guidebooks-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Check the guidebooks<span class="va-sub">Wi-Fi, entry, house rules</span></span></a></div></div></div></div>
+  <div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><p class="vela-intro">Your host usually replies within the hour. If it can't wait, I can answer the common ones right now.</p><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><span><span class="vt-title" style="display:block">Typical reply: under an hour</span><span class="vt-desc">Between 22:00 and 08:00 expect the morning.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><span><span class="vt-title" style="display:block">Only you and your host see this</span><span class="vt-desc">Messages are tied to this booking and nobody else can read them.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-faq-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Browse FAQs<span class="va-sub">Answers to the usual questions</span></span></a><a class="vela-action" href="flow-guidebooks-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Check the guidebooks<span class="va-sub">Wi-Fi, entry, house rules</span></span></a></div></div></div></div>
 </div>
 
   <!-- Booking details modal (bottom sheet) -->
@@ -459,7 +717,7 @@
         <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-home"/></svg></span><span><b>Villa Serena</b><br>Calle del Mar 14, Málaga</span></div>
         <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-calendar"/></svg></span><span><b>Aug 12 → Aug 16</b> · 4 nights</span></div>
         <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-users"/></svg></span><span><b>2 guests</b> · Booking CHK-58291</span></div>
-        <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg></span><span><b>Marco</b> · your host · replies in ~15 min</span></div>
+        <div class="pl-row"><span class="pl-ic"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-user"/></svg></span><span><b>Villa Serena</b> · your host · replies in ~15 min</span></div>
       </div>
       <div class="pm-actions">
         <a class="btn btn-outline" href="flow-guidebooks-mobile.html"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-book-open"/></svg> Open the guidebook</a>
@@ -499,6 +757,7 @@
     <g id="i-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g>
     <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
     <g id="i-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></g>
+    <g id="i-file-x"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m14.5 12.5-5 5"/><path d="m9.5 12.5 5 5"/></g>
     <g id="i-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></g>
     <g id="i-message"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
     <g id="i-alert-triangle"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>

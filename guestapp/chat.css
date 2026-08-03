@@ -6,8 +6,9 @@
    Maps to apps/guestapp/src/pages/ChatView/*:
      ChatView            → the state gates (verify / disabled / no-lead-guest)
      ChatInterface       → the thread + "talking with" header
-     MessageBubble       → .bubble (host / me), attachments, receipts
-     ChatInput           → .composer
+     ChatThread/MessageBody → .bubble (host / me), attachments, receipts
+     senderColors.ts     → per-guest --sender colors (.msg-group.other)
+     ChatInput           → .composer (+ pending upload chips)
      OtpVerification     → the .verify screen
    ============================================================ */
 
@@ -61,25 +62,31 @@
 .presence-dot.away { background: var(--amber-500); }
 
 .chat-head .ch-id { flex: 1; min-width: 0; }
-.chat-head .ch-name {
+.chat-head .ch-name,
+.cd-topbar .ch-name {
   font-size: 14.5px; font-weight: 700; color: var(--navy);
   line-height: 1.2;
   display: flex; align-items: center; gap: 6px;
 }
-.chat-head .ch-name .verified {
+.chat-head .ch-name .verified,
+.cd-topbar .ch-name .verified {
   display: inline-grid; place-items: center;
   width: 15px; height: 15px; border-radius: 50%;
   background: var(--blue-500); color: #fff; flex-shrink: 0;
 }
-.chat-head .ch-name .verified .icon { width: 9px; height: 9px; stroke-width: 3.5; }
-.chat-head .ch-presence {
+.chat-head .ch-name .verified .icon,
+.cd-topbar .ch-name .verified .icon { width: 9px; height: 9px; stroke-width: 3.5; }
+.chat-head .ch-presence,
+.cd-topbar .ch-presence {
   font-size: 11.5px; font-weight: 500;
   color: var(--text-secondary);
   display: flex; align-items: center; gap: 5px;
   margin-top: 1px;
 }
-.chat-head .ch-presence.online { color: var(--green-700); font-weight: 600; }
-.chat-head .ch-presence .live-dot {
+.chat-head .ch-presence.online,
+.cd-topbar .ch-presence.online { color: var(--green-700); font-weight: 600; }
+.chat-head .ch-presence .live-dot,
+.cd-topbar .ch-presence .live-dot {
   width: 6px; height: 6px; border-radius: 50%; background: var(--green-600);
 }
 .chat-head .ch-act {
@@ -145,6 +152,49 @@
   font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--text-tertiary);
 }
+
+.chat-new {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 10px;
+  color: var(--green-700);
+}
+.chat-new::before,
+.chat-new::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, var(--green-600));
+}
+.chat-new::after { background: linear-gradient(90deg, var(--green-600), transparent); }
+.chat-new span {
+  flex-shrink: 0;
+  padding: 3px 11px;
+  border-radius: 99px;
+  background: var(--green-50);
+  border: 1px solid rgba(15, 159, 128, 0.22);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* floating "N new messages" jump pill — shown when the unread marker is
+   scrolled out of view above; tapping scrolls back to it */
+.chat-jump {
+  position: sticky;
+  top: 2px;
+  z-index: 12;
+  align-self: center;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  background: var(--green-700);
+  color: #fff;
+  font-size: 11.5px; font-weight: 700;
+  box-shadow: 0 6px 18px rgba(15, 159, 128, 0.32);
+  cursor: pointer;
+}
+.chat-jump .icon { width: 13px; height: 13px; }
 
 /* system / welcome note */
 .chat-note {
@@ -234,6 +284,26 @@
 }
 .bubble.failed { opacity: 0.62; }
 
+/* ---------- Multi-guest sender colors ---------- */
+/* Every guest on the booking writes into the same room, so the guest side
+   isn't one person. Each sender gets a stable palette color assigned by
+   hashing created_by (senderColors.ts) — set here via --sender/--sender-2
+   on the group. Your own messages keep the brand-blue gradient. */
+.msg-group.me.other .grp-av { display: grid; }
+.guest-av {
+  position: relative;
+  width: 30px; height: 30px; border-radius: 50%;
+  flex-shrink: 0; overflow: hidden;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 12px;
+  background: var(--sender, var(--n-500));
+}
+.msg-group .grp-name.sender { color: var(--sender, var(--blue-650)); }
+.msg-group.me.other .bubble.me {
+  background: linear-gradient(135deg, var(--sender), var(--sender-2, var(--sender)));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--sender) 30%, transparent);
+}
+
 /* typing indicator */
 .typing {
   display: inline-flex; gap: 4px; align-items: center;
@@ -262,6 +332,13 @@
   object-fit: cover; border-radius: 14px; cursor: zoom-in;
 }
 .bubble.media .cap { padding: 6px 9px 4px; font-size: 13px; }
+/* video attachment — plays inline, same footprint as an image */
+.bubble.media video {
+  display: block; width: 100%; max-width: 240px; max-height: 260px;
+  border-radius: 14px; background: #000;
+}
+/* optimistic media (localAttachment preview while the echo is pending) */
+.bubble.media.pending img, .bubble.media.pending video { opacity: 0.75; }
 .file-card {
   display: flex; align-items: center; gap: 11px;
   padding: 4px 4px 4px 4px;
@@ -277,6 +354,19 @@
 .file-card .fc-name { display: block; font-size: 12.5px; font-weight: 600; line-height: 1.3; }
 .file-card .fc-meta { display: block; font-size: 11px; opacity: 0.75; margin-top: 1px; }
 .file-card .fc-dl { margin-left: auto; padding: 6px; opacity: 0.8; }
+
+/* deleted / no-longer-available attachment — the message stays, the file doesn't */
+.file-card.deleted { cursor: default; }
+.bubble .file-card.deleted .fc-ic {
+  background: var(--n-75); color: var(--n-500);
+  border: 1px dashed var(--n-300);
+}
+.bubble.me .file-card.deleted .fc-ic {
+  background: rgba(255, 255, 255, 0.14); color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.file-card.deleted .fc-name { text-decoration: line-through; opacity: 0.7; }
+.file-card.deleted .fc-meta { font-style: italic; }
 
 /* ---------- Starter questions (empty / first message) ---------- */
 .starters {
@@ -350,6 +440,10 @@
   border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: #fff;
   animation: spin 0.9s linear infinite;
 }
+/* rejected upload (processFile: >10 MB or conversion error) */
+.pending-chip.err { border-color: rgba(224, 49, 77, 0.35); background: rgba(224, 49, 77, 0.05); }
+.pending-chip.err .pc-file { background: rgba(224, 49, 77, 0.1); color: var(--red-500); }
+.pending-chip .pc-err { font-size: 10.5px; font-weight: 700; color: var(--red-500); }
 
 .composer-row { display: flex; align-items: flex-end; gap: 8px; }
 .comp-btn {
@@ -454,7 +548,32 @@
 }
 .verify-wrap .v-why .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; margin-top: 1px; }
 
-/* ---------- State screens (disabled / no lead guest) ---------- */
+/* resend during cooldown is NOT a button in the app — it's inert bold text
+   (`resend_in_seconds`), and only becomes a link once the countdown ends */
+.verify-wrap .v-resend .cooldown,
+.cc-panel .v-resend .cooldown {
+  font-weight: 700;
+  color: var(--text-tertiary);
+}
+
+/* ---------- Thread loading (ChatInterface isLoading) ---------- */
+/* header + composer are already mounted; only the thread area waits */
+.chat-loading {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle 200px at 88% 6%, rgba(79, 107, 255, 0.06), transparent 70%),
+    var(--bg-page);
+}
+.spin-lg {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 3px solid var(--n-200);
+  border-top-color: var(--blue-500);
+  animation: spin 0.9s linear infinite;
+}
+
+/* ---------- State screens (disabled / no lead guest / sending code) ---------- */
 .chat-state {
   flex: 1;
   display: flex; flex-direction: column;
@@ -493,6 +612,8 @@
 }
 .chat-state .cs-who .cw-name { font-size: 13px; font-weight: 700; color: var(--navy); }
 .chat-state .cs-who .cw-role { font-size: 11.5px; font-weight: 500; color: var(--text-secondary); }
+/* error tone (otpSendError → TriangleAlert + Retry sending code) */
+.chat-state.err .cs-ic { background: rgba(224, 49, 77, 0.09); color: var(--red-500); }
 
 /* ---------- Desktop: chat as a destination ---------- */
 .chat-desk {
@@ -586,6 +707,29 @@
 .ctx-file { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 1; position: relative; }
 .ctx-file img { width: 100%; height: 100%; object-fit: cover; }
 .ctx-file.doc { display: grid; place-items: center; background: var(--n-50); color: var(--blue-500); }
+/* video thumbnail on the rail */
+.ctx-file.vid .pb {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(10, 10, 26, 0.28); color: var(--navy);
+}
+.ctx-file.vid .pb i {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  display: grid; place-items: center;
+}
+/* document rows under the media grid (all attachments, not just images) */
+.ctx-doc-rows { padding: 0 15px 15px; display: flex; flex-direction: column; gap: 8px; }
+.ctx-doc {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px;
+  font-size: 12px; font-weight: 600; color: var(--navy);
+}
+.ctx-doc .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; }
+.ctx-doc .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ctx-doc .cd-meta { margin-left: auto; font-size: 10.5px; font-weight: 500; color: var(--text-tertiary); flex-shrink: 0; }
+.ctx-doc.deleted { border-style: dashed; color: var(--text-tertiary); }
+.ctx-doc.deleted .icon { color: var(--n-400); }
+.ctx-doc.deleted .nm { text-decoration: line-through; }
 
 /* desktop verify + state reuse a centered card */
 .cd-center {

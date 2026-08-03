@@ -26,11 +26,11 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-housing-iv-v2.html`, `flow-housing-iv-desktop-v2.html`, `housing-iv-v2.css`, `housing-iv-v2.js` | §4.5 IV QR (**current**) |
 > | `home.html`, `home-desktop.html`, `home.css` (+`upsell.css`) | §5 Home & check-in list |
 > | `vela.html`, vela blocks in other pages | §6 Vela helper |
-> | `flow-payments-mobile.html`, `pay.css` | §7 Payments — mobile |
-> | `flow-payments-desktop.html`, `payd.css` (+`pay.css`) | §8 Payments — desktop |
+> | `flow-payments-mobile.html`, `pay.css` | §7 Payments — mobile (**current**) |
+> | `flow-payments-desktop.html`, `payd.css` (+`pay.css`) | §8 Payments — desktop (**current**) |
 > | `flow-taxes-mobile.html`, `tax.css` (+`pay.css`) | §9 Tourist taxes — mobile |
 > | `flow-taxes-desktop.html`, `tax.css` (+`pay.css`, `payd.css`) | §10 Tourist taxes — desktop |
-> | `flow-payments-v2.html`, `flow-payments-desktop-v2.html`, `pay2.css` (+`pay.css`, `payd.css`) | §8.5 Payments V2 (**current**) |
+> | `flow-payments-v2.html`, `flow-payments-desktop-v2.html`, `pay2.css` (+`pay.css`, `payd.css`) | §8.5 Payments V2 (**not built**) |
 > | `flow-faq-mobile.html`, `faq.css` (+`pay.css`) | §11 FAQ & language — mobile |
 > | `flow-faq-desktop.html`, `faq.css` (+`pay.css`) | §12 FAQ & language — desktop |
 > | `flow-upselling-mobile.html`, `upsell.css` (+`pay.css`) | §13 Upselling — mobile |
@@ -54,6 +54,18 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-deposit-mobile.html`, `flow-deposit-desktop.html`, `deposit.css` (+`pay.css`, `payd.css`) | §33 Property protection (standalone `DepositView`) |
 > | `flow-book-experience-mobile.html`, `book.css` (+`pay.css`, `upsell.css`) | §34 Book an experience (+ the `/:slug` deep link) |
 > | `flow-splash-v2.html`, `flow-splash-desktop-v2.html`, `splash-v2.css`, `splash-v2.js` | §36 Splash screen (**current**) |
+> | `toast-tooltip-demo.html`, `feedback.css`, `feedback-demo.js` | §37 Toasts & tooltips (the feedback layer) |
+>
+> Toasts & tooltips added (§37) — the cross-flow **feedback layer**, prototyped as a
+> building-block demo (`toast-tooltip-demo.html`). One toast component replaces the four
+> ad-hoc prototype toasts (`dm-toast` / `pay-toast` / `es-toast` / `bx-toast`) and the
+> shipped sonner defaults (`richColors`, an invisible flat 5 s timer, 5-deep stacks,
+> bottom-right even on phones): dark-glass surface with status **only in the icon accent
+> and timer color**, a visible pausable timer, one action slot (Undo / Retry), sticky
+> errors in guest words + a short support ref, a 3-deep stack cap with "Clear all", and
+> dedupe-by-id. Tooltips gain **keyboard focus** and touch equivalents (tap popover /
+> bottom sheet) — never hover-only. Existing flow pages keep their per-flow toasts until
+> migrated; §37 is the contract new work fires against (Appendix A rule 9).
 >
 > Splash screen added (§36) — `components/SplashScreen`, which had no prototype. The
 > splash stops being a timed gate and becomes a **handoff**: held for
@@ -133,7 +145,7 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > toggle is gone. Prototype-only chrome — the real
 > components are unchanged, so no screen/hash/CTA in the registries moves.
 
-**Last synced:** 2026-07-22 · Home V2 proposal removed (§5) — `home-v2.html`, `home-desktop-v2.html` and `home-v2.css` are deleted; `home.html` / `home-desktop.html` are the only Home prototypes and §5 documents them. · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It is clocked on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Find booking "the arrival card" (§17.0) is the only proposal** — §17/§18 stay authoritative for what ships; nav + `index.html` badge those two pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
+**Last synced:** 2026-08-03 · Vela rail tip tones (§14) — the rail's glyphs are toned like the statuses they explain instead of all reading brand blue: amber for the on-request lane tip and `ud-track`'s "Waiting", red for "Declined", blue for everything else. The kit's `AssistantPanel.Tip` grew a `tone` prop (`info`/`warning`/`danger`/`success`/`neutral`) backed by `--assistant-tip-icon-*` tokens so the app matches the prototype exactly (`#fff9db`/`#b86a00`, `#ffe2ed`/`#df0044`). The desktop rail's on-request tip also still carried the **pre-correction** copy ("the host confirms first — the amount is held on your card meanwhile") from before the manual-deal money model was fixed; it now reads like the rest of §13.1 — paying the cart is what holds the amount and sends the request. · 2026-08-02 · Chat unread marker + gap audit (§27.0/§27.3b) — added `c-unread`/`cd-unread`: a Slack-style **New messages** rule above the first unseen message (pinned to the cursor captured on open, not chasing the newest message), plus a sticky "N new messages" jump pill on desktop. Recorded the three shipped-app gaps the prototype now outruns: no unread concept at all (no read cursor, `ChatThread` always scrolls to bottom), no Vela on `/chat` (no `chat.rules.tsx`, so the global `VelaPanel` is empty there), and a **legacy `SubHeader` stacked above `ChatHeader`** on the route. · Chat state audit — every `ChatView` gate is now mocked on **both** form factors (§27.1/§27.4/§28.1). Added `c-loading`/`cd-loading` (the thread-only `CircularLoader`, header+composer already mounted), `c-sending-code`/`cd-sending-code` (`isSendingCode`), `c-verify-error`/`cd-verify-error` (`otpError`) and `c-code-error`/`cd-code-error` (`otpSendError`) — four real states the prototype had never shown — plus desktop parity screens `cd-noreg` (a real gate that desktop was missing entirely) and `cd-offline`. Corrected the OTP screen against `OtpVerification`: Verify is **disabled until all 6 digits** are in, and the cooldown is **inert text** ("Resend in 24s", `resend_in_seconds`) rather than a blue clickable "0:24". Recorded that `Routes.tsx` loads **`pages/ChatView`** (V3) while `senderColors.ts` lives only in `legacy/` — so the multi-guest colours are a **regression to restore**, not current behaviour. Vela rails added to the desktop verify (slim, no booking data pre-verification) and chat-off (full, as the fallback help channel) screens. · Chat feature-parity pass (§27/§28) — the chat prototypes now cover everything the shipped `ChatView` does: **multi-guest sender colors** (each `created_by` hashes to a stable palette color — `senderColors.ts`; `.msg-group.me.other` with colored name/avatar/bubble, shown on both form factors), **video bubbles** (inline `<video>`, maps `MessageVideo`), the **deleted-file placeholder** (`.file-card.deleted` for attachments whose `presigned_url` is gone; also listed as a dashed "Deleted" row on the desktop rail), **optimistic media** (dimmed local preview while sending) and **failed-with-attachment retry** (retryMessage re-sends text + attachments together), plus the composer's **rejected-upload chip** ("Over 10 MB", maps `processFile`). Desktop gains the two scenarios it was missing — `cd-attach` (photos & files, with the rail's Shared-in-this-chat expanded into a full attachment index incl. docs) and `cd-sending` (the receipts ladder + retry) — closing the gap where attachments and retry were mobile-only. · Manual-deal money model corrected (§13.1) — reconciled against the code, not assumed. `useBookDeal` creates a MANUAL deal `PRE_REQUESTED` with **no payment**; it sits in the §7 cart as a `PRE_AUTH_PAYMENT` line (legacy `MyCart`'s "Pre-authorizations:" row), and **paying the cart is what places the hold and sends the request** — exactly what the legacy booking form has always said. Approval captures the hold automatically; a no releases it. Two things follow, and both were wrong before: **`PRE_REQUESTED` is not "sent"** (it is in the cart, waiting on the guest — the shipped `RequestCard` claimed "Sent to the host" over it), and **the per-request payment lives in the cart, not on the offer** — `requested_reservation_payment_ids` takes a *subset* (the same mechanism shipped pay-later already uses: `?pay_later=<ids>` + `getMultiPaymentPayload`), so a single request CAN be paid alone; what was undeliverable was the *inline* card form on the offer detail, which is removed along with `m-sent`. The choice now sits in `m-queued`, where the deal has a cart line to address: "Review cart & send" or "Send just this one — €X". Both upselling pages now end the request lane in a single "Add to cart — €X" → `m-queued`, the tracker beats become **In your cart → Pay to send it → Host replies**, and the story's vineyard tour is the in-cart request: a dashed "held when you pay, then sent to the host" row in `u-track`/`u-rejected`, the §7 hold sections, the v2 bills and all four order histories. Payments pages also correct the breakfast basket meta (it is `AUTO`) and rename the hold section "Card holds — not charges". §34's on-request copy matches. **No-dates variant added** (`u-request-nodates`/`ud-request-nodates`) — `getAvailableDates()` returns `[]` when the booking window has closed, and the shipped picker mapped it into a blank rail while the CTA demanded an unpickable date; the picker now explains itself and `findBookingGap()` only asks for a date when `hasBookableDates()` says one exists. · Upselling detail forms completed (§13.4/§14) — the lane and the booking form are independent axes, so the detail screens now cover both shapes in both lanes: `u-detail-time`/`ud-detail-time` (instant × time-based `bx-slot` radios, "From €15.00", §34 slot prices, standard check-out free) and `u-request-date`/`ud-request-date` (on-request × guests + preferred-evening `bd-day` strip + `bx-select` time, dashed if-approved €90.00 total); both upselling pages now load `book.css` for the shared `bx-*` controls; the featured vineyard card and the late check-out card are wired into the new screens. · Toasts & tooltips added (§37) — the feedback building block (`toast-tooltip-demo.html` + `feedback.css` + `feedback-demo.js`, linked from `index.html` Building blocks and the nav): one toast contract (per-kind durations with sticky errors, visible pausable timer, one action slot, placement fixed per form factor, 3-deep cap + Clear all, dedupe-by-id) and the tooltip/popover/sheet ladder for hover vs touch; Appendix A gains rule 9 pointing at it. · Home V2 proposal removed (§5) — `home-v2.html`, `home-desktop-v2.html` and `home-v2.css` are deleted; `home.html` / `home-desktop.html` are the only Home prototypes and §5 documents them. · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It is clocked on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Find booking "the arrival card" (§17.0) is the only proposal** — §17/§18 stay authoritative for what ships; nav + `index.html` badge those two pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
 > https://vlad-svr.github.io/guestapp-redesign-prototypes/ · duplicate static galleries
 > (`iv-flow.html`, `iv-flow-desktop.html`, `guest-registration.html`) removed — the
 > interactive flows are now the single source per feature. Payments flows added
@@ -918,7 +930,7 @@ match what the guest is doing on that screen (see the §4 stage table); detour s
 
 ---
 
-## §7 Payments — mobile
+## §7 Payments — mobile (**current**)
 
 **Real components:** `pages/Payments/views/PaymentsView.tsx` (+ `components/MyCart/*`,
 `components/OrderHistory/*`), `pages/Payments/views/PaymentFormView.tsx`
@@ -936,7 +948,7 @@ Money is one of three kinds and each has a fixed treatment — never mix them:
 | Kind | Real source | Treatment |
 |---|---|---|
 | Charge (pay now) | `pay_now_payments[]`, `total_amount_to_pay` | solid card rows; summed into the payable total; the total is quoted **in the CTA label** ("Pay €380.00") |
-| Hold (pre-auth / retention) | `pre_auth_payments_total`, `retention_payments_total` | **dashed** card + dashed amount chip ("€300.00 hold"); NEVER summed into the payable total; always one plain sentence: "reserved on your card, released after checkout"; "How holds work" opens `m-hold` |
+| Hold (pre-auth / retention) | `pre_auth_payments_total`, `retention_payments_total`, and **pending manual-deal pre-auths** (§13.1 money model — held at request, captured on approval) | **dashed** card + dashed amount chip ("€300.00 hold", "€20.00 hold"); NEVER summed into the payable total; always one plain sentence: deposit — "reserved on your card, released after checkout"; request — "charged only if the host approves, released if not"; "How holds work" opens `m-hold` |
 | Already paid outside | `outside_paid_amount` | muted ledger row with a green check ("Already paid to Booking.com") |
 
 Every paying CTA (cart, card form, 3-DS sheet) quotes the same amount; the amount
@@ -952,7 +964,14 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
   and the meta "2 of 3 guests · 5 taxed nights" (quotes the §9 money story);
   deposit hold carries "Edit protection"
   (→ `p-deposit`); PMS-origin items (booking stay) have **no kebab** (`isPMSorigin`);
-  removable upsells get kebab ⋯ = remove / move to pay later.
+  removable upsells get kebab ⋯ = remove / move to pay later. The hold section
+  ("Card holds — not charges") lists **all three** holds: the security deposit
+  (held when you pay), the early check-in request pre-auth (€20.00, live since
+  10:24) and the vineyard tour request the guest chose to batch (€90.00, in the
+  cart — held when you pay, then sent; removable free before paying). Every
+  payable row is an instant item; on-request deals never appear as charges here
+  (§13.1 money model — this hold section is the redesign of legacy `MyCart`'s
+  "Pre-authorizations:" summary line).
 - Pay later (`store/payments/usePaymentsStore`): moving an item shows a toast, the item
   lands in a "Pay later" box ("Nothing here is charged"), each row has "Send back to
   cart", and the CTA amount updates. Prototype simulates via kebab on Breakfast basket
@@ -1001,8 +1020,12 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
 ### 7.5 Order history (`p-history`) & deposit chooser (`p-deposit`)
 
 - History rows grouped by date with badges: green **Paid**, dashed **Hold** (active),
-  blue **Refunded** (+ "back on Visa ···· 4242 within 5–10 days"). Footer note explains
-  "pending" statement lines. Maps to `useBuildDisplayedOrderHistory` categories.
+  blue **Refunded** (+ "back on Visa ···· 4242 within 5–10 days"). Three hold
+  rows: the security deposit, the early check-in pre-authorization ("Waiting for
+  the host · charged only if approved") and the vineyard pre-authorization
+  ("Placed with your booking payment" — the batch path after the cart is paid).
+  Footer note explains "pending" statement lines. Maps to
+  `useBuildDisplayedOrderHistory` categories.
 - `p-deposit` (DepositView): each option leads with the cost **today** — "€0.00 today"
   (security-deposit hold, ⚡ Recommended) vs "€39.00 one-time" (damage protection,
   amber "non-refundable" caveat); consequence bullets per option; ghost "Continue
@@ -1024,7 +1047,7 @@ is paying safe, where's the receipt. 3-segment `progress-track` on `p-form`/`p-3
 
 ---
 
-## §8 Payments — desktop
+## §8 Payments — desktop (**current**)
 
 **Prototype:** `flow-payments-desktop.html` (loads `pay.css` + `payd.css`)
 
@@ -1065,15 +1088,20 @@ rule as the §6 "no card" list on mobile.
 
 ---
 
-## §8.5 Payments V2 — the simpler cut (**current**)
+## §8.5 Payments V2 — the simpler cut (**not built**)
 
 **Prototype:** `flow-payments-v2.html` + `flow-payments-desktop-v2.html`
 (both load `pay.css` + `pay2.css`; desktop also `payd.css` and `rowmenu.js`)
 
-§7/§8 were **rejected as visually cluttered**. They are kept as the record of the
-ledger rules; V2 is what the redesign proposes. **The receipt was approved and is
-carried over byte for byte** — `p2-success` / `pd2-success` are `p-success` /
-`pd-success` unchanged, including the §1.4 next-task CTA.
+V2 was drawn after §7/§8 were called visually cluttered, and for a while it was the
+proposal of record. **It was not the cut that shipped**: the implementation follows
+§7/§8 — tab pair, section headers, separate hold card and ledger — by an explicit
+decision when the flow was built. This section is kept as the argument for a leaner
+cart, not as a description of the app.
+
+**The receipt is common to both** — `p2-success` / `pd2-success` are `p-success` /
+`pd-success` unchanged, including the §1.4 next-task CTA. (Neither is implemented yet;
+the app currently ends a payment on the order-history tab.)
 
 ### 8.5.1 What the cut removes
 
@@ -1088,7 +1116,7 @@ restated the total, the hold and the already-paid line. V2 keeps every one of th
 | kicker + display title + intro | one `p2-title` line + one `p2-note` sentence |
 | tabs "My cart {n}" / "Order history" | the bill is the page; history is one `p2-more` link row (a tab pair for two destinations of unequal weight was always lopsided) |
 | 3 × `pay-sec` headers | none — the items are self-evidently the items |
-| separate `hold-card` + `ledger` hold row | **one** dashed `bf-hold` line, inside the bill |
+| separate `hold-card` + `ledger` hold row | dashed `bf-hold` lines inside the bill — one per hold (deposit + the §13 request pre-auth) |
 | `ledger` restating the total | `bf-total` in the same card as the items — the bill *ends* in its total |
 | kebab → invisible menu | kebab → `m-item-*` sheet (mobile) / `rm-pop` popover (desktop) that names both actions and their consequence |
 
@@ -1126,8 +1154,8 @@ Desktop: `pd2-cart`* · `pd2-history` · `pd2-form` · `pd2-processing` ·
 (* = `data-start`; autonext: processing→success 3.0 s)
 
 **Not carried into V2:** `p-slow` (the polling-fallback wait). It is a v1-only
-screen and §7.4 remains its spec — if V2 ships, `p2-processing` needs the same
-amber "taking longer than usual" state.
+screen and §7.4 remains its spec. Since v1 shipped, `p-slow` is folded into the
+built `p-processing` as a time-based state rather than a separate screen.
 
 ---
 
@@ -1416,7 +1444,7 @@ Desktop mirrors §11 with the desktop shell and these differences:
 `CreateDealCompleteModal/*`, `EnterContactEmailModal/*`,
 `legacy/hooks/useBookDeal.ts`, `store/bookExperience`,
 `pages/HomeView/components/useUpsellItems.ts` (partner sources) ·
-**Prototype:** `flow-upselling-mobile.html` (loads `pay.css` + `upsell.css`)
+**Prototype:** `flow-upselling-mobile.html` (loads `pay.css` + `upsell.css` + `book.css`)
 
 User-facing name: **"Extras & experiences"** (route `recommendations`). The flow's
 job: add stay upgrades with zero ambiguity about (a) when money leaves the card and
@@ -1430,11 +1458,47 @@ Every native offer belongs to exactly one lane, derived from
 | Lane | Source value | Card chip | Detail lane-note | CTA label | After CTA |
 |---|---|---|---|---|---|
 | ⚡ **Instant** | `AUTO` | `.lane.instant` (blue tint) | "Instant — no approval needed. This goes straight to your payments cart…" | "Add to cart — €12.50" | `m-added` → deal status `APPROVED`, lands in the payments cart |
-| 🕗 **On request** | `MANUAL` | `.lane.request` (amber tint) | "On request — {host} confirms first… charged only if they say yes." | "Send request — nothing charged yet" | `m-sent` → deal status `PRE_REQUESTED`, appears in "My requests" |
+| 🕗 **On request** | `MANUAL` | `.lane.request` (amber tint) | "On request — {host} confirms first. Add it to your cart: paying the cart holds the amount and sends your request…" | "Add to cart — €20.00" | `m-queued` → deal status `PRE_REQUESTED`, sits in the §7 cart as a pre-auth line |
+
+**The manual-deal money model (THE rule this flow turns on).** A request is
+**one cart payment away from existing**. `useBookDeal` creates the deal
+`PRE_REQUESTED` with *no payment*; it lands in the §7 cart as a
+`PRE_AUTH_PAYMENT` line (`pre_auth_payments_total`; legacy `MyCart` prints it
+under a **"Pre-authorizations:"** summary row). Paying the cart is what places
+the hold **and** sends the request — the legacy booking form says exactly this:
+*"After you complete the card pre-authorization, your request will be sent to
+the host for review."* The host's yes then **captures the hold automatically**
+(no second payment); a no, a cancellation or an expiry **releases it**.
+
+Two consequences the screens must respect:
+
+1. **`PRE_REQUESTED` ≠ sent.** It is in the cart, waiting on the *guest*.
+   `REQUESTED` is with the *host*. Copy that says "Request sent" or "Sent to the
+   host" over a `PRE_REQUESTED` deal is a lie — that was the shipped bug this
+   revision fixes.
+2. **Batch is the default, but a single request can be sent on its own.** The
+   payment API is addressed by *reservation-payment ids*, and that is a
+   **subset**, not an all-or-nothing: `getPaymentsCart` already takes
+   `?reservation=X&pay_later=<ids>` to drop lines out of `pay_now_payments`, and
+   `usePayment`'s `getMultiPaymentPayload` maps whatever `CartPayment[]` it is
+   handed into `requested_specification.requested_reservation_payment_ids`.
+   Today `PaymentForm` simply passes the whole cart — but paying exactly one
+   line is the same mechanism the shipped pay-later feature already uses.
+
+   So the guest gets a genuine choice, and it lives in **`m-queued`** — after
+   the deal exists and therefore *has* a cart line to address:
+   primary **"Review cart & send"** (batch — pay once for everything) and
+   secondary **"Send just this one — €X"** (defer the rest, pay this line alone).
+   The choice is deliberately *not* on the offer detail: before the deal is
+   created there is no payment id to scope, and an inline card form there would
+   imply a second, per-offer payment surface that does not exist. The card is
+   always taken on the §7 payment form.
 
 Corollaries:
-- The CTA always states the money consequence (amount for instant, "nothing charged
-  yet" for requests) — same rule as payments §7.3 and taxes §9.2 CTAs.
+- The CTA always states the money consequence — here both lanes read "Add to
+  cart — €X", because both do exactly that; what differs (charge vs hold) is
+  said in the line *under* the button, never contradicted on it. Same rule as
+  payments §7.3 and taxes §9.2 CTAs.
 - Amber marks the *waiting* lane per Appendix A rule 5 (action needed — by the host);
   it is never used for errors.
 - A third pseudo-lane **"In your cart"** (`.lane.incart`, green) marks offers whose
@@ -1448,9 +1512,9 @@ Corollaries:
 
 | Status | Where shown | Treatment |
 |---|---|---|
-| `PRE_REQUESTED` / `REQUESTED` | "My requests" (`u-track`) | tracker step 2 active (pulsing), price as **dashed `hc-chip`**, ledger `lg-row hold` — never summed |
-| `APPROVED` | "In your cart" group + list card mark | solid price, counts into "Extras in your cart" total, pays via §7 cart |
-| `REJECTED` | `u-rejected` | red `.st-chip.declined` + tracker step 2 `fail`, host's reply quoted (`.host-note`), plan-B suggestion, "nothing was charged" |
+| `PRE_REQUESTED` / `REQUESTED` | "My requests" (`u-track`) | tracker step 2 active (pulsing), price as **dashed `hc-chip`** — a sent request quotes its live pre-auth ("€20.00 held on Visa ···· 4242"), an in-cart `PRE_REQUESTED` one quotes the pending hold ("held when you pay, then sent to the host"); both render in §7's hold section and ledger `lg-row hold` — never summed |
+| `APPROVED` | instant deals: "In your cart" group + list card mark | solid price, counts into "Extras in your cart" total, pays via §7 cart. An approved **request** never reaches the cart — the hold is captured automatically and lands in §7 order history as a charge |
+| `REJECTED` | `u-rejected` | red `.st-chip.declined` + tracker step 2 `fail`, host's reply quoted (`.host-note`), plan-B suggestion, "€20.00 hold released" |
 | `PAID` | §7 order history (`p-history`) | not re-listed here — paid deals are receipts, not extras to manage |
 
 Partner offers (Mozio/Airalo/GuruWalk `UpsellSource`s) are shown as the live app
@@ -1479,64 +1543,113 @@ amber token, not the partner's brand hex.
   `freeOffers` category.
 - **Featured card** (`.of-feature`): `is_exclusive` offer with gradient-brand
   "✦ Exclusive for guests" flag and dark-glass price pill (Sunset vineyard tour,
-  €45.00 / person). Not wired to a detail screen in the prototype.
+  €45.00 / person). Wired → `u-request-date` (the on-request detail with inputs).
 - **Offer grid** (2-col): each card = pastel photo + glass price pill
   (`€X <unit>` from `PriceItem.unit_type`) + title + one-line highlight + lane chip.
-  Wired: Breakfast basket → `u-detail`, Early check-in → `u-request`. Late check-out
-  carries the in-cart mark (story: added during §1 registration).
+  Wired: Breakfast basket → `u-detail`, Early check-in → `u-request`, Late check-out
+  → `u-detail-time` ("From €15.00" — a time-based offer quotes its floor). Late
+  check-out also carries the in-cart mark (story: added during §1 registration).
 - CTA dock: "Review cart — 1 extra · €15.00" → `flow-payments-mobile.html#p-cart`
   (the dock always quotes the cart's current extras count + sum).
 - `u-empty`: no published offers — gift ring, "No extras for this stay yet", escape
   actions **Vela tips** (`m-vela`) and Back to home (Appendix A rule: empty states
   invite action).
 
-### 13.4 Offer detail (`u-detail` instant, `u-request` on request)
+### 13.4 Offer detail (`u-detail` / `u-detail-time` instant, `u-request` / `u-request-date` on request)
 
 Shared skeleton: hero photo with glass price pill → lane-note (the lane, spelled
 out) → description (`Offer.description`) → `.of-facts` rows (availability/delivery
 window, capacity, cancellation) → lane-specific block → CTA dock.
 
-- `u-detail` (Breakfast basket, AUTO): quantity stepper (`PriceCounter` stand-in,
-  "− 1 +", €12.50 each) → mini-ledger "To your payments cart €12.50" with the
-  "nothing is charged now" note → CTA `m-added`.
-- `u-request` (Early check-in, MANUAL): "How your request travels" tracker preview
-  (3 steps: Send request *now* → Host reviews *a few hours* → Pay in cart *if
-  approved*) → **inline reply-email row** (`.mail-row`: "The reply goes to
-  maria@gmail.com · Edit") — replaces the surprise `EnterContactEmailModal` /
-  confirm-email route → CTA `m-sent` + secure-line "€20.00 is charged only after
-  Villa Serena approves".
+**The lane (confirmation_type) and the booking form (category/template) are
+independent axes** — the detail screens cover both form shapes in both lanes.
+The two forms are: **quantity** (`PriceCounter` stepper, optionally plus the
+`DeliveryDateTimePicker` day strip + time) and **time-based**
+(`isTimeBasedOffer` → `TimeBasedCounter` radio slots where the price follows
+the hour — no quantity). Booking-input markup is the §34 `bx-*` set
+(`book.css`, now loaded by both upselling pages) so §13/§14 and §34 render the
+same controls.
+
+- `u-detail` (Breakfast basket, AUTO × quantity): quantity stepper ("− 1 +",
+  €12.50 each) → mini-ledger "To your payments cart €12.50" with the "nothing
+  is charged now" note → CTA `m-added`.
+- `u-detail-time` (Late check-out, AUTO × time-based): "Select time" block —
+  `.bx-standard` "Standard check-out is 11:00 — free" + three `.bx-slot` radios
+  (until 12:00 €15.00 *selected* · 14:00 €25.00 · 16:00 €35.00, the §34 story
+  slots) → mini-ledger quoting the selected slot → CTA `m-added`. The hero and
+  the list card say **"From €15.00"** — a time-based offer quotes its floor.
+- `u-request` (Early check-in, MANUAL × fixed): "How your request travels"
+  tracker preview — the three beats every request screen repeats: **In your
+  cart** *now* → **Pay to send it** *holds the amount* → **Host replies**
+  *charged only on a yes* → **inline reply-email row** (`.mail-row`: "The
+  reply goes to maria@gmail.com · Edit") — replaces the surprise
+  `EnterContactEmailModal` / confirm-email route → CTA "Add to cart — €20.00" →
+  `m-queued`; secure-line "Nothing is charged now — paying your cart holds this
+  amount and sends the request". **No payment element on this page** — the card
+  is taken once, in the §7 cart (money-model rule 2).
+- `u-request-date` (Sunset vineyard tour, MANUAL × quantity + preferred date):
+  guests stepper (€45.00 each, 2 selected) → **"Preferred evening"** `.bd-day`
+  strip (15–22 Aug window, Sat 16 selected) + `.bx-select` time ("19:30 — the
+  sunset slot") → the same tracker + reply-email row → **dashed pending total**
+  (`.bx-total.dashed` €90.00, label "Held when you pay" — dashed = a hold that
+  has not happened yet, the §13 convention) → CTA "Add to cart — €90.00" →
+  `m-queued`. The preferred date is a *preference*, not a booking: the host can
+  counter-propose before the hold is captured.
+- `u-request-nodates` (same offer, **no bookable window**): `getAvailableDates()`
+  returns `[]` whenever the window has closed (check-out already passed, or a
+  same-day stay), and the shipped picker mapped that empty array — label over a
+  blank rail, and then the CTA flagged *"Pick a delivery date to continue"* for
+  a date that could not be picked. The date block is replaced by a `.bx-standard`
+  note ("No evenings open yet… add it to your cart anyway and they'll propose
+  one"), the time select is dropped, the availability fact reads "Dates are
+  agreed with the host", and **the CTA stays enabled** — for an on-request offer
+  the date was always a preference, so its absence must not be a dead end.
 
 ### 13.5 My requests (`u-track`, `u-rejected`)
 
-- `u-track`: section **"Waiting for the host"** — `.req-card` with 3-step tracker
-  (step 1 done 10:24, step 2 active "usually a few hours", step 3 todo), dashed
+- `u-track`: section **"Waiting for the host"** — `REQUESTED` deals only (their
+  cart payment already happened). `.req-card` with the 3-step tracker (steps 1
+  and 2 done, step 3 "Host replies" active), meta "€20.00 held on Visa ···· 4242", dashed
   €20.00 chip, foot note "we'll email you… keep browsing meanwhile" + **Cancel
   request** (→ `m-cancel`; plain text, never red — Appendix A rule 2). Section
-  **"In your cart — pay when ready"** — approved extras as `pay-item` rows. Ledger:
-  "Extras in your cart €27.50" + dashed hold-row "Early check-in — waiting €20.00"
-  with the note that dashed never sums. CTA → payments cart.
+  **"In your cart — pay when ready"** — instant extras as `pay-item` rows, plus
+  the vineyard tour **request in the cart** (dashed €90.00 chip, "held when you
+  pay, then sent to the host" — the `m-queued` path made visible). Ledger:
+  "Extras in your cart €27.50" + two dashed hold-rows — "Early check-in — held,
+  waiting €20.00" (live) and "Vineyard tour — held when you pay €90.00"
+  (pending) — with the note that dashed never sums. CTA → payments cart.
 - `u-rejected`: the same view when the host declines — declined `.st-chip`, tracker
-  step 2 `fail` (red = the request lifecycle's error outcome), **`.host-note`
-  quoting the host's actual reply**, "Plan B" suggestion card (Luggage drop €5.00 /
-  bag, instant), cart section unchanged ("your total didn't change"). Primary CTA
-  "Browse other extras" (recovery is primary blue).
+  step 2 `fail` (red = the request lifecycle's error outcome), step 3 "Hold
+  released", meta "€20.00 hold released", **`.host-note` quoting the host's
+  actual reply**, "Plan B" suggestion card (Luggage drop €5.00 / bag, instant),
+  cart section unchanged ("the hold was released and your total didn't change").
+  Primary CTA "Browse other extras" (recovery is primary blue).
 
 ### 13.6 Modals & Vela
 
 - `m-added` (sheet) = `CreateDealCompleteModal`: "Review cart & pay" →
   `#p-cart` · ghost "Keep browsing extras" → `u-list`.
-- `m-sent` (sheet): "Track my request" → `u-track` · ghost → `u-list`. Quotes the
-  reply email.
+- `m-queued` (sheet) = `CreateDealCompleteModal`'s on-request lane. Carries the
+  §13.1 choice: primary "Review cart & send" → §7 cart, secondary **"Send just
+  this one — €X"** → §7 payment form scoped to this deal's line (defer the
+  rest), ghost "Keep browsing extras". Copy: "In your cart — nothing sent yet…
+  when you pay the cart, the amount is held and the request goes to Villa
+  Serena — one payment for all of it. Remove it free any time before you pay."
+  Primary "Review cart" → §7 cart · ghost → `u-list`.
 - `m-partner` (sheet): partner hand-off — "you'll book and pay on their site…
   never in your Chekin cart"; primary "Continue to the partner site".
-- `m-cancel` (dialog): cancel request confirm — "nothing is charged… you can request
-  again"; primary "Cancel request" (blue).
-- `m-vela` (right sheet): "Two ways to book", "When am I charged?" (never here),
-  "Can I change my mind?" + ask chips.
+- `m-cancel` (dialog): cancel request confirm — "the €20.00 hold is released back
+  to your card — you're never charged… you can request again"; primary "Cancel
+  request" (blue).
+- `m-vela` (right sheet): "Two ways to book", "When am I charged?" (instant: in
+  the cart, once at the end; requests: hold now or with the one cart payment —
+  the guest's choice — captured only on the host's yes), "Can I change my
+  mind?" (cancel releases the hold) + ask chips.
 
 ### 13.7 Screen-id registry (deep-link hashes)
 
-`u-list`* · `u-detail` · `u-request` · `u-track` · `u-rejected` · `u-empty`
+`u-list`* · `u-detail` · `u-detail-time` · `u-request` · `u-request-date` ·
+`u-request-nodates` · `u-track` · `u-rejected` · `u-empty`
 (* = `data-start`; no autonext screens)
 
 ---
@@ -1544,7 +1657,7 @@ window, capacity, cancellation) → lane-specific block → CTA dock.
 ## §14 Upselling — desktop
 
 **Prototype:** `flow-upselling-desktop.html` (loads `pay.css` + `payd.css` +
-`upsell.css`)
+`upsell.css` + `book.css`)
 
 Desktop mirrors §13 with the desktop shell and these differences:
 
@@ -1557,24 +1670,41 @@ Desktop mirrors §13 with the desktop shell and these differences:
   after card 5** (§13.2), then a trailing **"Free walking tours"** 3-col section of
   GuruWalk `.of-card`s (green `Free` badge + rating); CTA row (not a dock): "Review
   cart — 1 extra · €15.00" → `#pd-cart` + ghost "My requests & extras".
-- `ud-detail` / `ud-request`: two-column `.upd-two` — story column (hero, lane-note,
-  description, facts) left, **sticky `.book-box`** right. The book-box holds the
-  price line, quantity stepper (instant) or tracker + inline email row (request),
-  the lane CTA and the "nothing charged" note — the §7/§9 sticky-ledger pattern
-  applied to booking.
+- `ud-detail` / `ud-detail-time` / `ud-request` / `ud-request-date`: two-column
+  `.upd-two` — story column (hero, lane-note, description, facts) left, **sticky
+  `.book-box`** right. The book-box holds the price line, then the booking form —
+  quantity stepper (`ud-detail`), the `bx-slot` time radios with the
+  "standard check-out is 11:00 — free" note (`ud-detail-time`), or guests +
+  `bd-day` preferred-evening strip + `bx-select` time (`ud-request-date`) —
+  then the request tracker + inline email row (request lane), the dashed
+  pending total (`.bx-total.dashed` "Held when you pay", request-with-details),
+  the CTA "Add to cart — €X" → `m-queued` and the paying-your-cart note — the
+  §7/§9 sticky-ledger pattern applied to booking.
+  Form shapes and mock values are §13.4's; the desktop pages load `book.css`
+  for the shared `bx-*` controls.
 - `ud-track` / `ud-rejected`: `payd-grid` — request/cart cards left, **sticky
   ledger** right (extras total, per-item rows, dashed "waiting" hold-row or €0.00
   declined row, CTA "Pay in your cart" → `#pd-cart` / "Browse other extras").
 - Modals are centered dialogs (no sheets). No `u-empty` mirror (mobile-only, like
   taxes' `t-empty`).
 - Vela rail is stage-aware: `ud-list` — two-ways-to-book + partner tip; `ud-detail` —
-  delivery/cancellation tips; `ud-request` — "you'll get an email" + free-to-cancel;
-  `ud-track` — status legend (waiting/in-cart/declined); `ud-rejected` — plan-B
-  suggestion chips.
+  delivery/cancellation tips; `ud-detail-time` — "leaving at 11:00 anyway? then
+  standard check-out is free"; `ud-request` / `ud-request-date` — "you'll get an
+  email" + free-to-cancel + "one payment instead?" (the add-to-cart choice; the
+  date variant adds "your evening is a preference — the host can suggest
+  another"); `ud-track` — status legend
+  (waiting/in-cart/declined); `ud-rejected` — plan-B suggestion chips.
+- **Rail tip glyphs are toned like the status they explain**, not all brand blue:
+  amber (`--amber-50`/`--amber-700`) for anything waiting on someone — the
+  on-request lane tip and the `ud-track` "Waiting" row — and red
+  (`--red-100`/`--red-500`) for "Declined". Everything else stays blue. A tip that
+  explains a chip and a chip that means the same thing must not read as two
+  different palettes.
 
 ### 14.1 Screen-id registry (deep-link hashes)
 
-`ud-list`* · `ud-detail` · `ud-request` · `ud-track` · `ud-rejected`
+`ud-list`* · `ud-detail` · `ud-detail-time` · `ud-request` · `ud-request-date` ·
+`ud-request-nodates` · `ud-track` · `ud-rejected`
 (* = `data-start`; no autonext)
 
 ---
@@ -2332,11 +2462,26 @@ modals `m-keys`, `m-fee`, `m-transfer`, `m-host` (* = `data-start`)
 
 **Prototype:** `flow-chat-mobile.html` (loads `chat.css`, `chat-demo.js`)
 
-Maps `ChatView` (the state gates), `ChatInterface` (thread + composer), `MessageBubble`,
-`ChatInput`, `OtpVerification` and `useChatWebSocket`. Reservation route `chat`; entry from
-Home / the FAQ "message host" affordance.
+Maps `ChatView` (the state gates), `ChatInterface` (thread + composer), `ChatThread` /
+`MessageBody`, `ChatInput`, `OtpVerification` and `useChatWebSocket`. Reservation route `chat`;
+entry from Home / the FAQ "message host" affordance.
+
+**Which implementation is authoritative:** `Routes.tsx` lazy-loads `pages/ChatView` (the V3
+rewrite) — `legacy/pages/ChatView` is only reached from `legacy/Routes.tsx`. Where the two
+differ, this section tracks **`pages/ChatView`**, and calls out anything the rewrite dropped.
 
 **Glass variants removed** — the redesign settled on flat boxes and chrome-only glass, so the former A/B switch here is gone; the standard look is the only one.
+
+### 27.0 Open gaps in the shipped chat (audited 2026-08-02)
+
+Three things the prototype shows that `pages/ChatView` does **not** do. None is a prototype
+change — each needs app work:
+
+| # | Gap | Where it lives today |
+|---|---|---|
+| 1 | ~~**No unread marker.**~~ **Fixed client-side** — `useUnreadCursor` stores a per-room `chat_read_at_*` cursor in LocalStorage, `buildMessageRows` emits an `unread` row, and `ChatThread` anchors the first render on the marker instead of the bottom. Still device-local: a server-side read cursor would make it cross-device. | §27.3b |
+| 2 | ~~**No Vela in chat.**~~ **Fixed** — added `vela/rules/chat.rules.tsx` + `VelaScene.Chat`, so the global `VelaPanel` now has content on `/chat`. | §28 rails |
+| 3 | ~~**Two headers, one of them legacy.**~~ **Fixed** — `SubHeader` dropped from `ChatView`; `ChatHeader` owns the top bar. | §27.2 |
 
 ### 27.1 State machine (ChatView — the order the gates resolve)
 
@@ -2344,19 +2489,29 @@ Home / the FAQ "message host" affordance.
 
 | Guard (source) | Real state today | Prototype screen |
 |---|---|---|
-| `isChatSettingsLoading` | centered "loading" | (not mocked — instant) |
+| `isChatSettingsLoading` | centered "Loading" | folded into `c-loading` |
 | `!isChatEnabled` (`useChatSettings`) | icon + one line | `c-unavailable` |
 | `!hasLeadGuestEmail` (`default_invite_email`) | `UserX` + one line | `c-noreg` |
-| `showOtp` (`useChatOtp`) | dialog over a **blurred** thread | `c-verify` (full screen) |
-| otherwise | `ChatInterface` | `c-conversation` / `c-empty` |
+| `isSendingCode` (`useChatOtp`) | spinner + "Sending verification code…" | `c-sending-code` |
+| `otpSendError && !showOtp` | `TriangleAlert` + "Retry sending code" | `c-code-error` |
+| `showOtp` (`useChatOtp`) | dialog over a **blurred** thread | `c-verify` / `c-verify-error` |
+| otherwise | `ChatInterface` | `c-conversation` / `c-empty` / `c-loading` |
+
+Every row is now mocked. `isSendingCode`, `otpSendError` and the thread-level `isLoading` are
+real states the app has always rendered and the prototype previously skipped.
 
 ### 27.2 Conversation (`c-conversation`, `data-start`)
 
-- **Host identity header** (`.chat-head`) — replaces the "Talking with {property}" strip:
-  host avatar with a **presence dot**, host display name + a **verified** tick, and a
-  presence/response line (`Active now` / `Usually replies within an hour`). An info action
-  opens `m-trip`. *(Host display name + photo + presence are a proposed profile addition;
-  they fall back to `property_name` when absent — honest note in the sim-line.)*
+- **Property identity header** (`.chat-head`) — replaces the "Talking with {property}" strip:
+  avatar, the **property** name + a **verified** tick, and the role line `Your host`. An info
+  action opens `m-trip`.
+  **There is no host person.** `ChatInterface` resolves the identity as
+  `housing.display_name || housing.name || reservation.housing_name || t('your_stay')`, with the
+  avatar from `branding.navigation_title_logo || housing.picture` — so the thread is always
+  addressed to a property, never a named individual. Earlier revisions of this prototype invented
+  a host called "Marco"; that was wrong and is gone. For the same reason there is **no presence
+  dot and no "Active now"** — a property is not online or offline. Response time (`Usually
+  replies in ~15 min`) stays as a proposal, since it is a property-level statistic, not presence.
 - **Trip strip** (`.trip-strip`) — `property · dates · guests` from `reservationInfo`, so
   both sides share context without re-explaining.
 - **Thread** (`.chat-thread`): a privacy `.chat-note`, **day separators** (`.chat-day`,
@@ -2365,6 +2520,15 @@ Home / the FAQ "message host" affordance.
   per-message time on the last). `is_outbound === false` ⇒ `.me` (right, brand gradient);
   host ⇒ `.host` (left, white card). Links auto-linkify (matches `MessageBubble`'s
   `URL_REGEX`). A **typing** bubble (`.typing`) reflects host presence over the WebSocket.
+- **Multi-guest sender colors** *(regression to restore)* — the guest side is *not* one person:
+  every guest on the booking writes into the same room. The legacy `MessageBubble` coloured each
+  sender by hashing `created_by` into an 8-colour palette with per-room collision avoidance
+  (`legacy/pages/ChatView/senderColors.ts`); **the V3 `ChatThread` dropped it** — it groups on
+  `isOutgoing` alone, so every guest now renders identically in brand blue and the thread reads
+  as a two-party conversation it isn't. The prototype restores it: another guest's group is
+  `.msg-group.me.other` with `--sender`/`--sender-2` inline vars — coloured name label
+  (`.grp-name.sender`), coloured avatar (`.guest-av`, on the right, where V3 shows no outgoing
+  avatar at all) and the bubble gradient in the sender's colour. Your own messages keep brand blue.
 
 ### 27.3 Empty / first message (`c-empty`)
 
@@ -2373,25 +2537,73 @@ Home / the FAQ "message host" affordance.
 Parking). Tapping a chip fills the composer (`chat-demo.js` `data-fill`) — reduces blank-page
 paralysis and routes common asks. Header presence shows the "replies within an hour" variant.
 
-### 27.4 Verify it's you (`c-verify`)
+### 27.3b New messages (`c-unread` / `cd-unread`)
+
+An **unread marker** above the first message the guest hasn't seen — the Slack pattern, a
+full-bleed rule with a `New messages` label (`.chat-new`) rather than another floating pill, so
+it reads as a boundary and never competes with `.chat-day`. Desktop adds a sticky
+**"N new messages"** jump pill (`.chat-jump`) when the marker is scrolled above the viewport.
+
+Two rules make it usable:
+1. **The marker is pinned, not live.** It sits at the unread cursor captured *when the thread
+   opened* and does not move while the guest reads. A marker that chased the newest message
+   would be useless.
+2. **Opening scrolls to the marker, not the bottom.** Today `ChatThread` unconditionally runs
+   `bottomRef.scrollIntoView()` on every `messages` change, so a guest returning to five new
+   messages lands on the last one with no idea where they left off. The marker is only
+   meaningful if the initial scroll targets it.
+
+**Not in the app in any form** — there is no read/unread concept in `GuestChatMessage`, no
+`last_read_at` on the room, and no unread count anywhere except the sidebar badge. Shipping this
+needs a server-side read cursor first.
+
+### 27.4 Verify it's you (`c-verify`, `c-verify-error`, `c-sending-code`, `c-code-error`)
 
 `OtpVerification` reframed. Same 6-digit code / resend-cooldown / error semantics, but a
 **full screen with rationale** (shield-check icon, who it protects, masked email, a "why am I
 seeing this?" note) instead of a bare dialog floating over a blurred thread. Verify → `c-conversation`.
 
+The gate's four states are all mocked, matching the component exactly:
+
+| Screen | Real state | Detail the prototype now honours |
+|---|---|---|
+| `c-sending-code` | `isSendingCode` | spinner + "Sending verification code…" + masked email; auto-advances |
+| `c-verify` | `showOtp` | Verify is **disabled until all 6 digits** are entered (`disabled={!isComplete}`); the cooldown renders as **inert bold text** `resend_in_seconds` ("Resend in 24s"), *not* a link |
+| `c-verify-error` | `otpError` | red cells + `invalid_code`; the field is cleared so Verify is disabled again, and past the cooldown the resend becomes a real `variant="link"` button |
+| `c-code-error` | `otpSendError && !showOtp` | `TriangleAlert` + the API message (fallback `failed_to_resend_code`) + a `retry_send_code` button |
+
+The earlier prototype showed a half-typed code with an **enabled** Verify button and a blue
+clickable "Resend in 0:24" — both wrong: the button is disabled until complete, and the cooldown
+is inert text in seconds, never `m:ss`.
+
+### 27.4b Loading (`c-loading`)
+
+`ChatInterface` renders `<CircularLoader>` **inside the thread area only** — the header, trip
+strip and composer are already mounted while the chat room and messages resolve. The gate-level
+`isChatSettingsLoading` (a bare centred "Loading") folds into the same screen. Auto-advances.
+
 ### 27.5 Delivery & read receipts (`c-sending`)
 
 Proposed message-status ladder on outbound bubbles (`.msg-meta .status`): **Sending** (spinner,
-optimistic) → **Sent** (✓) → **Delivered** (✓✓) → **Read** (✓✓ brand). Failed sends
-(`failedMessageIds`) show **Not delivered · Retry** inline (maps `retryMessage`). Today only the
-failed state exists.
+optimistic) → **Sent** (✓) → **Delivered** (✓✓) → **Read** (✓✓ brand). An optimistic message
+with media shows the **local preview dimmed** (`.bubble.media.pending`, maps `localAttachments`
+opacity while the server echo is pending). Failed sends (`failedMessageIds`) mute the whole
+group — attachments included — and show **Not delivered · Retry** inline; `retryMessage`
+re-sends the text **and** `temp_attachment_ids` + local previews together, so the failed-with-
+attachment example carries its image through the retry. Today only the failed state exists.
 
 ### 27.6 Photos & files (`c-attach`)
 
 Gated by `useChatAttachmentsEnabled`. Image messages render inside a `.bubble.media` and open a
-**lightbox** (`m-lightbox`); documents render as a `.file-card` download row; the composer shows
-**pending uploads** (`.pending-chip`) with a spinner while `usePendingFiles` uploads. Attach via
-the `+` button (maps the paperclip).
+**lightbox** (`m-lightbox`); **videos** play inline (`.bubble.media video`, black letterbox,
+same 240px footprint — maps `MessageVideo`); documents render as a `.file-card` download row
+(both host and guest variants). A **deleted attachment** (server keeps the message, the file is
+gone — no `presigned_url`) keeps a **placeholder plate**: `.file-card.deleted`, dashed icon,
+struck-through filename, "This file was deleted". The composer shows **pending uploads**
+(`.pending-chip`) with a spinner while `usePendingFiles` uploads, and a **rejected chip**
+(`.pending-chip.err`, "Over 10 MB") for files `processFile` refuses (it also converts
+HEIC→JPEG and compresses images before upload). Attach via the `+` button (maps the paperclip).
+Another guest's shared file demonstrates sender colors on media too (`Ana`, teal).
 
 ### 27.7 Reconnecting (`c-offline`)
 
@@ -2412,8 +2624,9 @@ outbound bubbles show a **Waiting to send…** state and flush on reconnect. Tod
 
 ### 27.10 Screen-id registry (deep-link hashes)
 
-`c-conversation`* · `c-empty` · `c-verify` · `c-sending` · `c-attach` · `c-offline` ·
-`c-unavailable` · `c-noreg` · modals `m-trip`, `m-lightbox` (* = `data-start`)
+`c-conversation`* · `c-empty` · `c-unread` · `c-loading` · `c-sending-code` · `c-verify` · `c-verify-error` ·
+`c-code-error` · `c-sending` · `c-attach` · `c-offline` · `c-unavailable` · `c-noreg` ·
+modals `m-trip`, `m-lightbox` (* = `data-start`)
 
 ---
 
@@ -2428,18 +2641,37 @@ Chat as the **"Support" → "Chat with host"** navy-sidebar destination (`active
   (host top bar + thread + composer) · a right **`.ctx-rail`** carrying the persistent shared
   context the mobile header can only summarise: a **host card** (photo · verified · response
   time), the **booking** (dates · guests · property), **Common questions** (fill the composer,
-  `data-fill`) and a **Shared-in-this-chat** files gallery. The one "Talking with {property}"
-  line becomes this rail.
+  `data-fill`) and a **Shared-in-this-chat** files gallery (images + a video thumb with a play
+  badge, `.ctx-file.vid`). The one "Talking with {property}" line becomes this rail. Includes
+  a second guest's colored group (§27.2's `senderColors` treatment).
 - `cd-empty`: greeting + starter chips in the thread; the rail still answers who / when / where.
-- `cd-verify`: `OtpVerification` as a centered `.cc-panel` (`no-rail`).
-- `cd-unavailable`: chat-off state as a centered panel with FAQ / guidebook actions.
+- `cd-attach`: §27.6 on desktop — image / **video** / file bubbles, the **deleted-file plate**,
+  another guest's shared file in their sender color, and the composer with pending uploads
+  (spinner + the "Over 10 MB" rejected chip). The rail's **Shared in this chat** becomes the
+  full attachment index: the media grid plus `.ctx-doc` rows for every document — including
+  the deleted one (dashed, struck-through, "Deleted").
+- `cd-sending`: §27.5 on desktop (`no-rail`) — the Sending → Sent → Delivered → Read ladder,
+  the dimmed optimistic media bubble, and both failed examples (text-only and with-attachment)
+  with inline **Retry**.
+- `cd-verify`: `OtpVerification` as a centered `.cc-panel`, with a **slim Vela rail** —
+  generic find-the-code help only (lead-guest email, spam/resend, FAQ link). Deliberately
+  **no booking or host context** on the rail: the guest isn't verified yet, and that data is
+  exactly what the OTP gate protects.
+- `cd-unavailable`: chat-off state as a centered panel (reason + one primary FAQ CTA); the
+  **full Vela rail** carries the fallback help (guidebook/contact tips + FAQ & guidebook quick
+  actions) — the host channel is off, so Vela is the help surface.
 
 Sidebar is cloned from `#cd-sb-tpl` into each screen's `<aside data-sb>`.
 
 ### 28.1 Screen-id registry (deep-link hashes)
 
-`cd-conversation`* · `cd-empty` · `cd-verify` · `cd-unavailable` · modal `m-lightbox`
-(* = `data-start`)
+`cd-conversation`* · `cd-empty` · `cd-unread` · `cd-loading` · `cd-attach` · `cd-sending` · `cd-offline` ·
+`cd-sending-code` · `cd-verify` · `cd-verify-error` · `cd-code-error` · `cd-unavailable` ·
+`cd-noreg` · modal `m-lightbox` (* = `data-start`)
+
+**Desktop / mobile parity:** both flows now carry the same twelve screens. Desktop previously
+lacked `cd-noreg` — a **real** `ChatView` gate — as well as the loading, sending-code, wrong-code,
+send-failed and reconnecting states.
 
 ---
 
@@ -2925,7 +3157,7 @@ the mobile form, the email step and the deep link.
 
 | Screen | Real source | Notes |
 |---|---|---|
-| `bx-tour` | `AddToCartForm` + `PriceCounter` | single-price, per-person, `MANUAL` lane → dashed total + "nothing charged now" |
+| `bx-tour` | `AddToCartForm` + `PriceCounter` | single-price, per-person, `MANUAL` lane → dashed "Held now · charged if approved" total + the held-not-charged note (§13.1 money model — the pre-auth step itself is specced in §13.4) |
 | `bx-multi` | `MULTIPLE_PRICE` items | **gap 16** — one counter per named `PriceItem`, each with its own `unit_type` |
 | `bx-time` | `TimeBasedCounter` | radio slots; `isTimeBasedOffer` = category in `{checkIn, checkOut, checkInCheckOut}`; the standard hour is stated as the free baseline |
 | `bx-delivery` | `DeliveryDateTimePicker` | **gap 15** — see 34.3 |
@@ -3267,6 +3499,90 @@ schedule (`Math.random` / `Date.now` free) so every run is frame-for-frame ident
 
 ---
 
+## §37 Toasts & tooltips — the feedback layer (building block)
+
+**Prototype:** `toast-tooltip-demo.html` + `feedback.css` + `feedback-demo.js` — a
+building-block demo (like `modals-demo.html`), not a flow: live triggers on a phone and
+a desktop frame, plus four static specimens that double as the anatomy reference.
+**Real code:** `App.tsx:33` `<Toaster position="bottom-right" duration={5000}
+visibleToasts={5} richColors />` (`@chekinapp/ui`, sonner-based) ·
+`utils/common.ts` `toastResponseError()` · `@chekinapp/ui` `Tooltip*`
+(`@radix-ui/react-tooltip`). **Prototype toasts this supersedes:** `dm-toast`
+(`deals.css`) · `pay-toast` (`pay.css`) · `es-toast` (`esim-v2.css`) · `bx-toast`
+(`book.css`) — their pages keep them until migrated; new work fires §37.
+
+### 37.1 The toast contract (one component)
+
+Surface never changes with status: always the dark-glass card (glass is allowed — a
+toast is chrome over content, Appendix A rule 1). Status lives **only** in the icon
+accent and the timer color. Anatomy, in order: status icon chip · title · optional
+detail (**2-line clamp** — anything longer belongs on a page) · **one action max**
+(Undo / Retry / View) · close ✕ · timer hairline.
+
+| Kind | Accent | Duration | ARIA role |
+|---|---|---|---|
+| success | `--green-500` | 4.2 s | `status` |
+| info | `--blue-light` | 5 s | `status` |
+| warning | `--amber-500` | 6 s | `status` |
+| error | `--red-soft` | **sticky** — explicit close/action only | `alert` |
+
+### 37.2 Placement is a rule, not a parameter
+
+Callers cannot choose. **Mobile:** pinned under the glass top bar (12 px side margins);
+never covers the CTA dock or bottom nav; a sideways swipe (>72 px) dismisses.
+**Desktop:** bottom-right stack, newest nearest the corner (matches the shipped
+`Toaster` position); the close ✕ reveals on hover only — the timer normally does that
+job.
+
+### 37.3 Time you can see — and pause
+
+A hairline timer bar shows what's left. Hover (or a resting finger) pauses it, and the
+pause is exact by construction: dismissal is driven by the bar's `animationend`, so
+pausing the bar *is* pausing the toast. Errors have no bar and never auto-dismiss.
+Under `prefers-reduced-motion` the bar is hidden and a plain timeout stands in.
+
+### 37.4 Stack discipline
+
+Max **3** on screen — the oldest yields (a wall of toasts is noise; shipped allows 5).
+A "Clear all" pill appears at ≥2. **Dedupe by id:** the same toast id fired again
+pulses the existing toast and re-arms its timer instead of stacking a twin (mirrors
+`toast.error(msg, {id})` already used in code).
+
+### 37.5 Error copy contract
+
+`toastResponseError()` today pipes the raw API message to the guest. The contract:
+**title** = what happened, in guest words ("We couldn't save your guest details") ·
+**detail** = the reassurance + a short ref (`Nothing was lost. Ref 4F2A`) · **action** =
+Retry. The raw message goes to Sentry, never the toast.
+
+### 37.6 The tooltip ladder (hover → focus → touch)
+
+- **Desktop:** navy bubble (≤224 px), shows on hover **and `:focus-within`** — every
+  icon-only control is a real, focusable button with a label tooltip. ~120 ms in,
+  instant out. Placements top/bottom/left/right; flip to stay inside the viewport.
+- **Rich variant:** titled white card (≤248 px) for "why we ask" explainers — one
+  paragraph max; longer content belongs in a modal.
+- **Touch (no hover exists):** short content → **tap popover** on an info-dot
+  (tap-away closes); long content → **bottom sheet** (`modals.js`); a truncated value
+  reveals its full text on a tap **on the value itself** — truncation never relies on
+  hover.
+
+### 37.7 Demo triggers (the scenario registry)
+
+| Trigger (`data-toast`) | Shows |
+|---|---|
+| `success` | outcome toast, 4.2 s timer |
+| `undo` | act-first + "Undo · 5" countdown; Undo restores and confirms |
+| `error` | sticky error, Retry swaps to "Retrying…" → success |
+| `warning` | 6 s warning |
+| `burst` | 4 fired → cap at 3, oldest yields, Clear all appears |
+| `dedupe` | same id twice → pulse + re-arm, no twin |
+
+Popovers: document-number info-dot · exemption info-dot (links into the `m-why` sheet) ·
+truncated property name. Sheet: `m-why` ("Why Carlos doesn't pay city tax" — quotes the
+Appendix B taxes story: € 3.10 per adult per night, Carlos 17 → **Under 18 exempt**
+€ 0.00, "2 of 3 guests · 5 taxed nights").
+
 ## Appendix A — Global UI rules (apply to every flow)
 
 1. Liquid glass only on chrome (top bars, docks, on-camera pills, Vela) — never on
@@ -3307,6 +3623,12 @@ schedule (`Math.random` / `Date.now` free) so every run is frame-for-frame ident
    action. 112 of the 123 page heads use this; the rest are structural variants (an
    `<h1>` title with custom sizing in the eSIM v2 pages, a title outside the head
    wrapper) and are left alone rather than bent into the component.
+9. **Feedback is one system (§37).** New work fires the §37 toast — one surface, status
+   only in the icon accent, placement fixed per form factor (under the top bar on
+   mobile, bottom-right on desktop), visible pausable timer, sticky errors in guest
+   words with a Retry, max 3 stacked, dedupe by id — instead of minting another one-off
+   toast class. Tooltips show on hover **and focus**; on touch the same content becomes
+   a tap popover or bottom sheet, and truncated values reveal on tap — never hover-only.
 
 ## Appendix B — Copy constants (one value, quoted everywhere)
 
@@ -3316,9 +3638,9 @@ schedule (`Math.random` / `Date.now` free) so every run is frame-for-frame ident
 | Home mock progress | **2 of 4 tasks done = 50%** ring | derived from the same task list the checklist renders |
 | IV step counter | stepper "Step N of 4" only | intro copy avoids totals ("A few quick steps") — count varies by document type |
 | Modal mock story | Ana just registered · 2 of 3 guests done · Carlos `verification_pending` | all §1 screens + desktop mirrors quote this one story |
-| Payments mock story | Booking stay €320.00 + tourist taxes €32.50 (incl. €1.50 fee) + late check-out €15.00 + breakfast basket €12.50 = **€380.00 to pay now** · €300.00 deposit **hold** · €410.00 already paid to Booking.com · Visa ···· 4242 · receipt to maria@gmail.com · pay-later variant defers the breakfast basket → €367.50 | ties to Home's "€ 380.00 paid" row and the §1 cart's late check-out + breakfast basket |
+| Payments mock story | Booking stay €320.00 + tourist taxes €32.50 (incl. €1.50 fee) + late check-out €15.00 + breakfast basket €12.50 = **€380.00 to pay now** (every payable row is instant) · €300.00 deposit **hold** + €20.00 early check-in request **pre-auth** (live, waiting for the host) + €90.00 vineyard tour request (in the cart — **held when you pay**, then sent; §13 story — none of the three ever summed) · €410.00 already paid to Booking.com · Visa ···· 4242 · receipt to maria@gmail.com · pay-later variant defers the breakfast basket → €367.50 | ties to Home's "€ 380.00 paid" row and the §1 cart's late check-out + breakfast basket |
 | FAQ & language mock story | Spain property with police active → minors-registration answer is the **age 14** variant; IV threshold stays **18** (two different real rules — never merge them) · IV, taxes and payments questions all visible (story enables all three) → **10 articles** · current language **English**, device language **Español** (suggested), switch lands on translated es strings from the real locale files | `Questions.tsx` conditions; `languageOptions` (18 entries, order fixed); es copy from `assets/locales/es/translation.json` |
-| Upselling mock story | Story starts with **late check-out €15.00 already in the cart** (added during §1 registration) → full flow adds **breakfast basket × 1 = €12.50** (instant, `AUTO`) so the cart's extras equal the §7 lines exactly (€27.50) · **early check-in €20.00 / stay** is the `MANUAL` on-request example (sent 10:24 → waiting; declined variant: host replies "earliest hand-over 15:00", plan-B luggage drop €5.00 / bag) · featured exclusive = sunset vineyard tour €45.00 / person · airport transfer stays **€35.00 / trip** (same price as the §1 deck) · partners: Airalo eSIM "from €4.50" + GuruWalk free tours — never in the cart | `Offer.confirmation_type` drives the lane; `DEAL_STATUSES` drive §13.2; partner sources from `useUpsellItems.ts` |
+| Upselling mock story | Story starts with **late check-out €15.00 already in the cart** (added during §1 registration) → full flow adds **breakfast basket × 1 = €12.50** (instant, `AUTO`, first morning 8:30–9:00) so the cart's extras equal the §7 lines exactly (€27.50) · **early check-in €20.00 / stay** is the `MANUAL` on-request example (**€20.00 pre-authorized on Visa ···· 4242 at 10:24** → waiting; captured automatically on approval; declined variant: host replies "earliest hand-over 15:00", **hold released**, plan-B luggage drop €5.00 / bag) · the same €20.00 hold shows in §7's hold section and order history · featured exclusive = sunset vineyard tour €45.00 / person (request-with-details, the **add-to-cart path**: €90.00 for 2 guests sits in the cart "held when you pay, then sent to the host" — one §7 payment charges the instant extras and places this hold) · airport transfer stays **€35.00 / trip** (same price as the §1 deck) · partners: Airalo eSIM "from €4.50" + GuruWalk free tours — never in the cart | `Offer.confirmation_type` drives the lane; `DEAL_STATUSES` drive §13.2; the §13.1 money model drives the pre-auth; partner sources from `useUpsellItems.ts` |
 | Remote-access mock story | Villa Serena · CHK-58291 · check-in **Fri 15 Aug, access from 15:00** to checkout 22 Aug 11:00 · two doors: **Street entrance** (COMMON, keypad code **4471#**) → **Apartment 3B** (PRIVATE, remote slide) · the gate blocks on the same recurring story beat — **Carlos's ID still pending** (`verification_pending`), with Booking paid (€380.00, 12 Aug) and all guests registered already ✓ · alt properties: The Palm Residence (Keyless, ref **CHK-KL-88213**), Loft Gràcia (Salto, rooms Loft 2A / Rooftop terrace / Bike storage **offline**) | `incomplete_conditions` → checklist; `valid_from`/`valid_through` → the access window; `LOCK_VENDORS` → the three card types; ties to the app-wide "Carlos verification_pending" beat (Appendix B modal story) and the §7 "€380.00 paid" |
 | Auth & onboarding mock story | Villa Serena · CHK-58291 · account **maria@gmail.com** · create-account is a 3-step machine (email → password → 6-digit code, resend at **0:24**) · onboarding shows all 4 steps: trip = **Family**, guests = **2 adults + 1 child (Carlos 17)** = 3 of 6 allowed, who's coming = María (**locked-checked**, already registered) + Ana + Carlos, lead = **María** (Crown) · Confirm → 3 guests created → hands off to guest registration | ties to the app-wide "María García / Ana / Carlos 17 / party of 3" beat (Appendix B modal + taxes stories); `isInstantCheckInEnabled` gates the whole flow; `GROUP_TYPES` F/G/T |
 | Guidebooks mock story | Villa Serena · CHK-58291 · **5 guidebooks**: Welcome & House Manual (`EDITOR` → Guide) · Local Recommendations (`EDITOR` → Guide, 6 places) · Getting Around Málaga (`HTML` → Web, `is_auto_translated`) · Beaches & Day Trips (`PDF`, 6 pages) · Pool & Spa Access (unavailable until check-in) · house facts reused across the app: check-in **15:00** / check-out **11:00** (ties to §7/§15 windows), keys **"code in Virtual keys"** (deep-links §15), Wi-Fi **VillaSerena_5G / serena·2024·sun**, address **Calle del Mar 14, 29601 Marbella** | `content_type` drives the badge + renderer; `is_auto_translated` → the "Auto-translated" chip; block set from `GuidebookContent` node types; check-in/out + keys reconcile with the remote-access mock story |
@@ -3326,7 +3648,7 @@ schedule (`Math.random` / `Date.now` free) so every run is frame-for-frame ident
 | Taxes mock story | High season **€3.10 per adult per night**, only the **first 5 of 7 nights** taxed (`is_max_nights_taxed`, `max_nights: 5`) · María €15.50 + Ana €15.50 + Carlos (17, **Under 18 exempt**) €0.00 = **€31.00 tax + €1.50 fee = €32.50** — exactly the cart's tourist-taxes line · exemption variant exempts Ana (Registered resident) → €17.00 · age-priced variant (no exemptions): Carlos at €1.55 half rate → €40.25 | reconciles the §7 cart's "Tourist taxes €32.50 incl. €1.50 fee"; exemption names are API data (`Season.exemptions[].exemption_name`), not locale keys |
 | Housing guidebooks mock story | Property link to **Villa Serena**, published by host brand **Marbella Stays** (logo tile `MS` + `display_name`) · **no reservation**: no `CHK-…` ref, no progress ring, no bottom nav, no Vela · **4 guidebooks** — Welcome & House Manual (`EDITOR`) · Local Recommendations (`EDITOR`, 6 places) · Getting Around Málaga (`HTML`, `is_auto_translated`) · Beaches & Day Trips (`PDF`, 6 pages) — the §21 set minus "Pool & Spa Access", which is reservation-gated and cannot exist here · house facts identical to §21 (Wi-Fi **VillaSerena_5G / serena·2024·sun**, address **Calle del Mar 14, 29601 Marbella**, check-in **15:00** / check-out **11:00**) · guide exists in **en (default) + es**, UI language **English** | `usePropertyLinkInfo` (logo/title/`onlyLogo`) drives the header; `useFetchGuidebooksByHousing` drives both the list and the nav rows; `useFetchGuidebookGroups` resolves `locale === i18n.language ?? is_default` |
 | Property protection mock story | Villa Serena · CHK-58291 · **security deposit €300.00** with `is_pre_auth_active` (held, expires 7 days after check-out) — the same €300.00 hold the §7 cart and the §25 check-out show, never summed into a payable total · **premium protection €39.00** one-time, `SUPPLIERS.stellar`, `protection_limit` **€1,500**, non-refundable · single-protection variant shows the deposit alone; multi variant offers both as an exclusive pair (paying it makes the §7 total **€380.00 → €419.00**); optional variant adds **pay online / pay on arrival** and the decline path · paid variant: premium protection paid **12 Aug, Visa ···· 4242** | `security_deposit` / `waivo_damage_protection` presence drives the three shapes; `is_pre_auth_active` swaps the info-modal timeline; `security_deposit_status`/`damage_protection_status` drive optional + decline; ties to the §7 payments story (€380.00 to pay, €300.00 hold) |
-| Book an experience mock story | Three offers, all already priced by the §13 upselling story: **sunset vineyard tour €45.00 / person** (`MANUAL`, on request — the email step + "Request sent to Elena") · **breakfast basket** as the multi-item example (Continental **€12.50**, Vegan **€14.00**, Kids **€7.00** per basket — the §7 cart's €12.50 line is one Continental) · **late check-out** as the time-based example (until 12:00 **€15.00** — the §7/§25 line — until 14:00 €25.00, until 16:00 €35.00, standard check-out **11:00** free) · delivery window: 15–22 Aug (check-in day → check-out day), slot **08:00–09:00** · contact email **maria@gmail.com** · deep link `CHK-58291/sunset-vineyard-tour` | `confirmation_type` drives the lane and whether the email step appears; `OFFER_PRICE_TYPES.MULTIPLE_PRICE` drives the named items; `isTimeBasedOffer(category)` vs `requiresDeliveryDateTime(category)` are mutually exclusive; late check-out €15.00 and breakfast €12.50 reconcile with the §7 cart and the §25 add-ons |
+| Book an experience mock story | Three offers, all already priced by the §13 upselling story: **sunset vineyard tour €45.00 / person** (`MANUAL`, on request — the email step, then either §13.1 path; this chain shows the send-now outcome "Request sent to Elena · €90.00 held", while the §13 story's vineyard takes the add-to-cart path) · **breakfast basket** as the multi-item example (Continental **€12.50**, Vegan **€14.00**, Kids **€7.00** per basket — the §7 cart's €12.50 line is one Continental) · **late check-out** as the time-based example (until 12:00 **€15.00** — the §7/§25 line — until 14:00 €25.00, until 16:00 €35.00, standard check-out **11:00** free) · delivery window: 15–22 Aug (check-in day → check-out day), slot **08:00–09:00** · contact email **maria@gmail.com** · deep link `CHK-58291/sunset-vineyard-tour` | `confirmation_type` drives the lane and whether the email step appears; `OFFER_PRICE_TYPES.MULTIPLE_PRICE` drives the named items; `isTimeBasedOffer(category)` vs `requiresDeliveryDateTime(category)` are mutually exclusive; late check-out €15.00 and breakfast €12.50 reconcile with the §7 cart and the §25 add-ons |
 | Kiosk key cards mock story | **Hotel Marbella Stays**, kiosk in the lobby · reservation with `rooms[0].external_name = **2001**`, second floor · `known_number_of_guests = **3**` (María, Ana, Carlos) · arrival state: `added_number_of_guests = **2**` ⇒ **1 pending registration** (the auto-opening reminder) and `cards.printed = **1**`, `cards.pending = **2**` · the flow prints card 2 (→ `IncompletePrintedCardContent`, "1 more") then card 3 (→ `CompletePrintedCardContent`, 3/3) · failure variants: dispenser jam (front desk **10 m to the left**, quote room **2001**) and **no room assigned** (`external_name` absent) | ties to the app-wide "María / Ana / Carlos, party of 3" beat (Appendix B modal story); `cards.printed`/`cards.pending` from `useKioskoStore`; the room number is the only thing `printCard` actually encodes |
 
 ## Appendix C — Known gaps (TODO, deliberately not mocked yet)
