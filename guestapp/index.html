@@ -440,13 +440,29 @@
     <a class="proto-link" href="flow-checkout-mobile.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱</span> Check-out flow — mobile</h3>
-      <p>The bare payment-box becomes one guided flow with a visible <b>settle → rate → done</b> spine. A <b>"you're all set" checklist</b> reassures before it asks, the deposit hold stays <b>hollow and out of the total</b>, and the long-shipped-but-never-built <b>"add before you go"</b> services (late check-out, luggage) finally have a surface — with an <b>honest €0.00 path</b> that just says "continue". The star rating gains an <b>emotive read-out</b>, and a low score opens a real <b>service-recovery</b> screen (message the host / call back) instead of the old dead end. Ends in a warm thank-you with optional public reviews and the trip-home transfer.</p>
+      <p>The bare payment-box becomes one guided flow with a visible <b>settle → rate → done</b> spine — built strictly on the real state machine (<code>check_out_flow_status</code>). The summary shows the actual <b>deferred pay-at-check-out item</b> and both real <b>already-paid rows</b>, the deposit hold stays <b>hollow and out of the total</b>, and the <b>€0.00 path</b> is a designed "nothing left to pay" state instead of a hidden button. The star rating gains an <b>emotive read-out</b>; a low score lands on the same thanks screen with the <b>review links hidden</b> — the real <code>survey_minimum_nps_score</code> gate, made visible. Plus the previously-undesigned <b>completed summary</b> and <b>"not available yet"</b> gate.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-checkout-desktop.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">🖥</span> Check-out flow — desktop</h3>
-      <p>Check-out as the closing <b>"Your stay"</b> destination: the settled checklist and last add-ons on the left, a <b>sticky action ledger</b> on the right, and a <b>stage-aware Vela rail</b> that carries the check-out timeline, the deposit-hold explainer and the airport transfer. Same rate → repair / thanks branch, receipt confirmation and completed-state summary as mobile.</p>
+      <p>Check-out as the closing <b>"Your stay"</b> destination: the real payment summary and hollow deposit hold on the left, a <b>sticky action ledger</b> carrying the pay CTA on the right, and a <b>stage-aware Vela rail</b> for the "why this amount?" and deposit-release questions. Same rate → thanks branches (public reviews vs private feedback), receipt confirmation, completed-state summary and not-yet-available gate as mobile.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
+  <h3 class="feat">Luggage storage</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-luggage-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> Luggage storage — mobile</h3>
+      <p>The Radical Storage partner feature (<code>CHE-184</code>) as one guided booking: the two possible days (arrival / departure), drop-off & pick-up times, a bag counter, then <b>real nearby storages</b> — now showing the <b>opening hours, 24/7 badge and review counts</b> the API already returns but the app never renders, with <b>properly formatted prices</b> (€5.00, not "5.00 EUR") and <b>sort chips + a 24/7 filter</b> with an honest "Show all N" cap for the long live result lists. The money model is honest: the deal <b>confirms only when the cart is paid</b>, and then the <b>QR ticket</b> (PNR + recovery code) lands as a tear-off stub with a Past section. The silent no-results state and the dead-end empty state become real screens with a way forward.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-luggage-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> Luggage storage — desktop</h3>
+      <p>The booking form on the left (day cards → times → bags → storage list), a <b>sticky summary ledger</b> carrying the live total and CTA on the right, and a Vela rail explaining the <b>one-QR model</b> (book & pay in the app, same code for drop-off and pick-up). Ends on the QR ticket page with the completed-booking Past section; no-results and empty states included.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>

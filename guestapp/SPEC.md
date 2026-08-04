@@ -145,7 +145,7 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > toggle is gone. Prototype-only chrome — the real
 > components are unchanged, so no screen/hash/CTA in the registries moves.
 
-**Last synced:** 2026-08-03 · Vela rail tip tones (§14) — the rail's glyphs are toned like the statuses they explain instead of all reading brand blue: amber for the on-request lane tip and `ud-track`'s "Waiting", red for "Declined", blue for everything else. The kit's `AssistantPanel.Tip` grew a `tone` prop (`info`/`warning`/`danger`/`success`/`neutral`) backed by `--assistant-tip-icon-*` tokens so the app matches the prototype exactly (`#fff9db`/`#b86a00`, `#ffe2ed`/`#df0044`). The desktop rail's on-request tip also still carried the **pre-correction** copy ("the host confirms first — the amount is held on your card meanwhile") from before the manual-deal money model was fixed; it now reads like the rest of §13.1 — paying the cart is what holds the amount and sends the request. · 2026-08-02 · Chat unread marker + gap audit (§27.0/§27.3b) — added `c-unread`/`cd-unread`: a Slack-style **New messages** rule above the first unseen message (pinned to the cursor captured on open, not chasing the newest message), plus a sticky "N new messages" jump pill on desktop. Recorded the three shipped-app gaps the prototype now outruns: no unread concept at all (no read cursor, `ChatThread` always scrolls to bottom), no Vela on `/chat` (no `chat.rules.tsx`, so the global `VelaPanel` is empty there), and a **legacy `SubHeader` stacked above `ChatHeader`** on the route. · Chat state audit — every `ChatView` gate is now mocked on **both** form factors (§27.1/§27.4/§28.1). Added `c-loading`/`cd-loading` (the thread-only `CircularLoader`, header+composer already mounted), `c-sending-code`/`cd-sending-code` (`isSendingCode`), `c-verify-error`/`cd-verify-error` (`otpError`) and `c-code-error`/`cd-code-error` (`otpSendError`) — four real states the prototype had never shown — plus desktop parity screens `cd-noreg` (a real gate that desktop was missing entirely) and `cd-offline`. Corrected the OTP screen against `OtpVerification`: Verify is **disabled until all 6 digits** are in, and the cooldown is **inert text** ("Resend in 24s", `resend_in_seconds`) rather than a blue clickable "0:24". Recorded that `Routes.tsx` loads **`pages/ChatView`** (V3) while `senderColors.ts` lives only in `legacy/` — so the multi-guest colours are a **regression to restore**, not current behaviour. Vela rails added to the desktop verify (slim, no booking data pre-verification) and chat-off (full, as the fallback help channel) screens. · Chat feature-parity pass (§27/§28) — the chat prototypes now cover everything the shipped `ChatView` does: **multi-guest sender colors** (each `created_by` hashes to a stable palette color — `senderColors.ts`; `.msg-group.me.other` with colored name/avatar/bubble, shown on both form factors), **video bubbles** (inline `<video>`, maps `MessageVideo`), the **deleted-file placeholder** (`.file-card.deleted` for attachments whose `presigned_url` is gone; also listed as a dashed "Deleted" row on the desktop rail), **optimistic media** (dimmed local preview while sending) and **failed-with-attachment retry** (retryMessage re-sends text + attachments together), plus the composer's **rejected-upload chip** ("Over 10 MB", maps `processFile`). Desktop gains the two scenarios it was missing — `cd-attach` (photos & files, with the rail's Shared-in-this-chat expanded into a full attachment index incl. docs) and `cd-sending` (the receipts ladder + retry) — closing the gap where attachments and retry were mobile-only. · Manual-deal money model corrected (§13.1) — reconciled against the code, not assumed. `useBookDeal` creates a MANUAL deal `PRE_REQUESTED` with **no payment**; it sits in the §7 cart as a `PRE_AUTH_PAYMENT` line (legacy `MyCart`'s "Pre-authorizations:" row), and **paying the cart is what places the hold and sends the request** — exactly what the legacy booking form has always said. Approval captures the hold automatically; a no releases it. Two things follow, and both were wrong before: **`PRE_REQUESTED` is not "sent"** (it is in the cart, waiting on the guest — the shipped `RequestCard` claimed "Sent to the host" over it), and **the per-request payment lives in the cart, not on the offer** — `requested_reservation_payment_ids` takes a *subset* (the same mechanism shipped pay-later already uses: `?pay_later=<ids>` + `getMultiPaymentPayload`), so a single request CAN be paid alone; what was undeliverable was the *inline* card form on the offer detail, which is removed along with `m-sent`. The choice now sits in `m-queued`, where the deal has a cart line to address: "Review cart & send" or "Send just this one — €X". Both upselling pages now end the request lane in a single "Add to cart — €X" → `m-queued`, the tracker beats become **In your cart → Pay to send it → Host replies**, and the story's vineyard tour is the in-cart request: a dashed "held when you pay, then sent to the host" row in `u-track`/`u-rejected`, the §7 hold sections, the v2 bills and all four order histories. Payments pages also correct the breakfast basket meta (it is `AUTO`) and rename the hold section "Card holds — not charges". §34's on-request copy matches. **No-dates variant added** (`u-request-nodates`/`ud-request-nodates`) — `getAvailableDates()` returns `[]` when the booking window has closed, and the shipped picker mapped it into a blank rail while the CTA demanded an unpickable date; the picker now explains itself and `findBookingGap()` only asks for a date when `hasBookableDates()` says one exists. · Upselling detail forms completed (§13.4/§14) — the lane and the booking form are independent axes, so the detail screens now cover both shapes in both lanes: `u-detail-time`/`ud-detail-time` (instant × time-based `bx-slot` radios, "From €15.00", §34 slot prices, standard check-out free) and `u-request-date`/`ud-request-date` (on-request × guests + preferred-evening `bd-day` strip + `bx-select` time, dashed if-approved €90.00 total); both upselling pages now load `book.css` for the shared `bx-*` controls; the featured vineyard card and the late check-out card are wired into the new screens. · Toasts & tooltips added (§37) — the feedback building block (`toast-tooltip-demo.html` + `feedback.css` + `feedback-demo.js`, linked from `index.html` Building blocks and the nav): one toast contract (per-kind durations with sticky errors, visible pausable timer, one action slot, placement fixed per form factor, 3-deep cap + Clear all, dedupe-by-id) and the tooltip/popover/sheet ladder for hover vs touch; Appendix A gains rule 9 pointing at it. · Home V2 proposal removed (§5) — `home-v2.html`, `home-desktop-v2.html` and `home-v2.css` are deleted; `home.html` / `home-desktop.html` are the only Home prototypes and §5 documents them. · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It is clocked on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Find booking "the arrival card" (§17.0) is the only proposal** — §17/§18 stay authoritative for what ships; nav + `index.html` badge those two pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
+**Last synced:** 2026-08-04 · Luggage storage added (§38/§39) — the Radical Storage partner feature (`CHE_184`, off in production, SDK-disabled) had no prototype. The flow maps the shipped model 1:1 — day cards for the only two possible dates (arrival/departure, with the app's real default times), bag counter (1–50), the `radical-storage/storages/nearby/` results, the forced contact-email modal, the deal-in-cart money model ("confirmed the moment you pay"), and the `radical_storage_booking` QR ticket (PNR + recovery code) with the Past section — while rendering the API data the app never shows (`opening_times`, `is247` "OPEN 24/7", review counts), formatting prices properly (€5.00, not "5.00 EUR"), explaining the silent no-results state, and giving the dead-end empty state a way into the offer. The CTA models `findBookingGap()`'s 'luggage' gap (disabled until a storage is chosen). Deliberately not invented: cancel/modify (the app has none) and a permanent sidebar row (the real link appears only once a paid PNR exists). New files: `flow-luggage-{mobile,desktop}.html`, `luggage.css`, `luggage-flow.js`. Product-confirmed pass (same day): the offer is **availability-gated** (backend checks for nearby storages before surfacing it); tickets are **collapsed-by-default and expandable** like the real `BookingCard` (past bookings expand to schedule + details only — QR/codes are active-only); added the post-payment surfaces — `lg-home`/`ld-home` (the Home `LuggageStorageSection` card) and the **injected ungrouped "Luggage storage" sidebar row** on desktop booked-state screens (`[data-lug-booked]`), absent before booking and on the empty state, matching `hasBookings`. Live-data pass (real `storages/nearby` payload): six mock shops with the API's formulaic long names (why the shipped rows truncate), a `rating 0.0 / 0 reviews` shop with hidden stars, totals captioned **"for N bags"** (the API prices the whole request; tariffs are tiered, so no per-bag claim), the never-rendered `description` surfaced in the details sheet, and **list UX for long result sets** — sort chips (Nearest / Cheapest / Top rated), an "Open 24/7" filter, and a first-4 cap with "Show all N". Hero pills wrap instead of colliding at narrow widths, and the hero now shows the **app's own bundled photo** (`assets/img/luggage-storage.webp`, copied to `prototype/luggage-storage.webp` — the first local image asset in the prototype; every other flow uses remote URLs) under a scrim. Ticket details became a **label-above-value list** with icon chips (Bags / Storage / Address), matching the app's detail-row pattern. · 2026-08-03 · Check-out rebuilt on the real state machine (§25/§26) — the previous flow invented features the app doesn't have (an add-on mini-cart with a client-side 6% fee, a lockbox-code checklist, a low-rating "service-recovery" branch) and was replaced wholesale. The new flow maps the shipped code 1:1: `co-leave`/`cd-leave` is the real `PaymentSummaryBox` (one **deferred pay-at-check-out item** — the §7 pay-later breakfast basket, €12.50 + €0.60 fee — plus both real already-paid rows and the hollow €300 hold), `co-zero`/`cd-zero` designs the `shouldHideButton` zero-balance branch as a "Nothing left to pay → Continue — rate your stay" state, `co-pay`→`co-paid` is the §7 hand-off that flips `check_out_flow_status` to `PAID` (`is_online_check_out_flow`), `co-rate` drops the invented Skip (the real `RateForm` has none) and always submits, and the two thanks screens are both `ThanksView` — the **NPS gate made visible** (≥4 shows `survey_external_urls` review links, ≤3 hides them and keeps feedback private; Mozio shows on both). New gate states: `co-done` (`FEEDBACK_SUBMITTED` read-only summary) and `co-locked` (`isCheckoutDate` + `check_out_button_availability_time`, previously just a disabled Home button). `checkout-flow.js` shrank to the stars + `MIN_NPS` routing; modals are now `m-fee`/`m-deposit`/`m-transfer`(/`m-vela` mobile). Explicitly not mocked: the unread `CheckoutSettings` late-check-out / transportation fields and any instructions/task surface — no app feature exists. · Vela rail tip tones (§14) — the rail's glyphs are toned like the statuses they explain instead of all reading brand blue: amber for the on-request lane tip and `ud-track`'s "Waiting", red for "Declined", blue for everything else. The kit's `AssistantPanel.Tip` grew a `tone` prop (`info`/`warning`/`danger`/`success`/`neutral`) backed by `--assistant-tip-icon-*` tokens so the app matches the prototype exactly (`#fff9db`/`#b86a00`, `#ffe2ed`/`#df0044`). The desktop rail's on-request tip also still carried the **pre-correction** copy ("the host confirms first — the amount is held on your card meanwhile") from before the manual-deal money model was fixed; it now reads like the rest of §13.1 — paying the cart is what holds the amount and sends the request. · 2026-08-02 · Chat unread marker + gap audit (§27.0/§27.3b) — added `c-unread`/`cd-unread`: a Slack-style **New messages** rule above the first unseen message (pinned to the cursor captured on open, not chasing the newest message), plus a sticky "N new messages" jump pill on desktop. Recorded the three shipped-app gaps the prototype now outruns: no unread concept at all (no read cursor, `ChatThread` always scrolls to bottom), no Vela on `/chat` (no `chat.rules.tsx`, so the global `VelaPanel` is empty there), and a **legacy `SubHeader` stacked above `ChatHeader`** on the route. · Chat state audit — every `ChatView` gate is now mocked on **both** form factors (§27.1/§27.4/§28.1). Added `c-loading`/`cd-loading` (the thread-only `CircularLoader`, header+composer already mounted), `c-sending-code`/`cd-sending-code` (`isSendingCode`), `c-verify-error`/`cd-verify-error` (`otpError`) and `c-code-error`/`cd-code-error` (`otpSendError`) — four real states the prototype had never shown — plus desktop parity screens `cd-noreg` (a real gate that desktop was missing entirely) and `cd-offline`. Corrected the OTP screen against `OtpVerification`: Verify is **disabled until all 6 digits** are in, and the cooldown is **inert text** ("Resend in 24s", `resend_in_seconds`) rather than a blue clickable "0:24". Recorded that `Routes.tsx` loads **`pages/ChatView`** (V3) while `senderColors.ts` lives only in `legacy/` — so the multi-guest colours are a **regression to restore**, not current behaviour. Vela rails added to the desktop verify (slim, no booking data pre-verification) and chat-off (full, as the fallback help channel) screens. · Chat feature-parity pass (§27/§28) — the chat prototypes now cover everything the shipped `ChatView` does: **multi-guest sender colors** (each `created_by` hashes to a stable palette color — `senderColors.ts`; `.msg-group.me.other` with colored name/avatar/bubble, shown on both form factors), **video bubbles** (inline `<video>`, maps `MessageVideo`), the **deleted-file placeholder** (`.file-card.deleted` for attachments whose `presigned_url` is gone; also listed as a dashed "Deleted" row on the desktop rail), **optimistic media** (dimmed local preview while sending) and **failed-with-attachment retry** (retryMessage re-sends text + attachments together), plus the composer's **rejected-upload chip** ("Over 10 MB", maps `processFile`). Desktop gains the two scenarios it was missing — `cd-attach` (photos & files, with the rail's Shared-in-this-chat expanded into a full attachment index incl. docs) and `cd-sending` (the receipts ladder + retry) — closing the gap where attachments and retry were mobile-only. · Manual-deal money model corrected (§13.1) — reconciled against the code, not assumed. `useBookDeal` creates a MANUAL deal `PRE_REQUESTED` with **no payment**; it sits in the §7 cart as a `PRE_AUTH_PAYMENT` line (legacy `MyCart`'s "Pre-authorizations:" row), and **paying the cart is what places the hold and sends the request** — exactly what the legacy booking form has always said. Approval captures the hold automatically; a no releases it. Two things follow, and both were wrong before: **`PRE_REQUESTED` is not "sent"** (it is in the cart, waiting on the guest — the shipped `RequestCard` claimed "Sent to the host" over it), and **the per-request payment lives in the cart, not on the offer** — `requested_reservation_payment_ids` takes a *subset* (the same mechanism shipped pay-later already uses: `?pay_later=<ids>` + `getMultiPaymentPayload`), so a single request CAN be paid alone; what was undeliverable was the *inline* card form on the offer detail, which is removed along with `m-sent`. The choice now sits in `m-queued`, where the deal has a cart line to address: "Review cart & send" or "Send just this one — €X". Both upselling pages now end the request lane in a single "Add to cart — €X" → `m-queued`, the tracker beats become **In your cart → Pay to send it → Host replies**, and the story's vineyard tour is the in-cart request: a dashed "held when you pay, then sent to the host" row in `u-track`/`u-rejected`, the §7 hold sections, the v2 bills and all four order histories. Payments pages also correct the breakfast basket meta (it is `AUTO`) and rename the hold section "Card holds — not charges". §34's on-request copy matches. **No-dates variant added** (`u-request-nodates`/`ud-request-nodates`) — `getAvailableDates()` returns `[]` when the booking window has closed, and the shipped picker mapped it into a blank rail while the CTA demanded an unpickable date; the picker now explains itself and `findBookingGap()` only asks for a date when `hasBookableDates()` says one exists. · Upselling detail forms completed (§13.4/§14) — the lane and the booking form are independent axes, so the detail screens now cover both shapes in both lanes: `u-detail-time`/`ud-detail-time` (instant × time-based `bx-slot` radios, "From €15.00", §34 slot prices, standard check-out free) and `u-request-date`/`ud-request-date` (on-request × guests + preferred-evening `bd-day` strip + `bx-select` time, dashed if-approved €90.00 total); both upselling pages now load `book.css` for the shared `bx-*` controls; the featured vineyard card and the late check-out card are wired into the new screens. · Toasts & tooltips added (§37) — the feedback building block (`toast-tooltip-demo.html` + `feedback.css` + `feedback-demo.js`, linked from `index.html` Building blocks and the nav): one toast contract (per-kind durations with sticky errors, visible pausable timer, one action slot, placement fixed per form factor, 3-deep cap + Clear all, dedupe-by-id) and the tooltip/popover/sheet ladder for hover vs touch; Appendix A gains rule 9 pointing at it. · Home V2 proposal removed (§5) — `home-v2.html`, `home-desktop-v2.html` and `home-v2.css` are deleted; `home.html` / `home-desktop.html` are the only Home prototypes and §5 documents them. · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It is clocked on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Find booking "the arrival card" (§17.0) is the only proposal** — §17/§18 stay authoritative for what ships; nav + `index.html` badge those two pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
 > https://vlad-svr.github.io/guestapp-redesign-prototypes/ · duplicate static galleries
 > (`iv-flow.html`, `iv-flow-desktop.html`, `guest-registration.html`) removed — the
 > interactive flows are now the single source per feature. Payments flows added
@@ -2379,54 +2379,83 @@ that shows identically on desktop and mobile.
 
 **Prototype:** `flow-checkout-mobile.html` (loads `pay.css` + `checkout.css`, `checkout-flow.js`)
 
-The real feature is thin: `BeforeYouLeaveView` renders only a `PaymentSummaryBox`, then
-`RateYourStayView` (a bare `RateForm`), then `ThanksView`. The redesign makes it **one
-guided flow with a visible three-step spine** (segmented `progress-track`: *settle → rate
-→ done*) and fills the gaps the app shipped copy for but never built (the `check-out.json`
-keys `before_you_leave_subtitle`, `add_to_checkout`, `airport_city_transfers`,
-`available_on_checkout_day` were orphaned). Mock story = Appendix B "Check-out mock story".
+**Reworked 2026-08-03 against the shipped feature** — the previous iteration invented an
+add-on mini-cart (client-side 6% fee), a lockbox-code checklist and a low-rating
+"service-recovery" branch, none of which exist in the app. This version keeps the guided
+three-step spine (*settle → rate → done*) but builds every screen on the **real state
+machine**: `check_out_flow_status` (`NOT_STARTED → PAID → FEEDBACK_SUBMITTED`),
+`shouldHideButton`, and the `ThanksView` NPS gate. The real flow: `BeforeYouLeaveView`
+renders a `PaymentSummaryBox` (reservation payments + `PaymentTotals` + pay button), the
+pay button hands off to the shared §7 payments form (`from: checkout`), then
+`RateYourStayView` (rating required, comment optional, always navigates to thanks), then
+`ThanksView` whose *content* branches on `rating >= survey_minimum_nps_score`. Mock story =
+Appendix B "Check-out mock story".
 
-- `co-leave` (`data-start`, `BeforeYouLeaveView`): reassurance **before** the ask. A
-  **"you're all set" checklist** (`.settled`: guests registered ✓ · stay paid ✓ · keys →
-  lockbox how-to) frames the payment as a formality. The **deposit hold** is a `.hold-card`
-  with a dashed `.hc-chip` (`€300.00 hold`) and is *never* summed into "to pay now" — one
-  plain line: "reserved on your card … released after check-out" (Appendix A hold rule).
-  **"Add before you go"** exposes `.addon` rows (late check-out `AUTO` €15.00, luggage drop
-  €5.00) that toggle into a live `.ledger`; `checkout-flow.js` recomputes the total + a 6%
-  service fee and **rewrites the sticky CTA**: empty cart → "Everything's settled, continue"
-  (→ `co-rate`), non-empty → "Pay €X.XX" (→ `co-pay`). This is the **honest zero-balance
-  path** — the app's real button-hiding logic (`shouldHideButton`) becomes explicit copy.
-- `co-pay` → `co-paid`: a short processing ring (`proc-ring`, `data-autonext`) then an
-  add-on **receipt** (reuses `pay.css` `.receipt`) and a "late check-out confirmed" moment.
-  In production this is the same Stripe/HPP hand-off as §7 (`from: checkout`).
+- `co-leave` (`data-start`, `BeforeYouLeaveView`, balance due): the payment summary as the
+  app actually computes it. One `pay-item` — the **breakfast basket deferred to
+  check-out** during check-in (the real pay-later mechanism: the checkout cart is
+  `usePaymentsCart` with `pay_later` ids) — €12.50 + €0.60 fee. The `.ledger` mirrors
+  `PaymentTotals` 1:1: "To pay now €13.10", the `fee_included` line (→ `m-fee`), and both
+  real already-paid rows ("Paid during check-in · Visa ···· 4242 €367.50" =
+  `isBookingPaymentsActive` totals, "Paid to Booking.com €410.00" = `outside_paid_amount`).
+  The **deposit hold** is a `.hold-card` with a dashed `.hc-chip` (`€300.00 hold`), *never*
+  summed (Appendix A hold rule) — it maps the cart's real `retention_payments_total`. CTA
+  "Pay now · €13.10" → `co-pay`.
+- `co-zero` (`BeforeYouLeaveView`, zero balance + survey on): the **honest zero-balance
+  path** — where the app hides the pay button (`shouldHideButton`), the redesign shows a
+  green `.co-clear` "Nothing left to pay" state and the real `continue_to_survey` CTA
+  ("Continue — rate your stay"). Its sim-note records the survey-off sub-state: with
+  `is_survey_enabled` false, check-out simply ends here (no CTA at all).
+- `co-pay` → `co-paid`: the hand-off to the **shared payments form** (§7,
+  `state.from = checkout`, nav title switches to "Check-out"), compressed to a processing
+  ring, then "Payment confirmed" with a `.receipt` of the actual line items (€12.50 +
+  €0.60 = €13.10 · Visa ···· 4242). This payment carries
+  `requested_specification.is_online_check_out_flow: true` — it is what flips the status
+  to `PAID` server-side. Continue → `co-rate` (`redirectAfterPaidPath`; with survey off it
+  would target `thanks`).
 - `co-rate` (`RateYourStayView`): interactive `.stars` radiogroup with an **emotive verdict**
-  (`data-verdict`: 😞 Very poor … 🤩 Excellent!) that also announces via `aria-live`; the
-  submit stays disabled until a star is chosen, and its destination is set by score —
-  **≥4 → `co-thanks`, ≤3 → `co-recovery`**. Comment stays optional; a "Skip" affordance
-  exists (the real form requires only the rating).
-- `co-thanks` (`ThanksView`, happy branch): confetti + `.co-ring` heart, then **public
-  review** platform buttons (`.review-plat` Google / Booking.com — gated on
-  `survey_minimum_nps_score` in production) and the **Mozio airport transfer** card
-  (`.transfer`, gated on `mozio_status`). "Return to home".
-- `co-recovery` (**new**, low-rating branch): the old ≤-NPS path was a near-blank thanks
-  screen — a dead end that quietly funnelled only happy guests to public reviews. Replaced
-  with an honest **service-recovery** card (`.recovery`): "we're sorry we fell short" →
-  message the host / request a call back → feedback goes privately to the host, **never
-  posted publicly**.
-- `co-done` (`FEEDBACK_SUBMITTED`): completed/locked state — a `.co-summary` of what
-  happened (balance €0.00 · late check-out added · ★★★★★ · deposit releasing) + "Nothing
-  left to do".
+  (`data-verdict`: 😞 Very poor … 🤩 Excellent!, announced via `aria-live`); the submit
+  stays disabled until a star is chosen. **No Skip** — the real `RateForm` requires the
+  rating and has no skip affordance. Submitting always "posts the feedback"; the score only
+  picks which thanks variant renders: **≥4 → `co-thanks`, ≤3 → `co-thanks-quiet`**
+  (mock `survey_minimum_nps_score = 4`, in `checkout-flow.js`).
+- `co-thanks` (`ThanksView`, rating ≥ NPS gate): confetti + `.co-ring` heart, then the
+  **public review** platform buttons (`.review-plat`, one per `survey_external_urls` entry
+  — mocked as Google / Booking.com) and the **Mozio airport transfer** card (`.transfer`,
+  gated on `mozio_status`, independent of the rating). "Return to home".
+- `co-thanks-quiet` (`ThanksView`, rating below the gate): the same warm goodbye with the
+  review links **hidden** — the real NPS gate made visible instead of the invented
+  recovery screen. Shows the `online_checkout_is_completed` badge, keeps the transfer
+  card (its gate is independent), and reassures that the feedback went privately to the
+  host. The pure-quiet fallback (no platforms *and* no Mozio → Lottie only) is noted, not
+  mocked.
+- `co-done` (`FEEDBACK_SUBMITTED`): the read-only state the home "View summary" button
+  lands on — pay button permanently hidden (`shouldHideButton`), a `.co-summary` of the
+  real facts (check-out payment €13.10 · check-in payments €367.50 · Booking.com €410.00 ·
+  ★★★★★ · hold releasing €300.00) + "Nothing left to do".
+- `co-locked` (**new**, gate state): `isCheckoutDate` — check-out day reached *and* time ≥
+  `check_out_button_availability_time`. The app only had a disabled Home button
+  (`available_on_checkout_day` / `available_24h_before_departure`); the redesign gives the
+  state a destination: a calm `.co-locked-card` explaining *when* it opens ("Opens Fri 22
+  Aug · 08:00") instead of just refusing.
 
-Modals: `m-keys` (lockbox how-to), `m-fee` (service-fee explainer), `m-transfer` (Mozio
-times), `m-host` (message host), `m-vela` (assistant sheet). Add-on toggles + stars are the
-only bespoke JS (`checkout-flow.js`); everything else rides `flow.js` / `modals.js`.
+Modals: `m-fee` (what's-in-the-total explainer — the `fee_included` line), `m-deposit`
+(hold-release explainer), `m-transfer` (Mozio times), `m-vela` (assistant sheet: rate my
+stay · deposit question · transfer). Stars are the only bespoke JS (`checkout-flow.js`,
+including the `MIN_NPS` routing); everything else rides `flow.js` / `modals.js`.
+Deliberately **not** mocked because the app has no such feature (despite the backend
+contract fields): late check-out / transportation upsells from `CheckoutSettings`
+(`is_late_check_out_enabled`, `late_check_out_upselling_offer_id`,
+`is_transportation_enabled` … — none are read anywhere in the app) and any
+check-out-instructions / task-list surface (no data model exists).
 
 **Glass variants removed** — the redesign settled on flat boxes and chrome-only glass, so the former A/B switch here is gone; the standard look is the only one.
 
 ### 25.1 Screen-id registry (deep-link hashes)
 
-`co-leave`* · `co-pay` · `co-paid` · `co-rate` · `co-thanks` · `co-recovery` · `co-done` ·
-modals `m-keys`, `m-fee`, `m-transfer`, `m-host`, `m-vela` (* = `data-start`)
+`co-leave`* · `co-zero` · `co-pay` · `co-paid` · `co-rate` · `co-thanks` ·
+`co-thanks-quiet` · `co-done` · `co-locked` ·
+modals `m-fee`, `m-deposit`, `m-transfer`, `m-vela` (* = `data-start`)
 
 ---
 
@@ -2435,26 +2464,34 @@ modals `m-keys`, `m-fee`, `m-transfer`, `m-host`, `m-vela` (* = `data-start`)
 **Prototype:** `flow-checkout-desktop.html` (loads `pay.css` + `payd.css` + `checkout.css`)
 
 Check-out as the closing **"Your stay" → "Check-out"** navy-sidebar destination (`active`).
-Same story, states and branch logic as §25; desktop layout conventions from §8/§10.
+Same story, states and branch logic as §25 (reworked 2026-08-03 alongside it); desktop
+layout conventions from §8/§10.
 
-- `cd-leave` (`data-start`): `desktop-shell with-rail` — main = `.co-grid` (settled
-  checklist + deposit hold + `.addon`s on the left, a **sticky `.ledger` with the confirm
-  CTA inside it** on the right, same `data-*` hooks as §25); the **Vela rail** is
-  stage-aware (check-out timeline via `.vela-progress`, "is there a fee?" + "where do the
-  keys go?" `.vela-tip`s). CTA rewrites identically (`checkout-flow.js`).
-- `cd-pay` → `cd-paid`: centered `payd-stage` processing ring → receipt (no rail).
-- `cd-rate`: `with-rail` — centered `.card.glass` rate card (stars + verdict + optional
-  note + Skip/Submit `payd-cta`); the Vela rail explains why ratings matter and that public
-  reviews are always the guest's choice.
-- `cd-thanks`: two-column celebration on the green `payd-celebrate` wash — confetti +
-  `.co-ring`, **side-by-side** review platforms, the transfer card, "Return to home".
-- `cd-recovery` / `cd-done`: the repair screen and the completed-state `.co-summary`,
-  centered in the content area.
+- `cd-leave` (`data-start`, balance due): `desktop-shell with-rail` — main = `.co-grid`
+  (the `pay-item` payment summary + hollow deposit hold on the left, a **sticky `.ledger`
+  with the pay CTA inside it** on the right — desktop never uses `.cta-dock`); the **Vela
+  rail** is stage-aware (check-out timeline via `.vela-progress`, "why this amount?" →
+  `m-fee` and "when does the hold release?" → `m-deposit` `.vela-tip`s).
+- `cd-zero`: same shell, `.co-clear` "Nothing left to pay" on the left, the ledger at
+  €0.00 with the `continue_to_survey` CTA; the rail swaps the fee tip for the airport
+  transfer.
+- `cd-pay` → `cd-paid`: centered `payd-stage` processing ring (neutral) → receipt on the
+  green `payd-celebrate` wash (no rail on either).
+- `cd-rate`: `with-rail` — centered rate card (stars + verdict + optional note + a single
+  Submit in `payd-cta`; **no Skip**, matching the real `RateForm`); the Vela rail explains
+  why ratings matter and that public reviews are always the guest's choice.
+- `cd-thanks`: celebration on the green `payd-celebrate` wash — confetti + `.co-ring`,
+  **side-by-side** review platforms, the transfer card, "Return to home".
+- `cd-thanks-quiet`: the below-NPS variant — no review links, completion badge, transfer
+  card, private-feedback reassurance.
+- `cd-done` / `cd-locked`: the completed-state `.co-summary` and the not-yet-available
+  gate card, centered in the content area.
 
 ### 26.1 Screen-id registry (deep-link hashes)
 
-`cd-leave`* · `cd-pay` · `cd-paid` · `cd-rate` · `cd-thanks` · `cd-recovery` · `cd-done` ·
-modals `m-keys`, `m-fee`, `m-transfer`, `m-host` (* = `data-start`)
+`cd-leave`* · `cd-zero` · `cd-pay` · `cd-paid` · `cd-rate` · `cd-thanks` ·
+`cd-thanks-quiet` · `cd-done` · `cd-locked` ·
+modals `m-fee`, `m-deposit`, `m-transfer` (* = `data-start`)
 
 ---
 
@@ -3583,6 +3620,136 @@ truncated property name. Sheet: `m-why` ("Why Carlos doesn't pay city tax" — q
 Appendix B taxes story: € 3.10 per adult per night, Carlos 17 → **Under 18 exempt**
 € 0.00, "2 of 3 guests · 5 taxed nights").
 
+## §38 Luggage storage — mobile
+
+**Prototype:** `flow-luggage-mobile.html` (loads `pay.css` + `book.css` + `luggage.css`, `luggage-flow.js`)
+
+The Radical Storage partner feature (`CHE_184_LUGGAGE_STORAGE_ENABLED` — **off in
+production**, hard-disabled in SDK builds). Not a redirect: the app queries Chekin's own
+`radical-storage/storages/nearby/` proxy, the shop choice rides in the upselling deal
+(`deals[0].luggage`), and once the deal is `PAID` the backend attaches a
+`radical_storage_booking` (PNR + QR + recovery code) that the app renders as a ticket.
+The redesign keeps that model 1:1 and spends its budget on what the shipped UI leaves on
+the floor: `NearbyStorage.opening_times` / `is247` / `reviews` are returned **but never
+rendered**, prices print raw (`"12.00 EUR"`), the no-results state fails silently, the
+empty state is a dead end, and loading renders `null`. Mock story = Appendix B "Luggage
+storage mock story".
+
+- `lg-offer` (`data-start`, the `LUGGAGE_SERVICE` offer detail): one guided form.
+  **Day cards** — the only two possible dates, exactly like the real
+  `LuggageDateTimePicker` (arrival / departure, derived from the reservation; same-day
+  drop-off and pick-up by construction), seeding the app's real default times (arrival
+  09:00/15:00, departure 11:00/20:00). **Times** (15-min steps in production) + **bag
+  counter** (1–50, the real `Counter` bounds; re-prices every storage row, mirroring the
+  nearby query re-running). The offer price header says **"Price varies · set by each
+  storage"** (`luggage_price_varies`) — the only real number is per-storage. **Storage
+  rows** show what the API already sends: distance, rating **with review count**, either
+  an "OPEN 24/7" badge (`is247`) or tappable opening hours (`opening_times` → `m-hours`),
+  and a **formatted total captioned "for N bags"** — the API prices the whole request
+  (`price.amount_to_pay`), and real tariffs are tiered rather than linear per bag, so no
+  per-bag price is claimed. Six mock shops carry the live API's formulaic long names
+  ("Luggage Storage …" — exactly why the shipped rows truncate); a `rating: 0.0 /
+  reviews: 0` shop hides its stars, and `m-hours` doubles as the storage-details sheet,
+  also surfacing the `description` field the app never renders. Live result sets are
+  long, so the list gets **sort chips (Nearest / Cheapest / Top rated) + an "Open 24/7"
+  filter** and an honest cap — the first 4 rows, then "Show all N", never silent
+  truncation. The CTA stays disabled until a storage is
+  chosen — the real `findBookingGap()` 'luggage' gap ("Complete these details to
+  continue") — then reads "Continue — €15.00" and opens `m-email`
+  (`requiresGuestEmail` is true for luggage even on `AUTO` offers).
+- `lg-none`: the nearby query returned `[]` — the real `luggage_form.no_storages` state,
+  but explained ("most shops close by 21:00 — try an earlier pick-up") instead of a bare
+  sentence under a silent form.
+- `lg-added` (deal created, unpaid): the honest money model — "Added to your stay …
+  confirmed the moment you pay", a recap card (storage · day/times · bags · total), and
+  the key line: **the QR ticket is issued right after payment**. "Review cart & pay" →
+  the shared §7 payment (`lg-pay`, `proc-ring`, autonext) or "Keep browsing — pay later"
+  (the deal sits in the cart like any other extra).
+- `lg-ticket` (`LuggageStorageView`, paid): the `radical_storage_booking` as a
+  **tear-off ticket** — Confirmed badge, QR ("show this at the storage · same code for
+  both trips"), perforated tear, drop-off → pick-up schedule with the
+  "storage local time" hint (the real component formats in `storage_timezone`), the PNR
+  with copy (`useCopyToClipboard`, 2 s swap), the recovery code, and a **label-above-value
+  detail list** (icon chip + Bags / Storage / Address, the app's own detail-row pattern)
+  with the hours link. The offer hero uses the **real bundled artwork** — luggage offers
+  have no host image, so `getLuggageOfferImage()` falls back to
+  `assets/img/luggage-storage.webp`; the prototype ships the same file
+  (`prototype/luggage-storage.webp`) under a scrim that keeps the pills legible.
+  Below it the **Past** section (`luggage_booking.past_title`) with a collapsed
+  Completed booking — `getBookingLifecycle`: `status === 'COMPLETED'` or `pick_up` in
+  the past.
+- `lg-home` (back on Home): the `LuggageStorageSection` card — header badge + title,
+  the booking card **collapsed by default** (the real `BookingCard` never receives
+  `defaultExpanded`), expanding to QR + code + details on tap. Home previews up to
+  `HOME_PREVIEW_LIMIT = 2` active bookings; the count pill needs 2+, "View all" needs 3+.
+- `lg-empty` (`LuggageStorageView`, no bookings): the real empty copy
+  (`luggage_booking.empty_title/description`) plus an "Explore luggage storage" CTA into
+  the offer — the shipped screen has no way forward.
+
+The tickets everywhere are **collapsed-by-default and expandable** (head = toggle), like
+the real card; a **past** booking expands to schedule + details only — QR, booking code
+and recovery code are **active-only** in the shipped component. Product note recorded:
+the offer itself is **availability-gated** — the backend checks for nearby storages
+before the luggage offer is surfaced at all, so `lg-none` is specifically the
+*chosen-details* miss (times/bags), not "no storages exist here".
+
+Modals: `m-email` (the forced `EnterContactEmailModal`), `m-hours` (opening times — API
+data the app never shows), `m-vela` (assistant sheet). `luggage-flow.js` owns the day
+switch, bag re-pricing, storage selection → CTA enable, clipboard copy, and the
+decorative QR grid. Facts kept honest: the sidebar "Luggage storage" link appears only
+once a **paid booking with a PNR** exists (`useLuggageBookings().hasBookings`); Home
+shows up to 2 active bookings with "View all"; there is **no cancel/modify** path in the
+app — deliberately not invented here.
+
+### 38.1 Screen-id registry (deep-link hashes)
+
+`lg-offer`* · `lg-none` · `lg-added` · `lg-pay` · `lg-ticket` · `lg-home` · `lg-empty` ·
+modals `m-email`, `m-hours`, `m-vela` (* = `data-start`)
+
+---
+
+## §39 Luggage storage — desktop
+
+**Prototype:** `flow-luggage-desktop.html` (loads `pay.css` + `payd.css` + `book.css` + `luggage.css`)
+
+Same states and model as §38; desktop conventions from §8/§10. Sidebar marks
+`experiences` — luggage is an upselling offer, and the real dedicated sidebar row only
+exists after a paid booking (ungrouped in `PageSideBar`, a fact noted rather than mocked
+into the shared chrome).
+
+- `ld-offer` (`data-start`): `desktop-shell with-rail` — `.lug-grid`: the form on the
+  left (hero → day cards → times/bags → storage rows), a **sticky `.ledger` summary** on
+  the right (live total, day, times, bags, chosen storage, the pay-in-cart note, CTA
+  inside). The Vela rail explains the one-QR model and links the opening-hours modal.
+  The ledger has a **designed pre-price state**: day, times and bags are already known,
+  so only the storage row stays pending ("No storage chosen yet") and the amount slot
+  carries a muted "Pick a storage" prompt plus a hint — "each storage sets its own price"
+  — instead of a bare `—` where a total belongs. Choosing a storage swaps in the real
+  total, the divider and the pay-in-cart note. (Both hints are `display:flex`, which
+  beats a bare `[hidden]`, so they carry an explicit `[hidden]` reset — the same trap
+  `pay.css`'s `.lg-row` sets for the checkout ledger.)
+- `ld-none`: same shell, the explained no-results card; its ledger reads "No storage
+  available" with the offending pick-up time called out and an "try an earlier pick-up"
+  hint, CTA disabled; the rail suggests the 24/7 lockers.
+- `ld-added` → `ld-pay`: centered `payd-stage` recap → processing ring (autonext).
+- `ld-ticket`: the ticket page (`desk-col`, max 520) — paid strip, QR ticket (expanded,
+  collapsible), Past section. The sidebar now carries the **ungrouped "Luggage storage"
+  row** (active) — `luggage-flow.js` injects it after Home on screens marked
+  `[data-lug-booked]`, because the row only exists once a paid PNR does
+  (`useLuggageBookings().hasBookings`); the pre-booking and empty screens deliberately
+  don't have it.
+- `ld-home`: back on Home — the `LuggageStorageSection` with the collapsed booking card
+  **and** the new sidebar row (not active), demonstrating both post-payment surfaces.
+- `ld-empty`: the empty state with the "Explore luggage storage" way in — and **no**
+  sidebar row, matching the gate.
+
+### 39.1 Screen-id registry (deep-link hashes)
+
+`ld-offer`* · `ld-none` · `ld-added` · `ld-pay` · `ld-ticket` · `ld-home` · `ld-empty` ·
+modals `m-email`, `m-hours` (* = `data-start`)
+
+---
+
 ## Appendix A — Global UI rules (apply to every flow)
 
 1. Liquid glass only on chrome (top bars, docks, on-camera pills, Vela) — never on
@@ -3644,7 +3811,8 @@ Appendix B taxes story: € 3.10 per adult per night, Carlos 17 → **Under 18 e
 | Remote-access mock story | Villa Serena · CHK-58291 · check-in **Fri 15 Aug, access from 15:00** to checkout 22 Aug 11:00 · two doors: **Street entrance** (COMMON, keypad code **4471#**) → **Apartment 3B** (PRIVATE, remote slide) · the gate blocks on the same recurring story beat — **Carlos's ID still pending** (`verification_pending`), with Booking paid (€380.00, 12 Aug) and all guests registered already ✓ · alt properties: The Palm Residence (Keyless, ref **CHK-KL-88213**), Loft Gràcia (Salto, rooms Loft 2A / Rooftop terrace / Bike storage **offline**) | `incomplete_conditions` → checklist; `valid_from`/`valid_through` → the access window; `LOCK_VENDORS` → the three card types; ties to the app-wide "Carlos verification_pending" beat (Appendix B modal story) and the §7 "€380.00 paid" |
 | Auth & onboarding mock story | Villa Serena · CHK-58291 · account **maria@gmail.com** · create-account is a 3-step machine (email → password → 6-digit code, resend at **0:24**) · onboarding shows all 4 steps: trip = **Family**, guests = **2 adults + 1 child (Carlos 17)** = 3 of 6 allowed, who's coming = María (**locked-checked**, already registered) + Ana + Carlos, lead = **María** (Crown) · Confirm → 3 guests created → hands off to guest registration | ties to the app-wide "María García / Ana / Carlos 17 / party of 3" beat (Appendix B modal + taxes stories); `isInstantCheckInEnabled` gates the whole flow; `GROUP_TYPES` F/G/T |
 | Guidebooks mock story | Villa Serena · CHK-58291 · **5 guidebooks**: Welcome & House Manual (`EDITOR` → Guide) · Local Recommendations (`EDITOR` → Guide, 6 places) · Getting Around Málaga (`HTML` → Web, `is_auto_translated`) · Beaches & Day Trips (`PDF`, 6 pages) · Pool & Spa Access (unavailable until check-in) · house facts reused across the app: check-in **15:00** / check-out **11:00** (ties to §7/§15 windows), keys **"code in Virtual keys"** (deep-links §15), Wi-Fi **VillaSerena_5G / serena·2024·sun**, address **Calle del Mar 14, 29601 Marbella** | `content_type` drives the badge + renderer; `is_auto_translated` → the "Auto-translated" chip; block set from `GuidebookContent` node types; check-in/out + keys reconcile with the remote-access mock story |
-| Check-out mock story | Villa Serena · CHK-58291 · **check-out day, Fri 22 Aug, by 11:00** · María is leaving with everything already settled: all 3 guests registered ✓, **€380.00 stay paid** (ties to the §7 payments story), **€300.00 deposit hold** shown hollow and *never* summed into "to pay now" (SPEC hold convention) · **"add before you go"** offers = **late check-out until 14:00 €15.00** (`AUTO`, instant) + **luggage drop €5.00 / bag** — both optional, so the default payable total is **€0.00 → "Everything's settled, continue"**; adding the late check-out makes it **€15.00 + €0.90 fee = €15.90** on Visa ···· 4242 · rating **★★★★★ → thanks** (Google + Booking.com reviews, gated on `survey_minimum_nps_score`; Mozio Málaga transfer from €35.00 — same price as §13), **≤3 ★ → service recovery** (message host Elena / call back, never public reviews) | `check_out_flow_status` (`NOT_STARTED`/`PAID`/`FEEDBACK_SUBMITTED`) drives the gate; `is_survey_enabled` + `survey_external_urls` + `survey_minimum_nps_score` drive the thanks branch; `mozio_status` drives the transfer; keys/lockbox **4471#**, check-out **11:00** reconcile with the remote-access + guidebooks stories |
+| Check-out mock story | Villa Serena · CHK-58291 · **check-out day, Fri 22 Aug, by 11:00** (opens **08:00**, `check_out_button_availability_time`) · the balance-due path is the **§7 pay-later variant**: María deferred the **breakfast basket €12.50** at check-in (€367.50 paid then), so the checkout cart holds **€12.50 + €0.60 fee = €13.10** on Visa ···· 4242; already-paid rows = **€367.50 check-in** + **€410.00 Booking.com** (`outside_paid_amount`) · the zero-balance path is the §7 default (€380.00 paid at check-in, nothing deferred) → "Nothing left to pay → Continue — rate your stay" (`continue_to_survey`; survey off ⇒ no CTA, `shouldHideButton`) · **€300.00 deposit hold** shown hollow and *never* summed (SPEC hold convention; releases 1–5 days after check-out) · rating **≥4 ★ → thanks with review links** (Google + Booking.com from `survey_external_urls`, mock `survey_minimum_nps_score = 4`), **≤3 ★ → same thanks, links hidden** (feedback stays private); Mozio Málaga transfer from €35.00 on both (its gate is independent) · completed = **FEEDBACK_SUBMITTED** read-only summary | `check_out_flow_status` (`NOT_STARTED`/`PAID`/`FEEDBACK_SUBMITTED`) drives the states; the pay-now payment carries `is_online_check_out_flow: true` (→ `PAID`); `is_survey_enabled` + `survey_external_urls` + `survey_minimum_nps_score` drive the thanks variants; `mozio_status` drives the transfer; check-out **11:00** reconciles with the remote-access + guidebooks stories |
+| Luggage storage mock story | Villa Serena · CHK-58291 · the feature is the **Radical Storage** integration (`CHE_184` flag, off in production, no SDK) · the two possible days are the reservation's: **arrival Fri 15 Aug** (defaults 09:00/15:00, before check-in 15:00) and **departure Fri 22 Aug** (defaults 11:00/20:00, after check-out 11:00 — the §25 check-out story's timeline) · **3 bags** (`known_number_of_guests`) · nearby results (**6 shops**, sortable nearest / cheapest / top rated + a 24/7 filter; first 4 shown, then "Show all 6"): **Luggage Storage Marbella Old Town** 0.4 km · 4.78 (674) · 09:00–21:00 · **€15.00 for 3 bags** (chosen; ≈€5.00/bag reconciles with §13's plan-B luggage drop) · Playa de la Bajadilla 0.7 km (rating 0.0 / 0 reviews → stars hidden) €19.50 · Centro Mall 0.9 km · 4.41 (122) €10.50 · **Bus Station 1.2 km · 4.62 (98) · 24/7** €12.00 · Hotel Miramar 1.5 km · 4.23 (17) €21.00 · Puerto Banús Marina 2.1 km · 4.71 (63) €16.50 · offer price reads **"Price varies"** (`luggage_price_varies`) · email maria@gmail.com (forced `EnterContactEmailModal`) · pay **€15.00 Visa ···· 4242** → ticket **PNR RDCL-8F2K4**, recovery **739 214**, QR · past booking = arrival day at the station lockers, Completed · no-results variant: 23:00→23:45 pick-up finds nothing | `OFFER_CATEGORIES.luggageServices = 'LUGGAGE_SERVICE'` drives every branch; `radical-storage/storages/nearby/` returns the shops (`opening_times`/`is247`/`reviews` rendered by the redesign, unread by the app); the deal carries `deals[0].luggage`; `radical_storage_booking` (PNR/QR/recovery) attaches once the deal is `PAID`; sidebar link only when `hasBookings` |
 | Taxes mock story | High season **€3.10 per adult per night**, only the **first 5 of 7 nights** taxed (`is_max_nights_taxed`, `max_nights: 5`) · María €15.50 + Ana €15.50 + Carlos (17, **Under 18 exempt**) €0.00 = **€31.00 tax + €1.50 fee = €32.50** — exactly the cart's tourist-taxes line · exemption variant exempts Ana (Registered resident) → €17.00 · age-priced variant (no exemptions): Carlos at €1.55 half rate → €40.25 | reconciles the §7 cart's "Tourist taxes €32.50 incl. €1.50 fee"; exemption names are API data (`Season.exemptions[].exemption_name`), not locale keys |
 | Housing guidebooks mock story | Property link to **Villa Serena**, published by host brand **Marbella Stays** (logo tile `MS` + `display_name`) · **no reservation**: no `CHK-…` ref, no progress ring, no bottom nav, no Vela · **4 guidebooks** — Welcome & House Manual (`EDITOR`) · Local Recommendations (`EDITOR`, 6 places) · Getting Around Málaga (`HTML`, `is_auto_translated`) · Beaches & Day Trips (`PDF`, 6 pages) — the §21 set minus "Pool & Spa Access", which is reservation-gated and cannot exist here · house facts identical to §21 (Wi-Fi **VillaSerena_5G / serena·2024·sun**, address **Calle del Mar 14, 29601 Marbella**, check-in **15:00** / check-out **11:00**) · guide exists in **en (default) + es**, UI language **English** | `usePropertyLinkInfo` (logo/title/`onlyLogo`) drives the header; `useFetchGuidebooksByHousing` drives both the list and the nav rows; `useFetchGuidebookGroups` resolves `locale === i18n.language ?? is_default` |
 | Property protection mock story | Villa Serena · CHK-58291 · **security deposit €300.00** with `is_pre_auth_active` (held, expires 7 days after check-out) — the same €300.00 hold the §7 cart and the §25 check-out show, never summed into a payable total · **premium protection €39.00** one-time, `SUPPLIERS.stellar`, `protection_limit` **€1,500**, non-refundable · single-protection variant shows the deposit alone; multi variant offers both as an exclusive pair (paying it makes the §7 total **€380.00 → €419.00**); optional variant adds **pay online / pay on arrival** and the decline path · paid variant: premium protection paid **12 Aug, Visa ···· 4242** | `security_deposit` / `waivo_damage_protection` presence drives the three shapes; `is_pre_auth_active` swaps the info-modal timeline; `security_deposit_status`/`damage_protection_status` drive optional + decline; ties to the §7 payments story (€380.00 to pay, €300.00 hold) |
@@ -3680,15 +3848,16 @@ empty-cart and deposit-chooser states included).
     designed. Still open from that flow: **SettingsModalPayment** (the "there are
     missing setups" variant shown instead of SuccessModal when the deposit is also
     unconfigured) and the **EditGuestsModal** (guest-count editor) aren't mocked.
-11. ~~Checkout mini-cart~~ — **resolved**: the full check-out flow is mocked
-    (`flow-checkout-{mobile,desktop}.html`, §25/§26) — `BeforeYouLeaveView` becomes a
-    settled-checklist + "add before you go" surface with a hollow deposit hold and an
-    honest €0.00 path, `RateYourStayView` gains an emotive star read-out, and
-    `ThanksView` branches to public reviews + Mozio transfer (≥4) or a new
-    **service-recovery** screen (≤3). Still deferred: the real HPP/`AddonPaymentForm`
-    provider hand-off for the add-on payment (shared with gap 9), and the
+11. ~~Checkout mini-cart~~ — **resolved, then re-cut 2026-08-03**: the first iteration
+    invented an add-on mini-cart, a lockbox checklist and a service-recovery branch;
+    the flow was rebuilt strictly on the shipped feature (§25/§26) — payment summary
+    with the real deferred pay-later item and already-paid rows, designed zero-balance
+    and not-yet-available states, and the `ThanksView` NPS gate shown honestly (review
+    links hidden below the bar, no invented recovery screen). Still deferred: the
+    HPP/`AddonPaymentForm` provider hand-off (shared with gap 9), the
     `survey_minimum_nps_score` / `survey_external_urls` admin config (mocked as Google +
-    Booking.com).
+    Booking.com), and the never-implemented `CheckoutSettings` late-check-out /
+    transportation fields (backend contract exists, no app feature to mock).
 12. **Other language-modal trigger surfaces** — §11/§12 mock the FAQ-page and sidebar
     entries only. Not mocked: the mobile **PageSideBar drawer** (the real hamburger
     menu that hosts Language/FAQs/Privacy on mobile), the **WelcomeLayout /

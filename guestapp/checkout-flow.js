@@ -1,61 +1,17 @@
 /* Checkout-specific interactivity (mobile + desktop share this).
-   Two behaviours, both data-attribute driven so the same file works
-   for the co-* (mobile) and cd-* (desktop) screens:
+   One behaviour, data-attribute driven so the same file works for the
+   co-* (mobile) and cd-* (desktop) screens:
 
-   1. Last-minute add-ons: [data-addon-toggle="key"] flips the add-on on/off,
-      reveals its ledger line ([data-line="key"]), recomputes the total +
-      6% service fee, and rewrites the sticky CTA ([data-checkout-cta]) so
-      an empty cart continues straight to the survey and a non-empty cart
-      pays first.
-   2. Rate-your-stay stars: [data-star] fills the row, announces an emotive
-      verdict ([data-verdict]), enables the submit button ([data-rate-submit])
-      and routes it — a happy stay (>=4) to thanks, a poor one to repair. */
+   Rate-your-stay stars: [data-star] fills the row, announces an emotive
+   verdict ([data-verdict]), enables the submit button ([data-rate-submit])
+   and routes it by the mock NPS gate (survey_minimum_nps_score = 4):
+   >=4 -> the thanks screen with public-review links ([data-goto-high]),
+   <=3 -> the quiet thanks screen without them ([data-goto-low]).
+   In the real app the rating always POSTs to ThanksView; only what that
+   screen shows changes — the two destinations here mirror that. */
 (function () {
-  var FEE_RATE = 0.06;
-  var cart = {}; // key -> amount
+  var MIN_NPS = 4; // mock survey_minimum_nps_score
 
-  function money(n) { return '€' + n.toFixed(2); }
-
-  function recompute() {
-    var subtotal = 0;
-    Object.keys(cart).forEach(function (k) { subtotal += cart[k]; });
-    var fee = subtotal > 0 ? Math.round(subtotal * FEE_RATE * 100) / 100 : 0;
-
-    var totalEl = document.querySelector('[data-total]');
-    if (totalEl) totalEl.textContent = money(subtotal + fee);
-
-    var feeLine = document.querySelector('[data-fee-line]');
-    var feeEl = document.querySelector('[data-fee]');
-    if (feeEl) feeEl.textContent = money(fee);
-    if (feeLine) feeLine.hidden = subtotal <= 0;
-
-    document.querySelectorAll('[data-checkout-cta]').forEach(function (cta) {
-      if (subtotal > 0) {
-        var lbl = cta.getAttribute('data-label-paid') || 'Pay {amount}';
-        cta.textContent = lbl.replace('{amount}', money(subtotal + fee));
-        cta.setAttribute('data-goto', cta.getAttribute('data-goto-paid') || '');
-        cta.classList.remove('btn-outline'); cta.classList.add('btn-primary');
-      } else {
-        cta.textContent = cta.getAttribute('data-label-empty') || 'Continue';
-        cta.setAttribute('data-goto', cta.getAttribute('data-goto-empty') || '');
-      }
-    });
-  }
-
-  function toggleAddon(key) {
-    var toggle = document.querySelector('[data-addon-toggle="' + key + '"]');
-    var host = document.querySelector('[data-addon="' + key + '"]');
-    if (!host) return;
-    var amount = parseFloat(host.getAttribute('data-amount') || '0');
-    var on = host.classList.toggle('on');
-    if (toggle) toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
-    var line = document.querySelector('[data-line="' + key + '"]');
-    if (line) line.hidden = !on;
-    if (on) cart[key] = amount; else delete cart[key];
-    recompute();
-  }
-
-  /* ---- rating ---- */
   var VERDICTS = {
     1: {e: '😞', t: 'Very poor'},
     2: {e: '😕', t: 'Poor'},
@@ -80,7 +36,7 @@
       submit.disabled = false;
       submit.style.opacity = '';
       submit.style.pointerEvents = '';
-      var dest = value >= 4
+      var dest = value >= MIN_NPS
         ? submit.getAttribute('data-goto-high')
         : submit.getAttribute('data-goto-low');
       if (dest) submit.setAttribute('data-goto', dest);
@@ -88,16 +44,10 @@
   }
 
   document.addEventListener('click', function (e) {
-    var el;
-    if ((el = e.target.closest('[data-addon-toggle]'))) {
-      e.preventDefault();
-      toggleAddon(el.getAttribute('data-addon-toggle'));
-      return;
-    }
-    if ((el = e.target.closest('[data-star]'))) {
+    var el = e.target.closest('[data-star]');
+    if (el) {
       e.preventDefault();
       setRating(parseInt(el.getAttribute('data-star'), 10));
-      return;
     }
   });
 

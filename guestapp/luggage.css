@@ -1,0 +1,496 @@
+/* ============================================================
+   Luggage storage — Redesign 2.0 prototype
+   The Radical Storage partner feature (CHE-184): book a nearby
+   storage for arrival or departure day, pay in the cart, get a
+   QR ticket (PNR + recovery code) once the deal is PAID.
+   Reuses shared.css primitives + book.css (bx-block heads) +
+   pay.css (ledger, proc-ring). Only luggage-specific pieces
+   live here. Class prefix is .lug-/.st-/.tk- because pay.css
+   already owns .lg-* inside the ledger.
+   ============================================================ */
+
+/* ---------- Offer hero ----------
+   Luggage offers carry no host image, so the app falls back to a bundled
+   photo (getLuggageOfferImage → assets/img/luggage-storage.webp). The
+   prototype ships the same file so the hero is the real artwork, with a
+   scrim under the pills to keep them legible. */
+.lug-hero {
+  min-height: 132px;
+  border-radius: var(--r-xl);
+  background: var(--gradient-hero) center / cover no-repeat;
+  background-image: url('luggage-storage.webp');
+  background-size: cover;
+  background-position: center 38%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+}
+.lug-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(21,21,63,0) 35%, rgba(21,21,63,0.58));
+}
+.lug-hero > * { position: relative; z-index: 1; }
+.lug-hero .lh-tag {
+  height: 22px; padding: 0 9px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.24);
+  backdrop-filter: blur(8px);
+  color: #fff; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.lug-hero .lh-price {
+  position: relative; z-index: 1;
+  height: 24px; padding: 0 10px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.92);
+  color: var(--navy);
+  font-size: 11px; font-weight: 600;
+  display: inline-flex; align-items: center;
+  white-space: nowrap;
+}
+
+/* ---------- Storage list: sort chips, 24/7 filter, honest cap ---------- */
+.lug-filter {
+  display: flex; gap: 6px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.lug-filter::-webkit-scrollbar { display: none; }
+.lf-chip {
+  height: 30px; padding: 0 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--n-0);
+  color: var(--text-secondary);
+  font-size: 12px; font-weight: 600;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.lf-chip:hover { border-color: var(--blue-300); }
+.lf-chip.on { background: var(--tint-info); border-color: var(--blue-500); color: var(--blue-500); }
+
+[data-storage-list] { display: flex; flex-direction: column; gap: 10px; }
+[data-storage-list] .storage + .storage { margin-top: 0; }
+.storage.filtered-out, .storage.overcap { display: none; }
+
+.lug-more {
+  width: 100%;
+  margin-top: 10px;
+  height: 38px;
+  border-radius: var(--r-lg);
+  border: 1px dashed var(--n-300);
+  background: transparent;
+  color: var(--blue-500);
+  font-size: 12.5px; font-weight: 600;
+  transition: border-color 0.15s, background 0.15s;
+}
+.lug-more:hover { border-color: var(--blue-500); background: var(--tint-pressed); }
+
+/* ---------- Day cards (the only two possible dates) ---------- */
+.lug-days { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.lug-day {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  padding: 12px 14px;
+  text-align: left;
+  display: flex; flex-direction: column; gap: 2px;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+.lug-day:hover { border-color: var(--blue-300); }
+.lug-day.on {
+  border-color: var(--blue-500);
+  background: var(--tint-info);
+  box-shadow: 0 0 0 1px var(--blue-500) inset;
+}
+.lug-day .ld-kind { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--blue-500); }
+.lug-day .ld-date { font-size: 13.5px; font-weight: 600; color: var(--navy); }
+.lug-day .ld-note { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+
+/* ---------- Time fields + bag counter ---------- */
+.lug-times { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.lug-time {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  padding: 10px 13px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.lug-time .lt-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+.lug-time .lt-value {
+  font-size: 15px; font-weight: 700; color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: center; gap: 7px;
+}
+.lug-time .lt-value .icon { width: 15px; height: 15px; color: var(--blue-500); }
+.lug-hint { font-size: 11px; color: var(--text-tertiary); display: flex; align-items: center; gap: 6px; }
+.lug-hint .icon { width: 13px; height: 13px; }
+
+.lug-count {
+  display: flex; align-items: center; gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  padding: 11px 14px;
+}
+.lug-count .lc-label { font-size: 13px; font-weight: 600; color: var(--navy); flex: 1; }
+.lug-count .lc-btn {
+  width: 32px; height: 32px; border-radius: 10px;
+  border: 1px solid var(--blue-500);
+  color: var(--blue-500);
+  background: var(--n-0);
+  display: grid; place-items: center;
+  transition: background 0.15s;
+}
+.lug-count .lc-btn:hover { background: var(--tint-pressed); }
+.lug-count .lc-num { min-width: 22px; text-align: center; font-size: 16px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+/* ---------- Storage list (Radical Storage results) ---------- */
+.storage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--n-0);
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.storage + .storage { margin-top: 10px; }
+.storage:hover { border-color: var(--blue-300); }
+.storage.selected {
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 1px rgba(56, 91, 248, 0.28);
+  background: var(--tint-info);
+}
+.storage .st-art {
+  width: 52px; height: 52px; border-radius: 12px;
+  background: var(--tint-promo);
+  display: grid; place-items: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.storage .st-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.storage .st-name { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.storage .st-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
+  font-size: 11px; color: var(--text-secondary);
+}
+.storage .st-meta .icon { width: 12px; height: 12px; color: var(--n-500); vertical-align: -2px; }
+.storage .st-meta .m { display: inline-flex; align-items: center; gap: 4px; }
+.storage .st-meta .m.rate .icon { color: var(--amber-500); fill: var(--amber-500); }
+.storage .st-247 {
+  height: 18px; padding: 0 7px;
+  border-radius: 99px;
+  background: var(--green-50); color: var(--green-700);
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em;
+  display: inline-flex; align-items: center;
+}
+.storage .st-hours {
+  font-size: 11px; font-weight: 600; color: var(--blue-500);
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.storage .st-hours:hover { color: var(--blue-600); }
+.storage .st-price { display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex-shrink: 0; }
+.storage .st-price .sp-total { font-size: 14.5px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.storage .st-price .sp-per { font-size: 10.5px; color: var(--text-tertiary); margin-top: 1px; }
+.storage .st-radio {
+  width: 19px; height: 19px; border-radius: 50%;
+  border: 2px solid var(--n-300);
+  flex-shrink: 0;
+  display: grid; place-items: center;
+}
+.storage.selected .st-radio { border-color: var(--blue-500); }
+.storage.selected .st-radio::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--blue-500); }
+
+/* no-results state of the storage search */
+.lug-nores {
+  border: 1px dashed var(--n-300);
+  border-radius: var(--r-lg);
+  background: var(--n-50);
+  padding: 20px 18px;
+  text-align: center;
+}
+.lug-nores .nr-title { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.lug-nores .nr-desc { font-size: 12px; line-height: 17px; color: var(--text-secondary); margin-top: 5px; max-width: 300px; margin-inline: auto; }
+
+/* ---------- Success ring (added / paid moments) ---------- */
+.lug-ring {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, var(--green-50), #fff);
+  border: 1px solid var(--green-600);
+  display: grid; place-items: center;
+  color: var(--green-700);
+  animation: lug-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+.lug-ring svg { width: 40px; height: 40px; stroke-width: 2.4; }
+@keyframes lug-pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.lug-title { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; color: var(--navy); }
+.lug-sub { font-size: 12.5px; line-height: 19px; color: var(--text-secondary); max-width: 320px; }
+
+/* recap card on the added screen */
+.lug-recap {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  padding: 4px 16px;
+  width: 100%;
+}
+.lug-recap .lr-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 0;
+  font-size: 12.5px; color: var(--text-secondary);
+}
+.lug-recap .lr-row + .lr-row { border-top: 1px solid var(--border); }
+.lug-recap .lr-row .icon { width: 15px; height: 15px; color: var(--blue-500); flex-shrink: 0; }
+.lug-recap .lr-row b { color: var(--navy); font-weight: 600; margin-left: auto; text-align: right; }
+
+/* ---------- The QR ticket (radical_storage_booking) ---------- */
+.ticket {
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+  overflow: hidden;
+  width: 100%;
+}
+.ticket .tk-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.ticket .tk-head .th-main { flex: 1; min-width: 0; }
+.ticket .tk-head .th-title { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.ticket .tk-head .th-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 1px; }
+.ticket .tk-qr {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 18px 16px 14px;
+}
+.ticket .tk-qr .qr-frame {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+}
+.qr-grid { display: grid; grid-template-columns: repeat(13, 8px); grid-template-rows: repeat(13, 8px); gap: 1px; }
+.qr-grid i { background: var(--navy); border-radius: 1px; }
+.qr-grid i.off { background: transparent; }
+.ticket .tk-qr .qr-cap { font-size: 11.5px; font-weight: 600; color: var(--navy); }
+.ticket .tk-qr .qr-hint { font-size: 10.5px; color: var(--text-tertiary); }
+/* the perforated tear between stub and details */
+.ticket .tk-tear {
+  border: none;
+  border-top: 2px dashed var(--n-200);
+  margin: 0 14px;
+  position: relative;
+}
+.ticket .tk-tear::before, .ticket .tk-tear::after {
+  content: '';
+  position: absolute; top: -7px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+}
+.ticket .tk-tear::before { left: -21px; }
+.ticket .tk-tear::after { right: -21px; }
+.ticket .tk-sched {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 8px;
+  padding: 14px 16px 6px;
+}
+.ticket .tk-sched .ts-col { display: flex; flex-direction: column; gap: 1px; }
+.ticket .tk-sched .ts-col.r { text-align: right; }
+.ticket .tk-sched .ts-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); }
+.ticket .tk-sched .ts-date { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.ticket .tk-sched .ts-time { font-size: 17px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.ticket .tk-sched .ts-arrow { color: var(--n-300); }
+.ticket .tk-tz { font-size: 10.5px; color: var(--text-tertiary); text-align: center; padding-bottom: 6px; }
+.ticket .tk-codes { padding: 8px 16px 0; display: flex; flex-direction: column; }
+.ticket .tk-code {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.ticket .tk-code .tc-label { font-size: 11.5px; color: var(--text-secondary); flex: 1; }
+.ticket .tk-code .tc-value {
+  font-size: 13.5px; font-weight: 700; color: var(--navy);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.04em;
+}
+.ticket .tk-code .tc-copy {
+  height: 26px; padding: 0 10px;
+  border-radius: 99px;
+  border: 1px solid var(--blue-500);
+  color: var(--blue-500);
+  background: var(--n-0);
+  font-size: 11px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.ticket .tk-code .tc-copy:hover { background: var(--tint-pressed); }
+/* label-above-value rows with an icon chip — the app's detail-list pattern */
+.ticket .tk-meta { padding: 2px 16px 12px; }
+.ticket .tk-meta .tm-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0;
+}
+.ticket .tk-meta .tm-row + .tm-row { border-top: 1px solid var(--border-subtle); }
+.ticket .tk-meta .tm-ic {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.ticket .tk-meta .tm-ic .icon { width: 17px; height: 17px; }
+.ticket .tk-meta .tm-main { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.ticket .tk-meta .tm-label { font-size: 11.5px; color: var(--text-secondary); }
+.ticket .tk-meta .tm-value { font-size: 13.5px; font-weight: 700; color: var(--navy); }
+.ticket .tk-meta .tm-link {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 11.5px; font-weight: 600; color: var(--blue-500);
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.ticket .tk-meta .tm-link:hover { color: var(--blue-600); }
+/* past / completed booking — collapsed, muted */
+.ticket.past { background: var(--n-50); }
+.ticket.past .tk-head { border-bottom: none; }
+.ticket.past .th-title { color: var(--text-secondary); }
+
+/* collapsed / expandable ticket — the real BookingCard defaults to
+   collapsed everywhere; the head is the toggle */
+.ticket .tk-head[data-tk-toggle] { cursor: pointer; }
+.ticket .th-chev {
+  color: var(--n-500);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  transition: transform 0.18s;
+}
+.ticket:not(.collapsed) .th-chev { transform: rotate(180deg); }
+.ticket.collapsed .tk-body { display: none; }
+.ticket.collapsed .tk-head { border-bottom: none; }
+
+/* Home — the LuggageStorageSection header */
+.lughome-head { display: flex; align-items: center; gap: 10px; }
+.lughome-head .lh-badge {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--tint-info); color: var(--blue-500);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.lughome-head .lh-badge .icon { width: 15px; height: 15px; }
+.lughome-head .lh-title { font-size: 15px; font-weight: 700; color: var(--navy); flex: 1; }
+.lughome-head .lh-pill {
+  height: 20px; padding: 0 8px;
+  border-radius: 99px;
+  background: var(--tint-info); color: var(--blue-500);
+  font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center;
+}
+
+/* status badges on ticket heads */
+.tk-badge {
+  height: 22px; padding: 0 9px;
+  border-radius: 99px;
+  font-size: 10.5px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px;
+  flex-shrink: 0;
+}
+.tk-badge .icon { width: 12px; height: 12px; }
+.tk-badge.ok { background: var(--green-50); color: var(--green-700); }
+.tk-badge.done { background: var(--n-100); color: var(--n-600); }
+
+/* paid confirmation strip above the fresh ticket */
+.lug-paidline {
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: center;
+  height: 30px; padding: 0 13px;
+  border-radius: 99px;
+  background: var(--green-50);
+  color: var(--green-700);
+  font-size: 12px; font-weight: 600;
+}
+.lug-paidline .icon { width: 14px; height: 14px; }
+
+/* section eyebrow (Past) */
+.lug-eyebrow {
+  align-self: stretch;
+  font-size: 10.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.11em;
+  color: var(--text-secondary);
+  margin: 4px 0 -8px;
+}
+
+/* ---------- Empty state (with a way forward) ---------- */
+.lug-empty {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 26px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--n-0);
+}
+.lug-empty .le-icon {
+  width: 58px; height: 58px; border-radius: 16px;
+  background: var(--tint-info);
+  color: var(--blue-500);
+  display: grid; place-items: center;
+  margin-bottom: 13px;
+}
+.lug-empty .le-title { font-size: 17px; font-weight: 700; color: var(--navy); }
+.lug-empty .le-desc { font-size: 12.5px; line-height: 18px; color: var(--text-secondary); margin-top: 7px; max-width: 300px; }
+
+/* ---------- Summary ledger before a storage is chosen ----------
+   The day, times and bags are already known — only the storage and its
+   price aren't. So the empty state says that in words instead of showing
+   a bare "—" where a total belongs. */
+.ledger .lg-note > span { min-width: 0; } /* pay.css makes .lg-note a flex row */
+
+.ledger.is-empty .lg-total .lt-amount {
+  font-size: 12.5px; font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: 0;
+}
+.ledger .lg-row.pending { color: var(--text-tertiary); }
+.ledger .lg-row.pending .icon { color: var(--n-300) !important; }
+.ledger .lg-row .lr-wait { font-style: italic; }
+.ledger .lg-sum-hint {
+  display: flex; align-items: flex-start; gap: 7px;
+  border-top: 1px dashed var(--n-200);
+  padding-top: 11px;
+  font-size: 11.5px; line-height: 16px;
+  color: var(--text-secondary);
+}
+.ledger .lg-sum-hint .icon { color: var(--blue-500); flex-shrink: 0; margin-top: 1px; }
+.ledger .lg-sum-hint b { color: var(--navy); font-weight: 600; }
+/* Both hints are display:flex (pay.css does the same to .lg-note), which beats
+   the bare [hidden] attribute — so the toggled-off one must be re-hidden. */
+.ledger .lg-sum-hint[hidden], .ledger .lg-note[hidden] { display: none; }
+
+/* ---------- Desktop: two-column booking (form + sticky summary) ---------- */
+.lug-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 26px;
+  align-items: start;
+}
+.lug-grid .ledger { position: sticky; top: 24px; }
+@media (max-width: 900px) {
+  .lug-grid { grid-template-columns: 1fr; }
+}
+
+/* Match the shared vela-tip convention (title stacks above desc). */
+.vela-tip .vt-title { display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lug-ring { animation: none !important; }
+}
