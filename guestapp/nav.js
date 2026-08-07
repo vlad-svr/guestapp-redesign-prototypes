@@ -446,6 +446,26 @@
         { hash: 'ld-empty', label: 'Empty state' },
       ]},
     ]},
+    { group: 'VIP airport lounge', items: [
+      { file: 'flow-lounge-mobile.html', label: 'VIP lounge — mobile', icon: '📱', by: 'fable', subs: [
+        { hash: 'vl-list', label: 'Choose a lounge' },
+        { hash: 'vl-book', label: 'Entry time & guests' },
+        { hash: 'vl-added', label: 'Added — pay to confirm' },
+        { hash: 'vl-pass', label: 'Your lounge pass' },
+        { hash: 'vl-nudge', label: 'Transfer nudge' },
+        { hash: 'vl-home', label: 'Home — pass card' },
+        { hash: 'vl-none', label: 'No lounges at airport' },
+        { hash: 'vl-cancelled', label: 'Cancelled & refunded' },
+      ]},
+      { file: 'flow-lounge-desktop.html', label: 'VIP lounge — desktop', icon: '🖥', by: 'fable', subs: [
+        { hash: 'vd-list', label: 'Choose a lounge (live ledger)' },
+        { hash: 'vd-added', label: 'Added — pay to confirm' },
+        { hash: 'vd-pass', label: 'Your lounge pass' },
+        { hash: 'vd-home', label: 'Home — section + sidebar row' },
+        { hash: 'vd-none', label: 'No lounges at airport' },
+        { hash: 'vd-cancelled', label: 'Cancelled & refunded' },
+      ]},
+    ]},
     { group: 'FAQ & language', items: [
       { file: 'flow-faq-mobile.html', label: 'FAQ & language — mobile', icon: '📱', subs: [
         { hash: 'h-faq', label: 'FAQ page' },

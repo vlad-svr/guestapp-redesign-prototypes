@@ -479,6 +479,22 @@
     </a>
   </div>
 
+  <h3 class="feat">VIP airport lounge</h3>
+  <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-lounge-mobile.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> VIP airport lounge — mobile</h3>
+      <p>The DragonPass-style partner feature for the <b>departure day</b>, sold where it makes sense: check-out is 11:00, the flight is 20:35, and a booked airport transfer proves the guest arrives early — so a <b>one-tap contextual nudge</b> (shown once, only when the transfer lands ≥90 min before boarding) joins the catalogue entry, and the lounge card sits in the <b>Home "Handpicked" grids and the Extras catalogue</b> beside its departure-day sibling, Late check-out. The airport is <b>auto-detected with an honest Change sheet</b> (including the "no partner lounges here yet" airport, which offers a watch + the transfer instead of a dead end). Lounge cards carry <b>live status (open / opens at / sold-out with a notify escape), rating, amenities and a per-person price with the max stay</b>; booking is entry-window slots + a party counter. The money model matches every extra — <b>confirmed only when the cart is paid</b> — and then the <b>QR lounge pass</b> (one code for the whole party + a fallback access code) lands as a tear-off stub with a named free-cancellation deadline and a full-refund cancelled state.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-lounge-desktop.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> VIP airport lounge — desktop</h3>
+      <p>The same decision, desktop-shaped: <b>one page carries everything</b> — the auto-detected airport, entry-window slots, the party counter and the lounge list on the left, a <b>sticky summary ledger</b> whose empty state reads as "still choosing" (a muted "Pick a lounge" prompt, never a €0 bill) and whose CTA names the chosen lounge, plus a <b>Vela rail</b> answering the two questions everyone has (what the entry window means · what happens if I cancel). Pays through the shared cart; the pass page adds an <b>ungrouped "VIP lounge" sidebar row</b> that exists only while a paid pass does — mirroring the luggage-storage convention. The form/ledger split is <b>container-responsive</b> (flex-wrap, not a viewport breakpoint) and the entry slots reflow with <code>auto-fit</code>, so a longer slot list wraps instead of breaking the layout. No-partner-airport keeps the watch + transfer escape in the ledger itself; cancelled names the refund.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+  </div>
+
   <h3 class="feat">FAQ &amp; language</h3>
   <div class="proto-links" style="margin-top:0">
     <a class="proto-link" href="flow-faq-mobile.html">
@@ -1305,6 +1321,21 @@
       <h4>The star rating reacts, and works from the keyboard</h4>
       <p class="was"><b>Now in code:</b> <code>RateForm</code> is a bare <code>&lt;RatingRadioGroup&gt;</code> + textarea; the submit is <code>disabled</code> until a star is picked <b>with no affordance</b> saying why, and there's no emotive confirmation of the choice.</p>
       <p class="now"><b>Proposed:</b> the row gives an <b>emotive read-out</b> (😞 Very poor … 🤩 Excellent!) announced via <code>aria-live</code>, is a real <code>role="radiogroup"</code> with <b>arrow-key / Enter / Space</b> support, and the submit only lights up — and routes by score — once a star is set.</p>
+    </div>
+  </div>
+
+  <h3 class="feat">VIP airport lounge</h3>
+  <div class="imp-grid" style="margin-bottom:8px">
+    <div class="imp">
+      <span class="tag trust-t">Honest selling</span>
+      <h4>The nudge is a rule, not a banner</h4>
+      <p class="was"><b>Now:</b> a brand-new partner feature — nothing ships yet; the risk is launching it as a blanket banner on every screen.</p>
+      <p class="now"><b>Proposed:</b> the lounge is offered exactly where the data justifies it — the Extras catalogue, the Home "Handpicked" grids beside Late check-out, and <b>once</b> on a confirmed airport transfer whose arrival is ≥90 min before boarding ("your car reaches AGP around 18:15 — that's almost two hours before boarding"). Sold-out lounges stay visible with a <b>notify-me escape</b>, and an airport with no partner lounge gets the watch + the transfer, never a dead end.</p>
+    </div>
+    <div class="imp">
+      <span class="tag trust-t">Money model</span>
+      <h4>Paid in the cart, pass after payment, refund named</h4>
+      <p class="now"><b>Proposed:</b> same honest model as every extra — adding <b>never charges</b> ("held with this request, confirmed the moment you pay"), the <b>QR pass + access code</b> are issued only once the deal is PAID, the free-cancellation deadline is printed as a date ("free until Thu 21 Aug, 18:00"), and cancelling names the amount, the card and the 3–5 day refund window.</p>
     </div>
   </div>
 

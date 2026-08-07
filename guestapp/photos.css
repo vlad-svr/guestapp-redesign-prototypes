@@ -66,6 +66,11 @@
 
 /* ── Services ─────────────────────────────────────────────────────────── */
 .ph-spa        { background-image: url("https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=640&q=70"); }
+/* VIP airport lounges — one scene per mock lounge so the list doesn't repeat */
+.ph-lounge       { background-image: url("https://images.unsplash.com/photo-1565031491910-e57fac031c41?w=640&q=70"); }
+.ph-lounge-cafe  { background-image: url("https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=640&q=70"); }
+.ph-lounge-bar   { background-image: url("https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=640&q=70"); }
+.ph-lounge-seat  { background-image: url("https://images.unsplash.com/photo-1567016432779-094069958ea5?w=640&q=70"); }
 .ph-transfer   { background-image: url("https://images.unsplash.com/photo-1502877338535-766e1452684a?w=640&q=70"); }
 .ph-bike       { background-image: url("https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=640&q=70"); }
 .ph-sim        { background-image: url("https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=640&q=70"); }
