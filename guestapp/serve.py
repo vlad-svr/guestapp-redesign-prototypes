@@ -22,5 +22,5 @@ if __name__ == '__main__':
     directory = os.path.dirname(os.path.abspath(__file__))
     http.server.test(
         HandlerClass=functools.partial(NoCacheHandler, directory=directory),
-        port=4174,
+        port=int(os.environ.get('PORT', 4174)),
     )

@@ -67,7 +67,26 @@
   padding: 14px 14px 14px 16px;
   background: var(--n-0);
 }
+/* The `isRemoving` state of CartItemRow: the row stays in place and legible,
+   the menu is disabled, and the amount is replaced by a spinner — a row that
+   vanishes before the server confirms is a lie if the mutation fails. */
+.pay-item.removing { opacity: 0.55; pointer-events: none; }
+.pay-item .pi-spin {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--n-150);
+  border-top-color: var(--blue-500);
+  animation: pi-spin 0.7s linear infinite;
+  margin-top: 2px;
+}
+@keyframes pi-spin { to { transform: rotate(360deg); } }
 .pay-item + .pay-item { border-top: 1px solid var(--border); }
+/* The desktop cart card runs overflow:visible so the row ⋯ popovers aren't
+   clipped — which also stops the card clipping its own corners, leaving the
+   square white rows to paint over them. The end rows carry the radius
+   instead. No-op on the cards that still clip. */
+.card > .pay-item:first-child { border-radius: var(--r-xl) var(--r-xl) 0 0; }
+.card > .pay-item:last-child { border-radius: 0 0 var(--r-xl) var(--r-xl); }
 .pi-main { flex: 1; min-width: 0; }
 .pi-name { font-size: 13.5px; font-weight: 700; color: var(--navy); }
 .pi-meta { font-size: 11.5px; line-height: 16px; color: var(--text-secondary); margin-top: 2px; }
@@ -215,6 +234,16 @@
 }
 .paylater .pl-desc .icon { color: var(--blue-500); flex-shrink: 0; margin-top: 1px; }
 
+/* Destructive confirm button — removal is the only irreversible-in-practice
+   action in the cart (re-adding means re-booking the offer, and the booking
+   window may already be closed), so it gets the danger tone. */
+.btn-danger {
+  background: var(--red-500);
+  color: #fff;
+  border: none;
+}
+.btn-danger:hover { background: #c4003c; }
+
 /* Toast (matches dm-toast pattern) */
 .pay-toast {
   position: absolute;
@@ -233,6 +262,17 @@
   animation: fadeUp 0.3s ease both;
 }
 .pay-toast .icon { color: var(--green-500); }
+/* showToast.error — the pet-fee refusal is the one removal the API rejects
+   outright, and the real app says so in a toast, not a modal. */
+.pay-toast.err .icon { color: var(--red-soft, #ff7a9c); }
+/* Desktop has no phone frame to pin to: the toast sits bottom-right, matching
+   the §37 placement rule for the form factor. */
+.desktop-shell .pay-toast,
+.pay-toast.at-br {
+  left: auto; right: 26px; top: auto; bottom: 26px;
+  width: 344px; max-width: calc(100% - 52px);
+  align-items: flex-start;
+}
 
 /* ---------- Stripe PaymentElement (embedded iframe — NOT ours) ----------
    Hard constraint: the payment-method UI is Stripe's <PaymentElement>.
@@ -563,6 +603,38 @@
 .oh-badge.paid { background: var(--green-50); color: var(--green-800); }
 .oh-badge.hold { background: transparent; color: var(--n-600); border: 1.5px dashed var(--n-300); }
 .oh-badge.refund { background: var(--tint-pressed); color: var(--blue-500); }
+
+/* Group header above the card: date left, kind badge right (OrderHistoryGroup —
+   the badge belongs to the GROUP, not to invented per-movement rows). */
+.oh-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin: 4px 4px 8px;
+}
+.oh-head .oh-date { margin: 0; }
+
+/* Item lines nested inside the group card: `name · label_text` — amount */
+.oh-items {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 11px 16px 13px;
+  border-top: 1px solid var(--border);
+}
+.oh-item {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  font-size: 12.5px; line-height: 17px;
+  color: var(--text-secondary);
+}
+.oh-item .oi-label { color: var(--text-tertiary); }
+.oh-item .oi-amt { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+
+/* The group's real helper text (pre-auths / retentions / refunds have one) */
+.oh-helper {
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  background: var(--n-50);
+  padding: 10px 16px;
+  font-size: 11px; line-height: 15px;
+  color: var(--text-tertiary);
+}
 
 /* ---------- Empty state ---------- */
 .empty-stage {

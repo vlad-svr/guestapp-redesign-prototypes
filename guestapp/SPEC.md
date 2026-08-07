@@ -30,7 +30,6 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-payments-desktop.html`, `payd.css` (+`pay.css`) | §8 Payments — desktop (**current**) |
 > | `flow-taxes-mobile.html`, `tax.css` (+`pay.css`) | §9 Tourist taxes — mobile |
 > | `flow-taxes-desktop.html`, `tax.css` (+`pay.css`, `payd.css`) | §10 Tourist taxes — desktop |
-> | `flow-payments-v2.html`, `flow-payments-desktop-v2.html`, `pay2.css` (+`pay.css`, `payd.css`) | §8.5 Payments V2 (**not built**) |
 > | `flow-faq-mobile.html`, `faq.css` (+`pay.css`) | §11 FAQ & language — mobile |
 > | `flow-faq-desktop.html`, `faq.css` (+`pay.css`) | §12 FAQ & language — desktop |
 > | `flow-upselling-mobile.html`, `upsell.css` (+`pay.css`) | §13 Upselling — mobile |
@@ -50,7 +49,8 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > | `flow-esim-desktop-v2.html`, `esim-v2.css`, `esim-v2.js` | §30 Travel eSIM — desktop (**current**) |
 > | `flow-housing-guidebooks-mobile.html`, `flow-housing-guidebooks-desktop.html`, `hguide.css` (+`guide.css`) | §31 Housing guidebooks (property link) |
 > | `flow-keycards-kiosko.html`, `keycards.css` | §32 Key cards — kiosk (`/remote-keys`) |
-> | `flow-travel-guide-v2.html`, `flow-travel-guide-desktop-v2.html`, `travel-guide-v2.css`, `travel-guide-v2.js` | §35 AI Travel Guide (**current**) |
+> | `flow-travel-guide-v3.html`, `flow-travel-guide-desktop-v3.html`, `travel-guide-v3.css`, `travel-guide-v3.js` | §35.8 AI Travel Guide (**current** — Redesign 2.0 refresh of the shipped view) |
+> | `flow-travel-guide-v2.html`, `flow-travel-guide-desktop-v2.html`, `travel-guide-v2.css`, `travel-guide-v2.js` | §35 AI Travel Guide (previous — UX critique of the old legacy view) |
 > | `flow-deposit-mobile.html`, `flow-deposit-desktop.html`, `deposit.css` (+`pay.css`, `payd.css`) | §33 Property protection (standalone `DepositView`) |
 > | `flow-book-experience-mobile.html`, `book.css` (+`pay.css`, `upsell.css`) | §34 Book an experience (+ the `/:slug` deep link) |
 > | `flow-splash-v2.html`, `flow-splash-desktop-v2.html`, `splash-v2.css`, `splash-v2.js` | §36 Splash screen (**current**) |
@@ -78,7 +78,8 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > host-branded and splash-disabled states it has never had.
 >
 > Property protection added (§33) — the standalone `DepositView` at `/deposit`, which
-> only ever existed in the prototype as the payments deposit-chooser (§7 `p-deposit`).
+> for a while was duplicated by a payments-embedded deposit-chooser; that duplicate is
+> gone and §33 is the single prototype for the decision.
 > Covers the three shapes the backend can produce (one protection · two protections ·
 > optional), the payment-type split, the decline path, edit-from-cart and the paid
 > state that today is a silent redirect home.
@@ -145,7 +146,7 @@ can build the real feature from it without reverse-engineering the prototype HTM
 > toggle is gone. Prototype-only chrome — the real
 > components are unchanged, so no screen/hash/CTA in the registries moves.
 
-**Last synced:** 2026-08-04 · Luggage storage added (§38/§39) — the Radical Storage partner feature (`CHE_184`, off in production, SDK-disabled) had no prototype. The flow maps the shipped model 1:1 — day cards for the only two possible dates (arrival/departure, with the app's real default times), bag counter (1–50), the `radical-storage/storages/nearby/` results, the forced contact-email modal, the deal-in-cart money model ("confirmed the moment you pay"), and the `radical_storage_booking` QR ticket (PNR + recovery code) with the Past section — while rendering the API data the app never shows (`opening_times`, `is247` "OPEN 24/7", review counts), formatting prices properly (€5.00, not "5.00 EUR"), explaining the silent no-results state, and giving the dead-end empty state a way into the offer. The CTA models `findBookingGap()`'s 'luggage' gap (disabled until a storage is chosen). Deliberately not invented: cancel/modify (the app has none) and a permanent sidebar row (the real link appears only once a paid PNR exists). New files: `flow-luggage-{mobile,desktop}.html`, `luggage.css`, `luggage-flow.js`. Product-confirmed pass (same day): the offer is **availability-gated** (backend checks for nearby storages before surfacing it); tickets are **collapsed-by-default and expandable** like the real `BookingCard` (past bookings expand to schedule + details only — QR/codes are active-only); added the post-payment surfaces — `lg-home`/`ld-home` (the Home `LuggageStorageSection` card) and the **injected ungrouped "Luggage storage" sidebar row** on desktop booked-state screens (`[data-lug-booked]`), absent before booking and on the empty state, matching `hasBookings`. Live-data pass (real `storages/nearby` payload): six mock shops with the API's formulaic long names (why the shipped rows truncate), a `rating 0.0 / 0 reviews` shop with hidden stars, totals captioned **"for N bags"** (the API prices the whole request; tariffs are tiered, so no per-bag claim), the never-rendered `description` surfaced in the details sheet, and **list UX for long result sets** — sort chips (Nearest / Cheapest / Top rated), an "Open 24/7" filter, and a first-4 cap with "Show all N". Hero pills wrap instead of colliding at narrow widths, and the hero now shows the **app's own bundled photo** (`assets/img/luggage-storage.webp`, copied to `prototype/luggage-storage.webp` — the first local image asset in the prototype; every other flow uses remote URLs) under a scrim. Ticket details became a **label-above-value list** with icon chips (Bags / Storage / Address), matching the app's detail-row pattern. · 2026-08-03 · Check-out rebuilt on the real state machine (§25/§26) — the previous flow invented features the app doesn't have (an add-on mini-cart with a client-side 6% fee, a lockbox-code checklist, a low-rating "service-recovery" branch) and was replaced wholesale. The new flow maps the shipped code 1:1: `co-leave`/`cd-leave` is the real `PaymentSummaryBox` (one **deferred pay-at-check-out item** — the §7 pay-later breakfast basket, €12.50 + €0.60 fee — plus both real already-paid rows and the hollow €300 hold), `co-zero`/`cd-zero` designs the `shouldHideButton` zero-balance branch as a "Nothing left to pay → Continue — rate your stay" state, `co-pay`→`co-paid` is the §7 hand-off that flips `check_out_flow_status` to `PAID` (`is_online_check_out_flow`), `co-rate` drops the invented Skip (the real `RateForm` has none) and always submits, and the two thanks screens are both `ThanksView` — the **NPS gate made visible** (≥4 shows `survey_external_urls` review links, ≤3 hides them and keeps feedback private; Mozio shows on both). New gate states: `co-done` (`FEEDBACK_SUBMITTED` read-only summary) and `co-locked` (`isCheckoutDate` + `check_out_button_availability_time`, previously just a disabled Home button). `checkout-flow.js` shrank to the stars + `MIN_NPS` routing; modals are now `m-fee`/`m-deposit`/`m-transfer`(/`m-vela` mobile). Explicitly not mocked: the unread `CheckoutSettings` late-check-out / transportation fields and any instructions/task surface — no app feature exists. · Vela rail tip tones (§14) — the rail's glyphs are toned like the statuses they explain instead of all reading brand blue: amber for the on-request lane tip and `ud-track`'s "Waiting", red for "Declined", blue for everything else. The kit's `AssistantPanel.Tip` grew a `tone` prop (`info`/`warning`/`danger`/`success`/`neutral`) backed by `--assistant-tip-icon-*` tokens so the app matches the prototype exactly (`#fff9db`/`#b86a00`, `#ffe2ed`/`#df0044`). The desktop rail's on-request tip also still carried the **pre-correction** copy ("the host confirms first — the amount is held on your card meanwhile") from before the manual-deal money model was fixed; it now reads like the rest of §13.1 — paying the cart is what holds the amount and sends the request. · 2026-08-02 · Chat unread marker + gap audit (§27.0/§27.3b) — added `c-unread`/`cd-unread`: a Slack-style **New messages** rule above the first unseen message (pinned to the cursor captured on open, not chasing the newest message), plus a sticky "N new messages" jump pill on desktop. Recorded the three shipped-app gaps the prototype now outruns: no unread concept at all (no read cursor, `ChatThread` always scrolls to bottom), no Vela on `/chat` (no `chat.rules.tsx`, so the global `VelaPanel` is empty there), and a **legacy `SubHeader` stacked above `ChatHeader`** on the route. · Chat state audit — every `ChatView` gate is now mocked on **both** form factors (§27.1/§27.4/§28.1). Added `c-loading`/`cd-loading` (the thread-only `CircularLoader`, header+composer already mounted), `c-sending-code`/`cd-sending-code` (`isSendingCode`), `c-verify-error`/`cd-verify-error` (`otpError`) and `c-code-error`/`cd-code-error` (`otpSendError`) — four real states the prototype had never shown — plus desktop parity screens `cd-noreg` (a real gate that desktop was missing entirely) and `cd-offline`. Corrected the OTP screen against `OtpVerification`: Verify is **disabled until all 6 digits** are in, and the cooldown is **inert text** ("Resend in 24s", `resend_in_seconds`) rather than a blue clickable "0:24". Recorded that `Routes.tsx` loads **`pages/ChatView`** (V3) while `senderColors.ts` lives only in `legacy/` — so the multi-guest colours are a **regression to restore**, not current behaviour. Vela rails added to the desktop verify (slim, no booking data pre-verification) and chat-off (full, as the fallback help channel) screens. · Chat feature-parity pass (§27/§28) — the chat prototypes now cover everything the shipped `ChatView` does: **multi-guest sender colors** (each `created_by` hashes to a stable palette color — `senderColors.ts`; `.msg-group.me.other` with colored name/avatar/bubble, shown on both form factors), **video bubbles** (inline `<video>`, maps `MessageVideo`), the **deleted-file placeholder** (`.file-card.deleted` for attachments whose `presigned_url` is gone; also listed as a dashed "Deleted" row on the desktop rail), **optimistic media** (dimmed local preview while sending) and **failed-with-attachment retry** (retryMessage re-sends text + attachments together), plus the composer's **rejected-upload chip** ("Over 10 MB", maps `processFile`). Desktop gains the two scenarios it was missing — `cd-attach` (photos & files, with the rail's Shared-in-this-chat expanded into a full attachment index incl. docs) and `cd-sending` (the receipts ladder + retry) — closing the gap where attachments and retry were mobile-only. · Manual-deal money model corrected (§13.1) — reconciled against the code, not assumed. `useBookDeal` creates a MANUAL deal `PRE_REQUESTED` with **no payment**; it sits in the §7 cart as a `PRE_AUTH_PAYMENT` line (legacy `MyCart`'s "Pre-authorizations:" row), and **paying the cart is what places the hold and sends the request** — exactly what the legacy booking form has always said. Approval captures the hold automatically; a no releases it. Two things follow, and both were wrong before: **`PRE_REQUESTED` is not "sent"** (it is in the cart, waiting on the guest — the shipped `RequestCard` claimed "Sent to the host" over it), and **the per-request payment lives in the cart, not on the offer** — `requested_reservation_payment_ids` takes a *subset* (the same mechanism shipped pay-later already uses: `?pay_later=<ids>` + `getMultiPaymentPayload`), so a single request CAN be paid alone; what was undeliverable was the *inline* card form on the offer detail, which is removed along with `m-sent`. The choice now sits in `m-queued`, where the deal has a cart line to address: "Review cart & send" or "Send just this one — €X". Both upselling pages now end the request lane in a single "Add to cart — €X" → `m-queued`, the tracker beats become **In your cart → Pay to send it → Host replies**, and the story's vineyard tour is the in-cart request: a dashed "held when you pay, then sent to the host" row in `u-track`/`u-rejected`, the §7 hold sections, the v2 bills and all four order histories. Payments pages also correct the breakfast basket meta (it is `AUTO`) and rename the hold section "Card holds — not charges". §34's on-request copy matches. **No-dates variant added** (`u-request-nodates`/`ud-request-nodates`) — `getAvailableDates()` returns `[]` when the booking window has closed, and the shipped picker mapped it into a blank rail while the CTA demanded an unpickable date; the picker now explains itself and `findBookingGap()` only asks for a date when `hasBookableDates()` says one exists. · Upselling detail forms completed (§13.4/§14) — the lane and the booking form are independent axes, so the detail screens now cover both shapes in both lanes: `u-detail-time`/`ud-detail-time` (instant × time-based `bx-slot` radios, "From €15.00", §34 slot prices, standard check-out free) and `u-request-date`/`ud-request-date` (on-request × guests + preferred-evening `bd-day` strip + `bx-select` time, dashed if-approved €90.00 total); both upselling pages now load `book.css` for the shared `bx-*` controls; the featured vineyard card and the late check-out card are wired into the new screens. · Toasts & tooltips added (§37) — the feedback building block (`toast-tooltip-demo.html` + `feedback.css` + `feedback-demo.js`, linked from `index.html` Building blocks and the nav): one toast contract (per-kind durations with sticky errors, visible pausable timer, one action slot, placement fixed per form factor, 3-deep cap + Clear all, dedupe-by-id) and the tooltip/popover/sheet ladder for hover vs touch; Appendix A gains rule 9 pointing at it. · Home V2 proposal removed (§5) — `home-v2.html`, `home-desktop-v2.html` and `home-v2.css` are deleted; `home.html` / `home-desktop.html` are the only Home prototypes and §5 documents them. · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It is clocked on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Find booking "the arrival card" (§17.0) is the only proposal** — §17/§18 stay authoritative for what ships; nav + `index.html` badge those two pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
+**Last synced:** 2026-08-05 · Removal flow + offer photos in the cart (§7.2/§8) — the destructive half of the ⋯ had no prototype at all. Both form factors now cover the whole of `handleRemove` → `useMutateDeals`: a **confirm step the shipped code doesn't have** (`m-remove`), justified not by politeness but by `deleteDeal` being permanent — re-adding means re-booking an offer whose window `getAvailableDates()` may already have closed (§13.4); `p-removing`/`pd-removing` as `CartItemRow`'s real `isRemoving` (row dimmed **in place**, menu disabled, amount → spinner, ledger and CTA holding the old total, because a row that vanishes optimistically is a lie if the mutation fails); and an explicit fork to **both** real outcomes instead of auto-advancing — success (`onSuccess` refetch → row gone, total drops, toast offering "Book it again", deliberately not called Undo) and failure (`onError` → `displayError` → `m-remove-error`, item still in the cart, still unpaid). The **pet-fee refusal** is prototyped for the first time (`p-petfee`/`pd-petfee` → `-blocked`): `isRemovable` is true so "Remove item" stays in the menu, and `showToast.error('pet_fees_cannot_be_removed')` fires only after the tap — plus the redesign's addition, a "Why can't I remove this?" link (`m-petfee`) routing to §27/§28 chat, the only place the fee can actually change. Cart-row restraint pass after review: the taxes row's second inline action ("What is this?") moved into the ⋯ menu — inline it wrapped and made that row ~1.5× the height of its neighbours, structurally different for no visible reason (the shipped `CartItemRow` does render both, and this deliberately diverges) — and the desktop row-menu items lost their leading glyphs, which read as decoration beside the row's own icon chip. Also tried and **reverted**: offer photographs on cart rows — prototyped, reverted, reinstated, and **reverted again as the settled answer**: icon chips stay. The data is free (`upselling_deal_id` joins to the deal list `MyCart` already fetches for the pet-fee check, so `offer.image_url` costs no request), so the call is purely about weight — a photo box beside icon-chip rows reads as a different component, and it pulls attention toward the two upsell lines and away from the ledger, the one thing on the screen the guest must not misread. §7.2 records it so it isn't proposed a third time; photos stay where the selling happens (§13, §34). Fixed in passing: `modals.js` treated `data-modal` on an element that also had `data-modal-close` as open-only, so a row inside a sheet **stacked** a second sheet on top of the first (the pre-existing taxes → `m-taxinfo` hand-off had the same bug); a trigger inside a modal now replaces it. · Payments coverage pass (§7.2–§7.4/§8) — three gaps between the prototype and the shipped code closed. **(1) Cart menus:** the ⋯ now mirrors `CartItemRow`'s `ResponsiveDropdown` — "Add to pay later" on every non-PMS row (tourist taxes included: postponable, never removable; only removable upsells get "Remove item"; pet fees refuse with a toast) — as bottom sheets on mobile (`m-item-menu`, `m-item-menu-tax`) and `rowmenu.js` popovers on desktop (`cm-food`, `cm-tax`); desktop finally gets the pay-later state itself (`pd-later`, previously mobile-only) with the parked breakfast, "Send back to cart" and the €367.50 ledger. Taxes rows also gained the real "What is this?" (`TaxesInformationModal` → `m-taxinfo`, both form factors). **(2) Addon provider:** `p-form-addon`/`pd-form-addon` mock the second real payment path (`AddonPaymentForm` + `useAddonPayments`, Global Payments Realex HPP) — the whole form incl. the pay button fenced inside GP's iframe, no wallets, no theming, in-window 3-DS, multi-payment created from the cart CTA first. **(3) Success → order history:** `p-success`/`pd-success` carry "View order history" — the real `onSuccessPaymentForm` navigates to `PATHS.payments.ordersHistory`, so the receipt's permanent home is one tap away. · Payments deposit chooser removed (§7.5/§8/§33.1) — `p-deposit`/`pd-deposit` were a second, drifting copy of a decision §33 already prototypes in all three backend shapes, so the payments flow no longer mocks it: the screens, their HUD chips, the desktop rail row and the now-unused `i-umbrella` def are gone, and the deposit hold's **"Edit protection" links out** to §33's edit state (`dp-edit`/`dpd-edit`) — which is what the shipped `onEditProtection` → `PATHS.deposits` does anyway, so the prototype got more faithful by losing a screen. §33.1 is rewritten as the single source; the §8 rail table, both screen-id registries, README and `index.html` follow. · Payments V2 and V3 removed; §7.5 order history rebuilt on the real model — the alternative cuts (§8.5 "one bill", §8.6 "the statement") are deleted wholesale (`flow-payments-{v2,desktop-v2,v3,desktop-v3}.html`, `pay2.css`, `pay3.css`); §7/§8 are again the only payments prototypes, matching the decision that the implementation follows v1. In exchange, `p-history`/`pd-history` stopped inventing flat movement rows ("Security deposit hold", "Early check-in pre-authorization" — rows the API cannot produce) and now mirror `useBuildDisplayedOrderHistory`/`OrderHistoryGroup` 1:1: the backend returns **four fixed groups** (`payment_details`, `pre_authorizations`, `retentions`, `refunds`), so the page renders **one card per group** — date + kind badge above the card, a header row (kind icon, real group title, "N items · card ···· {last4}" from the single `cards_info[0]`, `total_amount_with_commission`), nested item lines (`name · label_text` — `amount_with_commission`), and the group's real `*_helper_text` as a footer strip (the mock uses the shipped i18n copy verbatim, incl. the pre-auth helper's known awkwardness). Rows are no longer buttons (the real groups aren't clickable — the invented "open the entry to download its PDF" rail tip is gone), and the mock story keeps three groups (Payment details €380.00 / Pre-authorizations €410.00 / Refunds €12.50); empty groups are filtered, Retentions renders identically when present. · 2026-08-04 · Luggage storage added (§38/§39) — the Radical Storage partner feature (`CHE_184`, off in production, SDK-disabled) had no prototype. The flow maps the shipped model 1:1 — day cards for the only two possible dates (arrival/departure, with the app's real default times), bag counter (1–50), the `radical-storage/storages/nearby/` results, the forced contact-email modal, the deal-in-cart money model ("confirmed the moment you pay"), and the `radical_storage_booking` QR ticket (PNR + recovery code) with the Past section — while rendering the API data the app never shows (`opening_times`, `is247` "OPEN 24/7", review counts), formatting prices properly (€5.00, not "5.00 EUR"), explaining the silent no-results state, and giving the dead-end empty state a way into the offer. The CTA models `findBookingGap()`'s 'luggage' gap (disabled until a storage is chosen). Deliberately not invented: cancel/modify (the app has none) and a permanent sidebar row (the real link appears only once a paid PNR exists). New files: `flow-luggage-{mobile,desktop}.html`, `luggage.css`, `luggage-flow.js`. Product-confirmed pass (same day): the offer is **availability-gated** (backend checks for nearby storages before surfacing it); tickets are **collapsed-by-default and expandable** like the real `BookingCard` (past bookings expand to schedule + details only — QR/codes are active-only); added the post-payment surfaces — `lg-home`/`ld-home` (the Home `LuggageStorageSection` card) and the **injected ungrouped "Luggage storage" sidebar row** on desktop booked-state screens (`[data-lug-booked]`), absent before booking and on the empty state, matching `hasBookings`. Live-data pass (real `storages/nearby` payload): six mock shops with the API's formulaic long names (why the shipped rows truncate), a `rating 0.0 / 0 reviews` shop with hidden stars, totals captioned **"for N bags"** (the API prices the whole request; tariffs are tiered, so no per-bag claim), the never-rendered `description` surfaced in the details sheet, and **list UX for long result sets** — sort chips (Nearest / Cheapest / Top rated), an "Open 24/7" filter, and a first-4 cap with "Show all N". Hero pills wrap instead of colliding at narrow widths, and the hero now shows the **app's own bundled photo** (`assets/img/luggage-storage.webp`, copied to `prototype/luggage-storage.webp` — the first local image asset in the prototype; every other flow uses remote URLs) under a scrim. Ticket details became a **label-above-value list** with icon chips (Bags / Storage / Address), matching the app's detail-row pattern. · 2026-08-03 · Check-out rebuilt on the real state machine (§25/§26) — the previous flow invented features the app doesn't have (an add-on mini-cart with a client-side 6% fee, a lockbox-code checklist, a low-rating "service-recovery" branch) and was replaced wholesale. The new flow maps the shipped code 1:1: `co-leave`/`cd-leave` is the real `PaymentSummaryBox` (one **deferred pay-at-check-out item** — the §7 pay-later breakfast basket, €12.50 + €0.60 fee — plus both real already-paid rows and the hollow €300 hold), `co-zero`/`cd-zero` designs the `shouldHideButton` zero-balance branch as a "Nothing left to pay → Continue — rate your stay" state, `co-pay`→`co-paid` is the §7 hand-off that flips `check_out_flow_status` to `PAID` (`is_online_check_out_flow`), `co-rate` drops the invented Skip (the real `RateForm` has none) and always submits, and the two thanks screens are both `ThanksView` — the **NPS gate made visible** (≥4 shows `survey_external_urls` review links, ≤3 hides them and keeps feedback private; Mozio shows on both). New gate states: `co-done` (`FEEDBACK_SUBMITTED` read-only summary) and `co-locked` (`isCheckoutDate` + `check_out_button_availability_time`, previously just a disabled Home button). `checkout-flow.js` shrank to the stars + `MIN_NPS` routing; modals are now `m-fee`/`m-deposit`/`m-transfer`(/`m-vela` mobile). Explicitly not mocked: the unread `CheckoutSettings` late-check-out / transportation fields and any instructions/task surface — no app feature exists. · Vela rail tip tones (§14) — the rail's glyphs are toned like the statuses they explain instead of all reading brand blue: amber for the on-request lane tip and `ud-track`'s "Waiting", red for "Declined", blue for everything else. The kit's `AssistantPanel.Tip` grew a `tone` prop (`info`/`warning`/`danger`/`success`/`neutral`) backed by `--assistant-tip-icon-*` tokens so the app matches the prototype exactly (`#fff9db`/`#b86a00`, `#ffe2ed`/`#df0044`). The desktop rail's on-request tip also still carried the **pre-correction** copy ("the host confirms first — the amount is held on your card meanwhile") from before the manual-deal money model was fixed; it now reads like the rest of §13.1 — paying the cart is what holds the amount and sends the request. · 2026-08-02 · Chat unread marker + gap audit (§27.0/§27.3b) — added `c-unread`/`cd-unread`: a Slack-style **New messages** rule above the first unseen message (pinned to the cursor captured on open, not chasing the newest message), plus a sticky "N new messages" jump pill on desktop. Recorded the three shipped-app gaps the prototype now outruns: no unread concept at all (no read cursor, `ChatThread` always scrolls to bottom), no Vela on `/chat` (no `chat.rules.tsx`, so the global `VelaPanel` is empty there), and a **legacy `SubHeader` stacked above `ChatHeader`** on the route. · Chat state audit — every `ChatView` gate is now mocked on **both** form factors (§27.1/§27.4/§28.1). Added `c-loading`/`cd-loading` (the thread-only `CircularLoader`, header+composer already mounted), `c-sending-code`/`cd-sending-code` (`isSendingCode`), `c-verify-error`/`cd-verify-error` (`otpError`) and `c-code-error`/`cd-code-error` (`otpSendError`) — four real states the prototype had never shown — plus desktop parity screens `cd-noreg` (a real gate that desktop was missing entirely) and `cd-offline`. Corrected the OTP screen against `OtpVerification`: Verify is **disabled until all 6 digits** are in, and the cooldown is **inert text** ("Resend in 24s", `resend_in_seconds`) rather than a blue clickable "0:24". Recorded that `Routes.tsx` loads **`pages/ChatView`** (V3) while `senderColors.ts` lives only in `legacy/` — so the multi-guest colours are a **regression to restore**, not current behaviour. Vela rails added to the desktop verify (slim, no booking data pre-verification) and chat-off (full, as the fallback help channel) screens. · Chat feature-parity pass (§27/§28) — the chat prototypes now cover everything the shipped `ChatView` does: **multi-guest sender colors** (each `created_by` hashes to a stable palette color — `senderColors.ts`; `.msg-group.me.other` with colored name/avatar/bubble, shown on both form factors), **video bubbles** (inline `<video>`, maps `MessageVideo`), the **deleted-file placeholder** (`.file-card.deleted` for attachments whose `presigned_url` is gone; also listed as a dashed "Deleted" row on the desktop rail), **optimistic media** (dimmed local preview while sending) and **failed-with-attachment retry** (retryMessage re-sends text + attachments together), plus the composer's **rejected-upload chip** ("Over 10 MB", maps `processFile`). Desktop gains the two scenarios it was missing — `cd-attach` (photos & files, with the rail's Shared-in-this-chat expanded into a full attachment index incl. docs) and `cd-sending` (the receipts ladder + retry) — closing the gap where attachments and retry were mobile-only. · Manual-deal money model corrected (§13.1) — reconciled against the code, not assumed. `useBookDeal` creates a MANUAL deal `PRE_REQUESTED` with **no payment**; it sits in the §7 cart as a `PRE_AUTH_PAYMENT` line (legacy `MyCart`'s "Pre-authorizations:" row), and **paying the cart is what places the hold and sends the request** — exactly what the legacy booking form has always said. Approval captures the hold automatically; a no releases it. Two things follow, and both were wrong before: **`PRE_REQUESTED` is not "sent"** (it is in the cart, waiting on the guest — the shipped `RequestCard` claimed "Sent to the host" over it), and **the per-request payment lives in the cart, not on the offer** — `requested_reservation_payment_ids` takes a *subset* (the same mechanism shipped pay-later already uses: `?pay_later=<ids>` + `getMultiPaymentPayload`), so a single request CAN be paid alone; what was undeliverable was the *inline* card form on the offer detail, which is removed along with `m-sent`. The choice now sits in `m-queued`, where the deal has a cart line to address: "Review cart & send" or "Send just this one — €X". Both upselling pages now end the request lane in a single "Add to cart — €X" → `m-queued`, the tracker beats become **In your cart → Pay to send it → Host replies**, and the story's vineyard tour is the in-cart request: a dashed "held when you pay, then sent to the host" row in `u-track`/`u-rejected`, the §7 hold sections, the v2 bills and all four order histories. Payments pages also correct the breakfast basket meta (it is `AUTO`) and rename the hold section "Card holds — not charges". §34's on-request copy matches. **No-dates variant added** (`u-request-nodates`/`ud-request-nodates`) — `getAvailableDates()` returns `[]` when the booking window has closed, and the shipped picker mapped it into a blank rail while the CTA demanded an unpickable date; the picker now explains itself and `findBookingGap()` only asks for a date when `hasBookableDates()` says one exists. · Upselling detail forms completed (§13.4/§14) — the lane and the booking form are independent axes, so the detail screens now cover both shapes in both lanes: `u-detail-time`/`ud-detail-time` (instant × time-based `bx-slot` radios, "From €15.00", §34 slot prices, standard check-out free) and `u-request-date`/`ud-request-date` (on-request × guests + preferred-evening `bd-day` strip + `bx-select` time, dashed if-approved €90.00 total); both upselling pages now load `book.css` for the shared `bx-*` controls; the featured vineyard card and the late check-out card are wired into the new screens. · Toasts & tooltips added (§37) — the feedback building block (`toast-tooltip-demo.html` + `feedback.css` + `feedback-demo.js`, linked from `index.html` Building blocks and the nav): one toast contract (per-kind durations with sticky errors, visible pausable timer, one action slot, placement fixed per form factor, 3-deep cap + Clear all, dedupe-by-id) and the tooltip/popover/sheet ladder for hover vs touch; Appendix A gains rule 9 pointing at it. · Home V2 proposal removed (§5) — `home-v2.html`, `home-desktop-v2.html` and `home-v2.css` are deleted; `home.html` / `home-desktop.html` are the only Home prototypes and §5 documents them. · Splash screen added (§36) — `components/SplashScreen` had no prototype and carries four confirmed defects; the timing contract (`max(load, 500 ms)`, quiet below 1.2 s, honest at 6 s, watchdog at 20 s) replaces the single `SHOW_MODAL_AFTER_SPLASH_TIMEOUT = 5000` that today runs *after* the data has already arrived. It is clocked on mobile; desktop covers the laptop shell, the SDK-embedded widget and the kiosk. · AI Travel Guide added (§35) — `pages/TravelGuideView` had no prototype; the generated itinerary becomes a **document the guest can change** (the shipped app force-forwards past the questions and ships no regenerate control), the build screen gets an honest clock and a cancel, failure gets three exits, and every `web_search` slot gets the directions and hours the loading screen already promises. · Property protection (§33) and Book an experience (§34) added — the standalone `DepositView` and the mobile offer-booking chain; between them they close Appendix C gaps **15**, **16** and the deep-link half of **17**. Housing guidebooks added (§31) and kiosk key cards added (§32) — the two app surfaces that had no prototype at all; the `/remote-keys` route is documented as the **card dispenser**, not virtual keys. · IV QR (§4.5) reworked around the **single thing being proved** — the guest is at the door — with the check-in-link path cut, the scanner and `IVUnavailableView` rendered verbatim from the IV flow, the invented pre-auth step rail removed (the IV step count is unknowable before the reservation is matched), and the confirmed `?scanned=true` defect documented. Guests summary (§2.0) is the **current** roster and renders beside the older hub on both form factors for comparison. **Find booking "the arrival card" (§17.0) is the only proposal** — §17/§18 stay authoritative for what ships; nav + `index.html` badge those two pages and nothing else. Chat with host added (§27/§28). Travel eSIM added (§29/§30) — the three eSIM views re-cast around the install ladder. All other sections match deployed prototypes at
 > https://vlad-svr.github.io/guestapp-redesign-prototypes/ · duplicate static galleries
 > (`iv-flow.html`, `iv-flow-desktop.html`, `guest-registration.html`) removed — the
 > interactive flows are now the single source per feature. Payments flows added
@@ -963,8 +964,28 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
   carry "+ Add exemptions" (→ §9 `t-edit` / §10 `td-edit`, the edit-from-payments mode)
   and the meta "2 of 3 guests · 5 taxed nights" (quotes the §9 money story);
   deposit hold carries "Edit protection"
-  (→ `p-deposit`); PMS-origin items (booking stay) have **no kebab** (`isPMSorigin`);
-  removable upsells get kebab ⋯ = remove / move to pay later. The hold section
+  (→ §33 `dp-edit` / `dpd-edit` — the real `onEditProtection` navigates to
+  `PATHS.deposits`, so the link leaves payments); PMS-origin items (booking
+  stay) have **no kebab** (`isPMSorigin`).
+- **Kebab ⋯ semantics mirror `CartItemRow`'s `ResponsiveDropdown`:** every
+  non-PMS row has ⋯ with "Add to pay later" — including tourist taxes, which
+  can be postponed but never removed; "Remove item" appears only on removable
+  upsells (`isRemovable` — not third-party, and pet fees refuse with a toast).
+  Mobile renders the menu as a bottom sheet (`m-item-menu` on the breakfast
+  basket — pay later + remove; `m-item-menu-tax` on taxes — pay later only,
+  with the can't-remove explanation), desktop as a `rowmenu.js` popover
+  (`cm-food`, `cm-tax`). Desktop menu items are **text only** — no leading
+  glyphs: two or three rows of title + description don't need icons to be
+  scannable, and the glyphs read as decoration next to the row's own icon
+  chip.
+- **One inline action per row.** "What is this?" (`m-taxinfo`, the real
+  `TaxesInformationModal`) lives in the ⋯ menu only, not beside
+  "Add exemptions". `CartItemRow` used to render both inline in a
+  `flex-wrap` span, but at cart width they wrap and the taxes row grows to
+  ~1.5× its neighbours' height — a row that looks structurally different from
+  the rows around it for no reason the guest can see. Fidelity to that detail
+  costs more than it buys, so the real row now keeps only the edit link inline.
+  The hold section
   ("Card holds — not charges") lists **all three** holds: the security deposit
   (held when you pay), the early check-in request pre-auth (€20.00, live since
   10:24) and the vineyard tour request the guest chose to batch (€90.00, in the
@@ -972,6 +993,52 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
   payable row is an instant item; on-request deals never appear as charges here
   (§13.1 money model — this hold section is the redesign of legacy `MyCart`'s
   "Pre-authorizations:" summary line).
+- **Cart rows use icon chips, not offer photographs — settled.** The data is
+  there and it is free: `CartPayment` carries no image, but
+  `upselling_deal_id` joins to the deal list `MyCart` already fetches for the
+  pet-fee check, so `offer.image_url` would cost no extra request. It was
+  prototyped **twice and reverted twice**; this bullet is the record so it
+  isn't proposed a third time. The reason is the cart's job: make three kinds
+  of money legible (§7.1), not re-sell what the guest already chose. A photo
+  box beside icon-chip rows reads as a different component rather than the
+  same row with richer content, and it pulls weight toward the two upsell
+  lines and away from the ledger — which is the only thing on the screen the
+  guest must not misread. Photos stay where the selling happens (§13
+  upselling, §34 booking); by the cart, the decision is already made.
+- **Removing an item** (`p-removing` → `p-removed`, `m-remove`,
+  `m-remove-error`) — the destructive half of the ⋯, mapped to
+  `handleRemove` → `useMutateDeals.deleteDealMutation`:
+  - A **confirm step is added** (`m-remove` → the real `RemoveItemModal`),
+    which the pre-redesign code did not
+    have. Not for politeness: `deleteDeal` is permanent, and getting the item
+    back means re-booking the offer — which `getAvailableDates()` may refuse
+    once the booking window has closed (§13.4 `u-request-nodates`). The sheet
+    says both true things: nothing was charged (so no refund, no order-history
+    entry), and this is not an undo.
+  - `p-removing` is `CartItemRow`'s `isRemoving`: the row **stays in place**,
+    dimmed, its menu disabled and its amount replaced by a spinner; the ledger
+    and CTA keep the old total. A row that vanishes optimistically is a lie if
+    the mutation fails.
+  - Success (`onSuccess` refetches deals + cart): the row is gone, the total
+    drops, and the toast offers "Book it again" — a link to the offer (§13),
+    deliberately **not** labelled Undo, because it is a new booking.
+  - Failure (`useMutateDeals.onError` → `displayError`): `m-remove-error`,
+    the app's ErrorModal — the item is still in the cart and still unpaid.
+    Reachable from the explicit fork on `p-removing`, which offers both real
+    outcomes rather than auto-advancing to the happy one.
+- **The pet fee is the one removal the app refuses** (`p-petfee` →
+  `p-petfee-blocked`). `handleRemove` looks the row up in the deals list and,
+  if `offer.category === OFFER_CATEGORIES.petFee`, fires
+  `showToast.error('pet_fees_cannot_be_removed')` and returns `false` — the
+  mutation never runs. The prototype keeps that honest: `isRemovable` is true
+  (it is a normal upselling deal), so **"Remove item" is present in the menu**
+  and the refusal only happens after the tap. The redesign adds what the bare
+  toast had no room for — a "Why can't I remove this?" link to `m-petfee`
+  (the real `PetFeeInfoModal`), which
+  explains the fee is the property's and routes to §27 chat, the only place it
+  can actually be changed. In the app the link rides the refusal toast as its
+  action and then stays on the row, so a guest who dismissed the toast can
+  still find the explanation. The pet-fee row appears in this scenario only.
 - Pay later (`store/payments/usePaymentsStore`): moving an item shows a toast, the item
   lands in a "Pay later" box ("Nothing here is charged"), each row has "Send back to
   cart", and the CTA amount updates. Prototype simulates via kebab on Breakfast basket
@@ -979,7 +1046,7 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
 - Empty cart (`p-empty`): success-toned "Nothing to pay" (never an error look), link to
   order history, CTA "Back to check-in list".
 
-### 7.3 Pay (`p-form`, `p-3ds`)
+### 7.3 Pay (`p-form`, `p-form-addon`, `p-3ds`)
 
 - **HARD CONSTRAINT — the payment method UI is Stripe's `<PaymentElement>`**
   (`StripePaymentForm`: layout `tabs`, wallets applePay/googlePay `auto`). It's an
@@ -1000,6 +1067,18 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
   the decline path are designed. Approve → `p-processing`, Decline → `p-error`.
   Direct `location.state` guard from the real code applies: entering the form without
   cart state returns to the cart.
+- **`p-form-addon` is the other real provider** (`PAYMENT_PROVIDERS.addon` →
+  `AddonPaymentForm` + `useAddonPayments`, Global Payments' Realex HPP). Its
+  constraint is harder than Stripe's: the **entire form — fields, validation
+  and the pay button — is GP's hosted page in an iframe** (`rxp-js` embedded
+  mode). No wallet tabs, no Appearance API, no CTA dock of ours; 3-DS runs
+  inside the same window, so there is no separate `p-3ds` on this path. Flow
+  differences the prototype documents: from the cart, Pay first **creates the
+  multi-payment** (brief loading on the cart CTA — `startPaymentProcess` →
+  `onDataRequired` navigates with `paymentId`), a failed HPP init returns to
+  the cart, and closing the error modal also goes back to the cart. The
+  redesign owns everything around the fence: page head, ledger, recovery
+  states. Submission inside the frame → `p-processing` (same timeline).
 
 ### 7.4 Confirmation (`p-processing`, `p-slow`), receipt (`p-success`), decline (`p-error`)
 
@@ -1010,27 +1089,46 @@ changes only when the cart changes (e.g. pay-later move: €380.00 → €367.50
 - `p-slow` is the polling-fallback state (websocket silent): same timeline + amber note
   "taking longer than usual… receipt will also be emailed"; never looks frozen.
 - `p-success`: "€380.00 paid" + itemized receipt (items, dashed hold line, card ····4242,
-  date) + "Receipt sent to {email}" + download PDF. Primary CTA follows the §1.4
+  date) + "Receipt sent to {email}" + download PDF + **"View order history"**
+  (→ `p-history`) — the real `onSuccessPaymentForm` navigates to
+  `PATHS.payments.ordersHistory`, so where the receipt lives must be one tap
+  away. Primary CTA follows the §1.4
   priority table (mock story: Carlos `verification_pending` → "Verify Carlos's ID");
   secondary "Back to check-in list".
 - `p-error`: human cause first, raw code second (monospace), primary blue "Try again"
   (→ `p-form`), "Use a different card", trust line "Nothing was charged — your cart is
   unchanged", ghost "Back to cart". Never a lone "OK".
 
-### 7.5 Order history (`p-history`) & deposit chooser (`p-deposit`)
+### 7.5 Order history (`p-history`)
 
-- History rows grouped by date with badges: green **Paid**, dashed **Hold** (active),
-  blue **Refunded** (+ "back on Visa ···· 4242 within 5–10 days"). Three hold
-  rows: the security deposit, the early check-in pre-authorization ("Waiting for
-  the host · charged only if approved") and the vineyard pre-authorization
-  ("Placed with your booking payment" — the batch path after the cart is paid).
-  Footer note explains "pending" statement lines. Maps to
-  `useBuildDisplayedOrderHistory` categories.
-- `p-deposit` (DepositView): each option leads with the cost **today** — "€0.00 today"
-  (security-deposit hold, ⚡ Recommended) vs "€39.00 one-time" (damage protection,
-  amber "non-refundable" caveat); consequence bullets per option; ghost "Continue
-  without protection" (never destructive-red); confirm returns to the cart
-  (`confirm_and_go_back_to_payment`).
+- History mirrors `useBuildDisplayedOrderHistory` / `OrderHistoryGroup` **1:1** —
+  it does NOT invent per-movement rows. The backend returns four fixed groups
+  (`payment_details` / `pre_authorizations` / `retentions` / `refunds`, each a
+  `PaymentOrderHistory` with `date`, `total_amount_with_commission`, `items[]`);
+  empty groups are filtered. The page renders **one card per group**:
+  - Above the card: `date` (`D MMM YYYY`) left, kind badge right — green
+    **Paid** (`payment_details`), dashed **Hold** (`pre_authorizations` /
+    `retentions`), blue **Refunded** (`refunds`).
+  - Card header row: kind icon (receipt / shield / undo — green chip only for
+    paid), the **real group title** ("Payment details", "Pre-authorizations",
+    "Refunds"), meta "`N items` · `card ···· {last4}`" (one shared
+    `cards_info[0]` for every group — there is no per-order card), and the
+    group total (`total_amount_with_commission`; neutral color for holds).
+  - Item lines: `name` `· label_text` — `amount_with_commission`. Not
+    clickable — the real rows have no handlers and no per-entry receipt.
+  - Footer strip: the group's real helper text (`pre_authorization_helper_text`,
+    `retention_helper_text`, `refunds_helper_text`) verbatim; `payment_details`
+    has none.
+  Mock story: Payment details €380.00 (4 items), Pre-authorizations €410.00
+  (deposit + early check-in + vineyard), Refunds €12.50 (breakfast basket);
+  Retentions renders identically when the backend returns it. Footer note
+  explains "pending" statement lines (`holds_appear_as_pending_note`).
+- **The protection chooser is not a payments screen.** It lived here as
+  `p-deposit`/`pd-deposit` before §33 existed; the standalone `DepositView`
+  now owns the decision in every shape the backend can produce, so the
+  duplicate was removed rather than kept in sync. "Edit protection" on the
+  deposit hold links out to §33's edit state (`dp-edit`/`dpd-edit`), which is
+  what `onEditProtection` → `PATHS.deposits` actually does.
 
 ### 7.6 Vela & chrome
 
@@ -1041,9 +1139,14 @@ is paying safe, where's the receipt. 3-segment `progress-track` on `p-form`/`p-3
 
 ### 7.7 Screen-id registry (deep-link hashes)
 
-`p-cart`* · `p-later` · `p-history` · `p-empty` · `p-form` · `p-3ds` · `p-processing` ·
-`p-slow` · `p-success` · `p-error` · `p-deposit` · modals `m-vela`, `m-hold`
-(* = `data-start`; autonext: processing→success 3.0 s, slow→success 3.4 s)
+`p-cart`* · `p-later` · `p-removing` · `p-removed` · `p-petfee` ·
+`p-petfee-blocked` · `p-history` · `p-empty` · `p-form` · `p-form-addon` ·
+`p-3ds` · `p-processing` · `p-slow` · `p-success` · `p-error` · modals `m-vela`,
+`m-hold`, `m-item-menu`, `m-item-menu-tax`, `m-item-menu-pet`, `m-remove`,
+`m-remove-error`, `m-petfee`, `m-taxinfo`
+(* = `data-start`; autonext: processing→success 3.0 s, slow→success 3.4 s.
+`p-removing` deliberately does **not** autonext — it forks to both real
+outcomes.)
 
 ---
 
@@ -1056,24 +1159,40 @@ differences:
 
 - `pd-cart`: two-column grid — item list left, **sticky ledger** right with the CTA
   inside it (mirrors MyCart's 852 px list/summary split). Tabs to `pd-history`.
+  The §7.2 kebab semantics render as `rowmenu.js` popovers (`cm-food` on the
+  breakfast basket — pay later → `pd-later` / remove; `cm-tax` on taxes — pay
+  later + "What is this?" → `m-taxinfo`); the cart card is `overflow:visible`
+  so the popovers aren't clipped.
+- `pd-later`: the pay-later state (§7.2) with the desktop grid intact — breakfast
+  parked in the "Pay later" box between cart and holds, "Send back to cart" →
+  `pd-cart`, ledger and CTA drop to €367.50.
 - `pd-form`: centered column with the same fenced Stripe `<PaymentElement>` block
   (§7.3 constraint applies — theme-only); the 3-DS bank challenge is **not** a
   separate desktop screen (Stripe renders it as an overlay) — "Pay €380.00" goes
   straight to `pd-processing`; the mobile `p-3ds` mock documents the challenge copy.
+- `pd-form-addon`: the §7.3 Addon (Global Payments HPP) variant — the whole form
+  incl. the pay button inside the fenced iframe, no wallets, submission →
+  `pd-processing`.
 - `pd-success` is **full-bleed** (no Vela rail, per §6 placement rule); sidebar flips
-  Payments/protection/taxes badges to ✓ and progress to 75%.
+  Payments/protection/taxes badges to ✓ and progress to 75%. Like `p-success`
+  it carries "View order history" (→ `pd-history`) — the real `onSuccess`
+  destination.
 - Vela rail is stage-aware on all other screens:
 
 | Stage (screens) | Rail content | Escape actions |
 |---|---|---|
 | `pd-cart` | progress (Review cart → Pay → Receipt) + what's-a-hold (`m-hold`), pay-later tip | — |
+| `pd-later` | progress step 1 + pay-later tips (send-back works before or after paying; no deadline) | — |
+| `pd-removing` | **minimal** — one patience tip (the item stays if the property doesn't confirm) | — |
+| `pd-removed` | "Book it again" (→ §13, a fresh booking, not an undo) + nothing-to-refund | — |
+| `pd-petfee` / `pd-petfee-blocked` | why the fee is the property's (`m-petfee`) + message the property (→ §28) | — |
 | `pd-history` | hold-isn't-a-charge, refund timing, invoice tip | — |
 | `pd-form` | progress step 2 + security tips (Stripe, 3-DS, statement descriptor) | back to cart (back-pill) |
+| `pd-form-addon` | progress step 2 + security tips (Global Payments, in-window 3-DS) | back to cart (back-pill) |
 | `pd-processing` | **minimal** — one patience tip, no ask box (liveness precedent) | — |
 | `pd-error` | **no rail** — see below | — |
-| `pd-deposit` | pick-the-hold-if / pick-protection-if | back to cart |
 
-**`pd-error` / `pd2-error` carry no rail.** The decline screen is already nothing but
+**`pd-error` carries no rail.** The decline screen is already nothing but
 the explanation and the way out: the body names the cause ("a card limit or an
 online-payments setting — your banking app often says exactly why"), states that nothing
 was charged, and offers Try again / different card / back to cart. The rail restated all
@@ -1083,79 +1202,11 @@ rule as the §6 "no card" list on mobile.
 
 ### 8.1 Screen-id registry (deep-link hashes)
 
-`pd-cart`* · `pd-history` · `pd-form` · `pd-processing` · `pd-success` · `pd-error` ·
-`pd-deposit` · modal `m-hold` (* = `data-start`; autonext: processing→success 3.0 s)
-
----
-
-## §8.5 Payments V2 — the simpler cut (**not built**)
-
-**Prototype:** `flow-payments-v2.html` + `flow-payments-desktop-v2.html`
-(both load `pay.css` + `pay2.css`; desktop also `payd.css` and `rowmenu.js`)
-
-V2 was drawn after §7/§8 were called visually cluttered, and for a while it was the
-proposal of record. **It was not the cut that shipped**: the implementation follows
-§7/§8 — tab pair, section headers, separate hold card and ledger — by an explicit
-decision when the flow was built. This section is kept as the argument for a leaner
-cart, not as a description of the app.
-
-**The receipt is common to both** — `p2-success` / `pd2-success` are `p-success` /
-`pd-success` unchanged, including the §1.4 next-task CTA. (Neither is implemented yet;
-the app currently ends a payment on the order-history tab.)
-
-### 8.5.1 What the cut removes
-
-The v1 cart spent a phone screen on chrome before the first number: a `kicker`
-("BOOKING PAYMENTS"), a display `page-title`, a `page-intro`, a **tab pair**, three
-`pay-sec` section headers, a separate dashed hold card, and a `ledger` that then
-restated the total, the hold and the already-paid line. V2 keeps every one of those
-*facts* and drops the containers:
-
-| v1 | V2 |
-|---|---|
-| kicker + display title + intro | one `p2-title` line + one `p2-note` sentence |
-| tabs "My cart {n}" / "Order history" | the bill is the page; history is one `p2-more` link row (a tab pair for two destinations of unequal weight was always lopsided) |
-| 3 × `pay-sec` headers | none — the items are self-evidently the items |
-| separate `hold-card` + `ledger` hold row | dashed `bf-hold` lines inside the bill — one per hold (deposit + the §13 request pre-auth) |
-| `ledger` restating the total | `bf-total` in the same card as the items — the bill *ends* in its total |
-| kebab → invisible menu | kebab → `m-item-*` sheet (mobile) / `rm-pop` popover (desktop) that names both actions and their consequence |
-
-**The ledger rule (§7.1) is unchanged and non-negotiable:** charge = solid row summed
-into the total; hold = dashed, never summed, always "reserved… released after
-checkout"; already-paid-outside = muted row with a green check. V2 only stops
-printing each of them twice.
-
-### 8.5.2 Desktop
-
-**Both two-column grids carry a floor.** `.p2-grid` and `.payd-grid` used
-`minmax(0, 1fr) 316px`, which let the content column starve to ~130 px against the rigid
-ledger once the shell got narrow — the sidebar (266) and the Vela rail (324) leave the
-page only ~540 px on a 1180 px window, and every row wrapped. They now read
-`minmax(300px, 1fr) 316px`, and below the width where both columns fit (`max-width:
-1345px`) the grid stacks: ledger under items, sticky released, and — for `.p2-grid` — the
-bill's own total comes back, since the pay panel is no longer beside it to own the number.
-
-
-`pd2-cart` is `bill` left, **`p2-pay` right** — a 300 px panel holding *only* the
-amount and the button. Because that panel owns the total, `.p2-grid` hides the
-bill's own `bf-total` (`pay2.css`): three copies of €380.00 on one screen was the
-clutter. The bill's foot keeps the two lines that are **not** the total.
-`pd2-form` keeps the fenced Stripe `<PaymentElement>` (the §7.3 hard constraint —
-theme-only) with the hold pre-warning merged into a single `bill-foot` strip above
-the button. `pd2-success` is full-bleed (no rail), per the §6 placement rule.
-
-### 8.5.3 Screen-id registry (deep-link hashes)
-
-Mobile: `p2-cart`* · `p2-later` · `p2-history` · `p2-form` · `p2-3ds` ·
-`p2-processing` · `p2-success` · `p2-error` · `p2-empty` · `p2-deposit` ·
-modals `m-vela`, `m-hold`, `m-item-late`, `m-item-bfast`
-Desktop: `pd2-cart`* · `pd2-history` · `pd2-form` · `pd2-processing` ·
-`pd2-success` · `pd2-error` · `pd2-deposit` · modal `m-hold`
-(* = `data-start`; autonext: processing→success 3.0 s)
-
-**Not carried into V2:** `p-slow` (the polling-fallback wait). It is a v1-only
-screen and §7.4 remains its spec. Since v1 shipped, `p-slow` is folded into the
-built `p-processing` as a time-based state rather than a separate screen.
+`pd-cart`* · `pd-later` · `pd-removing` · `pd-removed` · `pd-petfee` ·
+`pd-petfee-blocked` · `pd-history` · `pd-form` · `pd-form-addon` ·
+`pd-processing` · `pd-success` · `pd-error` · modals `m-hold`, `m-remove`,
+`m-remove-error`, `m-petfee`, `m-taxinfo` · row popovers `cm-food`, `cm-tax`,
+`cm-pet` (* = `data-start`; autonext: processing→success 3.0 s)
 
 ---
 
@@ -3073,12 +3124,16 @@ Mock story: see Appendix B "Kiosk key cards mock story".
 · **Prototypes:** `flow-deposit-mobile.html`, `flow-deposit-desktop.html`
 (both load `pay.css` + `deposit.css`; desktop also `payd.css`)
 
-### 33.1 Relationship to §7's `p-deposit`
+### 33.1 Relationship to §7 payments
 
-They are the same decision reached from two places. `/deposit` is a **check-in task**
-(entered from Home, exits into payments); `p-deposit` is an **edit** (entered from the
-cart via `location.state.edit`, exits back to it). Both must render the identical
-`.opt-card`; only the header, the CTA label and the back target differ.
+One decision reached from two places, and **this section is the only prototype of
+it** — payments used to carry its own chooser (`p-deposit`/`pd-deposit`), which was
+removed rather than kept in sync with the three backend shapes below. `/deposit` is
+a **check-in task** (entered from Home, exits into payments); `dp-edit`/`dpd-edit` is
+the same page as an **edit** (entered from the §7 cart's "Edit protection" —
+`onEditProtection` → `PATHS.deposits` with `location.state.edit` — and exits back to
+it). Both render the identical `.opt-card`; only the header, the CTA label
+(`confirm_and_go_back_to_payment`) and the back target differ.
 
 ### 33.2 The three configurations, and what each must render
 
@@ -3250,7 +3305,7 @@ Mock story: see Appendix B "Book an experience mock story".
 **Real components:** `pages/TravelGuideView/TravelGuideView.tsx` (route `PATHS.travelGuide`,
 gated on `summary.upselling.active`), `TravelGuideStartPage`, `TravelGuideQuestions` +
 `useTravelGuideQuestions`, `TravelGuideLoading`, `TravelGuidePlan`, and
-`components/*` (`PlanHero`, `PhaseNav`, `DaySubTabs`, `DayTimeline`, `PlanEntry`,
+`components/*` (`PhaseNav`, `TripMapsButton`, `DaySubTabs`, `DayTimeline`, `PlanEntry`,
 `SlotMeta`, `CostBadge`, `WhyThisPick`, `TripGlance`, `CheckInCard`, `PreStayPanel`,
 `useSlotAction`) · **API:** `AiApi` (`generateGuide` → poll `getGuideRun` → `getTravelGuide`)
 · **Prototypes:** `flow-travel-guide-v2.html` (mobile), `flow-travel-guide-desktop-v2.html`
@@ -3360,6 +3415,41 @@ Rules:
 `[data-tg-scroll]` · `[data-tg-live]`. Screen activation is observed with a
 `MutationObserver`, so it composes with `flow.js`; the build ladder is a fixed schedule
 (`Math.random` / `Date.now` free) so two runs look identical.
+
+### 35.8 V3 — the Redesign 2.0 refresh (`flow-travel-guide-v3.html` / `-desktop-v3`, current)
+
+V2 above critiqued the **old** legacy view. The shipped view has since been rebuilt
+(tall destination photo bleeding into white, one question per step, description cards
+for single-selects) and reads well — but in its own visual language. **V3 keeps the
+shipped structure and copy 1:1 and re-dresses it in Redesign 2.0**: flat 1px-bordered
+surfaces (no card shadows), Poppins/navy, kit chips + `RadioCardList`-shaped option
+cards, `--gradient-hero`-family painted scene instead of the S3 photo (no fetch → no
+broken box). Fixture world stays Villa Serena · Valencia · 12–15 March.
+
+- **Kept from the app:** the photo-top intro with the white ramp (`.t3-hero-fade`),
+  eyebrow `HOUSING · DATES` + bare-city display title + `intro_duration/intro_pitch`
+  lede, "Open my trip guide" / "Skip questions"; four questions in `const.ts` order
+  (pace → interests[2–6 + Other] → budget → avoid[optional + Other]) with the shipped
+  copy; the four generation phases + progress bar; PhaseNav (Pre-stay only while
+  registration is incomplete) / DaySubTabs / time-of-day groups; web_search slots
+  (category dot-label, address → maps, duration, cost dots/Free), esim + upselling
+  deal cards (badge · stage · price · Book now / Add to cart · Dismiss); `CheckInCard`.
+- **Cheap improvements riding along:** the progress segment being answered is alive
+  (the app leaves it unlit); the at-a-glance strip renders on the phone (app:
+  `hidden lg:block`); `profile_assumptions` become a visible "Tuned for" row with a
+  Refine exit back into the questions; the build screen gains an elapsed clock and a
+  "you can leave" note; failure keeps the answers and offers three exits; at the
+  interests cap remaining chips disable instead of evicting the oldest pick.
+- **Screen ids:** mobile `t3-intro`* · `t3-q1..q4` · `t3-build` (autonext → `t3-plan`,
+  9200 ms) · `t3-error` · `t3-plan`; desktop `t3d-intro`* · `t3d-q` (all four questions
+  on one screen, flat cards, ungated CTA) · `t3d-build` · `t3d-error` · `t3d-plan`
+  (reading column + rail: At a glance / route to Maps / Refine / Rebuild).
+- **`travel-guide-v3.js` hooks:** `[data-t3-q]` (+ `data-t3-min`, `data-t3-max`) ·
+  `[data-t3-continue]` + `[data-t3-goto]` (the gate is the presence of `[data-goto]`,
+  never `disabled`) · `[data-t3-other]` · `[data-t3-cap]` · `[data-t3-hint]` ·
+  `[data-t3-build]` + `[data-t3-steps]` + `[data-t3-elapsed]` + `[data-t3-bar]` ·
+  `[data-t3-dismiss]` · `[data-t3-add]` · `[data-t3-toast]` + `[data-t3-toast-el]` ·
+  `[data-t3-live]`. Same `MutationObserver` composition contract as 35.7.
 
 ---
 

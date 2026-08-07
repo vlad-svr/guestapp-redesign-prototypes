@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Travel Guide V3 — the current feature, in Redesign 2.0 (Mobile)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="travel-guide-v3.css">
+</head>
+<body class="t3-scope">
+<div class="proto-stage">
+  <h1>AI Travel Guide V3 — the current feature, in Redesign 2.0 (Mobile)</h1>
+  <p class="lede">A visual refresh of the <b>current</b> <code>pages/TravelGuideView</code> — not the critique rebuild V2 was. The shipped view was redesigned recently and reads well, but it speaks its own language: ad-hoc pills, raw hex shadows, a display face that isn't ours. V3 keeps its structure and copy 1:1 — the <b>tall destination photo bleeding into white</b> (kept on purpose), four questions <b>one per step</b> (<code>const.ts</code> order: pace → interests → budget → avoid), the four real generation phases, and the plan's PhaseNav / DaySubTabs / time-of-day timeline — and re-dresses all of it in Redesign 2.0: flat bordered surfaces, Poppins, section labels, kit chips and option cards. Improvements ride along where they're cheap: the progress segment being answered is alive, the at-a-glance strip also renders on the phone, <code>profile_assumptions</code> become a visible "Tuned for" row, and the build screen gains an honest clock. Mock data only.</p>
+
+  <div class="flow-hud">
+    <button class="fh-chip" data-scenario="t3-intro">Intro</button>
+    <button class="fh-chip" data-scenario="t3-q1">Q1 · Pace</button>
+    <button class="fh-chip" data-scenario="t3-q2">Q2 · Interests</button>
+    <button class="fh-chip" data-scenario="t3-q3">Q3 · Budget</button>
+    <button class="fh-chip" data-scenario="t3-q4">Q4 · Avoid</button>
+    <button class="fh-chip" data-scenario="t3-build">Building</button>
+    <button class="fh-chip" data-scenario="t3-error">Build failed</button>
+    <button class="fh-chip" data-scenario="t3-plan">The plan</button>
+    <button class="fh-restart" data-restart>↻ Restart</button>
+    <span class="fh-label"></span>
+  </div>
+
+  <div class="proto-row">
+    <div class="phone-col">
+    <div class="phone-label">V3 · Redesign 2.0</div>
+    <div class="phone">
+
+      <p class="sr-only" role="status" aria-live="polite" data-t3-live></p>
+
+      <!-- ══════════════════ 1 · INTRO ══════════════════
+           The current TravelGuideStartPage, kept: photo from the very top,
+           a white ramp eating its bottom edge, eyebrow · display city ·
+           pitch, primary CTA, quiet skip. Re-dressed: Poppins/navy, the
+           brand CTA, a glass back button, and the honest promise chips. -->
+      <div class="screen flow-screen t3-intro-screen" id="t3-intro" data-start data-label="Intro — nothing generated yet">
+        <header class="t3-hero">
+          <div class="t3-scene" aria-hidden="true"></div>
+          <div class="t3-grain" aria-hidden="true"></div>
+          <div class="t3-hero-fade" aria-hidden="true"></div>
+          <div class="statusbar on-dark"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+          <button class="t3-hero-back" data-goto="t3-plan" aria-label="Home page">
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>
+          </button>
+        </header>
+
+        <div class="t3-intro-body">
+          <p class="t3-eyebrow">Villa Serena · 12 – 15 March</p>
+          <h1 class="t3-city">Valencia</h1>
+          <p class="t3-lede">3 days in Valencia. Answer four quick questions and we'll shape a day-by-day plan around your stay.</p>
+
+          <div class="t3-promise">
+            <span class="badge badge-neutral"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg> 4 questions · under a minute</span>
+            <span class="badge badge-success"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg> Free</span>
+            <span class="badge badge-info"><svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg> Change it any time</span>
+          </div>
+        </div>
+
+        <div class="cta-dock">
+          <button class="btn btn-primary btn-block" data-goto="t3-q1">
+            Open my trip guide
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </button>
+          <button class="t3-skip" data-goto="t3-build" data-t3-skip>
+            Skip questions
+            <small>Builds from your city, dates and length of stay alone.</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 2 · Q1 — PACE ══════════════════
+           One question per step, as the app navigates. Single-select
+           renders description cards (the app's Chip w/ description →
+           the kit's RadioCardList shape, real radios underneath). -->
+      <div class="screen flow-screen" id="t3-q1" data-label="Question 1 of 4 — pace">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="t3-qbar">
+          <button class="back-btn" data-goto="t3-intro" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <span class="t3-qcount">1 of 4</span>
+        </div>
+        <!-- The segment being answered is alive; the app leaves it unlit. -->
+        <div class="t3-qprog" aria-hidden="true"><span class="now"></span><span></span><span></span><span></span></div>
+
+        <div class="content" style="gap:0;padding:0 0 20px">
+          <fieldset style="border:none" data-t3-q="pace" data-t3-min="1">
+            <legend class="sr-only">What pace feels right?</legend>
+            <div class="t3-qhead" aria-hidden="true">
+              <h1>What pace feels right?</h1>
+              <p>This decides how much we plan into each day.</p>
+            </div>
+            <div class="t3-cards" style="margin-top:16px">
+              <label class="t3-card">
+                <input type="radio" name="t3-pace" value="relaxed">
+                <span><i aria-hidden="true"></i><span><b>Relaxed</b><small>Two or three things a day, long lunches</small></span></span>
+              </label>
+              <label class="t3-card">
+                <input type="radio" name="t3-pace" value="balanced">
+                <span><i aria-hidden="true"></i><span><b>Balanced</b><small>A full morning, an easy afternoon</small></span></span>
+              </label>
+              <label class="t3-card">
+                <input type="radio" name="t3-pace" value="see_it_all">
+                <span><i aria-hidden="true"></i><span><b>See everything</b><small>Early starts, late nights, no regrets</small></span></span>
+              </label>
+            </div>
+            <p class="t3-cap" data-t3-cap hidden></p>
+          </fieldset>
+        </div>
+
+        <div class="cta-dock">
+          <p class="t3-dock-hint" data-t3-hint>
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>Choose a pace to continue.</span>
+          </p>
+          <button class="btn btn-primary btn-block" data-t3-continue data-t3-goto="t3-q2">Continue</button>
+          <button class="t3-skip" data-goto="t3-build" data-t3-skip>Skip everything — show me the guide</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 3 · Q2 — INTERESTS ══════════════════
+           Multi-select, 2–6 (the app's minSelected/maxSelected), chips
+           with an "Other…" free-text chip. At the cap the rest disable
+           instead of silently evicting the oldest pick. -->
+      <div class="screen flow-screen" id="t3-q2" data-label="Question 2 of 4 — interests">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="t3-qbar">
+          <button class="back-btn" data-goto="t3-q1" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <span class="t3-qcount">2 of 4</span>
+        </div>
+        <div class="t3-qprog" aria-hidden="true"><span class="done"></span><span class="now"></span><span></span><span></span></div>
+
+        <div class="content" style="gap:0;padding:0 0 20px">
+          <fieldset style="border:none" data-t3-q="interests" data-t3-min="2" data-t3-max="6">
+            <legend class="sr-only">What are you here for?</legend>
+            <div class="t3-qhead" aria-hidden="true">
+              <h1>What are you here for?</h1>
+              <p>Pick two to six — we’ll build your days around them.</p>
+            </div>
+            <div class="t3-chips" style="margin-top:16px">
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="architecture"><span>Architecture</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="food_and_dining"><span>Food &amp; dining</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="art_and_museums"><span>Art &amp; museums</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="music_and_performances"><span>Music &amp; performances</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="markets_and_shopping"><span>Markets &amp; shopping</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="scenic_views"><span>Scenic views</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="parks_and_gardens"><span>Parks &amp; gardens</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-interests" value="local_nightlife"><span>Local nightlife</span></label>
+              <label class="t3-other"><input type="text" maxlength="80" placeholder="Other…" aria-label="Other interest" data-t3-other></label>
+            </div>
+            <p class="t3-cap" data-t3-cap>Pick up to 6.</p>
+          </fieldset>
+        </div>
+
+        <div class="cta-dock">
+          <p class="t3-dock-hint" data-t3-hint>
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>Pick at least two interests — this shapes your whole plan.</span>
+          </p>
+          <button class="btn btn-primary btn-block" data-t3-continue data-t3-goto="t3-q3">Continue</button>
+          <button class="t3-skip" data-goto="t3-build" data-t3-skip>Skip everything — show me the guide</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 4 · Q3 — BUDGET ══════════════════ -->
+      <div class="screen flow-screen" id="t3-q3" data-label="Question 3 of 4 — budget">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="t3-qbar">
+          <button class="back-btn" data-goto="t3-q2" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <span class="t3-qcount">3 of 4</span>
+        </div>
+        <div class="t3-qprog" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="now"></span><span></span></div>
+
+        <div class="content" style="gap:0;padding:0 0 20px">
+          <fieldset style="border:none" data-t3-q="budget" data-t3-min="1">
+            <legend class="sr-only">What’s your budget?</legend>
+            <div class="t3-qhead" aria-hidden="true">
+              <h1>What’s your budget?</h1>
+              <p>We’ll tailor recommendations to your spending style.</p>
+            </div>
+            <div class="t3-cards" style="margin-top:16px">
+              <label class="t3-card">
+                <input type="radio" name="t3-budget" value="budget">
+                <span><i aria-hidden="true"></i><span><b>Budget-friendly</b><small>Free and affordable places where possible</small></span></span>
+              </label>
+              <label class="t3-card">
+                <input type="radio" name="t3-budget" value="mid_range">
+                <span><i aria-hidden="true"></i><span><b>Moderate</b><small>Good value with room for a few extras</small></span></span>
+              </label>
+              <label class="t3-card">
+                <input type="radio" name="t3-budget" value="premium">
+                <span><i aria-hidden="true"></i><span><b>Premium</b><small>Higher-end places and standout experiences</small></span></span>
+              </label>
+              <label class="t3-card">
+                <input type="radio" name="t3-budget" value="luxury">
+                <span><i aria-hidden="true"></i><span><b>Luxury</b><small>Top-tier choices with fewer budget limits</small></span></span>
+              </label>
+            </div>
+            <p class="t3-cap" data-t3-cap hidden></p>
+          </fieldset>
+        </div>
+
+        <div class="cta-dock">
+          <p class="t3-dock-hint" data-t3-hint>
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>Choose a budget to continue.</span>
+          </p>
+          <button class="btn btn-primary btn-block" data-t3-continue data-t3-goto="t3-q4">Continue</button>
+          <button class="t3-skip" data-goto="t3-build" data-t3-skip>Skip everything — show me the guide</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 5 · Q4 — AVOID ══════════════════
+           Optional (minSelected: 0) — the button reads "Generate plan"
+           and never gates. -->
+      <div class="screen flow-screen" id="t3-q4" data-label="Question 4 of 4 — avoid (optional)">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="t3-qbar">
+          <button class="back-btn" data-goto="t3-q3" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <span class="t3-qcount">4 of 4</span>
+        </div>
+        <div class="t3-qprog" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span class="now"></span></div>
+
+        <div class="content" style="gap:0;padding:0 0 20px">
+          <fieldset style="border:none" data-t3-q="avoid">
+            <legend class="sr-only">Anything we should avoid?</legend>
+            <div class="t3-qhead" aria-hidden="true">
+              <h1>Anything we should avoid?</h1>
+              <p>Avoids feel like real preferences.</p>
+            </div>
+            <div class="t3-chips" style="margin-top:16px">
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="packaged_tours"><span>Packaged tours</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="tourist_traps"><span>Tourist traps</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="crowded_places"><span>Crowded places</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="hop_on_hop_off_buses"><span>Hop-on-hop-off buses</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="expensive_attractions"><span>Expensive attractions</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="nightclubs"><span>Nightclubs</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="long_walks"><span>Long walks</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="early_mornings"><span>Early mornings</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="spicy_food"><span>Spicy food</span></label>
+              <label class="t3-chip"><input type="checkbox" name="t3-avoid" value="meat_heavy_places"><span>Meat-heavy places</span></label>
+              <label class="t3-other"><input type="text" maxlength="80" placeholder="Other…" aria-label="Other thing to avoid" data-t3-other></label>
+            </div>
+            <p class="t3-cap" data-t3-cap hidden></p>
+          </fieldset>
+        </div>
+
+        <div class="cta-dock">
+          <p class="t3-dock-hint" data-t3-hint>
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>Optional — choose anything you’d rather avoid.</span>
+          </p>
+          <button class="btn btn-primary btn-block" data-t3-continue data-t3-goto="t3-build" data-goto="t3-build">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-sparkles"/></svg>
+            Generate plan
+          </button>
+          <button class="t3-skip" data-goto="t3-build" data-t3-skip>Skip everything — show me the guide</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 6 · BUILDING ══════════════════
+           The app's four real phases (BUILD_PROFILE → EXPLORE →
+           DISCOVER_CONTENT → BUILD_GUIDE) and its progress bar, plus an
+           honest elapsed clock and "you can leave" — the run is a server
+           job and survives the guest walking away. -->
+      <div class="screen flow-screen" id="t3-build" data-label="Building the guide" data-autonext="t3-plan" data-autodelay="9200">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+
+        <div class="t3-build" data-t3-build>
+          <span class="t3-build-mark" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-sparkles"/></svg></span>
+          <h1>Building your guide</h1>
+          <p>Shaping 3 days in Valencia around your check-in, your check-out and your answers.</p>
+
+          <div class="t3-bar" role="progressbar" aria-label="Build progress" aria-valuemin="0" aria-valuemax="100"><i data-t3-bar></i></div>
+          <p class="t3-clock">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg>
+            <b data-t3-elapsed>0:00</b> elapsed · usually under a minute
+          </p>
+
+          <ol class="t3-steps" data-t3-steps aria-label="Build progress">
+            <li class="t3-step now" data-t3-step="0">
+              <span class="t3-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div class="t3-step-t">Reading your preferences</div>
+            </li>
+            <li class="t3-step" data-t3-step="1">
+              <span class="t3-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div class="t3-step-t">Mapping Valencia around your stay</div>
+            </li>
+            <li class="t3-step" data-t3-step="2">
+              <span class="t3-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div class="t3-step-t">Checking opening hours and availability</div>
+            </li>
+            <li class="t3-step" data-t3-step="3">
+              <span class="t3-step-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-check"/></svg></span>
+              <div class="t3-step-t">Balancing big mornings with slow afternoons</div>
+            </li>
+          </ol>
+
+          <div class="t3-leave">
+            <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-info"/></svg>
+            <span><b>You can leave this page.</b> The guide keeps building and will be waiting under <i>Travel Guide</i> when you come back.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 7 · BUILD FAILED ══════════════════
+           The app re-renders the intro with one "Retry generation"
+           button; here the failure owns its screen and keeps the
+           answers, so "Back to my answers" is not a lie. -->
+      <div class="screen flow-screen" id="t3-error" data-label="Build failed">
+        <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="t3-intro" aria-label="Back"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        </div>
+
+        <div class="t3-fail">
+          <span class="t3-fail-mark" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-alert"/></svg></span>
+          <h1>We couldn't build your guide</h1>
+          <p>Something went wrong while building your guide. Let's give it another try — <b>your answers are saved</b>.</p>
+
+          <div class="t3-exits">
+            <button class="btn btn-primary" data-goto="t3-build">
+              <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg>
+              Retry generation
+            </button>
+            <button class="btn btn-outline" data-goto="t3-q1">Back to my answers</button>
+            <button class="btn btn-ghost" data-goto="t3-build">Build from my booking alone</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ 8 · THE PLAN ══════════════════
+           The app's TravelGuidePlan: page title + Maps hand-off, PhaseNav
+           (Pre-stay only while registration is incomplete), CheckInCard,
+           DaySubTabs, time-of-day groups of PlanEntry, product slots.
+           Additions: the glance strip on the phone, "Tuned for" chips. -->
+      <div class="screen flow-screen" id="t3-plan" data-label="The plan — today is arrival day">
+        <div class="statusbar"><span>16:20</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
+        <div class="topbar">
+          <button class="back-btn" data-goto="t3-intro" aria-label="Home page"><svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <div class="tb-titles"><div class="tb-title">Travel Guide</div></div>
+          <button class="tb-action" data-t3-toast="Opening your route in Google Maps…" aria-label="Open the full route in Maps">
+            <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+          </button>
+          <button class="vela-fab" data-modal="m-vela"><svg viewBox="0 0 24 24" class="icon" style="width:17px;height:17px;fill:#fff;stroke:none"><use href="#i-sparkle-fill"/></svg></button>
+        </div>
+
+        <div class="t3-plan-head">
+          <h1>Your Valencia plan</h1>
+          <!-- profile_assumptions arrive in the payload today and render
+               nowhere. Here they're the answers, visible and editable. -->
+          <div class="t3-tuned">
+            <span class="t3-tuned-label">Tuned for</span>
+            <span class="t3-assume">Balanced</span>
+            <span class="t3-assume">Food &amp; dining</span>
+            <span class="t3-assume">Scenic views</span>
+            <span class="t3-assume">Moderate</span>
+            <span class="t3-assume"><svg viewBox="0 0 24 24" class="icon" style="width:11px;height:11px" aria-hidden="true"><use href="#i-x"/></svg> Tourist traps</span>
+            <button class="t3-tune-btn" data-goto="t3-q1">
+              <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-sliders"/></svg>
+              Refine
+            </button>
+          </div>
+        </div>
+
+        <!-- TripGlance — the app hides this under lg:, so the phone never
+             gets the trip totals. It costs one strip. -->
+        <dl class="t3-glance">
+          <div><dt>Dates</dt><dd>12–15 Mar</dd></div>
+          <div><dt>Days</dt><dd>4</dd></div>
+          <div><dt>Stops</dt><dd>11</dd></div>
+        </dl>
+
+        <!-- PhaseNav as a real tablist in the redesign's flat capsule. -->
+        <div class="t3-tabs-wrap">
+          <div class="t3-tabs" role="tablist" aria-label="Trip phase">
+            <button class="t3-tab" role="tab" id="t3-t-pre" aria-controls="t3-p-pre" aria-selected="false" tabindex="-1">
+              <b>Pre-stay</b><small>Before arrival</small>
+            </button>
+            <button class="t3-tab" role="tab" id="t3-t-arr" aria-controls="t3-p-arr" aria-selected="true" tabindex="0">
+              <span class="t3-today" aria-hidden="true"></span>
+              <b>Arrival</b><small>Check-in day</small>
+            </button>
+            <button class="t3-tab" role="tab" id="t3-t-stay" aria-controls="t3-p-stay" aria-selected="false" tabindex="-1">
+              <b>Your stay</b><small>2 days</small>
+            </button>
+            <button class="t3-tab" role="tab" id="t3-t-dep" aria-controls="t3-p-dep" aria-selected="false" tabindex="-1">
+              <b>Departure</b><small>Check-out day</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- ---------- Panel: PRE-STAY ---------- -->
+        <div class="t3-panel" role="tabpanel" id="t3-p-pre" aria-labelledby="t3-t-pre" tabindex="0" hidden>
+          <!-- CheckInCard, verbatim copy. -->
+          <div class="t3-checkin">
+            <p class="t3-checkin-eyebrow"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-shield"/></svg> Required before arrival</p>
+            <h3>Complete your online check-in</h3>
+            <p>Verify your ID and get your door code before you arrive — no keys, no front desk, no waiting.</p>
+            <button class="btn">Start check-in · about 2 min</button>
+          </div>
+
+          <section class="t3-tod" aria-labelledby="t3-tod-pre">
+            <div class="t3-tod-head">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-compass"/></svg>
+              <h3 id="t3-tod-pre">Anytime</h3>
+            </div>
+            <div class="t3-slots">
+              <!-- Product slot (source_type: esim) — the app's tinted deal
+                   card: badge + stage line + price + Book now + Dismiss. -->
+              <article class="t3-slot deal">
+                <div class="t3-deal-top">
+                  <div class="t3-deal-tags">
+                    <span class="t3-deal-badge">Connectivity</span>
+                    <span class="t3-deal-stage">For your arrival</span>
+                  </div>
+                  <span class="t3-price"><small>From</small>€4.50</span>
+                </div>
+                <h4>Spain eSIM, working the second you land</h4>
+                <p class="t3-desc" style="margin-top:5px">Maps, bookings and directions from the runway. No shop, no roaming bill.</p>
+                <div class="t3-slot-foot">
+                  <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                  <button class="t3-slot-cta" data-t3-toast="Opening the eSIM checkout…">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+                    Book now
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- ---------- Panel: ARRIVAL (today) ---------- -->
+        <div class="t3-panel" role="tabpanel" id="t3-p-arr" aria-labelledby="t3-t-arr" tabindex="0">
+          <section class="t3-tod" aria-labelledby="t3-tod-aft">
+            <div class="t3-tod-head">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-sun"/></svg>
+              <h3 id="t3-tod-aft">Afternoon</h3>
+              <span class="t3-tod-span">After your 15:00 check-in</span>
+            </div>
+            <div class="t3-slots">
+              <!-- web_search slot: category dot + label, painted thumb
+                   fallback, description, address → maps, duration + cost. -->
+              <article class="t3-slot">
+                <span class="t3-cat reco">Recommended</span>
+                <h4>El Carmen, on foot</h4>
+                <div class="t3-slot-row">
+                  <div class="t3-thumb gothic"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-landmark"/></svg></span></div>
+                  <div class="t3-slot-body">
+                    <p class="t3-desc">Medieval lanes, the Torres de Serranos, and a square that fills with locals at exactly this hour.</p>
+                    <a class="t3-where" href="#" onclick="return false">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                      Ciutat Vella, València
+                    </a>
+                  </div>
+                </div>
+                <div class="t3-meta">
+                  <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 1 h 30</span>
+                  <span class="t3-cost free">
+                    <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                    <span class="t3-cost-label">Free</span>
+                  </span>
+                </div>
+                <div class="t3-slot-foot">
+                  <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                  <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                    Directions
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="t3-tod" aria-labelledby="t3-tod-eve">
+            <div class="t3-tod-head">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+              <h3 id="t3-tod-eve">Evening</h3>
+            </div>
+            <div class="t3-slots">
+              <article class="t3-slot">
+                <span class="t3-cat tour">Walking tour</span>
+                <h4>Ciutat Vella free walking tour</h4>
+                <div class="t3-slot-row">
+                  <div class="t3-thumb night"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-footprints"/></svg></span></div>
+                  <div class="t3-slot-body">
+                    <p class="t3-desc">Two hours with a local guide through the old town. Tip what you think it was worth at the end.</p>
+                    <a class="t3-where" href="#" onclick="return false">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                      Plaça de la Reina, València
+                    </a>
+                  </div>
+                </div>
+                <div class="t3-meta">
+                  <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 2 h</span>
+                  <span class="t3-cost free">
+                    <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                    <span class="t3-cost-label">Free</span>
+                  </span>
+                </div>
+                <div class="t3-slot-foot">
+                  <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                  <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                    Directions
+                  </button>
+                </div>
+              </article>
+
+              <article class="t3-slot">
+                <span class="t3-cat reco">Recommended</span>
+                <h4>Horchata &amp; fartons at Santa Catalina</h4>
+                <div class="t3-slot-row">
+                  <div class="t3-thumb food"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-utensils"/></svg></span></div>
+                  <div class="t3-slot-body">
+                    <p class="t3-desc">The Valencian thing to do at the end of a first evening. Open until 21:30 tonight.</p>
+                    <a class="t3-where" href="#" onclick="return false">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                      Plaça de Santa Caterina 6
+                    </a>
+                  </div>
+                </div>
+                <div class="t3-meta">
+                  <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 30 min</span>
+                  <span class="t3-cost">
+                    <span class="t3-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                    <span class="t3-cost-label">Low cost</span>
+                    <span class="sr-only">Cost: low, 1 out of 3.</span>
+                  </span>
+                </div>
+                <div class="t3-slot-foot">
+                  <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                  <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                    Directions
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- ---------- Panel: YOUR STAY ---------- -->
+        <div class="t3-panel" role="tabpanel" id="t3-p-stay" aria-labelledby="t3-t-stay" tabindex="0" hidden>
+          <!-- DaySubTabs: weekday over date, active underline. -->
+          <div class="t3-days" role="tablist" aria-label="Day of your stay">
+            <button class="t3-day" role="tab" id="t3-dt-1" aria-controls="t3-d-1" aria-selected="true" tabindex="0">
+              <em>Sun</em><b>13</b><u aria-hidden="true"></u>
+            </button>
+            <button class="t3-day" role="tab" id="t3-dt-2" aria-controls="t3-d-2" aria-selected="false" tabindex="-1">
+              <em>Mon</em><b>14</b><u aria-hidden="true"></u>
+            </button>
+          </div>
+
+          <div role="tabpanel" id="t3-d-1" aria-labelledby="t3-dt-1" tabindex="0">
+            <section class="t3-tod" aria-labelledby="t3-tod-m1">
+              <div class="t3-tod-head">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-sunrise"/></svg>
+                <h3 id="t3-tod-m1">Morning</h3>
+              </div>
+              <div class="t3-slots">
+                <article class="t3-slot">
+                  <span class="t3-cat reco">Recommended</span>
+                  <h4>Mercat Central at opening</h4>
+                  <div class="t3-slot-row">
+                    <div class="t3-thumb market"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-basket"/></svg></span></div>
+                    <div class="t3-slot-body">
+                      <p class="t3-desc">Europe's largest fresh-produce market, in a modernist iron hall. Go at 09:30, before the tour groups.</p>
+                      <a class="t3-where" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                        Plaça de la Ciutat de Bruges
+                      </a>
+                    </div>
+                  </div>
+                  <div class="t3-meta">
+                    <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 1 h</span>
+                    <span class="t3-cost">
+                      <span class="t3-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                      <span class="t3-cost-label">Low cost</span>
+                      <span class="sr-only">Cost: low, 1 out of 3.</span>
+                    </span>
+                  </div>
+                  <div class="t3-slot-foot">
+                    <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                    <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </article>
+
+                <!-- Sponsored upselling slot: the DEAL card, priced,
+                     Add to cart (pays at check-out) + Dismiss. -->
+                <article class="t3-slot deal">
+                  <div class="t3-deal-top">
+                    <div class="t3-deal-tags">
+                      <span class="t3-deal-badge">Deal</span>
+                      <span class="t3-deal-stage">For your stay</span>
+                    </div>
+                    <span class="t3-price">€45</span>
+                  </div>
+                  <h4>Paella cooking class, market to table</h4>
+                  <p class="t3-desc" style="margin-top:5px">Shop the Mercat Central with a chef, then cook the real thing. Three hours, lunch included.</p>
+                  <div class="t3-slot-foot">
+                    <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                    <button class="t3-slot-cta" data-t3-add>
+                      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-plus"/></svg>
+                      Add to cart
+                    </button>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="t3-tod" aria-labelledby="t3-tod-a1">
+              <div class="t3-tod-head">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-sun"/></svg>
+                <h3 id="t3-tod-a1">Afternoon</h3>
+              </div>
+              <div class="t3-slots">
+                <article class="t3-slot">
+                  <span class="t3-cat reco">Recommended</span>
+                  <h4>Turia Gardens, by bike or on foot</h4>
+                  <div class="t3-slot-row">
+                    <div class="t3-thumb park"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-tree"/></svg></span></div>
+                    <div class="t3-slot-body">
+                      <p class="t3-desc">Nine kilometres of park in a drained riverbed, ending at the City of Arts. The whole city passes through it.</p>
+                      <a class="t3-where" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                        Jardí del Túria
+                      </a>
+                    </div>
+                  </div>
+                  <div class="t3-meta">
+                    <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 2 h</span>
+                    <span class="t3-cost free">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                      <span class="t3-cost-label">Free</span>
+                    </span>
+                  </div>
+                  <div class="t3-slot-foot">
+                    <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                    <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="t3-tod" aria-labelledby="t3-tod-e1">
+              <div class="t3-tod-head">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+                <h3 id="t3-tod-e1">Evening</h3>
+              </div>
+              <div class="t3-slots">
+                <article class="t3-slot">
+                  <span class="t3-cat reco">Recommended</span>
+                  <h4>Sunset from the Miguelete tower</h4>
+                  <div class="t3-slot-row">
+                    <div class="t3-thumb sea"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-waves"/></svg></span></div>
+                    <div class="t3-slot-body">
+                      <p class="t3-desc">207 steps, the whole city and the sea beyond it. Last entry one hour before closing.</p>
+                      <a class="t3-where" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                        Plaça de la Reina, València
+                      </a>
+                    </div>
+                  </div>
+                  <div class="t3-meta">
+                    <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 45 min</span>
+                    <span class="t3-cost">
+                      <span class="t3-cost-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span>
+                      <span class="t3-cost-label">Mid range</span>
+                      <span class="sr-only">Cost: medium, 2 out of 3.</span>
+                    </span>
+                  </div>
+                  <div class="t3-slot-foot">
+                    <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                    <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div role="tabpanel" id="t3-d-2" aria-labelledby="t3-dt-2" tabindex="0" hidden>
+            <section class="t3-tod" aria-labelledby="t3-tod-m2">
+              <div class="t3-tod-head">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-sunrise"/></svg>
+                <h3 id="t3-tod-m2">Morning</h3>
+              </div>
+              <div class="t3-slots">
+                <article class="t3-slot">
+                  <span class="t3-cat reco">Recommended</span>
+                  <h4>City of Arts and Sciences</h4>
+                  <div class="t3-slot-row">
+                    <div class="t3-thumb museum"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-landmark"/></svg></span></div>
+                    <div class="t3-slot-body">
+                      <p class="t3-desc">Calatrava's white whale skeletons over turquoise pools. The outside is the show — go early for empty photos.</p>
+                      <a class="t3-where" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                        Av. del Professor López Piñero 7
+                      </a>
+                    </div>
+                  </div>
+                  <div class="t3-meta">
+                    <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 2 h</span>
+                    <span class="t3-cost free">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-check"/></svg>
+                      <span class="t3-cost-label">Free</span>
+                    </span>
+                  </div>
+                  <div class="t3-slot-foot">
+                    <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                    <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="t3-tod" aria-labelledby="t3-tod-a2">
+              <div class="t3-tod-head">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-sun"/></svg>
+                <h3 id="t3-tod-a2">Afternoon</h3>
+              </div>
+              <div class="t3-slots">
+                <article class="t3-slot">
+                  <span class="t3-cat reco">Recommended</span>
+                  <h4>Paella by the Malvarrosa beach</h4>
+                  <div class="t3-slot-row">
+                    <div class="t3-thumb food"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-utensils"/></svg></span></div>
+                    <div class="t3-slot-body">
+                      <p class="t3-desc">Where Valencians eat it: seafront, long lunch, no rush. Book a table for 14:00 — earlier is for tourists.</p>
+                      <a class="t3-where" href="#" onclick="return false">
+                        <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                        Passeig Marítim de la Malva-rosa
+                      </a>
+                    </div>
+                  </div>
+                  <div class="t3-meta">
+                    <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 2 h</span>
+                    <span class="t3-cost">
+                      <span class="t3-cost-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span>
+                      <span class="t3-cost-label">Mid range</span>
+                      <span class="sr-only">Cost: medium, 2 out of 3.</span>
+                    </span>
+                  </div>
+                  <div class="t3-slot-foot">
+                    <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                    <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                      Directions
+                    </button>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- ---------- Panel: DEPARTURE ---------- -->
+        <div class="t3-panel" role="tabpanel" id="t3-p-dep" aria-labelledby="t3-t-dep" tabindex="0" hidden>
+          <section class="t3-tod" aria-labelledby="t3-tod-dep">
+            <div class="t3-tod-head">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-sunrise"/></svg>
+              <h3 id="t3-tod-dep">Morning</h3>
+              <span class="t3-tod-span">Before your 11:00 check-out</span>
+            </div>
+            <div class="t3-slots">
+              <article class="t3-slot">
+                <span class="t3-cat reco">Recommended</span>
+                <h4>Last coffee at Plaza de la Virgen</h4>
+                <div class="t3-slot-row">
+                  <div class="t3-thumb gothic"><span class="t3-thumb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-landmark"/></svg></span></div>
+                  <div class="t3-slot-body">
+                    <p class="t3-desc">Ten minutes from Villa Serena, terrace in the morning sun, and the fountain to say goodbye to.</p>
+                    <a class="t3-where" href="#" onclick="return false">
+                      <svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                      Plaça de la Mare de Déu
+                    </a>
+                  </div>
+                </div>
+                <div class="t3-meta">
+                  <span class="t3-meta-item"><svg viewBox="0 0 24 24" class="icon" style="width:12px;height:12px" aria-hidden="true"><use href="#i-clock"/></svg> 45 min</span>
+                  <span class="t3-cost">
+                    <span class="t3-cost-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+                    <span class="t3-cost-label">Low cost</span>
+                    <span class="sr-only">Cost: low, 1 out of 3.</span>
+                  </span>
+                </div>
+                <div class="t3-slot-foot">
+                  <button class="t3-dismiss" data-t3-dismiss>Dismiss</button>
+                  <button class="t3-slot-cta quiet" data-t3-toast="Opening directions in your maps app…">
+                    <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use href="#i-navigation"/></svg>
+                    Directions
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <p class="t3-blank">Nothing planned after 10:15 — you hand back the keys at 11:00.</p>
+        </div>
+
+        <div class="t3-toast" data-t3-toast-el hidden role="status">
+          <svg viewBox="0 0 24 24" class="icon icon-sm" aria-hidden="true"><use href="#i-check-circle"/></svg>
+          <span data-t3-toast-text></span>
+        </div>
+
+      <div class="proto-modal right" id="m-vela"><div class="pm-scrim"></div><div class="pm-card" style="display:flex;flex-direction:column;gap:18px;overflow-y:auto"><button class="pm-close" data-modal-close>✕</button><div class="vela-head" style="padding-right:34px"><div class="vela-avatar"><svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" stroke="none"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/></svg></div><div><div class="vela-name">Vela</div><div class="vela-status"><span style="width:6px;height:6px;border-radius:50%;background:var(--green-600)"></span> Here to help</div></div></div><p class="vela-intro">I built this plan from your answers. Nothing here is fixed — refine your answers and I'll rebuild it around them.</p><div class="vela-section"><div class="vela-eyebrow">Good to know</div><div style="margin-top:6px"><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span><span><span class="vt-title" style="display:block">Every stop opens in your maps app</span><span class="vt-desc">Tap the address or Directions — the plan works on the street.</span></span></div><div class="vela-tip"><span class="vt-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.17 2.83a2.85 2.85 0 0 0-4 0L4 16l-1 5 5-1L21.17 6.83a2.85 2.85 0 0 0 0-4z"/></svg></span><span><span class="vt-title" style="display:block">Dismiss anything you dislike</span><span class="vt-desc">A dismissed stop never comes back on a rebuild.</span></span></div></div></div><div class="vela-section"><div class="vela-eyebrow">Quick actions</div><div class="vela-actions" style="margin-top:10px"><a class="vela-action" href="flow-guidebooks-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span>Local recommendations<span class="va-sub">Your host's own list</span></span></a><a class="vela-action" href="flow-chat-mobile.html"><span class="va-icon"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span><span>Chat with your host<span class="va-sub">Marco replies in about an hour</span></span></a></div></div></div></div>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Icon sprite (lucide geometry, inlined — the prototype ships no build)
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="i-sparkle-fill"><path d="M9.9 3.6a.75.75 0 0 1 1.4 0l1.2 3.2a2 2 0 0 0 1.2 1.2l3.2 1.2a.75.75 0 0 1 0 1.4l-3.2 1.2a2 2 0 0 0-1.2 1.2l-1.2 3.2a.75.75 0 0 1-1.4 0l-1.2-3.2a2 2 0 0 0-1.2-1.2l-3.2-1.2a.75.75 0 0 1 0-1.4l3.2-1.2a2 2 0 0 0 1.2-1.2z"/><path d="M19 3v4M21 5h-4M5 17v2M6 18H4"/></g>
+    <g id="i-chevron-left"><path d="m15 18-6-6 6-6"/></g>
+    <g id="i-chevron-right"><path d="m9 18 6-6-6-6"/></g>
+    <g id="i-chevron-down"><path d="m6 9 6 6 6-6"/></g>
+    <g id="i-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+    <g id="i-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g>
+    <g id="i-plus"><path d="M5 12h14"/><path d="M12 5v14"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></g>
+    <g id="i-clock"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g>
+    <g id="i-calendar"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g>
+    <g id="i-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></g>
+    <g id="i-navigation"><path d="M3 11l19-9-9 19-2-8-8-2z"/></g>
+    <g id="i-compass"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></g>
+    <g id="i-sparkles"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/></g>
+    <g id="i-sunrise"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m17.66 12.34 1.41-1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></g>
+    <g id="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></g>
+    <g id="i-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"/></g>
+    <g id="i-refresh"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>
+    <g id="i-sliders"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></g>
+    <g id="i-external"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/></g>
+    <g id="i-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></g>
+    <g id="i-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-signal"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></g>
+    <g id="i-footprints"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0"/><path d="M16 17h4"/><path d="M4 13h4"/></g>
+    <g id="i-landmark"><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M6 18v-7"/><path d="m12 2 8 6H4z"/><path d="M3 22h18"/><path d="M4 18h16"/></g>
+    <g id="i-basket"><path d="m5 11 4-7"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.6-7.4"/><path d="m9 11 1 9"/><path d="m15 11-1 9"/></g>
+    <g id="i-utensils"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></g>
+    <g id="i-tree"><path d="M12 2 6 10h3l-4 6h5v6h4v-6h5l-4-6h3z"/></g>
+    <g id="i-waves"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 1.3 0 1.9-.5 2.5-1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 1.3 0 1.9-.5 2.5-1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 1.3 0 1.9-.5 2.5-1"/></g>
+    <g id="i-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>
+  </defs>
+</svg>
+
+<script src="flow.js" defer></script>
+<script src="modals.js" defer></script>
+<script src="travel-guide-v3.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

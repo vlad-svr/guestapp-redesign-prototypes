@@ -8,6 +8,16 @@
     if (t) {
       e.preventDefault();
       var m = document.getElementById(t.getAttribute('data-modal'));
+      // This branch returns early, so a trigger carrying BOTH data-modal and
+      // data-modal-close would never have run its close — a row in a bottom
+      // sheet that opens a second sheet stacked two layers instead of moving
+      // one step forward. Honour the close when it is declared; triggers that
+      // only carry data-modal (a dialog opened from the Vela panel, say) keep
+      // stacking as before.
+      if (t.hasAttribute('data-modal-close')) {
+        var host = t.closest('.proto-modal');
+        if (host && host !== m) host.classList.remove('open');
+      }
       if (m) m.classList.add('open');
       return;
     }

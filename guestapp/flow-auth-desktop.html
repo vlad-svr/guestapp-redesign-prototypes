@@ -17,6 +17,7 @@
 
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="ad-signin">▶ Create account</button>
+    <button class="fh-chip" data-scenario="ad-pwd">Create password</button>
     <button class="fh-chip" data-scenario="ad-login">Returning — log in</button>
     <button class="fh-chip" data-scenario="ad-code">Verify email code</button>
     <button class="fh-chip" data-scenario="ad-welcome">Welcome</button>
@@ -44,14 +45,14 @@
           <div class="fp-body">
             <div class="auth-head">
               <div class="auth-title-row">
-                <div class="auth-title">Create your account</div>
+                <div class="auth-title">Check in, faster</div>
                 <span class="auth-optional"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg> Optional</span>
               </div>
-              <p class="auth-sub">It saves your check-in so next time is one tap — but you can skip it and check in right now.</p>
+              <p class="auth-sub">A quick account saves your details — <b>next time it's one tap</b>. You can also skip it and check in right now.</p>
             </div>
             <div class="auth-form">
               <div class="field"><label>Email</label><div class="input"><svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-mail"/></svg> maria@gmail.com<span style="width:1.5px;height:16px;background:var(--blue-500);display:inline-block;margin-left:1px"></span></div></div>
-              <button class="btn btn-primary btn-block" data-goto="ad-code">Continue <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+              <button class="btn btn-primary btn-block" data-goto="ad-pwd">Continue <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
             </div>
             <div class="auth-sep"><span>or</span></div>
             <button class="social-btn" data-modal="m-oauth"><svg viewBox="0 0 24 24" class="g"><use href="#i-google"/></svg> Continue with Google</button>
@@ -69,6 +70,38 @@
       </div>
     </div>
 
+    <!-- ═══ ad-pwd · LoginView (create-account · password step) ═══ -->
+    <div class="flow-screen" id="ad-pwd" data-label="Create a password — show/hide + strength" style="flex:1">
+      <div class="auth-split">
+        <aside class="auth-brandpanel" data-bp></aside>
+        <main class="auth-formpanel">
+          <div class="fp-top"><span class="fp-lang"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-globe"/></svg> English</span></div>
+          <div class="fp-body">
+            <div class="auth-head">
+              <div class="auth-title">Create a password</div>
+              <p class="auth-sub">For <b>maria@gmail.com</b> · step 2 of 3</p>
+            </div>
+            <div class="auth-form">
+              <div class="field">
+                <label>Password</label>
+                <div class="input with-btn">
+                  <svg viewBox="0 0 24 24" class="icon icon-sm" style="color:var(--n-500)"><use href="#i-lock"/></svg>
+                  <span style="letter-spacing:2px;color:var(--navy)">••••••••••</span>
+                  <button class="pwd-eye"><svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-eye"/></svg></button>
+                </div>
+              </div>
+              <div class="pwd-strength">
+                <div class="pwd-bars"><i class="on3"></i><i class="on3"></i><i class="on3"></i><i></i></div>
+                <div class="pwd-hint strong">Strong — nice and secure</div>
+              </div>
+              <button class="btn btn-primary btn-block" data-goto="ad-code">Create account <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
+              <button class="auth-link center" data-goto="ad-signin">← Use a different email</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
     <!-- ═══ ad-code · check_email_code ═══ -->
     <div class="flow-screen" id="ad-code" data-label="Verify email — OTP with a resend countdown" style="flex:1">
       <div class="auth-split">
@@ -78,7 +111,7 @@
           <div class="fp-body">
             <div class="auth-head">
               <div class="auth-title">Check your inbox</div>
-              <p class="auth-sub">We sent a 6-digit code to <b>maria@gmail.com</b>.</p>
+              <p class="auth-sub">We sent a 6-digit code to <b>maria@gmail.com</b> · step 3 of 3</p>
             </div>
             <div class="auth-form">
               <div class="otp-row">
@@ -87,7 +120,7 @@
               </div>
               <div class="otp-resend">Didn't get it? Resend in <b>0:24</b> · <span class="lnk">Resend code</span></div>
               <button class="btn btn-primary btn-block" data-goto="ad-welcome">Verify &amp; continue <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></button>
-              <button class="auth-link center" data-goto="ad-signin">← Use a different email</button>
+              <button class="auth-link center" data-goto="ad-pwd">← Back</button>
             </div>
           </div>
         </main>

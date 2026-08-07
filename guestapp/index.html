@@ -284,13 +284,13 @@
     <a class="proto-link" href="flow-payments-mobile.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">📱</span> Payments flow — mobile</h3>
-      <p>Cart with charges split from card holds (dashed = never charged), pay later, the embedded Stripe payment element (fenced — Appearance-API theming only) with the €0.00-hold warning up front, mocked 3-D Secure bank step, live confirmation timeline with a slow-connection fallback, receipt with the next task, decline recovery, order history, empty cart and the deposit chooser.</p>
+      <p>Cart with charges split from card holds (dashed = never charged), row menus (pay later / remove) with the full removal flow — confirm, the honest &quot;removing&quot; state, success and failure, plus the pet fee the app refuses to remove — the embedded Stripe payment element (fenced — Appearance-API theming only) with the €0.00-hold warning up front, the Addon (Global Payments) form variant, mocked 3-D Secure bank step, live confirmation timeline with a slow-connection fallback, receipt with the next task and order history a tap away, decline recovery and the empty cart. Protection lives in its own flow (Property protection), which the deposit hold links out to.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-payments-desktop.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
       <h3><span class="ff">🖥</span> Payments flow — desktop</h3>
-      <p>Two-column cart with a sticky ledger, the embedded Stripe payment element, live confirmation timeline, full-bleed receipt celebration, decline recovery, order history and the deposit chooser — with a stage-aware Vela rail (holds, security, statement copy) on every step.</p>
+      <p>Two-column cart with a sticky ledger and row menus, pay later, the full item-removal flow (confirm → removing → success or failure, plus the pet-fee refusal), the embedded Stripe payment element plus the Addon (Global Payments) variant, live confirmation timeline, full-bleed receipt celebration, decline recovery and order history — with a stage-aware Vela rail (holds, security, statement copy) on every step.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
   </div>
@@ -379,15 +379,27 @@
 
   <h3 class="feat">AI Travel Guide</h3>
   <div class="proto-links" style="margin-top:0">
+    <a class="proto-link" href="flow-travel-guide-v3.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">📱</span> AI Travel Guide V3 — mobile</h3>
+      <p>The <b>current</b> <code>TravelGuideView</code> — recently redesigned around a <b>tall destination photo bleeding into white</b>, which is kept — re-dressed in Redesign 2.0: flat bordered surfaces, Poppins/navy, kit chips and option cards. Structure and copy stay 1:1 with the app: four questions <b>one per step</b> (pace → interests → budget → avoid), the four real generation phases, PhaseNav / DaySubTabs / time-of-day timeline. Cheap improvements ride along: a live progress segment, the at-a-glance strip on the phone, <code>profile_assumptions</code> as a visible "Tuned for" row, an honest build clock.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
+    <a class="proto-link" href="flow-travel-guide-desktop-v3.html">
+      <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
+      <h3><span class="ff">🖥</span> AI Travel Guide V3 — desktop</h3>
+      <p>The desktop counterpart: the destination photo becomes a <b>rounded panorama</b> fading into the page, the four questions sit on <b>one screen</b> in flat cards, and the plan reads beside the <code>TripGlance</code> rail the app already ships (<code>hidden lg:block</code>) — joined by the "Tuned for" profile and the Maps route hand-off. Intro, questions, build, failure, plan.</p>
+      <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
+    </a>
     <a class="proto-link" href="flow-travel-guide-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">📱</span> AI Travel Guide — mobile</h3>
+      <h3><span class="ff">📱</span> AI Travel Guide V2 — mobile (previous)</h3>
       <p>The AI itinerary (<code>TravelGuideView</code>) stops being a one-shot artifact and becomes a <b>document you can change</b>. Six questions on one scroll become <b>three required and three folded optional</b>, on real radio/checkbox groups with a meter that measures what actually gates the button. The build screen gains an <b>elapsed clock, a cancel and a "you can leave"</b>; failure gains <b>three exits</b>. The plan grows a <b>"Right now" card</b>, real <code>role="tablist"</code> phase tabs, <b>Directions on every stop</b>, and a <b>"Tuned for" strip</b> that renders <code>profile_assumptions</code> and opens the way back into the questions the shipped app closes for ever.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
     <a class="proto-link" href="flow-travel-guide-desktop-v2.html">
       <div class="pl-icon"><svg viewBox="0 0 24 24" class="icon icon-lg"><use href="#i-play"/></svg></div>
-      <h3><span class="ff">🖥</span> AI Travel Guide — desktop</h3>
+      <h3><span class="ff">🖥</span> AI Travel Guide V2 — desktop (previous)</h3>
       <p>The same four views as the navy-sidebar <b>"Travel Guide"</b> destination. A laptop cannot walk to the market, so the mobile "Right now" card becomes a persistent <b>trip rail</b>: at-a-glance totals (with the planned spend the shipped <code>TripGlance</code> omits), the profile the plan was tuned to, <b>where it came from</b> (<code>source_urls</code>, rendered at last) and a <b>"Send to my phone"</b> hand-off. Intro, questions, build, failure, plan, skeleton and empty.</p>
       <span class="go">Run flow <svg viewBox="0 0 24 24" class="icon icon-sm"><use href="#i-arrow-right"/></svg></span>
     </a>
