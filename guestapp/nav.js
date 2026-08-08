@@ -432,7 +432,6 @@
       { file: 'flow-luggage-mobile.html', label: 'Luggage storage — mobile', icon: '📱', by: 'opus', subs: [
         { hash: 'lg-offer', label: 'Book (day · bags · storage)' },
         { hash: 'lg-none', label: 'No storages nearby' },
-        { hash: 'lg-added', label: 'Added — pay to confirm' },
         { hash: 'lg-ticket', label: 'Your QR ticket' },
         { hash: 'lg-home', label: 'Home — booking card' },
         { hash: 'lg-empty', label: 'Empty state' },
@@ -440,7 +439,6 @@
       { file: 'flow-luggage-desktop.html', label: 'Luggage storage — desktop', icon: '🖥', by: 'opus', subs: [
         { hash: 'ld-offer', label: 'Book (day · bags · storage)' },
         { hash: 'ld-none', label: 'No storages nearby' },
-        { hash: 'ld-added', label: 'Added — pay to confirm' },
         { hash: 'ld-ticket', label: 'Your QR ticket' },
         { hash: 'ld-home', label: 'Home — section + sidebar row' },
         { hash: 'ld-empty', label: 'Empty state' },

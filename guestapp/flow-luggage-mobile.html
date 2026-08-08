@@ -19,7 +19,6 @@
   <div class="flow-hud">
     <button class="fh-chip on" data-scenario="lg-offer">▶ Full flow</button>
     <button class="fh-chip" data-scenario="lg-none">No storages nearby</button>
-    <button class="fh-chip" data-scenario="lg-added">Added — pay to confirm</button>
     <button class="fh-chip" data-scenario="lg-ticket">Your QR ticket</button>
     <button class="fh-chip" data-scenario="lg-home">Back on Home</button>
     <button class="fh-chip" data-scenario="lg-empty">Empty state</button>
@@ -278,38 +277,12 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         lg-added · deal created (AUTO → APPROVED, unpaid) — the
-         real money model: it confirms only once the cart is paid.
-         ═══════════════════════════════════════════════════════════ -->
-    <div class="screen flow-screen" id="lg-added" data-label="Added — pay to confirm">
-      <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
-      <div class="content" style="justify-content:center;align-items:center;text-align:center;gap:14px">
-        <div class="lug-ring"><svg viewBox="0 0 24 24" class="icon"><use href="#i-check"/></svg></div>
-        <div>
-          <div class="lug-title">Added to your stay</div>
-          <div class="lug-sub" style="margin:6px auto 0">Your storage is reserved with this request — it's confirmed the moment you pay.</div>
-        </div>
-        <div class="lug-recap">
-          <div class="lr-row"><svg viewBox="0 0 24 24" class="icon"><use href="#i-store"/></svg> Storage <b>Luggage Storage Marbella Old Town</b></div>
-          <div class="lr-row"><svg viewBox="0 0 24 24" class="icon"><use href="#i-calendar"/></svg> Departure day <b>Fri 22 Aug · 11:00 → 20:00</b></div>
-          <div class="lr-row"><svg viewBox="0 0 24 24" class="icon"><use href="#i-luggage"/></svg> Bags <b>3</b></div>
-          <div class="lr-row"><svg viewBox="0 0 24 24" class="icon"><use href="#i-receipt"/></svg> Total <b>€15.00</b></div>
-        </div>
-        <div class="lug-hint" style="justify-content:center"><svg viewBox="0 0 24 24" class="icon"><use href="#i-info"/></svg> Your QR ticket is issued right after payment</div>
-      </div>
-      <div class="cta-dock">
-        <button class="btn btn-primary btn-block" data-goto="lg-pay">Review cart & pay €15.00</button>
-        <a class="btn btn-ghost" href="home.html">Keep browsing — pay later</a>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════════════════
          lg-pay · the shared §7 cart payment, compressed.
          ═══════════════════════════════════════════════════════════ -->
     <div class="screen flow-screen" id="lg-pay" data-label="Secure payment" data-autonext="lg-ticket" data-autodelay="2100">
       <div class="statusbar"><span>9:41</span><span class="sb-icons">▮▮▮ ᯤ ▭</span></div>
       <div class="topbar">
-        <button class="back-btn" data-goto="lg-added"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
+        <button class="back-btn" data-goto="lg-offer"><svg viewBox="0 0 24 24" class="icon"><use href="#i-chevron-left"/></svg></button>
         <div class="tb-titles"><div class="tb-title">Secure payment</div><div class="tb-sub">Handled by Stripe</div></div>
       </div>
       <div class="content" style="justify-content:center;align-items:center;gap:22px">
@@ -556,8 +529,21 @@
           <input id="lg-email" class="input" type="email" value="maria@gmail.com">
         </div>
         <div class="pm-actions">
-          <button class="btn btn-primary" data-modal-close data-goto="lg-added">Confirm booking</button>
+          <button class="btn btn-primary" data-modal="m-added">Confirm booking</button>
           <button class="btn btn-ghost" data-modal-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ m-added · CreateDealCompleteModal — same as any other offer ═══ -->
+    <div class="proto-modal sheet" id="m-added">
+      <div class="pm-scrim" data-modal-close></div>
+      <div class="pm-card">
+        <div class="pm-title">Added to your cart!</div>
+        <p class="pm-desc">Luggage Storage Marbella Old Town is in your payments cart — €15.00. Pay it together with the rest of your check-in, in one payment. The QR ticket is issued right after payment.</p>
+        <div class="pm-actions">
+          <button class="btn btn-primary" data-modal-close data-goto="lg-pay">Review cart &amp; pay</button>
+          <button class="btn btn-ghost" data-modal-close data-goto="lg-offer">Keep browsing extras</button>
         </div>
       </div>
     </div>
